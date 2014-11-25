@@ -2,7 +2,7 @@
 from settings_shared import *
 
 TEMPLATE_DIRS = (
-    "/var/www/worth2/worth2/worth2/templates",
+    os.path.join(os.path.dirname(__file__), "templates"),
 )
 
 MEDIA_ROOT = '/var/www/worth2/uploads/'
