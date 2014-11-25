@@ -1,5 +1,7 @@
 # flake8: noqa
 from settings_shared import *
+import os
+import sys
 
 TEMPLATE_DIRS = (
     os.path.join(os.path.dirname(__file__), "templates"),
