@@ -125,6 +125,7 @@ INSTALLED_APPS = [
     'pagetree',
     'pageblocks',
     'quizblock',
+    'storages',
     'gunicorn',
     'worth2.main',
 ]
