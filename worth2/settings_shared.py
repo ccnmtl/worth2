@@ -164,7 +164,7 @@ EMAIL_HOST = 'localhost'
 SERVER_EMAIL = "worth2@ccnmtl.columbia.edu"
 DEFAULT_FROM_EMAIL = SERVER_EMAIL
 
-STATICFILES_DIRS = ('media/')
+STATICFILES_DIRS = ('media/',)
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
