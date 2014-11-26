@@ -125,7 +125,6 @@ INSTALLED_APPS = [
     'pagetree',
     'pageblocks',
     'quizblock',
-    'storages',
     'gunicorn',
     'worth2.main',
 ]
@@ -169,11 +168,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',
 )
-
-COMPRESS_URL = "/media/"
-COMPRESS_ROOT = STATIC_ROOT
 
 AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', )
 

@@ -41,8 +41,13 @@ django-paging==0.2.5
 django-annoying==0.8.0
 django-nose==1.2
 django-appconf==0.6
+
 lxml==3.4.1
-django_compressor==1.4
+django-compressor==1.4
+
+static3==0.5.1
+dj-static==0.0.6
+
 django-statsd-mozilla==0.3.14
 raven==5.1.1
 django-bootstrap3==5.0.2
@@ -57,12 +62,10 @@ django-ga-context==0.1.0
 django-impersonate==0.9
 django-registration==1.1
 django-treebeard==2.0
--e git://github.com/ccnmtl/django-pagetree.git#egg=django-pagetree
+django-pagetree==1.0.1
 django-pageblocks==1.0.0
 django-quizblock==1.0.0
 django-markwhat==2014.9.20
 gunicorn==19.1.1
 django-infranil==0.1.0
 django-flatblocks==0.9
-boto==2.34.0
-django-storages==1.1.8
