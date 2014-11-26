@@ -13,6 +13,10 @@ STATICMEDIA_MOUNTS = (
     ('/sitemedia', '/var/www/worth2/worth2/sitemedia'),
 )
 
+DEBUG = False
+TEMPLATE_DEBUG = True
+STAGING_ENV = True
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -23,11 +27,6 @@ DATABASES = {
         'PASSWORD': '',
     }
 }
-
-COMPRESS_ROOT = "/var/www/worth2/worth2/media/"
-DEBUG = False
-TEMPLATE_DEBUG = DEBUG
-STAGING_ENV = True
 
 AWS_STORAGE_BUCKET_NAME = "ccnmtl-worth2-static-stage"
 AWS_PRELOAD_METADATA = True

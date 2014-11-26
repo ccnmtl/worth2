@@ -173,7 +173,7 @@ STATICFILES_FINDERS = (
 )
 
 COMPRESS_URL = "/media/"
-COMPRESS_ROOT = "media/"
+COMPRESS_ROOT = STATIC_ROOT
 
 AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', )
 
