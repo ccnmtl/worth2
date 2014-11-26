@@ -8,10 +8,6 @@ TEMPLATE_DIRS = (
 )
 
 MEDIA_ROOT = '/var/www/worth2/uploads/'
-# put any static media here to override app served static media
-STATICMEDIA_MOUNTS = (
-    ('/sitemedia', '/var/www/worth2/worth2/sitemedia'),
-)
 
 DATABASES = {
     'default': {
