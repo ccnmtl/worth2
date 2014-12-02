@@ -59,6 +59,7 @@ USE_I18N = False
 
 MEDIA_ROOT = "/var/www/worth2/uploads/"
 MEDIA_URL = '/uploads/'
+ADMIN_MEDIA_PREFIX = '/media/'
 STATIC_ROOT = "/tmp/worth2/static"
 STATIC_URL = '/media/'
 
@@ -171,6 +172,8 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'compressor.finders.CompressorFinder',
 )
+COMPRESS_URL = "/media/"
+COMPRESS_ROOT = STATIC_ROOT
 
 AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', )
 
