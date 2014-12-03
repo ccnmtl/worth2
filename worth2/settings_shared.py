@@ -20,7 +20,14 @@ DATABASES = {
     }
 }
 
+MEDIA_ROOT = "/var/www/worth2/uploads/"
+MEDIA_URL = '/uploads/'
+ADMIN_MEDIA_PREFIX = '/media/'
+STATIC_ROOT = "/tmp/worth2/static"
+STATIC_URL = '/media/'
+
 if 'test' in sys.argv or 'jenkins' in sys.argv:
+    MEDIA_ROOT = '/tmp/'
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -56,12 +63,6 @@ TIME_ZONE = 'America/New_York'
 LANGUAGE_CODE = 'en-us'
 SITE_ID = 1
 USE_I18N = False
-
-MEDIA_ROOT = "/var/www/worth2/uploads/"
-MEDIA_URL = '/uploads/'
-ADMIN_MEDIA_PREFIX = '/media/'
-STATIC_ROOT = "/tmp/worth2/static"
-STATIC_URL = '/media/'
 
 SECRET_KEY = ')ng#)ef_u@_^zvvu@dxm7ql-yb^_!a6%v3v^j3b(mp+)l+5%@h'
 TEMPLATE_LOADERS = (
@@ -110,6 +111,7 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
     'django.contrib.admin',
     'tagging',
+    'ordered_model',
     'typogrify',
     'django_nose',
     'compressor',
