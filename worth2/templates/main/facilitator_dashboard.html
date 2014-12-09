@@ -1,6 +1,33 @@
 {% load webdesign %}
 
 <div class="worth-facilitator-dashboard">
-    <h1>Your Dashboard</h1>
-    <p>{% lorem %}</p>
+    <h1>
+        {% if request.user.first_name %}
+        {{request.user.first_name}}'s
+        {% else %}
+        {{request.user.username}}'s
+        {% endif %}
+        Dashboard
+    </h1>
+    {% lorem 1 p %}
+
+    <div class="row">
+        <h2>Intervene</h2>
+        {% lorem 1 p %}
+        <a href="{% url 'sign-in-participant' %}"
+           class="btn btn-primary">Sign In Participant</a>
+    </div>
+
+    <div class="row">
+        <h2>Present</h2>
+        {% lorem 1 p %}
+        <a href="#" class="btn btn-primary">Present Information</a>
+    </div>
+
+    <div class="row">
+        <h2>Manage</h2>
+        {% lorem 1 p %}
+        <a href="{% url 'manage-participants' %}"
+           class="btn btn-primary">Manage Participant IDs</a>
+    </div>
 </div>

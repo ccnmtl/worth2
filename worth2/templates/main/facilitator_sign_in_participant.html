@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% load webdesign %}
+
+{% block content %}
+<div class="worth-facilitator-sign-in-participant">
+    <h1>Sign In a Participant</h1>
+    {% lorem 1 p %}
+
+    <form class="form-horizontal"
+          role="form"
+          method="post"
+          action="/accounts/login/">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="participant_id"
+                   class="control-label col-sm-3">Participant ID #</label>
+            <div class="col-sm-6">
+                <select name="participant_id"
+                        id="participant_id"
+                        class="form-control">
+                    <option>111-111-111</option>
+                    <option>111-111-112</option>
+                    <option>111-111-113</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="participant_location"
+                   class="control-label col-sm-3">Location</label>
+            <div class="col-sm-6">
+                <select name="participant_location"
+                        id="participant_location"
+                        class="form-control">
+                    <option>Choose a location</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="participant_destination"
+                   class="control-label col-sm-3">Take participant to:</label>
+            <div class="col-sm-6">
+                <div class="radio">
+                    <label>
+                        <input type="radio"
+                               name="participant_destination"
+                               id="participant_destination_current" checked>
+                        The last completed activity.
+                    </label>
+                    <div>
+                        <em>Activity 5 "Charlene" (from Session 3 "Title")</em>
+                    </div>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio"
+                               name="participant_destination"
+                               id="participant_destination_next">
+                        The next, new session.
+                    </label>
+                    <div>
+                        <em>Session 4 "title"</em>
+                    </div>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio"
+                               name="participant_destination"
+                               id="participant_destination_next">
+                        An already completed session for review.
+                    </label>
+                    <div>
+                        <select class="form-control" disabled="disabled">
+                            <option>Session 2</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-6">
+                <button type="submit" class="btn btn-primary">Sign In</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+{% endblock %}
