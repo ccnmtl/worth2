@@ -1,12 +1,26 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="worth-title center-block">
+    <p class="worth-title">
+        WORTH
+    </p>
+    <p>
+        African-American Women on the Road to Health
+    </p>
+</div>
+
+{% if request.user.is_anonymous %}
+{% include 'registration/login.html' %}
+{% else %}
+{% include 'main/facilitator_dashboard.html' %}
+{% endif %}
+
+{% if not request.user.is_anonymous %}
 <div class="jumbotron">
-    <h1>Welcome to WORTH</h1>
-    {% if not request.user.is_anonymous %}
     <p>The first thing you'll want to do is go to
 	    the <a href="/pages/edit/">Edit page</a> for the root node and add
 	    some modules, child sections and content.</p>
-    {% endif %}
 </div>
+{% endif %}
 {% endblock %}
