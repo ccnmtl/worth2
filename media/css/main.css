@@ -143,24 +143,31 @@ body > .container {
     line-height: 140%;
 }
 
-.worth-title {
+.worth-title-container {
     width: 320px;
-
-    display: -webkit-box;
-    -webkit-box-orient: horizontal;
-
-    display: -moz-box;
-    -moz-box-orient: horizontal;
-
-    display: box;
-    box-orient: horizontal;
+    display: flex;
 }
 
-.worth-title p {
+.worth-title-container p {
     width: 50%;
 }
 
-.worth-title p.worth-title {
+.worth-title-container p.worth-title {
     font-size: 32px;
     font-weight: bold;
+}
+
+footer.footer {
+    margin-top: 80px;
+}
+
+.worth-facilitator-manage-participants .row {
+    border-radius: 5px;
+    background-color: #f6f6f6;
+    margin-bottom: 5px;
+}
+
+.worth-facilitator-manage-participants .row .worth-study-id {
+    font-weight: bold;
+    line-height: 34px;
 }

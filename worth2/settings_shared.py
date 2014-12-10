@@ -193,3 +193,6 @@ LOGGING = {
 }
 
 ACCOUNT_ACTIVATION_DAYS = 7
+
+# change on production / staging
+PARTICIPANT_SECRET = 'something secret'
