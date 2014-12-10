@@ -2,7 +2,7 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from worth2.main.tests.factories import (
-    AvatarFactory, LocationFactory, ParticipantFactory
+    AvatarFactory, LocationFactory, ParticipantFactory, SessionFactory
 )
 
 
@@ -37,3 +37,11 @@ class ParticipantTest(TestCase):
 
     def test_that_participant_can_have_an_image(self):
         self.participant.avatar = AvatarFactory()
+
+
+class SessionTest(TestCase):
+    def setUp(self):
+        self.session = SessionFactory()
+
+    def test_is_valid_from_factory(self):
+        self.session.full_clean()

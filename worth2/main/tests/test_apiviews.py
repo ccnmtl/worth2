@@ -3,11 +3,11 @@ from rest_framework.test import APITestCase
 
 from worth2.main.models import Participant
 from worth2.main.tests.factories import ParticipantFactory
-from worth2.main.tests.mixins import LoggedInFacilitatorAPITestMixin
+from worth2.main.tests.mixins import LoggedInFacilitatorTestMixin
 
 
 class ParticipantViewSetCreateAuthedTest(
-        LoggedInFacilitatorAPITestMixin, APITestCase):
+        LoggedInFacilitatorTestMixin, APITestCase):
     def test_create(self):
         response = self.client.post(
             '/api/participants/', {'study_id': '777'}
@@ -17,6 +17,7 @@ class ParticipantViewSetCreateAuthedTest(
 
         participant = Participant.objects.get(study_id='777')
         self.assertEqual(participant.study_id, '777')
+        self.assertEqual(participant.created_by, self.u)
 
 
 class ParticipantViewSetCreateUnAuthedTest(APITestCase):
@@ -31,7 +32,7 @@ class ParticipantViewSetCreateUnAuthedTest(APITestCase):
 
 
 class ParticipantViewSetUpdateAuthedTest(
-        LoggedInFacilitatorAPITestMixin, APITestCase):
+        LoggedInFacilitatorTestMixin, APITestCase):
     def test_update_study_id(self):
         p = ParticipantFactory(study_id='777')
         response = self.client.put(
