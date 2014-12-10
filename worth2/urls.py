@@ -43,6 +43,14 @@ urlpatterns = patterns(
     (r'^pages/(?P<path>.*)$', PageView.as_view(
         hierarchy_name="main",
         hierarchy_base="/pages/")),
+
+    # TODO: change login_required to something that only allows facilitators
+    url('^sign-in-participant/$', login_required(TemplateView.as_view(
+        template_name='main/facilitator_sign_in_participant.html')),
+        name='sign-in-participant'),
+    url('^manage-participants/$', login_required(TemplateView.as_view(
+        template_name='main/facilitator_manage_participants.html')),
+        name='manage-participants'),
 )
 
 if settings.DEBUG:
