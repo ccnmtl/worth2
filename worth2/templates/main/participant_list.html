@@ -43,11 +43,16 @@
                 </button>
                 <h4 class="modal-title">Add Participant ID</h4>
             </div>
-            <form class="form-inline" role="form"
-                  method="post" action="{% url 'participant-create' %}">
+            <form id="worth-create-participant"
+                  class="form-inline"
+                  role="form">
                 {% csrf_token %}
                 <div class="modal-body"
-                    style="text-align: center;">
+                     style="text-align: center;">
+                    <div class="alert alert-danger worth-errors"
+                         style="display: none;"></div>
+                    <div class="alert alert-success worth-success"
+                         style="display: none;">Participant created.</div>
                     Study ID # <input type="text" class="form-control"
                                       name="study_id" />
                 </div>
@@ -62,4 +67,8 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block js %}
+<script src="{{STATIC_URL}}js/src/participant-admin.js"></script>
 {% endblock %}

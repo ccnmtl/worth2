@@ -6,8 +6,9 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.views.generic import TemplateView
 from pagetree.generic.views import PageView, EditView, InstructorView
+from rest_framework import routers
 
-from worth2.main import views
+from worth2.main import views, apiviews
 
 
 site_media_root = os.path.join(os.path.dirname(__file__), "../media")
@@ -19,10 +20,16 @@ logout_page = (
     'django.contrib.auth.views.logout',
     {'next_page': redirect_after_logout})
 
+rest_router = routers.DefaultRouter()
+rest_router.register(r'participants', apiviews.ParticipantViewSet)
+
 urlpatterns = patterns(
     '',
     auth_urls,
     logout_page,
+    url(r'^api/', include(rest_router.urls)),
+    url(r'^api-auth/', include('rest_framework.urls',
+                               namespace='rest_framework')),
     (r'^registration/', include('registration.backends.default.urls')),
     url(r'^$', views.IndexView.as_view(), name='root'),
     (r'^admin/', include(admin.site.urls)),
@@ -55,10 +62,10 @@ urlpatterns = patterns(
         views.ManageParticipants.as_view()),
         name='manage-participants'),
 
-    url(r'^participant/create/$',
-        login_required(views.ParticipantCreate.as_view(
-            success_url='/manage-participants/')),
-        name='participant-create'),
+    # url(r'^participant/create/$',
+    #    login_required(views.ParticipantCreate.as_view(
+    #        success_url='/manage-participants/')),
+    #    name='participant-create'),
     url(r'^participant/(?P<pk>\d+)/$',
         login_required(views.ParticipantUpdate.as_view(
             success_url='/manage-participants/')),

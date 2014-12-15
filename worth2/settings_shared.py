@@ -133,8 +133,14 @@ INSTALLED_APPS = [
     'pageblocks',
     'quizblock',
     'gunicorn',
+    'rest_framework',
     'worth2.main',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'PAGINATE_BY': 10
+}
 
 PAGEBLOCKS = ['pageblocks.TextBlock',
               'pageblocks.HTMLBlock',

@@ -23,7 +23,10 @@
 
 	<link rel="shortcut icon" href="{{STATIC_URL}}img/favicon.ico" type="image/x-icon" />
 	{% block css %}{% endblock %}
-    <script src="{{STATIC_URL}}js/jquery-1.11.1.min.js"></script>
+    <script src="{{STATIC_URL}}js/lib/jquery-1.11.1.min.js"></script>
+    <script src="{{STATIC_URL}}js/lib/jquery.cookie.js"></script>
+
+    <script src="{{STATIC_URL}}js/src/setup.js"></script>
 
 	{% block feeds %}{% endblock %}
 </head>
@@ -101,6 +104,8 @@
 {% endblock %}
 
 <script src="{% bootstrap_javascript_url %}"></script>
+<script src="{{STATIC_URL}}js/lib/underscore-min.js"></script>
+<script src="{{STATIC_URL}}js/lib/backbone-min.js"></script>
 
 {% block js %}{% endblock %}
 

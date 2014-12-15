@@ -1,7 +1,8 @@
 from django.core.urlresolvers import reverse
 from django.test import TestCase
-from pagetree.helpers import get_hierarchy
 from django.contrib.auth.models import User
+from pagetree.helpers import get_hierarchy
+
 
 from worth2.main.models import Participant
 from worth2.main.tests.mixins import LoggedInFacilitatorTestMixin
@@ -71,31 +72,6 @@ class PagetreeViewTestsLoggedIn(TestCase):
     def test_instructor_page(self):
         r = self.client.get("/pages/instructor/section-1/")
         self.assertEqual(r.status_code, 200)
-
-
-class ParticipantCreateAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
-    def test_post(self):
-        response = self.client.post(
-            reverse('participant-create'),
-            {'study_id': '777'},
-            follow=True
-        )
-        self.assertEqual(response.status_code, 200)
-
-        participant = Participant.objects.get(study_id='777')
-        self.assertEqual(participant.study_id, '777')
-
-
-class ParticipantCreateUnAuthedTest(TestCase):
-    def test_post(self):
-        response = self.client.post(
-            reverse('participant-create'),
-            {'study_id': '777'}
-        )
-        self.assertEqual(response.status_code, 302)
-
-        with self.assertRaises(Participant.DoesNotExist):
-            Participant.objects.get(study_id='777')
 
 
 class ParticipantUpdateAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
