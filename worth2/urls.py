@@ -61,15 +61,6 @@ urlpatterns = patterns(
     url(r'^manage-participants/$', login_required(
         views.ManageParticipants.as_view()),
         name='manage-participants'),
-
-    # url(r'^participant/create/$',
-    #    login_required(views.ParticipantCreate.as_view(
-    #        success_url='/manage-participants/')),
-    #    name='participant-create'),
-    url(r'^participant/(?P<pk>\d+)/$',
-        login_required(views.ParticipantUpdate.as_view(
-            success_url='/manage-participants/')),
-        name='participant-update'),
 )
 
 if settings.DEBUG:

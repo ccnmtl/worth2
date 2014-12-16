@@ -1,13 +1,9 @@
-$(function() {
-    var Participant = Backbone.Model.extend({
-        defaults: function() {
-            return {
-                study_id: '',
-                is_archived: false
-            };
-        }
-    });
-
+define([
+    'jquery',
+    'underscore',
+    'backbone',
+    'models/participant'
+], function($, _, Backbone, Participant) {
     var CreateParticipantView = Backbone.View.extend({
         el: '#worth-create-participant',
         events: {
@@ -46,5 +42,5 @@ $(function() {
         }
     });
 
-    var App = new CreateParticipantView();
+    return CreateParticipantView;
 });

@@ -18,6 +18,7 @@
 </div>
 <div class="modal"
      id="edit-participant-modal-{{participant.pk}}"
+     data-id="{{participant.pk}}"
      tabindex="-1"
      role="dialog"
      aria-labelledby="myModalLabel"
@@ -33,19 +34,20 @@
                 </button>
                 <h4 class="modal-title">Edit Participant ID</h4>
             </div>
-            <form class="form-inline" role="form"
-                  method="post"
-                  action="{% url 'participant-update' participant.pk %}">
+            <form class="worth-edit-participant form-inline" role="form">
                 {% csrf_token %}
-                <div class="modal-body"
-                     style="text-align: center;">
+                <div class="modal-body" style="text-align: center;">
+                    <div class="alert alert-danger worth-errors"
+                         style="display: none;"></div>
+                    <div class="alert alert-success worth-success"
+                         style="display: none;">Participant saved.</div>
                     Study ID # <input type="text" class="form-control"
                                       name="study_id"
                                       value="{{participant.study_id}}" />
                 </div>
                 <div class="modal-footer">
                     {% if participant.is_archived != True %}
-                    <button type="submit"
+                    <button type="button"
                             class="btn btn-danger pull-left"
                             name="is_archived"
                             value="true">

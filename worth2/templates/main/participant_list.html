@@ -44,9 +44,7 @@
                 <h4 class="modal-title">Add Participant ID</h4>
             </div>
             <form id="worth-create-participant"
-                  class="form-inline"
-                  role="form">
-                {% csrf_token %}
+                  class="form-inline" role="form">
                 <div class="modal-body"
                      style="text-align: center;">
                     <div class="alert alert-danger worth-errors"
@@ -67,8 +65,4 @@
         </div>
     </div>
 </div>
-{% endblock %}
-
-{% block js %}
-<script src="{{STATIC_URL}}js/src/participant-admin.js"></script>
 {% endblock %}
