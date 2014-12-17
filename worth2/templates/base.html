@@ -23,7 +23,6 @@
 
 	<link rel="shortcut icon" href="{{STATIC_URL}}img/favicon.ico" type="image/x-icon" />
 	{% block css %}{% endblock %}
-    <script src="{{STATIC_URL}}js/jquery-1.11.1.min.js"></script>
 
 	{% block feeds %}{% endblock %}
 </head>
@@ -69,6 +68,9 @@
         <li><a href="/about/">About</a></li>
         <li><a href="/contact/">Contact</a></li>
         <li><a href="/credits/">Credits</a></li>
+        {% if request.user.is_superuser %}
+        <li><a href="/admin/">Admin</a></li>
+        {% endif %}
 
       {% block topnavbarrightitems %}{% endblock %}
 
@@ -94,11 +96,12 @@
 </div> <!-- end .container -->
 
 {% block footer %}
-<footer class="footer navbar-fixed-bottom hidden-phone">
-</footer>
+<footer class="footer hidden-phone"></footer>
 {% endblock %}
 
-<script src="{% bootstrap_javascript_url %}"></script>
+<script data-main="{{STATIC_URL}}js/main.js"
+        src="{{STATIC_URL}}js/lib/require.js"
+        ></script>
 
 {% block js %}{% endblock %}
 

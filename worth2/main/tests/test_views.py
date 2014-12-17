@@ -1,7 +1,8 @@
 from django.core.urlresolvers import reverse
 from django.test import TestCase
-from pagetree.helpers import get_hierarchy
 from django.contrib.auth.models import User
+from pagetree.helpers import get_hierarchy
+
 
 from worth2.main.tests.mixins import LoggedInFacilitatorTestMixin
 
@@ -9,12 +10,12 @@ from worth2.main.tests.mixins import LoggedInFacilitatorTestMixin
 class BasicTest(TestCase):
     def test_root(self):
         response = self.client.get("/")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_smoketest(self):
         response = self.client.get("/smoketest/")
-        self.assertEquals(response.status_code, 200)
-        assert "PASS" in response.content
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "PASS")
 
 
 class PagetreeViewTestsLoggedOut(TestCase):
@@ -71,14 +72,27 @@ class PagetreeViewTestsLoggedIn(TestCase):
         self.assertEqual(r.status_code, 200)
 
 
-class ManageParticipantsViewAuthedTest(
-        LoggedInFacilitatorTestMixin, TestCase):
+class ManageParticipantsAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
     def test_get(self):
         response = self.client.get(reverse('manage-participants'))
-        self.assertEquals(response.status_code, 200)
+        self.assertContains(response, 'Manage Participants')
+        self.assertEqual(response.status_code, 200)
 
 
-class ManageParticipantsViewUnAuthedTest(TestCase):
+class ManageParticipantsUnAuthedTest(TestCase):
     def test_get(self):
         response = self.client.get(reverse('manage-participants'))
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
+
+
+class SignInParticipantAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
+    def test_get(self):
+        response = self.client.get(reverse('sign-in-participant'))
+        self.assertContains(response, 'Sign In')
+        self.assertEqual(response.status_code, 200)
+
+
+class SignInParticipantUnAuthedTest(TestCase):
+    def test_get(self):
+        response = self.client.get(reverse('sign-in-participant'))
+        self.assertEqual(response.status_code, 302)

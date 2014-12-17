@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% load webdesign %}
+
+{% block content %}
+<div class="worth-facilitator-manage-participants">
+    <h1>Manage Participants</h1>
+    {% lorem 1 p %}
+
+    <button type="button" class="btn btn-success"
+            data-toggle="modal" data-target="#add-participant-modal"
+            >Add Participant</button>
+
+    <h2>Active Participants</h2>
+    {% for participant in active_participants %}
+    {% include 'main/participant_edit_row.html' %}
+    {% empty %}
+    <em>None</em>
+    {% endfor %}
+
+    <h2>Archived Participants</h2>
+    {% for participant in archived_participants %}
+    {% include 'main/participant_edit_row.html' %}
+    {% empty %}
+    <em>None</em>
+    {% endfor %}
+</div>
+
+<div class="modal"
+     id="add-participant-modal"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">Add Participant ID</h4>
+            </div>
+            <form id="worth-create-participant"
+                  class="form-inline" role="form">
+                <div class="modal-body"
+                     style="text-align: center;">
+                    <div class="alert alert-danger worth-errors"
+                         style="display: none;"></div>
+                    <div class="alert alert-success worth-success"
+                         style="display: none;">Participant created.</div>
+                    Study ID # <input type="text" class="form-control"
+                                      name="study_id" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-default"
+                            data-dismiss="modal">Cancel</button>
+                    <button type="submit"
+                            class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

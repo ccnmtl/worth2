@@ -4,13 +4,18 @@ from django.db import models
 from pagetree.models import Hierarchy, UserPageVisit
 
 
-class UserProfileMixin(object):
+class InactiveProfileMixin(models.Model):
     """A mixin for creating inactive users.
     """
+
+    # Set an explicit primary key, to not clash with those of any models
+    # that use this mixin.
+    user_profile_id = models.AutoField(primary_key=True)
+
     user = models.OneToOneField(User, related_name='profile')
-    creator = models.ForeignKey(User, null=True, blank=True,
-                                related_name='creator')
-    archived = models.BooleanField(default=False)
+    created_by = models.ForeignKey(User, null=True, blank=True,
+                                   related_name='created_by')
+    is_archived = models.BooleanField(default=False)
     notes = models.TextField(null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
