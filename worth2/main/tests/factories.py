@@ -3,8 +3,9 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 import factory
 from factory.fuzzy import FuzzyText
 
+from worth2.main.auth import generate_password
 from worth2.main.models import (
-    Avatar, Location, Participant
+    Avatar, Location, Participant, Session
 )
 
 
@@ -13,7 +14,15 @@ class InactiveUserFactory(factory.DjangoModelFactory):
         model = User
 
     username = FuzzyText()
+    password = factory.LazyAttribute(lambda u: generate_password(u.username))
     is_active = False
+
+
+class UserFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = User
+
+    username = FuzzyText()
 
 
 class AvatarFactory(factory.django.DjangoModelFactory):
@@ -38,3 +47,12 @@ class ParticipantFactory(factory.django.DjangoModelFactory):
     first_location = factory.SubFactory(LocationFactory)
     location = factory.SubFactory(LocationFactory)
     study_id = FuzzyText(prefix='7')
+
+
+class SessionFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Session
+
+    facilitator = factory.SubFactory(UserFactory)
+    participant = factory.SubFactory(ParticipantFactory)
+    location = factory.SubFactory(LocationFactory)

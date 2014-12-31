@@ -19,5 +19,6 @@ class ParticipantSerializer(serializers.HyperlinkedModelSerializer):
         participant_user.set_password(password)
         participant_user.save()
         validated_data['user'] = participant_user
+        validated_data['created_by'] = self.context['request'].user
 
         return Participant.objects.create(**validated_data)

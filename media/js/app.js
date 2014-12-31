@@ -4,9 +4,13 @@ define([
     'backbone',
     'views/create-participant',
     'views/edit-participant',
+    'views/sign-in-participant',
     'bootstrap',
     'jquery-cookie'
-], function($, _, Backbone, CreateParticipantView, EditParticipantView) {
+], function(
+    $, _, Backbone,
+    CreateParticipantView, EditParticipantView, SignInParticipantView
+) {
     $(function() {
         var csrftoken = $.cookie('csrftoken');
         function csrfSafeMethod(method) {
@@ -22,15 +26,17 @@ define([
         });
     });
     var initialize = function() {
-        var createParticipantView = new CreateParticipantView();
+        new CreateParticipantView();
         $('form.worth-edit-participant').each(function() {
             new EditParticipantView({
                 el: $(this)
             });
         });
+
+        new SignInParticipantView();
     };
 
     return {
         initialize: initialize
-    }
+    };
 });
