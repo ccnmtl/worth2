@@ -2,13 +2,13 @@ import os.path
 
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import user_passes_test
 from django.conf import settings
 from django.views.generic import TemplateView
-from pagetree.generic.views import PageView, EditView, InstructorView
+from pagetree.generic.views import EditView, InstructorView
 from rest_framework import routers
 
-from worth2.main import views, apiviews
+from worth2.main import apiviews, auth, views
 
 
 site_media_root = os.path.join(os.path.dirname(__file__), "../media")
@@ -41,26 +41,33 @@ urlpatterns = patterns(
      'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     (r'^pagetree/', include('pagetree.urls')),
     (r'^quizblock/', include('quizblock.urls')),
-    (r'^pages/edit/(?P<path>.*)$', login_required(EditView.as_view(
-        hierarchy_name="main",
-        hierarchy_base="/pages/")),
+    (r'^pages/edit/(?P<path>.*)$', user_passes_test(lambda u: u.is_superuser)(
+        EditView.as_view(
+            hierarchy_name="main",
+            hierarchy_base="/pages/")),
      {}, 'edit-page'),
     (r'^pages/instructor/(?P<path>.*)$',
-        login_required(InstructorView.as_view(
-            hierarchy_name="main",
-            hierarchy_base="/pages/"))),
-    (r'^pages/(?P<path>.*)$', PageView.as_view(
+        user_passes_test(lambda u: auth.user_is_facilitator(u))(
+            InstructorView.as_view(
+                hierarchy_name="main",
+                hierarchy_base="/pages/"))),
+    (r'^pages/(?P<path>.*)$', views.SessionPageView.as_view(
         hierarchy_name="main",
         hierarchy_base="/pages/")),
 
-    # TODO: change login_required to something that only allows
-    # facilitators and superusers
     url(r'^sign-in-participant/$',
-        login_required(views.SignInParticipant.as_view()),
+        user_passes_test(lambda u: auth.user_is_facilitator(u))(
+            views.SignInParticipant.as_view()),
         name='sign-in-participant'),
-    url(r'^manage-participants/$', login_required(
-        views.ManageParticipants.as_view()),
+    url(r'^manage-participants/$',
+        user_passes_test(lambda u: auth.user_is_facilitator(u))(
+            views.ManageParticipants.as_view()),
         name='manage-participants'),
+
+    url(r'^avatar-selector/$',
+        user_passes_test(lambda u: auth.user_is_participant(u))(
+            views.AvatarSelector.as_view()),
+        name='avatar-selector'),
 )
 
 if settings.DEBUG:

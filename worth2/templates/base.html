@@ -53,6 +53,18 @@
     </ul>
 
     <ul class="nav navbar-nav navbar-right">
+        {% if request.user.profile.is_participant %}
+
+        {# Participant nav bar #}
+        {% if request.user.profile.avatar %}
+        <img src="avatar.png" height="36" width="36" />
+        {% endif %}
+        <li><button type="button" class="btn btn-success navbar-btn"
+                    data-toggle="modal" data-target="#worth-break-modal"
+                    >I Need a Break.</button></li>
+        {% else %}
+
+        {# Facilitator nav bar #}
         {% if request.user.is_anonymous %}
         <li><a href="/accounts/login/">Sign In</a></li>
         {% else %}
@@ -72,8 +84,9 @@
         <li><a href="/admin/">Admin</a></li>
         {% endif %}
 
-      {% block topnavbarrightitems %}{% endblock %}
+        {% endif %}
 
+        {% block topnavbarrightitems %}{% endblock %}
     </ul>
   </div>
   </div>
@@ -81,13 +94,17 @@
 
 {% endblock %}
 
+{% include 'main/break_modal.html' %}
+
 <div class="container" id="outer-container">
 {% block masthead %}
 {% block primarynav %}{% endblock %}
 {% endblock %}
 
+{% if request.user.is_superuser %}
 {% block navrightextra %}
 {% endblock %}
+{% endif %}
 
 {% block loginbox %}
 {% endblock %}
