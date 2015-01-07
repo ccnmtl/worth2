@@ -25,7 +25,7 @@ class AvatarSelector(TemplateView):
         avatar = get_object_or_404(Avatar, pk=avatar_id)
         request.user.profile.participant.avatar = avatar
         request.user.profile.participant.save()
-        return redirect(reverse('avatar-selector'))
+        return redirect(request.user.profile.last_location_url())
 
 
 class IndexView(ActiveUserRequiredMixin, TemplateView):
@@ -63,7 +63,7 @@ class SignInParticipant(ActiveUserRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         participant = get_object_or_404(
-            Participant, pk=request.POST['participant_id'])
+            Participant, pk=request.POST.get('participant_id'))
         password = generate_password(participant.user.username)
         user = authenticate(
             username=participant.user.username, password=password)
@@ -96,7 +96,7 @@ class SignInParticipant(ActiveUserRequiredMixin, TemplateView):
             # Go to the first session in pagetree
             return redirect('/pages/session-1/')
 
-        raise http.Http404
+        return http.HttpResponse('Unauthorized', status=401)
 
 
 class SessionPageView(PageView):
@@ -109,6 +109,8 @@ class SessionPageView(PageView):
             return r
 
         # Has the participant picked an avatar yet?
-        if hasattr(user, 'profile') and user.profile.is_participant():
-            if not user.profile.participant.avatar:
-                return redirect(reverse('avatar-selector'))
+        if (hasattr(user, 'profile') and user.profile.is_participant()) and \
+           (not user.profile.participant.avatar):
+            return redirect(reverse('avatar-selector'))
+        else:
+            pass

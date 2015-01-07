@@ -4,9 +4,34 @@ from pagetree.helpers import get_hierarchy
 
 
 from worth2.main.tests.factories import (
-    LocationFactory, ParticipantFactory
+    AvatarFactory, LocationFactory, ParticipantFactory
 )
-from worth2.main.tests.mixins import LoggedInFacilitatorTestMixin
+from worth2.main.tests.mixins import (
+    LoggedInFacilitatorTestMixin, LoggedInParticipantTestMixin
+)
+from worth2.main.models import Participant
+
+
+class AvatarSelectorTest(LoggedInParticipantTestMixin, TestCase):
+    def setUp(self):
+        super(AvatarSelectorTest, self).setUp()
+        self.avatar1 = AvatarFactory()
+        self.avatar2 = AvatarFactory()
+        self.avatar3 = AvatarFactory()
+
+    def test_get(self):
+        r = self.client.get(reverse('avatar-selector'))
+        self.assertEqual(r.status_code, 200)
+
+    def test_post(self):
+        r = self.client.post(reverse('avatar-selector'), {
+            'avatar_id': self.avatar1.pk
+        })
+        # Refresh the participant from the database
+        self.participant = Participant.objects.get(pk=self.participant.pk)
+
+        self.assertEqual(r.status_code, 302)
+        self.assertEqual(self.participant.avatar, self.avatar1)
 
 
 class BasicTest(TestCase):
@@ -34,7 +59,7 @@ class PagetreeViewTestsLoggedOut(TestCase):
 
     def test_page(self):
         r = self.client.get("/pages/section-1/")
-        self.assertEqual(r.status_code, 302)
+        self.assertEqual(r.status_code, 403)
 
     def test_edit_page(self):
         r = self.client.get("/pages/edit/section-1/")
