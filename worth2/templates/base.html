@@ -119,11 +119,12 @@
 <footer class="footer hidden-phone"></footer>
 {% endblock %}
 
-<script data-main="{{STATIC_URL}}js/main.js"
+<script data-main="{{STATIC_URL}}js/src/main.js"
         src="{{STATIC_URL}}js/lib/require.js"
         ></script>
 
-{% block js %}{% endblock %}
+{% block js %}
+{% endblock %}
 
 {% if STAGING_ENV %}
 <div class="alert alert-danger alert-dismissable" style="position: fixed; bottom: 0px;">

@@ -135,11 +135,23 @@ INSTALLED_APPS = [
     'gunicorn',
     'rest_framework',
     'worth2.main',
+    'worth2.ssnm',
 ]
 
 REST_FRAMEWORK = {
+    'PAGINATE_BY': 10,
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
-    'PAGINATE_BY': 10
+    'DEFAULT_PAGINATION_SERIALIZER_CLASS':
+        'rest_framework_ember.pagination.PaginationSerializer',
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework_ember.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework_ember.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ),
 }
 
 PAGEBLOCKS = ['pageblocks.TextBlock',

@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block js %}
+
+{# This is necessary to prevent Django from trying to parse Handlebars tags #}
+{% verbatim %}
+<script type="text/x-handlebars" id="components/modal-dialog">
+    {{#view 'modal'}}
+    <div class="ssnm-modal">
+        <div class="ssnm-modal-dialog">
+            <div class="ssnm-modal-content">
+                {{yield}}
+            </div>
+        </div>
+    </div>
+    {{/view}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="application">
+    <div class="worth-ssnm-container">
+        <div class="worth-ssnm-box worth-ssnm-box-very-close">
+            <div class="ssnm-title">My Social Support Network</div>
+            <div class="ssnm-box-title">Very Close</div>
+            <div "worth-ssnm-my-avatar">
+                <img class="placeholder.png" width="200" height="200" />
+                <button type="button" class="btn btn-primary" name="add-people"
+                        {{action 'openModal' 'add-supporter-modal'}}>
+                    Add People
+                </button>
+            </div>
+        </div>
+
+        <div class="worth-ssnm-box worth-ssnm-box-close">
+            <div class="ssnm-box-title">Close</div>
+        </div>
+
+        <div class="worth-ssnm-box worth-ssnm-box-not-close">
+            <div class="ssnm-box-title">Not Close</div>
+        </div>
+    </div>
+
+    {{outlet 'modal'}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="add-supporter-modal">
+    {{#modal-dialog action="closeModal"}}
+    <div class="ssnm-modal-header">
+        <h4>Add a New Person</h4>
+    </div>
+    <div class="ssnm-modal-body">
+        <p>
+            Test modal
+        </p>
+    </div>
+    <div class="ssnm-modal-footer">
+        <button {{action "closeModal"}}
+                class="btn btn-primary">
+            OK
+        </button>
+    </div>
+    {{/modal-dialog}}
+</script>
+{% endverbatim %}
+
+<script src="{{STATIC_URL}}js/lib/jquery.js"></script>
+<script src="{{STATIC_URL}}js/lib/handlebars-v2.0.0.js"></script>
+
+<!-- Change to ember.min.js for production -->
+<script src="{{STATIC_URL}}js/lib/ember.js"></script>
+<script src="{{STATIC_URL}}js/lib/ember-data.min.js"></script>
+
+<script src="{{STATIC_URL}}js/src/ssnm/application.js"></script>
+<script src="{{STATIC_URL}}js/src/ssnm/adapters/application.js"></script>
+<script src="{{STATIC_URL}}js/src/ssnm/router.js"></script>
+<script src="{{STATIC_URL}}js/src/ssnm/routes/application.js"></script>
+<script src="{{STATIC_URL}}js/src/ssnm/models/supporter.js"></script>
+<script src="{{STATIC_URL}}js/src/ssnm/views/modal.js"></script>
+{% endblock %}
+
+{% block css %}
+<link href="{{STATIC_URL}}/css/ssnm.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block content %}
+{% if request.user.is_anonymous %}
+You're not signed in.
+{% else %}
+<div id="worth-ssnm-ember-app"></div>
+{% endif %}
+{% endblock %}
