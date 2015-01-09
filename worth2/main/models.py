@@ -22,7 +22,7 @@ class InactiveUserProfile(models.Model):
         return (not self.user.is_active)
 
     def default_location(self):
-        hierarchy = Hierarchy.get_hierarchy()
+        hierarchy = Hierarchy.get_hierarchy('main')
         return hierarchy.get_root()
 
     def last_access(self):
@@ -48,7 +48,7 @@ class InactiveUserProfile(models.Model):
             return self.last_location().get_absolute_url()
 
     def last_location(self):
-        hierarchy = Hierarchy.get_hierarchy()
+        hierarchy = Hierarchy.get_hierarchy('main')
         upv = UserPageVisit.objects.filter(
             user=self.user).order_by(
                 "-last_visit")
@@ -61,7 +61,7 @@ class InactiveUserProfile(models.Model):
         return self.percent_complete_hierarchy()
 
     def percent_complete_hierarchy(self):
-        hierarchy = Hierarchy.get_hierarchy()
+        hierarchy = Hierarchy.get_hierarchy('main')
         pages = len(hierarchy.get_root().get_descendants())
         visits = UserPageVisit.objects.filter(user=self.user).count()
 

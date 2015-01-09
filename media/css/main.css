@@ -171,3 +171,13 @@ footer.footer {
     font-weight: bold;
     line-height: 34px;
 }
+
+.worth-avatars .worth-avatar {
+    width: 250px;
+    height: 250px;
+}
+
+.worth-avatars .worth-avatar img {
+    max-width: 100%;
+    max-height: 100%;
+}

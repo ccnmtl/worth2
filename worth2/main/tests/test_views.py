@@ -1,13 +1,37 @@
 from django.core.urlresolvers import reverse
 from django.test import TestCase
-from django.contrib.auth.models import User
 from pagetree.helpers import get_hierarchy
 
 
 from worth2.main.tests.factories import (
-    LocationFactory, ParticipantFactory
+    AvatarFactory, LocationFactory, ParticipantFactory
 )
-from worth2.main.tests.mixins import LoggedInFacilitatorTestMixin
+from worth2.main.tests.mixins import (
+    LoggedInFacilitatorTestMixin, LoggedInParticipantTestMixin
+)
+from worth2.main.models import Participant
+
+
+class AvatarSelectorTest(LoggedInParticipantTestMixin, TestCase):
+    def setUp(self):
+        super(AvatarSelectorTest, self).setUp()
+        self.avatar1 = AvatarFactory()
+        self.avatar2 = AvatarFactory()
+        self.avatar3 = AvatarFactory()
+
+    def test_get(self):
+        r = self.client.get(reverse('avatar-selector'))
+        self.assertEqual(r.status_code, 200)
+
+    def test_post(self):
+        r = self.client.post(reverse('avatar-selector'), {
+            'avatar_id': self.avatar1.pk
+        })
+        # Refresh the participant from the database
+        self.participant = Participant.objects.get(pk=self.participant.pk)
+
+        self.assertEqual(r.status_code, 302)
+        self.assertEqual(self.participant.avatar, self.avatar1)
 
 
 class BasicTest(TestCase):
@@ -35,7 +59,7 @@ class PagetreeViewTestsLoggedOut(TestCase):
 
     def test_page(self):
         r = self.client.get("/pages/section-1/")
-        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.status_code, 403)
 
     def test_edit_page(self):
         r = self.client.get("/pages/edit/section-1/")
@@ -46,8 +70,9 @@ class PagetreeViewTestsLoggedOut(TestCase):
         self.assertEqual(r.status_code, 302)
 
 
-class PagetreeViewTestsLoggedIn(TestCase):
+class PagetreeViewTestsLoggedIn(LoggedInFacilitatorTestMixin, TestCase):
     def setUp(self):
+        super(PagetreeViewTestsLoggedIn, self).setUp()
         self.h = get_hierarchy("main", "/pages/")
         self.root = self.h.get_root()
         self.root.add_child_section_from_dict(
@@ -57,10 +82,6 @@ class PagetreeViewTestsLoggedIn(TestCase):
                 'pageblocks': [],
                 'children': [],
             })
-        self.u = User.objects.create(username="testuser")
-        self.u.set_password("test")
-        self.u.save()
-        self.client.login(username="testuser", password="test")
 
     def test_page(self):
         r = self.client.get("/pages/section-1/")
