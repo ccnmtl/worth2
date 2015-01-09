@@ -123,6 +123,10 @@ class Location(models.Model):
 study_id_validator = RegexValidator(regex=r'^7.*$',
                                     message='That study ID isn\'t valid')
 
+# For now, accept any 3-digit number as the cohort ID.
+cohort_id_validator = RegexValidator(regex=r'\d{3}',
+                                     message='That cohort ID isn\'t valid')
+
 
 class Participant(InactiveUserProfile):
     """ A Participant is a worth-specific inactive user profile.
@@ -141,6 +145,16 @@ class Participant(InactiveUserProfile):
                                 unique=True,
                                 db_index=True,
                                 validators=[study_id_validator])
+
+    # The cohort ID is assigned when the participant begins the second
+    # session. It represents the group of all the participants present
+    # for that session. It doesn't change for subsequent sessions, even
+    # though there may be different participants present.
+    cohort_id = models.CharField(max_length=255,
+                                 blank=True,
+                                 null=True,
+                                 db_index=True,
+                                 validators=[cohort_id_validator])
 
     # Participants can choose an avatar after their user is created.
     avatar = models.ForeignKey(Avatar, blank=True, null=True)
