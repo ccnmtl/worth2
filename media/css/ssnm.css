@@ -1,0 +1,83 @@
+/* Social Support Network Map styles */
+
+.worth-ssnm-container {
+    display: flex;
+}
+
+.worth-ssnm-container .worth-ssnm-box {
+    flex: 1 100%;
+    border-radius: 10px;
+    border: 1px solid black;
+}
+
+.worth-ssnm-container .worth-ssnm-box .ssnm-title {
+    float: left;
+    font-weight: bold;
+    color: white;
+    background-color: black;
+    border-radius: 10px;
+    padding: 4px;
+    margin-left: -1px;
+    margin-top: -1px;
+}
+
+.worth-ssnm-container .worth-ssnm-box .ssnm-box-title {
+    float: right;
+    text-align: right;
+    font-weight: bold;
+    margin: 6px;
+    color: black;
+}
+
+.worth-ssnm-container .worth-ssnm-box-very-close {
+    background-color: #eee;
+}
+
+.worth-ssnm-container .worth-ssnm-box-close {
+    background-color: #bbb;
+}
+
+.worth-ssnm-container .worth-ssnm-box-not-close {
+    background-color: #999;
+}
+
+.ssnm-modal-dialog {
+    position: relative;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: 30px auto;
+    width: 600px;
+    background-color: #fff;
+    border-radius: 4px;
+    z-index: 9;
+}
+
+.ssnm-modal {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1040;
+}
+.ssnm-modal-header,
+.ssnm-modal-body,
+.ssnm-modal-footer {
+    padding: 15px;
+}
+.ssnm-modal-header {
+    min-height: 16px;
+    border-bottom: 1px solid #e5e5e5;
+}
+.ssnm-modal-body {
+    max-height: 320px;
+    height: 85%;
+    position: relative;
+    overflow-y: auto;
+}
+.ssnm-modal-footer {
+    text-align: right;
+}

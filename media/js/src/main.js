@@ -3,10 +3,10 @@ require.config({
         bootstrap: { deps: ['jquery'] }
     },
     paths: {
-        jquery: './lib/jquery',
-        'jquery-cookie': './lib/jquery.cookie',
-        underscore: './lib/underscore',
-        backbone: './lib/backbone',
+        jquery: '../lib/jquery',
+        'jquery-cookie': '../lib/jquery.cookie',
+        underscore: '../lib/underscore',
+        backbone: '../lib/backbone',
         bootstrap: '//netdna.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min'
     }
 });

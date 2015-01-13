@@ -9,6 +9,8 @@ from pagetree.generic.views import EditView, InstructorView
 from rest_framework import routers
 
 from worth2.main import apiviews, auth, views
+from worth2.ssnm import views as ssnm_views
+from worth2.ssnm import apiviews as ssnm_apiviews
 
 
 site_media_root = os.path.join(os.path.dirname(__file__), "../media")
@@ -22,6 +24,9 @@ logout_page = (
 
 rest_router = routers.DefaultRouter()
 rest_router.register(r'participants', apiviews.ParticipantViewSet)
+
+ssnm_rest_router = routers.DefaultRouter(trailing_slash=False)
+ssnm_rest_router.register(r'supporters', ssnm_apiviews.SupporterViewSet)
 
 urlpatterns = patterns(
     '',
@@ -68,6 +73,12 @@ urlpatterns = patterns(
         user_passes_test(lambda u: auth.user_is_participant(u))(
             views.AvatarSelector.as_view()),
         name='avatar-selector'),
+
+    url(r'^ssnm/api/', include(ssnm_rest_router.urls)),
+    url(r'^ssnm/$',
+        user_passes_test(lambda u: auth.user_is_participant(u))(
+            ssnm_views.SSNM.as_view()),
+        name='ssnm'),
 )
 
 if settings.DEBUG:
