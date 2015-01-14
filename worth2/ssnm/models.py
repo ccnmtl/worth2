@@ -4,7 +4,7 @@ from worth2.main.models import Participant
 
 
 class Supporter(models.Model):
-    participant = models.ForeignKey(Participant)
+    participant = models.ForeignKey(Participant, related_name='supporters')
     name = models.TextField()
 
     closeness = models.CharField(
@@ -33,3 +33,6 @@ class Supporter(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return unicode(self.name)

@@ -154,6 +154,8 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.BrowsableAPIRenderer',
     ),
 }
+REST_EMBER_FORMAT_KEYS = True
+REST_EMBER_PLURALIZE_KEYS = True
 
 PAGEBLOCKS = ['pageblocks.TextBlock',
               'pageblocks.HTMLBlock',

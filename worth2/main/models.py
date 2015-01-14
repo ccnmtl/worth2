@@ -18,6 +18,9 @@ class InactiveUserProfile(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True, editable=False)
 
+    def __unicode__(self):
+        return unicode(self.user.username)
+
     def is_participant(self):
         return (not self.user.is_active)
 
@@ -167,3 +170,6 @@ class Session(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return unicode('Session for ' + self.participant.user.username)

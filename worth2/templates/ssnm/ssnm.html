@@ -16,46 +16,147 @@
     {{/view}}
 </script>
 
+<script type="text/x-handlebars" id="components/supporter-component">
+    <div class="ssnm-supporter-box" {{action 'editSupporter'}}>
+        <div class="pull-left">
+            <img src="placeholder.png" width="80" height="80" />
+        </div>
+        <div class="pull-right">
+            <h3>{{supporter.name}}</h3>
+            <div>{{supporter.getInfluenceDisplay}} Influence</div>
+            {{#if supporter.providesEmotionalSupport}}
+            <div style="color: magenta;">Emotional Support</div>
+            {{/if}}
+            {{#if supporter.providesPracticalSupport}}
+            <div style="color: blue;">Practical Support</div>
+            {{/if}}
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</script>
+
 <script type="text/x-handlebars" data-template-name="application">
     <div class="worth-ssnm-container">
         <div class="worth-ssnm-box worth-ssnm-box-very-close">
             <div class="ssnm-title">My Social Support Network</div>
             <div class="ssnm-box-title">Very Close</div>
-            <div "worth-ssnm-my-avatar">
-                <img class="placeholder.png" width="200" height="200" />
+            <div class="worth-ssnm-my-avatar-box">
+                <img src="placeholder.png" width="150" height="150" />
                 <button type="button" class="btn btn-primary" name="add-people"
-                        {{action 'openModal' 'add-supporter-modal'}}>
+                        {{action 'openModal' 'edit-supporter-modal-1'}}>
                     Add People
                 </button>
             </div>
+
+            {{#each supporter in controller.veryCloseSupporters}}
+            {{supporter-component supporter=supporter}}
+            {{/each}}
         </div>
 
         <div class="worth-ssnm-box worth-ssnm-box-close">
             <div class="ssnm-box-title">Close</div>
+            {{#each supporter in controller.closeSupporters}}
+            {{supporter-component supporter=supporter}}
+            {{/each}}
         </div>
 
         <div class="worth-ssnm-box worth-ssnm-box-not-close">
             <div class="ssnm-box-title">Not Close</div>
+            {{#each supporter in controller.notCloseSupporters}}
+            {{supporter-component supporter=supporter}}
+            {{/each}}
         </div>
     </div>
 
     {{outlet 'modal'}}
 </script>
 
-<script type="text/x-handlebars" data-template-name="add-supporter-modal">
-    {{#modal-dialog action="closeModal"}}
+<script type="text/x-handlebars" data-template-name="edit-supporter-modal-1">
+    {{#modal-dialog action='closeModal'}}
     <div class="ssnm-modal-header">
         <h4>Add a New Person</h4>
     </div>
     <div class="ssnm-modal-body">
-        <p>
-            Test modal
+        <p class="ssnm-modal-desc">
+            Part 1 of 4: Who Is This?
+        </p>
+        <form>
+            <label for="ssnm-name" class="control-label">Name</label>
+            <input type="text" class="form-control" id="ssnm-name" />
+        </form>
+    </div>
+    <div class="ssnm-modal-footer">
+        <button {{action 'closeModal'}} class="btn btn-default">
+            Cancel
+        </button>
+        <button {{action 'closeModal'}} class="btn btn-primary">
+            Next
+        </button>
+    </div>
+    {{/modal-dialog}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="edit-supporter-modal-2">
+    {{#modal-dialog action='closeModal'}}
+    <div class="ssnm-modal-header">
+        <h4>Add a New Person</h4>
+    </div>
+    <div class="ssnm-modal-body">
+        <p class="ssnm-modal-desc">
+            Part 2 of 4: Getting Close
         </p>
     </div>
     <div class="ssnm-modal-footer">
-        <button {{action "closeModal"}}
-                class="btn btn-primary">
-            OK
+        </button>
+                <button {{action 'closeModal'}} class="btn btn-default">
+            Cancel
+        </button>
+        <button {{action 'closeModal'}} class="btn btn-primary">
+            Next
+        </button>
+    </div>
+    {{/modal-dialog}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="edit-supporter-modal-3">
+    {{#modal-dialog action='closeModal'}}
+    <div class="ssnm-modal-header">
+        <h4>Add a New Person</h4>
+    </div>
+    <div class="ssnm-modal-body">
+        <p class="ssnm-modal-desc">
+            Part 3 of 4: Influence
+        </p>
+    </div>
+    <div class="ssnm-modal-footer">
+        </button>
+                <button {{action 'closeModal'}} class="btn btn-default">
+            Cancel
+        </button>
+        <button {{action 'closeModal'}} class="btn btn-primary">
+            Next
+        </button>
+    </div>
+    {{/modal-dialog}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="edit-supporter-modal-4">
+    {{#modal-dialog action='closeModal'}}
+    <div class="ssnm-modal-header">
+        <h4>Add a New Person</h4>
+    </div>
+    <div class="ssnm-modal-body">
+        <p class="ssnm-modal-desc">
+            Part 4 of 4: Support
+        </p>
+    </div>
+    <div class="ssnm-modal-footer">
+        </button>
+                <button {{action 'closeModal'}} class="btn btn-default">
+            Cancel
+        </button>
+        <button {{action 'closeModal'}} class="btn btn-primary">
+            Done
         </button>
     </div>
     {{/modal-dialog}}
@@ -71,9 +172,12 @@
 
 <script src="{{STATIC_URL}}js/src/ssnm/application.js"></script>
 <script src="{{STATIC_URL}}js/src/ssnm/adapters/application.js"></script>
+<script src="{{STATIC_URL}}js/src/ssnm/controllers/supporter.js"></script>
+<script src="{{STATIC_URL}}js/src/ssnm/controllers/supporters.js"></script>
 <script src="{{STATIC_URL}}js/src/ssnm/router.js"></script>
 <script src="{{STATIC_URL}}js/src/ssnm/routes/application.js"></script>
 <script src="{{STATIC_URL}}js/src/ssnm/models/supporter.js"></script>
+<script src="{{STATIC_URL}}js/src/ssnm/components/modal-dialog.js"></script>
 <script src="{{STATIC_URL}}js/src/ssnm/views/modal.js"></script>
 {% endblock %}
 

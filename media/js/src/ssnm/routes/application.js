@@ -2,6 +2,8 @@
     'use strict';
 
     Ssnm.ApplicationRoute = Em.Route.extend({
+        controllerName: 'supporters',
+
         actions: {
             openModal: function(modalName) {
                 Em.debug('route:application openModal');
@@ -29,12 +31,12 @@
                     parentView: 'application'
                 });
             }
-        }
+        },
 
-        // TODO: auth for inactive users requires something other than
-        // django-rest-framework's SessionAuthentication
-        // model: function() {
-        //     return this.store.find('supporter');
-        // }
+        model: function() {
+            // Return all the supporters. The back-end will only return
+            // supporters that belong to the logged-in participant.
+            return this.store.find('supporter');
+        }
     });
 })();

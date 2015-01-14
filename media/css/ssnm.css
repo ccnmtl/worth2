@@ -41,6 +41,13 @@
     background-color: #999;
 }
 
+.worth-ssnm-my-avatar-box {
+    width: 160px;
+    margin: 10px;
+    margin-top: 40px;
+    text-align: center;
+}
+
 .ssnm-modal-dialog {
     position: relative;
     top: 0;
@@ -79,5 +86,21 @@
     overflow-y: auto;
 }
 .ssnm-modal-footer {
+    border-top: 1px solid #e5e5e5;
     text-align: right;
+}
+
+.ssnm-modal-desc {
+    text-align: center;
+    font-size: 18px;
+}
+
+.ssnm-supporter-box {
+    border-radius: 10px;
+    background-color: white;
+    border: 1px solid black;
+    margin: 10px;
+    margin-top: 30px;
+    padding: 10px;
+    cursor: pointer;
 }
