@@ -75,6 +75,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.debug',
     'django.core.context_processors.request',
     'stagingcontext.staging_processor',
+    'djangowind.context.context_processor',
     'django.core.context_processors.static',
 )
 
@@ -196,7 +197,18 @@ STATICFILES_FINDERS = (
 COMPRESS_URL = "/media/"
 COMPRESS_ROOT = STATIC_ROOT
 
-AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', )
+# CAS settings
+AUTHENTICATION_BACKENDS = ('djangowind.auth.SAMLAuthBackend',
+                           'django.contrib.auth.backends.ModelBackend', )
+CAS_BASE = "https://cas.columbia.edu/"
+WIND_PROFILE_HANDLERS = ['djangowind.auth.CDAPProfileHandler']
+WIND_AFFIL_HANDLERS = ['djangowind.auth.AffilGroupMapper',
+                       'djangowind.auth.StaffMapper',
+                       'djangowind.auth.SuperuserMapper']
+WIND_STAFF_MAPPER_GROUPS = ['tlc.cunix.local:columbia.edu']
+WIND_SUPERUSER_MAPPER_GROUPS = [
+    'anp8', 'jb2410', 'zm4', 'cld2156',
+    'sld2131', 'amm8', 'mar227', 'jed2161', 'lrw2128', 'njn2118']
 
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 SESSION_COOKIE_HTTPONLY = True
