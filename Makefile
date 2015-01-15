@@ -2,14 +2,28 @@ MANAGE=./manage.py
 APP=worth2
 FLAKE8=./ve/bin/flake8
 
-jenkins: ./ve/bin/python validate test flake8
+jenkins: ./ve/bin/python validate jshint jscs test flake8
 
 ./ve/bin/python: requirements.txt bootstrap.py virtualenv.py
 	chmod +x manage.py bootstrap.py
 	./bootstrap.py
 
+jshint: node_modules/jshint/bin/jshint
+	./node_modules/jshint/bin/jshint media/js/src/
+
+jscs: node_modules/jscs/bin/jscs
+	./node_modules/jscs/bin/jscs media/js/src/
+
+node_modules/jshint/bin/jshint:
+	npm install jshint --prefix .
+
+node_modules/jscs/bin/jscs:
+	npm install jscs --prefix .
+
 test: ./ve/bin/python
+	npm install
 	$(MANAGE) jenkins --pep8-exclude=migrations
+	npm test
 
 flake8: ./ve/bin/python
 	$(FLAKE8) $(APP) --max-complexity=10 --exclude=migrations

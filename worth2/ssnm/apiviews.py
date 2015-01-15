@@ -13,3 +13,6 @@ class SupporterViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return self.request.user.profile.participant.supporters.all()
+
+    def perform_create(self, serializer):
+        serializer.save(participant=self.request.user.profile.participant)

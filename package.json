@@ -1,0 +1,21 @@
+{
+  "name": "worth2",
+  "version": "1.0.0",
+  "description": "WORTH 2",
+  "main": "media/js/src/main.js",
+  "dependencies": {
+    "jscs": "^1.10.0",
+    "jshint": "^2.5.11"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ccnmtl/worth2.git"
+  },
+  "author": "Nik Nyby",
+  "license": "GPL-3.0+",
+  "bugs": {
+    "url": "https://github.com/ccnmtl/worth2/issues"
+  },
+  "homepage": "https://github.com/ccnmtl/worth2"
+}

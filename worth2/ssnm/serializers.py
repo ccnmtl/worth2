@@ -4,17 +4,23 @@ from worth2.ssnm.models import Supporter
 
 
 class SupporterSerializer(serializers.HyperlinkedModelSerializer):
+    influence_display = serializers.SerializerMethodField()
+
     class Meta:
         model = Supporter
         fields = (
             # ember-data expects id, not pk. Fortunately in Django these
             # terms are interchangeable.
             'id',
-            'participant',
             'name',
             'closeness',
             'influence',
-            'get_influence_display',
+            'influence_display',
             'provides_emotional_support',
             'provides_practical_support'
         )
+
+    # Because 'influence' is a Django CharField with 'choices' defined,
+    # the get_influence_display() method gets the values of the keys.
+    def get_influence_display(self, obj):
+        return obj.get_influence_display()
