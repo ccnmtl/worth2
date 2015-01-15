@@ -32,7 +32,8 @@ rest_router = routers.DefaultRouter()
 rest_router.register(r'participants', apiviews.ParticipantViewSet)
 
 ssnm_rest_router = routers.DefaultRouter(trailing_slash=False)
-ssnm_rest_router.register(r'supporters', ssnm_apiviews.SupporterViewSet)
+ssnm_rest_router.register(r'supporters', ssnm_apiviews.SupporterViewSet,
+                          base_name='supporter')
 
 urlpatterns = patterns(
     '',
