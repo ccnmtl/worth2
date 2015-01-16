@@ -29,7 +29,7 @@ define([
             e.preventDefault();
             var $target = $(e.currentTarget);
             var newStudyId = $target.find('input[name=study_id]').val();
-            this.updateModel({ study_id: newStudyId }, $target);
+            this.updateModel({study_id: newStudyId}, $target);
         },
         updateModel: function(data, $target) {
             $.ajax({

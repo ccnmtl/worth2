@@ -2,7 +2,36 @@
 
 {% block js %}
 
-{# This is necessary to prevent Django from trying to parse Handlebars tags #}
+{% comment %}
+
+The 'verbatim' tag is necessary here to prevent Django from trying to
+parse handlebars.js tags.
+
+The SSNM Handlebars templates are all in this file because Ember doesn't
+have a mechanism for loading handlebars templates by default -- that's
+provided by ember-cli, which I've chosen not to use in worth2 because:
+
+- ember-cli adds the annoying dependency of node and npm in the
+  development phase. The dependency of node/npm also leaks into the
+  deployment phase unless you commit your compiled Ember application into
+  your source repo.
+
+  Committing the compiled app into git is an alright solution, but that
+  makes it difficult for designers (and really anyone else) to collaborate
+  on the project, because it's an extra step you need to do each time you
+  commit, even for CSS changes. It also makes the git history ugly.
+
+- ember-cli apps seem inflexible with more traditional methods: there's no
+  straightforward way to put the Ember application into an existing Django
+  template, which may already have Javascript code that needs to run.
+
+Of course ember-cli is useful though, and it's obviously the direction
+that the Ember project is headed. Maybe I'll figure out a way to
+configure it to work how we want. It's not essential to me that each
+source asset is consolidated and minified into single files on a minimal
+HTML template - there's probably a way of avoiding that step.
+
+{% endcomment %}
 {% verbatim %}
 <script type="text/x-handlebars" id="components/modal-dialog">
     {{#view 'modal'}}
@@ -23,12 +52,12 @@
         </div>
         <div class="pull-right">
             <h3>{{supporter.name}}</h3>
-            <div>{{supporter.getInfluenceDisplay}} Influence</div>
+            <div>{{supporter.displayInfluence}}</div>
             {{#if supporter.providesEmotionalSupport}}
-            <div style="color: magenta;">Emotional Support</div>
+                <div style="color: magenta;">Emotional Support</div>
             {{/if}}
             {{#if supporter.providesPracticalSupport}}
-            <div style="color: blue;">Practical Support</div>
+                <div style="color: blue;">Practical Support</div>
             {{/if}}
         </div>
         <div class="clearfix"></div>
@@ -49,21 +78,21 @@
             </div>
 
             {{#each supporter in controller.veryCloseSupporters}}
-            {{supporter-component supporter=supporter}}
+                {{supporter-component supporter=supporter}}
             {{/each}}
         </div>
 
         <div class="worth-ssnm-box worth-ssnm-box-close">
             <div class="ssnm-box-title">Close</div>
             {{#each supporter in controller.closeSupporters}}
-            {{supporter-component supporter=supporter}}
+                {{supporter-component supporter=supporter}}
             {{/each}}
         </div>
 
         <div class="worth-ssnm-box worth-ssnm-box-not-close">
             <div class="ssnm-box-title">Not Close</div>
             {{#each supporter in controller.notCloseSupporters}}
-            {{supporter-component supporter=supporter}}
+                {{supporter-component supporter=supporter}}
             {{/each}}
         </div>
     </div>
@@ -82,14 +111,17 @@
         </p>
         <form>
             <label for="ssnm-name" class="control-label">Name</label>
-            <input type="text" class="form-control" id="ssnm-name" />
+            {{input type="text" class="form-control" id="ssnm-name"
+            value=name}}
         </form>
     </div>
     <div class="ssnm-modal-footer">
         <button {{action 'closeModal'}} class="btn btn-default">
             Cancel
         </button>
-        <button {{action 'closeModal'}} class="btn btn-primary">
+        <button {{action 'openModal' 'edit-supporter-modal-2'}}
+                {{bind-attr disabled=hasBlankName}}
+                class="btn btn-primary">
             Next
         </button>
     </div>
@@ -105,13 +137,38 @@
         <p class="ssnm-modal-desc">
             Part 2 of 4: Getting Close
         </p>
+        <p>
+            How close are you to {{name}}? For example, can you rely on
+            him/her?
+        </p>
+        <form>
+            <div class="radio">
+                <label>
+                    {{radio-button name="closeness" value="VC"
+                    checked=closeness}} Very Close
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    {{radio-button name="closeness" value="C"
+                    checked=closeness}} Close
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    {{radio-button name="closeness" value="NC"
+                    checked=closeness}} Not Close
+                </label>
+            </div>
+        </form>
     </div>
     <div class="ssnm-modal-footer">
-        </button>
-                <button {{action 'closeModal'}} class="btn btn-default">
+        <button {{action 'closeModal'}} class="btn btn-default">
             Cancel
         </button>
-        <button {{action 'closeModal'}} class="btn btn-primary">
+        <button {{action 'openModal' 'edit-supporter-modal-3'}}
+                {{bind-attr disabled=hasBlankCloseness}}
+                class="btn btn-primary">
             Next
         </button>
     </div>
@@ -127,13 +184,43 @@
         <p class="ssnm-modal-desc">
             Part 3 of 4: Influence
         </p>
+        <p>
+            How does {{name}} shape your life?
+        </p>
+        <form>
+            <div class="radio">
+                <label style="color: green;">
+                    {{radio-button value="P" checked=influence}}
+                    &plus; Positive
+                </label>
+            </div>
+            <div class="radio">
+                <label style="color: tan;">
+                    {{radio-button value="MP" checked=influence}}
+                    &plus; Mostly Positive
+                </label>
+            </div>
+            <div class="radio">
+                <label style="color: orange;">
+                    {{radio-button value="MN" checked=influence}}
+                    &minus; Mostly Negative
+                </label>
+            </div>
+            <div class="radio">
+                <label style="color: red;">
+                    {{radio-button value="N" checked=influence}}
+                    &minus; Negative
+                </label>
+            </div>
+        </form>
     </div>
     <div class="ssnm-modal-footer">
-        </button>
-                <button {{action 'closeModal'}} class="btn btn-default">
+        <button {{action 'closeModal'}} class="btn btn-default">
             Cancel
         </button>
-        <button {{action 'closeModal'}} class="btn btn-primary">
+        <button {{action 'openModal' 'edit-supporter-modal-4'}}
+                {{bind-attr disabled=hasBlankInfluence}}
+                class="btn btn-primary">
             Next
         </button>
     </div>
@@ -149,13 +236,33 @@
         <p class="ssnm-modal-desc">
             Part 4 of 4: Support
         </p>
+        <p>
+            What kind of support does {{name}} provide?
+        </p>
+        <form>
+            <div class="checkbox">
+                <label style="color: magenta;">
+                    {{input type="checkbox" checked=providesEmotionalSupport}}
+                    Emotional
+                    <span class="glyphicon glyphicon-heart"
+                          aria-hidden="true"></span>
+                </label>
+            </div>
+            <div class="checkbox">
+                <label style="color: blue;">
+                    {{input type="checkbox" checked=providesPracticalSupport}}
+                    Practical
+                    <span class="glyphicon glyphicon-cog"
+                          aria-hidden="true"></span>
+                </label>
+            </div>
+        </form>
     </div>
     <div class="ssnm-modal-footer">
-        </button>
-                <button {{action 'closeModal'}} class="btn btn-default">
+        <button {{action 'closeModal'}} class="btn btn-default">
             Cancel
         </button>
-        <button {{action 'closeModal'}} class="btn btn-primary">
+        <button {{action 'saveEditedSupporter'}} class="btn btn-primary">
             Done
         </button>
     </div>
@@ -166,19 +273,24 @@
 <script src="{{STATIC_URL}}js/lib/jquery.js"></script>
 <script src="{{STATIC_URL}}js/lib/handlebars-v2.0.0.js"></script>
 
-<!-- Change to ember.min.js for production -->
+<!-- Change this to ember.min.js for production -->
 <script src="{{STATIC_URL}}js/lib/ember.js"></script>
 <script src="{{STATIC_URL}}js/lib/ember-data.min.js"></script>
 
+<!-- The SSNM Ember application -->
 <script src="{{STATIC_URL}}js/src/ssnm/application.js"></script>
 <script src="{{STATIC_URL}}js/src/ssnm/adapters/application.js"></script>
-<script src="{{STATIC_URL}}js/src/ssnm/controllers/supporter.js"></script>
-<script src="{{STATIC_URL}}js/src/ssnm/controllers/supporters.js"></script>
 <script src="{{STATIC_URL}}js/src/ssnm/router.js"></script>
 <script src="{{STATIC_URL}}js/src/ssnm/routes/application.js"></script>
 <script src="{{STATIC_URL}}js/src/ssnm/models/supporter.js"></script>
-<script src="{{STATIC_URL}}js/src/ssnm/components/modal-dialog.js"></script>
+<script src="{{STATIC_URL}}js/src/ssnm/controllers/supporter.js"></script>
+<script src="{{STATIC_URL}}js/src/ssnm/controllers/supporters.js"></script>
+<script src="{{STATIC_URL}}js/src/ssnm/controllers/edit-supporter.js"></script>
 <script src="{{STATIC_URL}}js/src/ssnm/views/modal.js"></script>
+<script src="{{STATIC_URL}}js/src/ssnm/views/radio-button.js"></script>
+<script src="{{STATIC_URL}}js/src/ssnm/components/modal-dialog.js"></script>
+<script src="{{STATIC_URL}}js/src/ssnm/helpers/radio-button.js"></script>
+
 {% endblock %}
 
 {% block css %}

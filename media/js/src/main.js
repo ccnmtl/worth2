@@ -1,6 +1,8 @@
 require.config({
     shim: {
-        bootstrap: { deps: ['jquery'] }
+        bootstrap: {
+            deps: ['jquery']
+        }
     },
     paths: {
         jquery: '../lib/jquery',
