@@ -29,9 +29,9 @@
                         controller: controllerName
                     });
                 } catch (e) {
-                    // If the custom modal controller doesn't exist, the previous
-                    // render statement throws an exception, and we use the base
-                    // modal controller.
+                    // If the custom modal controller doesn't exist, the
+                    // previous render statement throws an exception, and
+                    // we use the base modal controller.
                     Em.debug('Fell back to default controller');
                     return this.render(modalName, {
                         into: 'application',
