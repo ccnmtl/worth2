@@ -11,6 +11,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link href="http://fonts.googleapis.com/css?family=Raleway:800,500"
+          rel="stylesheet">
 
     <link href="{% bootstrap_css_url %}" rel="stylesheet">
 
@@ -41,7 +44,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
           </button>
-	      <a class="navbar-brand" href="/">EWORTH</a>
+	      <a class="navbar-brand" href="/"><img src="{{STATIC_URL}}img/logo-white.png" width="80" /></a>
       </div>
 
   <!-- Collect the nav links, forms, and other content for toggling -->
@@ -66,13 +69,15 @@
         {% if request.user.is_anonymous %}
         <li><a href="/accounts/login/">Sign In</a></li>
         {% else %}
-        <li><a href="/">Hi,
+        <li>
+        <a href="/">Hi,
                 {% if request.user.first_name %}
                 {{request.user.first_name}}!
                 {% else %}
                 {{request.user.username}}!
                 {% endif %}
-        </a></li>
+        </a>
+        </li>
         <li><a href="/accounts/logout/">Sign Out</a></li>
         {% endif %}
         <li><a href="/about/">About EWORTH</a></li>

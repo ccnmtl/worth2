@@ -1,21 +1,22 @@
 html {
+
 }
 
 body {
+	font-family: 'Raleway', sans-serif !important;
+
 }
 
 body > .container {
     padding-top: 75px;
 }
 
-
 .navbar
 {
 	background-color: #000;
 	background-image: url(/media/img/fotolia_comp_64154101.jpg);
-	background-position: 200px 200px;
+	background-position: 0px 180px;
 }
-
 
 #content {
     min-height: 100%;
@@ -24,12 +25,17 @@ body > .container {
 /* LOGIN PAGE */
 
 .splash-photo {
-	background:url(/media/img/fotolia_comp_76229741.jpg) center center;	
+	background:url(/media/img/eworth.gif) center center;	
 	width:100%;
 	height:100%;
 	min-height:100%;
 	background-size:cover;	
 	position:absolute;
+}
+
+.login-jumbotron {
+	background:url(/media/img/fotolia_comp_72108181.jpg) center center;	
+	background-position: 100px 200px;
 }
 
 .login-description {
