@@ -1,79 +1,64 @@
 {% extends "base.html" %}
 
 {% block loginphoto %}
-    splash-photo
+	splash-photo
 {% endblock %}
 
 {% block title %}
-    Please log in.
+	Please log in.
 {% endblock %}
 
 {% block content %}
-<div class="worth-facilitator-login col-sm-6">
+<div class="worth-facilitator-login col-sm-7"">
 
-    {% if form.errors %}
-    <div class="alert alert-info" role="alert">
-    {{ form.errors }}
-    </div>
-    {% endif %}
+<div class="jumbotron login-jumbotron">
 
-    <form class="form-signin" role="form" method="post"
-          action="/accounts/login/">
-        {% csrf_token %}
+	<img class="img-responsive center-block" src="/media/img/logo-red.png" />
+	
+	
+	{% if form.errors %}
+	<div class="alert alert-info text-left" role="alert">
+	{{ form.errors }}
+	</div>
+	{% endif %}
+		
+	<form class="form-signin" role="form" method="post" action="/accounts/login/">
+	
+	{% csrf_token %}
+	
+		<h3 class="form-signin-heading"></h3>
+	
+			<label for="facilitator_id" class="sr-only">Facilitator ID</label>
+			<input type="text" class="form-control" id="facilitator_id" name="username" placeholder="Enter your user name." required autofocus>
 
-        <h2 class="form-signin-heading">Please sign in.</h2>
-            <div class="form-group {% if form.username.errors %}has-error{% endif %}">
-                <label for="facilitator_id"
-                       class="control-label col-sm-3 sr-only"
-                       >Facilitator ID</label>
-                <div class="col-sm-6">
-                    <input type="text"
-                           class="form-control"
-                           id="facilitator_id"
-                           name="username"
-                           placeholder="Enter your username"
-                           required autofocus>
-                </div>
-            </div>
+			<label for="facilitator_password" class="sr-only">Facilitator Password</label>
+			<input type="password" class="form-control" id="facilitator_password" name="password" placeholder="Enter your password." required>
+	   
+			<button type="submit" class="btn btn-lg btn-default btn-block">Sign In</button>
+	   
+	</form>
 
-            <div class="form-group {% if form.password.errors %}has-error{% endif %}">
-                <label for="facilitator_password"
-                       class="control-label col-sm-3 sr-only"
-                       >Facilitator Password</label>
-                <div class="col-sm-6">
-                    <input type="password"
-                           class="form-control"
-                           id="facilitator_password"
-                           name="password"
-                           placeholder="Enter your password"
-                           required>
-                </div>
-            </div>
+	<hr style="border: 1px solid black;" />
 
-             <div class="form-group">
-                 <div class="col-sm-offset-3 col-sm-6">
-                     <button type="submit"
-                             class="btn btn-lg btn-primary btn-block"
-                             >Sign In</button>
-                 </div>
-             </div>
-    </form>
+	{% if CAS_BASE %}
+	
+	<form method="get" action="{{ CAS_BASE }}cas/login">
+	
+	{% csrf_token %}
+	
+		<input type="hidden" name="destination" value="https://{{ request.get_host }}/accounts/caslogin/?next={{ next|urlencode }}" />
 
-    <hr />
+			 <button type="submit" class="btn btn-lg btn-default btn-block">Sign In with Columbia UNI.</button>
 
-    {% if CAS_BASE %}
-
-    <form method="get" action="{{ CAS_BASE }}cas/login">
-    {% csrf_token %}
-    <input type="hidden" name="destination"
-           value="https://{{ request.get_host }}/accounts/caslogin/?next={{ next|urlencode }}">
-
-    </form>
-
-    <a href="https://cuit.columbia.edu/cuit/manage-my-uni"
-       title="Learn more about UNI" target="_blank">What is a UNI?</a>
+		
+	</form>
+	
+	{% endif %}
+	
+	<a class="btn btn-lg btn-link btn-block"  href="https://cuit.columbia.edu/cuit/manage-my-uni" title="Learn more about UNI" target="_blank">What is a UNI?</a>	
 
 </div>
+      </div>
 
 
 {% endblock %}
