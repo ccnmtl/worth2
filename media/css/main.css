@@ -12,8 +12,6 @@ body > .container {
     min-height: 100%;
 }
 
-navbar {margin-bottom: 0px !important;}
-
 /* LOGIN PAGE */
 
 .splash-photo {
@@ -170,7 +168,7 @@ navbar {margin-bottom: 0px !important;}
 }
 
 footer.footer {
-    margin-top: 80px;
+    margin-top: 0px;
 }
 
 .worth-facilitator-manage-participants .row {
