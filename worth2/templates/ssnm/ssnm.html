@@ -45,8 +45,8 @@ HTML template - there's probably a way of avoiding that step.
     {{/view}}
 </script>
 
-<script type="text/x-handlebars" id="components/supporter-component">
-    <div class="ssnm-supporter-box" {{action 'editSupporter'}}>
+<script type="text/x-handlebars" id="components/supporter-box">
+    <div class="ssnm-supporter-box">
         <div class="pull-left">
             <img src="placeholder.png" width="80" height="80" />
         </div>
@@ -72,27 +72,30 @@ HTML template - there's probably a way of avoiding that step.
             <div class="worth-ssnm-my-avatar-box">
                 <img src="placeholder.png" width="150" height="150" />
                 <button type="button" class="btn btn-primary" name="add-people"
-                        {{action 'openModal' 'edit-supporter-modal-1'}}>
+                        {{action "addSupporter"}}>
                     Add People
                 </button>
             </div>
 
             {{#each supporter in controller.veryCloseSupporters}}
-                {{supporter-component supporter=supporter}}
+                {{supporter-box supporter=supporter
+                clickedSupporter="editSupporter"}}
             {{/each}}
         </div>
 
         <div class="worth-ssnm-box worth-ssnm-box-close">
             <div class="ssnm-box-title">Close</div>
             {{#each supporter in controller.closeSupporters}}
-                {{supporter-component supporter=supporter}}
+                {{supporter-box supporter=supporter
+                clickedSupporter="editSupporter"}}
             {{/each}}
         </div>
 
         <div class="worth-ssnm-box worth-ssnm-box-not-close">
             <div class="ssnm-box-title">Not Close</div>
             {{#each supporter in controller.notCloseSupporters}}
-                {{supporter-component supporter=supporter}}
+                {{supporter-box supporter=supporter
+                clickedSupporter="editSupporter"}}
             {{/each}}
         </div>
     </div>
@@ -103,7 +106,7 @@ HTML template - there's probably a way of avoiding that step.
 <script type="text/x-handlebars" data-template-name="edit-supporter-modal-1">
     {{#modal-dialog action='closeModal'}}
     <div class="ssnm-modal-header">
-        <h4>Add a New Person</h4>
+        <h4>{{title}}</h4>
     </div>
     <div class="ssnm-modal-body">
         <p class="ssnm-modal-desc">
@@ -131,7 +134,7 @@ HTML template - there's probably a way of avoiding that step.
 <script type="text/x-handlebars" data-template-name="edit-supporter-modal-2">
     {{#modal-dialog action='closeModal'}}
     <div class="ssnm-modal-header">
-        <h4>Add a New Person</h4>
+        <h4>{{title}}</h4>
     </div>
     <div class="ssnm-modal-body">
         <p class="ssnm-modal-desc">
@@ -178,7 +181,7 @@ HTML template - there's probably a way of avoiding that step.
 <script type="text/x-handlebars" data-template-name="edit-supporter-modal-3">
     {{#modal-dialog action='closeModal'}}
     <div class="ssnm-modal-header">
-        <h4>Add a New Person</h4>
+        <h4>{{title}}</h4>
     </div>
     <div class="ssnm-modal-body">
         <p class="ssnm-modal-desc">
@@ -230,7 +233,7 @@ HTML template - there's probably a way of avoiding that step.
 <script type="text/x-handlebars" data-template-name="edit-supporter-modal-4">
     {{#modal-dialog action='closeModal'}}
     <div class="ssnm-modal-header">
-        <h4>Add a New Person</h4>
+        <h4>{{title}}</h4>
     </div>
     <div class="ssnm-modal-body">
         <p class="ssnm-modal-desc">
@@ -289,6 +292,7 @@ HTML template - there's probably a way of avoiding that step.
 <script src="{{STATIC_URL}}js/src/ssnm/views/modal.js"></script>
 <script src="{{STATIC_URL}}js/src/ssnm/views/radio-button.js"></script>
 <script src="{{STATIC_URL}}js/src/ssnm/components/modal-dialog.js"></script>
+<script src="{{STATIC_URL}}js/src/ssnm/components/supporter-box.js"></script>
 <script src="{{STATIC_URL}}js/src/ssnm/helpers/radio-button.js"></script>
 
 {% endblock %}

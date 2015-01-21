@@ -8,6 +8,8 @@
      * "Add Supporter" dialogs.
      */
     Ssnm.EditSupporterController = Em.ObjectController.extend({
+        title: 'Add to your support network',
+
         hasBlankName: Em.computed.empty('name'),
         hasBlankCloseness: Em.computed.empty('closeness'),
         hasBlankInfluence: Em.computed.empty('influence'),

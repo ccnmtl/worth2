@@ -1,11 +1,9 @@
 (function() {
     'use strict';
 
+    /**
+     * controller:supporter
+     */
     Ssnm.SupporterController = Em.ObjectController.extend({
-        actions: {
-            editSupporter: function() {
-                Em.debug('editSupporter: ' + this.get('name'));
-            }
-        }
     });
 })();
