@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<title>WORTH {% block title %}{% endblock %}</title>
+	<title>EWORTH {% block title %}{% endblock %}</title>
     <meta name="description" content="worth2">
     <meta name="author" content="CCNMTL">
 
@@ -39,8 +39,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
           </button>
-	      <a class="navbar-brand" href="/"
-             >WORTH</a>
+	      <a class="navbar-brand" href="/">EWORTH</a>
       </div>
 
   <!-- Collect the nav links, forms, and other content for toggling -->
@@ -93,7 +92,7 @@
 
 {% include 'main/break_modal.html' %}
 
-<div class="container" id="outer-container">
+<div class="container {% block loginphoto %}{% endblock %} id="outer-container">
 {% block masthead %}
 {% block primarynav %}{% endblock %}
 {% endblock %}

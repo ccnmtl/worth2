@@ -4,8 +4,6 @@ html {
 body {
 }
 
-/*nik is a lifesaver*/
-
 body > .container {
     padding-top: 75px;
 }
@@ -14,7 +12,19 @@ body > .container {
     min-height: 100%;
 }
 
+navbar {margin-bottom: 0px !important;}
+
 /* LOGIN PAGE */
+
+.splash-photo {
+	background:url(/media/img/fotolia_comp_76229741.jpg) no-repeat center center;	
+	width:100%;
+	height:100%;
+	min-height:100%;
+	background-size:cover;	
+	position:absolute;
+}
+
 .login-description {
     margin: 30px 30px 15px 30px;
     text-align: center;
