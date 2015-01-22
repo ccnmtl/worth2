@@ -99,18 +99,19 @@ class SignInParticipant(ActiveUserRequiredMixin, TemplateView):
         return http.HttpResponse('Unauthorized', status=401)
 
 
-class SessionPageView(PageView):
+class ParticipantSessionPageView(PageView):
     """WORTH version of pagetree's PageView"""
     gated = True
 
-    def gate_check(self, user):
-        r = super(SessionPageView, self).gate_check(user)
-        if r is not None:
-            return r
-
+    def dispatch(self, request, *args, **kwargs):
         # Has the participant picked an avatar yet?
-        if (hasattr(user, 'profile') and user.profile.is_participant()) and \
+        user = request.user
+        if hasattr(user, 'profile') and user.profile.is_participant() and \
            (not user.profile.participant.avatar):
             return redirect(reverse('avatar-selector'))
-        else:
-            pass
+
+        return super(ParticipantSessionPageView, self).dispatch(
+            request, *args, **kwargs)
+
+    def get(self, request, path):
+        return super(ParticipantSessionPageView, self).get(request, path)

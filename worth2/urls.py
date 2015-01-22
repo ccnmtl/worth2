@@ -63,7 +63,7 @@ urlpatterns = patterns(
             InstructorView.as_view(
                 hierarchy_name="main",
                 hierarchy_base="/pages/"))),
-    (r'^pages/(?P<path>.*)$', views.SessionPageView.as_view(
+    (r'^pages/(?P<path>.*)$', views.ParticipantSessionPageView.as_view(
         hierarchy_name="main",
         hierarchy_base="/pages/")),
 
