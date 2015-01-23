@@ -5,15 +5,12 @@
 <head>
 	<meta charset="utf-8" />
 	<title>WORTH {% block title %}{% endblock %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="worth2">
     <meta name="author" content="CCNMTL">
 
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-        <script src="../assets/js/html5shiv.js"></script>
-        <script src="../assets/js/respond.min.js"></script>
-        <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
     <link href="{% bootstrap_css_url %}" rel="stylesheet">
 
@@ -112,6 +109,7 @@
 {% block sidenav %}{% endblock %}
 {% block pagetitle %}{% endblock %}
 {% block content %}{% endblock %}
+{% block content-nav %}{% endblock %}
 
 </div> <!-- end .container -->
 
