@@ -112,6 +112,3 @@ class ParticipantSessionPageView(PageView):
 
         return super(ParticipantSessionPageView, self).dispatch(
             request, *args, **kwargs)
-
-    def get(self, request, path):
-        return super(ParticipantSessionPageView, self).get(request, path)
