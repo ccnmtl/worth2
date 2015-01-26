@@ -9,7 +9,7 @@ require.config({
         'jquery-cookie': '../lib/jquery.cookie',
         underscore: '../lib/underscore',
         backbone: '../lib/backbone',
-        bootstrap: '//netdna.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min'
+        bootstrap: '//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min'
     }
 });
 
