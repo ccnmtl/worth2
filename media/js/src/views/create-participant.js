@@ -30,8 +30,11 @@ define([
                 },
                 error: function(xhr, status, error) {
                     var msg;
-                    if (xhr.responseJSON && xhr.responseJSON.study_id) {
-                        msg = 'Error: Study ID: ' + xhr.responseJSON.study_id;
+                    if (xhr.responseJSON &&
+                        xhr.responseJSON.participant.studyId
+                       ) {
+                        msg = 'Error: Study ID: ' +
+                            xhr.responseJSON.participant.studyId;
                     } else {
                         msg = error;
                     }
