@@ -1,5 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
+from pagetree.tests.factories import ModuleFactory
+from pagetree.models import Hierarchy
 
 from worth2.main.tests.factories import (
     AvatarFactory, LocationFactory, ParticipantFactory, SessionFactory
@@ -26,6 +28,8 @@ class LocationTest(TestCase):
 class ParticipantTest(TestCase):
     def setUp(self):
         self.participant = ParticipantFactory()
+        ModuleFactory('main', 'main')
+        self.hierarchy = Hierarchy.objects.get(name='main')
 
     def test_is_valid_from_factory(self):
         self.participant.full_clean()
@@ -37,6 +41,12 @@ class ParticipantTest(TestCase):
 
     def test_that_participant_can_have_an_image(self):
         self.participant.avatar = AvatarFactory()
+
+    def test_default_location(self):
+        self.assertEqual(
+            self.participant.default_location().get_absolute_url(),
+            self.hierarchy.get_root().get_absolute_url()
+        )
 
 
 class SessionTest(TestCase):

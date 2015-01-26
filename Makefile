@@ -23,7 +23,6 @@ node_modules/jscs/bin/jscs:
 test: ./ve/bin/python
 	npm install
 	$(MANAGE) jenkins --pep8-exclude=migrations
-	npm test
 
 flake8: ./ve/bin/python
 	$(FLAKE8) $(APP) --max-complexity=10 --exclude=migrations

@@ -163,6 +163,7 @@ PAGEBLOCKS = ['pageblocks.TextBlock',
               'pageblocks.ImageBlock',
               'pageblocks.ImagePullQuoteBlock',
               'quizblock.Quiz',
+              'main.VideoBlock',
               ]
 
 

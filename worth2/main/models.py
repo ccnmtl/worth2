@@ -1,9 +1,11 @@
+from django import forms
 from django.contrib.auth.models import User
+from django.contrib.contenttypes import generic
 from django.core.validators import RegexValidator
 from django.core.urlresolvers import reverse
 from django.db import models
 from ordered_model.models import OrderedModel
-from pagetree.models import Hierarchy, UserPageVisit
+from pagetree.models import Hierarchy, UserPageVisit, PageBlock
 
 
 class InactiveUserProfile(models.Model):
@@ -173,3 +175,47 @@ class Session(models.Model):
 
     def __unicode__(self):
         return unicode('Session for ' + self.participant.user.username)
+
+
+class VideoBlock(models.Model):
+    display_name = 'Video Block'
+    pageblocks = generic.GenericRelation(PageBlock)
+    template_file = 'main/video_block.html'
+    js_template_file = 'main/video_block_js.html'
+    css_template_file = 'main/video_block_css.html'
+
+    video_url = models.URLField(max_length=255)
+
+    def pageblock(self):
+        return self.pageblocks.first()
+
+    def __unicode__(self):
+        return unicode(self.pageblock())
+
+    def needs_submit(self):
+        return False
+
+    @classmethod
+    def add_form(self):
+        return VideoBlockForm()
+
+    def edit_form(self):
+        return VideoBlockForm(instance=self)
+
+    @classmethod
+    def create(self, request):
+        form = VideoBlockForm(request.POST)
+        return form.save()
+
+    def edit(self, vals, files):
+        form = VideoBlockForm(data=vals, files=files, instance=self)
+        if form.is_valid():
+            form.save()
+
+    def unlocked(self, user):
+        return True
+
+
+class VideoBlockForm(forms.ModelForm):
+    class Meta:
+        model = VideoBlock
