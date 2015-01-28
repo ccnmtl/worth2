@@ -23,6 +23,22 @@ class AvatarSelectorTest(LoggedInParticipantTestMixin, TestCase):
         r = self.client.get(reverse('avatar-selector'))
         self.assertEqual(r.status_code, 200)
 
+    def test_participant_with_no_avatar(self):
+        h = get_hierarchy('main', '/pages/')
+        root = h.get_root()
+        root.add_child_section_from_dict({
+            'label': 'Section 1',
+            'slug': 'section-1',
+            'pageblocks': [],
+            'children': [],
+        })
+        r = self.client.get('/pages/section-1')
+
+        # Assert that a participant with no avatar is redirected to the
+        # avatar selector when attempting to navigate to pagetree
+        self.assertEqual(r.status_code, 302)
+        self.assertRedirects(r, reverse('avatar-selector'))
+
     def test_post(self):
         r = self.client.post(reverse('avatar-selector'), {
             'avatar_id': self.avatar1.pk
