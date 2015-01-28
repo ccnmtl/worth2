@@ -14,9 +14,9 @@ You're not signed in
     {% csrf_token %}
 
     {% for avatar in avatars %}
-    <div class="worth-avatar">
+    <span class="worth-avatar">
         <img src="{{ avatar.image.url }}" />
-    </div>
+    </span>
     <button class="btn btn-default" type="submit" name="avatar_id"
             value="{{ avatar.pk }}"
             >This is me!</button>
