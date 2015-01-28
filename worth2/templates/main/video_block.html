@@ -1,2 +1,17 @@
 <div class="video-block">
+    <video width="{{block.video_width}}" height="{{block.video_height}}">
+        {% if block.video_mp4_url %}
+        <source src="{{block.video_mp4_url}}" type="video/mp4">
+        {% endif %}
+
+        {% if block.video_webm_url %}
+        <source src="{{block.video_webm_url}}" type="video/webm">
+        {% endif %}
+
+        {% if block.video_ogg_url %}
+        <source src="{{block.video_ogg_url}}" type="video/ogg">
+        {% endif %}
+
+        Your browser does not support the video tag.
+    </video>
 </div>
