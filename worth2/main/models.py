@@ -184,7 +184,14 @@ class VideoBlock(models.Model):
     js_template_file = 'main/video_block_js.html'
     css_template_file = 'main/video_block_css.html'
 
-    video_url = models.URLField(max_length=255)
+    video_width = models.PositiveSmallIntegerField(default=560)
+    video_height = models.PositiveSmallIntegerField(default=315)
+
+    video_mp4_url = models.URLField(
+        max_length=255, null=True, blank=True,
+        help_text='An mp4 is required to play the video on iOS.')
+    video_webm_url = models.URLField(max_length=255, null=True, blank=True)
+    video_ogg_url = models.URLField(max_length=255, null=True, blank=True)
 
     def pageblock(self):
         return self.pageblocks.first()
