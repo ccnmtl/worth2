@@ -8,7 +8,6 @@ from django.shortcuts import get_object_or_404, redirect
 from pagetree.generic.views import PageView
 
 from worth2.main.auth import generate_password, user_is_participant
-from worth2.main.mixins import ActiveUserRequiredMixin
 from worth2.main.models import Avatar, Location, Participant, Session
 
 
@@ -28,18 +27,25 @@ class AvatarSelector(TemplateView):
         return redirect(request.user.profile.last_location_url())
 
 
-class IndexView(ActiveUserRequiredMixin, TemplateView):
+class IndexView(TemplateView):
     template_name = 'main/index.html'
 
     def dispatch(self, *args, **kwargs):
         user = self.request.user
         if user_is_participant(user):
-            return http.HttpResponseRedirect(user.profile.last_location_url())
+            last_location = user.profile.last_location_url()
+            if last_location == '/':
+                # To prevent a redirect loop, if the participant's last
+                # location is this index page, then default to showing them
+                # the pagetree root.
+                return http.HttpResponseRedirect('/pages/')
+            else:
+                return http.HttpResponseRedirect(last_location)
 
         return super(IndexView, self).dispatch(*args, **kwargs)
 
 
-class ManageParticipants(ActiveUserRequiredMixin, ListView):
+class ManageParticipants(ListView):
     model = Participant
 
     def get_context_data(self, **kwargs):
@@ -51,7 +57,7 @@ class ManageParticipants(ActiveUserRequiredMixin, ListView):
         return ctx
 
 
-class SignInParticipant(ActiveUserRequiredMixin, TemplateView):
+class SignInParticipant(TemplateView):
     template_name = 'main/facilitator_sign_in_participant.html'
 
     def get_context_data(self, **kwargs):

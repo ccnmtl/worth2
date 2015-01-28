@@ -51,19 +51,21 @@ urlpatterns = patterns(
     (r'infranil/', include('infranil.urls')),
     (r'^uploads/(?P<path>.*)$',
      'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+
     (r'^pagetree/', include('pagetree.urls')),
     (r'^quizblock/', include('quizblock.urls')),
-    (r'^pages/edit/(?P<path>.*)$', user_passes_test(lambda u: u.is_superuser)(
-        EditView.as_view(
-            hierarchy_name="main",
-            hierarchy_base="/pages/")),
-     {}, 'edit-page'),
-    (r'^pages/instructor/(?P<path>.*)$',
+    url(r'^pages/edit/(?P<path>.*)$',
+        user_passes_test(lambda u: u.is_superuser)(
+            EditView.as_view(
+                hierarchy_name="main",
+                hierarchy_base="/pages/")),
+        {}, 'edit-page'),
+    url(r'^pages/instructor/(?P<path>.*)$',
         user_passes_test(lambda u: auth.user_is_facilitator(u))(
             InstructorView.as_view(
                 hierarchy_name="main",
                 hierarchy_base="/pages/"))),
-    (r'^pages/(?P<path>.*)$', views.ParticipantSessionPageView.as_view(
+    url(r'^pages/(?P<path>.*)$', views.ParticipantSessionPageView.as_view(
         hierarchy_name="main",
         hierarchy_base="/pages/")),
 
