@@ -20,7 +20,8 @@ require.config({
         underscore: '../lib/underscore',
         backbone: '../lib/backbone',
         bootstrap: '//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min'
-    }
+    },
+    urlArgs: 'bust=' + (new Date()).getTime()
 });
 
 require([
