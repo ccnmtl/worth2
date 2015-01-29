@@ -1,14 +1,23 @@
 from django import http
 from django.contrib.auth import authenticate, login
+from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 
 from pagetree.generic.views import PageView
+import quizblock
 
 from worth2.main.auth import generate_password, user_is_participant
 from worth2.main.models import Avatar, Location, Participant, Session
+
+
+def has_responses(section):
+    quizzes = [p.block() for p in section.pageblock_set.all()
+               if hasattr(p.block(), 'needs_submit')
+               and p.block().needs_submit()]
+    return quizzes != []
 
 
 class AvatarSelector(TemplateView):
@@ -118,3 +127,41 @@ class ParticipantSessionPageView(PageView):
 
         return super(ParticipantSessionPageView, self).dispatch(
             request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        allow_redo = False
+        needs_submit = self.section.needs_submit()
+        if needs_submit:
+            allow_redo = self.section.allow_redo()
+        self.upv.visit()
+        instructor_link = has_responses(self.section)
+
+        pageblocks = self.section.pageblock_set.all()
+        quiztype = ContentType.objects.get(name='quiz')
+        quizblocks_on_this_page = [
+            page.block() for page in pageblocks.filter(content_type=quiztype)]
+
+        # Was the form submitted with no values selected?
+        is_submission_empty = False
+        for submission in quizblock.models.Submission.objects.filter(
+                user=request.user, quiz__in=quizblocks_on_this_page):
+            if quizblock.models.Response.objects.filter(
+                    submission=submission).count() == 0:
+                # Delete empty submission, and tell the template that it was
+                # empty, so it can display an error message.
+                submission.delete()
+                is_submission_empty = True
+
+        context = dict(
+            section=self.section,
+            module=self.module,
+            needs_submit=needs_submit,
+            allow_redo=allow_redo,
+            is_submitted=self.section.submitted(request.user),
+            is_submission_empty=is_submission_empty,
+            modules=self.root.get_children(),
+            root=self.section.hierarchy.get_root(),
+            instructor_link=instructor_link,
+        )
+        context.update(self.get_extra_context())
+        return render(request, self.template_name, context)

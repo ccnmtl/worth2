@@ -83,6 +83,7 @@ urlpatterns = patterns(
             views.AvatarSelector.as_view()),
         name='avatar-selector'),
 
+    # Social Support Network Map activity
     url(r'^ssnm/api/', include(ssnm_rest_router.urls)),
     url(r'^ssnm/$',
         user_passes_test(lambda u: auth.user_is_participant(u))(
