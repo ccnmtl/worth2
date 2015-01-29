@@ -2,6 +2,16 @@ require.config({
     shim: {
         bootstrap: {
             deps: ['jquery']
+        },
+        'jquery-cookie': {
+            deps: ['jquery']
+        },
+        backbone: {
+            deps: ['underscore', 'jquery'],
+            exports: 'Backbone'
+        },
+        underscore: {
+            exports: '_'
         }
     },
     paths: {
