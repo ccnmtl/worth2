@@ -3,14 +3,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8" />
-	<title>WORTH {% block title %}{% endblock %}</title>
+	<meta charset="utf-8">
+	<title>E-WORTH {% block title %}{% endblock %}</title>
+
     <meta name="description" content="worth2">
     <meta name="author" content="CCNMTL">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link href="//fonts.googleapis.com/css?family=Raleway:800,500"
+          rel="stylesheet">
 
     <link href="{% bootstrap_css_url %}" rel="stylesheet">
 
@@ -19,13 +23,15 @@
     {% endcompress %}
 
 	<link rel="shortcut icon" href="{{STATIC_URL}}img/favicon.ico" type="image/x-icon" />
+	
 	{% block css %}{% endblock %}
 
 	{% block feeds %}{% endblock %}
+	
 </head>
+
 <body class="{% block bodyclass %}{% endblock %}" id="{% block bodyid %}{% endblock %}">
 <a class="sr-only" href="#content">Skip navigation</a>
-
 {% block topnavbar %}
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container-fluid">
@@ -39,8 +45,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
           </button>
-	      <a class="navbar-brand" href="/"
-             >WORTH</a>
+	      <a class="navbar-brand" href="/"><img src="{{STATIC_URL}}img/logo-white.png" width="80" /></a>
       </div>
 
   <!-- Collect the nav links, forms, and other content for toggling -->
@@ -65,20 +70,22 @@
         {% if request.user.is_anonymous %}
         <li><a href="/accounts/login/">Sign In</a></li>
         {% else %}
-        <li><a href="/">Hi,
+        <li>
+        <a href="/">Hi,
                 {% if request.user.first_name %}
                 {{request.user.first_name}}!
                 {% else %}
                 {{request.user.username}}!
                 {% endif %}
-        </a></li>
+        </a>
+        </li>
         <li><a href="/accounts/logout/">Sign Out</a></li>
         {% endif %}
-        <li><a href="/about/">About</a></li>
-        <li><a href="/contact/">Contact</a></li>
-        <li><a href="/credits/">Credits</a></li>
+        <li><a href="/about/">About E-WORTH</a></li>
+        <li><a href="/contact/">Contact Us</a></li>
+        <li><a href="/credits/">Partners</a></li>
         {% if request.user.is_superuser %}
-        <li><a href="/admin/">Admin</a></li>
+        <li><a href="/admin/">Administer</a></li>
         {% endif %}
 
         {% endif %}
@@ -88,12 +95,9 @@
   </div>
   </div>
 </nav>
-
 {% endblock %}
-
 {% include 'main/break_modal.html' %}
-
-<div class="container" id="outer-container">
+<div class="container {% block loginphoto %}{% endblock %}" id="outer-container">
 {% block masthead %}
 {% block primarynav %}{% endblock %}
 {% endblock %}
@@ -112,18 +116,12 @@
 {% block content-nav %}{% endblock %}
 
 </div> <!-- end .container -->
-
 {% block footer %}
 <footer class="footer hidden-phone"></footer>
 {% endblock %}
-
-<script data-main="{{STATIC_URL}}js/src/main.js"
-        src="{{STATIC_URL}}js/lib/require.js"
-        ></script>
-
+<script data-main="{{STATIC_URL}}js/src/main.js" src="{{STATIC_URL}}js/lib/require.js"></script>
 {% block js %}
 {% endblock %}
-
 {% if STAGING_ENV %}
 <div class="alert alert-danger alert-dismissable" style="position: fixed; bottom: 0px;">
 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -132,7 +130,6 @@
 <p>This site was last updated on: <b>{{STAGING_DEPLOY_TIME}}</b></p>
 </div>
 {% endif %}
-
 {% if request.user.is_impersonate %}
 <div class="alert alert-danger alert-dismissable" style="position: fixed; left: 0px; top: 75px">
 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -140,6 +137,5 @@ You are impersonating.<br />
 <a class="btn" href="{% url 'impersonate-stop' %}">stop</a>
 </div>
 {% endif %}
-
 </body>
 </html>

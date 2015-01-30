@@ -1,61 +1,76 @@
 {% extends "base.html" %}
+
+{% block loginphoto %}
+    splash-photo
+{% endblock %}
+
 {% block title %}
-   Please Login
+    Please log in.
 {% endblock %}
 
 {% block content %}
-<div class="worth-facilitator-login">
-    {% if CAS_BASE %}
-    <form method="get" action="{{ CAS_BASE }}cas/login">
-        {% csrf_token %}
-        <input type="hidden" name="destination"
-               value="https://{{ request.get_host }}/accounts/caslogin/?next={{ next|urlencode }}" />
-        <p>If you have a Columbia University Network ID (UNI)...</p>
-        <input class="regbutton" type="submit" value="Columbia Log In" />
-    </form>
-    {% endif %}
+<div class="worth-facilitator-login col-sm-7">
 
-    <p class="smalltxt"><a href="https://cuit.columbia.edu/cuit/manage-my-uni"
-                           title="Learn more about UNI" target="_blank"
-                           >What is a UNI?</a></p>
-    <!-- End UNI LOG IN -->
+<div class="jumbotron login-jumbotron">
 
-    <hr class="seperator" />
-    <form class="form-horizontal"
-          role="form"
-          method="post"
+    <img class="img-responsive center-block" src="/media/img/logo-red.png" />
+
+    <form class="form-signin" role="form" method="post"
           action="/accounts/login/">
         {% csrf_token %}
 
-        <div class="form-group {% if form.username.errors %}has-error{% endif %}">
-            <label for="facilitator_id"
-                   class="control-label col-sm-3">Facilitator ID</label>
-            <div class="col-sm-6">
-                <input type="text"
-                       class="form-control"
-                       id="facilitator_id"
-                       name="username"
-                       placeholder="Enter your username">
-            </div>
-        </div>
+        <h3 class="form-signin-heading"></h3>
 
-        <div class="form-group {% if form.password.errors %}has-error{% endif %}">
-            <label for="facilitator_password"
-                   class="control-label col-sm-3">Facilitator Password</label>
-            <div class="col-sm-6">
-                <input type="password"
-                       class="form-control"
-                       id="facilitator_password"
-                       name="password"
-                       placeholder="Enter your password">
-            </div>
-        </div>
+        <label for="facilitator_id"
+               class="control-label sr-only"
+               >Facilitator ID</label>
+        <input type="text"
+               class="form-control {% if form.username.errors %}has-error{% endif %}"
+               id="facilitator_id"
+               name="username"
+               placeholder="Enter your username"
+               required autofocus>
+
+        <label for="facilitator_password"
+               class="control-label sr-only"
+               >Facilitator Password</label>
+        <input type="password"
+               class="form-control {% if form.password.errors %}has-error{% endif %}"
+               id="facilitator_password"
+               name="password"
+               placeholder="Enter your password"
+               required autofocus>
+
         <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-6">
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
+            <button type="submit"
+                    class="btn btn-lg btn-default btn-block"
+                    >Sign In</button>
         </div>
     </form>
+
+    <hr style="border: 1px solid black;" />
+
+    {% if CAS_BASE %}
+
+    <form method="get" action="{{ CAS_BASE }}cas/login">
+
+    {% csrf_token %}
+
+        <input type="hidden" name="destination" value="https://{{ request.get_host }}/accounts/caslogin/?next={{ next|urlencode }}" />
+
+             <button type="submit" class="btn btn-lg btn-default btn-block">Sign In with Columbia UNI.</button>
+
+
+    </form>
+
+    {% endif %}
+
+    <a class="btn btn-lg btn-link btn-block"
+       href="https://cuit.columbia.edu/cuit/manage-my-uni"
+       title="Learn more about UNI" target="_blank">What is a UNI?</a>
+
 </div>
+      </div>
+
+
 {% endblock %}
-{% block loginbox %}{% endblock %}
