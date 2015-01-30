@@ -2,14 +2,6 @@
 
 {% block content %}
 {% if request.user.is_anonymous %}
-<div class="worth-title-container center-block">
-    <p class="worth-title">
-        WORTH
-    </p>
-    <p>
-        African-American Women on the Road to Health
-    </p>
-</div>
     {% include 'registration/login.html' %}
 {% else %}
     {% include 'main/facilitator_dashboard.html' %}
