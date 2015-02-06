@@ -1,3 +1,18 @@
+{% load quizsummary %}
+
+{% with cls="protective-behavior" %}
+
+{% get_quiz_summary user cls as results %}
+
 <div class="protective-behavior-results">
-    <h4>Stuff I Do</h4>
+    <div class="well">
+        <h4>Stuff I Do</h4>
+        <ul>
+            {% for item in results %}
+            <li class="{{item.1}}">{{item.0}}</li>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
+
+{% endwith %}
