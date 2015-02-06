@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericRelation
 from django.core.validators import RegexValidator
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -165,6 +165,50 @@ class Participant(InactiveUserProfile):
     avatar = models.ForeignKey(Avatar, blank=True, null=True)
 
 
+class ProtectiveBehaviorResults(models.Model):
+    pageblocks = GenericRelation(
+        PageBlock,
+        related_query_name='protective_behavior_results')
+    quiz_class = models.TextField()
+    display_name = 'Protective Behavior Results'
+    template_file = 'main/protective_behavior_results.html'
+
+    def pageblock(self):
+        return self.pageblocks.first()
+
+    def __unicode__(self):
+        return "%s -- %s" % (unicode(self.pageblock()), self.quiz_category)
+
+    @classmethod
+    def add_form(self):
+        return ProtectiveBehaviorResultsForm()
+
+    def edit_form(self):
+        return ProtectiveBehaviorResultsForm(instance=self)
+
+    @classmethod
+    def create(self, request):
+        form = ProtectiveBehaviorResultsForm(request.POST)
+        return form.save()
+
+    def edit(self, vals, files):
+        form = ProtectiveBehaviorResultsForm(
+            data=vals, files=files, instance=self)
+        if form.is_valid():
+            form.save()
+
+    def needs_submit(self):
+        return False
+
+    def unlocked(self, user):
+        return True
+
+
+class ProtectiveBehaviorResultsForm(forms.ModelForm):
+    class Meta:
+        model = ProtectiveBehaviorResults
+
+
 class Session(models.Model):
     facilitator = models.ForeignKey(User)
     participant = models.ForeignKey(Participant)
@@ -179,7 +223,7 @@ class Session(models.Model):
 
 class VideoBlock(models.Model):
     display_name = 'Video Block'
-    pageblocks = generic.GenericRelation(PageBlock)
+    pageblocks = GenericRelation(PageBlock)
     template_file = 'main/video_block.html'
     js_template_file = 'main/video_block_js.html'
     css_template_file = 'main/video_block_css.html'
