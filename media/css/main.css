@@ -1,5 +1,4 @@
 html {
-
 }
 
 body {
@@ -11,11 +10,14 @@ body > .container {
     padding-top: 75px;
 }
 
-.navbar
-{
+.navbar {
 	background-color: #000;
 	background-image: url(/media/img/fotolia_comp_64154101.jpg);
 	background-position: 0px 180px;
+}
+
+label {
+    cursor: pointer;
 }
 
 #content {
@@ -205,4 +207,35 @@ footer.footer {
 .worth-avatars .worth-avatar img {
     max-width: 100%;
     max-height: 100%;
+}
+
+.rate-my-risk .answers-container {
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
+}
+
+.rate-my-risk .answers-container .colored-box {
+    padding: 8px;
+    padding-bottom: 2px;
+}
+
+.rate-my-risk .answers-container .clear-box {
+    text-align: center;
+}
+
+.rate-my-risk .not-an-issue .colored-box {
+    background-color: lightgreen;
+}
+
+.rate-my-risk .somewhat-an-issue .colored-box {
+    background-color: #ee8;
+}
+
+.rate-my-risk .an-issue .colored-box {
+    background-color: orange;
+}
+
+.rate-my-risk .a-big-issue .colored-box {
+    background-color: red;
 }

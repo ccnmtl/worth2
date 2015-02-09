@@ -2,6 +2,7 @@ from django import http
 from django.contrib.auth import authenticate, login
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.shortcuts import get_object_or_404, redirect, render
@@ -146,9 +147,11 @@ class ParticipantSessionPageView(PageView):
         instructor_link = has_responses(self.section)
 
         pageblocks = self.section.pageblock_set.all()
-        quiztype = ContentType.objects.get(name='quiz')
+        quiztypes = ContentType.objects.filter(
+            Q(name='quiz') | Q(name='rate my risk quiz'))
         quizblocks_on_this_page = [
-            page.block() for page in pageblocks.filter(content_type=quiztype)]
+            page.block() for page in
+            pageblocks.filter(content_type__in=quiztypes)]
 
         # Was the form submitted with no values selected?
         is_submission_empty = False

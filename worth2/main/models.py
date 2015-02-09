@@ -165,50 +165,6 @@ class Participant(InactiveUserProfile):
     avatar = models.ForeignKey(Avatar, blank=True, null=True)
 
 
-class ProtectiveBehaviorResults(models.Model):
-    pageblocks = GenericRelation(
-        PageBlock,
-        related_query_name='protective_behavior_results')
-    quiz_class = models.CharField(max_length=255, help_text='Required')
-    display_name = 'Protective Behavior Results'
-    template_file = 'main/protective_behavior_results.html'
-
-    def pageblock(self):
-        return self.pageblocks.first()
-
-    def __unicode__(self):
-        return "%s -- %s" % (unicode(self.pageblock()), self.quiz_category)
-
-    @classmethod
-    def add_form(self):
-        return ProtectiveBehaviorResultsForm()
-
-    def edit_form(self):
-        return ProtectiveBehaviorResultsForm(instance=self)
-
-    @classmethod
-    def create(self, request):
-        form = ProtectiveBehaviorResultsForm(request.POST)
-        return form.save()
-
-    def edit(self, vals, files):
-        form = ProtectiveBehaviorResultsForm(
-            data=vals, files=files, instance=self)
-        if form.is_valid():
-            form.save()
-
-    def needs_submit(self):
-        return False
-
-    def unlocked(self, user):
-        return True
-
-
-class ProtectiveBehaviorResultsForm(forms.ModelForm):
-    class Meta:
-        model = ProtectiveBehaviorResults
-
-
 class Session(models.Model):
     facilitator = models.ForeignKey(User)
     participant = models.ForeignKey(Participant)

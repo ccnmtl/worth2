@@ -136,6 +136,7 @@ INSTALLED_APPS = [
     'gunicorn',
     'rest_framework',
     'worth2.main',
+    'worth2.protectivebehaviors',
     'worth2.ssnm',
 ]
 
@@ -165,7 +166,8 @@ PAGEBLOCKS = [
     'pageblocks.ImagePullQuoteBlock',
     'quizblock.Quiz',
     'main.VideoBlock',
-    'main.ProtectiveBehaviorResults',
+    'protectivebehaviors.ProtectiveBehaviorsResults',
+    'protectivebehaviors.RateMyRiskQuiz',
 ]
 
 
