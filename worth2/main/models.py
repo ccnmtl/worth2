@@ -169,7 +169,7 @@ class ProtectiveBehaviorResults(models.Model):
     pageblocks = GenericRelation(
         PageBlock,
         related_query_name='protective_behavior_results')
-    quiz_class = models.TextField()
+    quiz_class = models.CharField(max_length=255)
     display_name = 'Protective Behavior Results'
     template_file = 'main/protective_behavior_results.html'
 

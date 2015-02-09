@@ -7,10 +7,19 @@ from django.views.generic.list import ListView
 from django.shortcuts import get_object_or_404, redirect, render
 
 from pagetree.generic.views import PageView
+from pagetree.models import PageBlock
 import quizblock
+from quizblock.models import Quiz
 
 from worth2.main.auth import generate_password, user_is_participant
 from worth2.main.models import Avatar, Location, Participant, Session
+
+
+def get_quiz_blocks(css_class):
+    quiz_type = ContentType.objects.get_for_model(Quiz)
+    blocks = PageBlock.objects.filter(css_extra__contains=css_class,
+                                      content_type=quiz_type)
+    return blocks
 
 
 def has_responses(section):
