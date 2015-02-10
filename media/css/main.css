@@ -239,3 +239,9 @@ footer.footer {
 .rate-my-risk .a-big-issue .colored-box {
     background-color: red;
 }
+
+.avatar-block>img {
+    max-width: 150px;
+    max-height: 150px;
+    margin: 10px;
+}
