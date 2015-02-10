@@ -1,8 +1,10 @@
 from django import http
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.db.models import Q
+from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.shortcuts import get_object_or_404, redirect, render
@@ -128,6 +130,7 @@ class ParticipantSessionPageView(PageView):
     """WORTH version of pagetree's PageView"""
     gated = True
 
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         # Has the participant picked an avatar yet?
         user = request.user
