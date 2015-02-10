@@ -165,6 +165,7 @@ PAGEBLOCKS = [
     'pageblocks.ImageBlock',
     'pageblocks.ImagePullQuoteBlock',
     'quizblock.Quiz',
+    'main.AvatarBlock',
     'main.VideoBlock',
     'protectivebehaviors.ProtectiveBehaviorsResults',
     'protectivebehaviors.RateMyRiskQuiz',
