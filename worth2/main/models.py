@@ -9,8 +9,7 @@ from pagetree.models import Hierarchy, UserPageVisit, PageBlock
 
 
 class InactiveUserProfile(models.Model):
-    """ A model for handling inactive users.
-    """
+    """A model for handling inactive users."""
     user = models.OneToOneField(User, related_name='profile')
     created_by = models.ForeignKey(User, null=True, blank=True,
                                    related_name='created_by')
@@ -39,12 +38,11 @@ class InactiveUserProfile(models.Model):
 
     def last_access_hierarchy(self):
         upv = UserPageVisit.objects.filter(
-            user=self.user).order_by(
-                "-last_visit")
+            user=self.user).order_by("-last_visit")
         if upv.count() < 1:
             return None
         else:
-            return upv[0].last_visit
+            return upv.first().last_visit
 
     def last_location_url(self):
         if self.percent_complete() == 0:
@@ -55,12 +53,11 @@ class InactiveUserProfile(models.Model):
     def last_location(self):
         hierarchy = Hierarchy.get_hierarchy('main')
         upv = UserPageVisit.objects.filter(
-            user=self.user).order_by(
-                "-last_visit")
+            user=self.user).order_by("-last_visit")
         if upv.count() < 1:
             return hierarchy.get_root()
         else:
-            return upv[0].section
+            return upv.first().section
 
     def percent_complete(self):
         return self.percent_complete_hierarchy()
@@ -80,8 +77,8 @@ class InactiveUserProfile(models.Model):
 
         seconds = 0
         if (visits.count() > 0):
-            start = visits.order_by('first_visit')[0].first_visit
-            end = visits.order_by('-last_visit')[0].last_visit
+            start = visits.order_by('first_visit').first().first_visit
+            end = visits.order_by('-last_visit').first().last_visit
             seconds = (end - start).total_seconds() / 60
         return seconds
 
@@ -99,6 +96,47 @@ class Avatar(OrderedModel):
 
     def __unicode__(self):
         return unicode(self.image.url)
+
+
+class AvatarBlock(models.Model):
+    """A PageBlock for displaying the current participant's avatar."""
+    display_name = 'Avatar Block'
+    pageblocks = GenericRelation(PageBlock)
+    template_file = 'main/avatar_block.html'
+
+    def pageblock(self):
+        return self.pageblocks.first()
+
+    def __unicode__(self):
+        return unicode(self.pageblock())
+
+    def needs_submit(self):
+        return False
+
+    @classmethod
+    def add_form(cls):
+        return AvatarBlockForm()
+
+    def edit_form(self):
+        return AvatarBlockForm(instance=self)
+
+    @classmethod
+    def create(cls, request):
+        form = AvatarBlockForm(request.POST)
+        return form.save()
+
+    def edit(self, vals, files):
+        form = AvatarBlockForm(data=vals, files=files, instance=self)
+        if form.is_valid():
+            form.save()
+
+    def unlocked(self, user):
+        return True
+
+
+class AvatarBlockForm(forms.ModelForm):
+    class Meta:
+        model = AvatarBlock
 
 
 class Location(models.Model):
@@ -163,50 +201,6 @@ class Participant(InactiveUserProfile):
 
     # Participants can choose an avatar after their user is created.
     avatar = models.ForeignKey(Avatar, blank=True, null=True)
-
-
-class ProtectiveBehaviorResults(models.Model):
-    pageblocks = GenericRelation(
-        PageBlock,
-        related_query_name='protective_behavior_results')
-    quiz_class = models.CharField(max_length=255, help_text='Required')
-    display_name = 'Protective Behavior Results'
-    template_file = 'main/protective_behavior_results.html'
-
-    def pageblock(self):
-        return self.pageblocks.first()
-
-    def __unicode__(self):
-        return "%s -- %s" % (unicode(self.pageblock()), self.quiz_category)
-
-    @classmethod
-    def add_form(self):
-        return ProtectiveBehaviorResultsForm()
-
-    def edit_form(self):
-        return ProtectiveBehaviorResultsForm(instance=self)
-
-    @classmethod
-    def create(self, request):
-        form = ProtectiveBehaviorResultsForm(request.POST)
-        return form.save()
-
-    def edit(self, vals, files):
-        form = ProtectiveBehaviorResultsForm(
-            data=vals, files=files, instance=self)
-        if form.is_valid():
-            form.save()
-
-    def needs_submit(self):
-        return False
-
-    def unlocked(self, user):
-        return True
-
-
-class ProtectiveBehaviorResultsForm(forms.ModelForm):
-    class Meta:
-        model = ProtectiveBehaviorResults
 
 
 class Session(models.Model):
