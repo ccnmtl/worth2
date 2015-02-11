@@ -4,6 +4,7 @@ import hmac
 
 from django.conf import settings
 from django.contrib.auth.models import User
+from rest_framework import permissions
 
 
 def generate_random_username():
@@ -31,3 +32,14 @@ def user_is_participant(user):
 def user_is_facilitator(user):
     return not user.is_anonymous() and \
         (not hasattr(user, 'profile') or not user.profile.is_participant())
+
+
+class IsFacilitatorOrStaffPermission(permissions.BasePermission):
+    """A DRF permission to give facilitators and admins access."""
+
+    def has_permission(self, request, view):
+        user = getattr(request, 'user', None)
+        is_facilitator = user and hasattr(user, 'profile') and \
+            user.profile.is_facilitator()
+
+        return user.is_staff or is_facilitator

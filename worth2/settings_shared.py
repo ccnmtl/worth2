@@ -142,7 +142,9 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'PAGINATE_BY': 10,
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'worth2.main.auth.IsFacilitatorOrStaffPermission',
+    ),
     'DEFAULT_PAGINATION_SERIALIZER_CLASS':
         'rest_framework_ember.pagination.PaginationSerializer',
     'DEFAULT_PARSER_CLASSES': (
