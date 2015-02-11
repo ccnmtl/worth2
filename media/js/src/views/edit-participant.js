@@ -14,7 +14,8 @@ define([
             this.id = this.$el.closest('.modal').data('id');
             this.model = new Participant({
                 id: this.id,
-                study_id: this.$el.find('input[name=study_id]').val()
+                study_id: this.$el.find('input[name=study_id]').val(),
+                cohort_id: this.$el.find('input[name=cohort_id]').val()
             });
             this.$el.find('button[name=is_archived]')
                 .on('click', function(e) {
@@ -29,7 +30,11 @@ define([
             e.preventDefault();
             var $target = $(e.currentTarget);
             var newStudyId = $target.find('input[name=study_id]').val();
-            this.updateModel({study_id: newStudyId}, $target);
+            var newCohortId = $target.find('input[name=cohort_id]').val();
+            this.updateModel({
+                study_id: newStudyId,
+                cohort_id: newCohortId
+            }, $target);
         },
         updateModel: function(data, $target) {
             $.ajax({
@@ -42,14 +47,20 @@ define([
                     location.reload();
                 },
                 error: function(xhr, status, error) {
-                    var msg;
-                    if (xhr.responseJSON && xhr.responseJSON.study_id) {
-                        msg = 'Error: Study ID: ' + xhr.responseJSON.study_id;
+                    var msg = '';
+
+                    // Find validation errors in participant response object
+                    if (xhr.responseJSON && xhr.responseJSON.participant) {
+                        for (var key in xhr.responseJSON.participant) {
+                            msg += '<div>' +
+                                xhr.responseJSON.participant[key] +
+                                '</div>';
+                        }
                     } else {
                         msg = error;
                     }
                     $target.find('.worth-success').hide();
-                    $target.find('.worth-errors').show().text(msg);
+                    $target.find('.worth-errors').show().html(msg);
                 }
             });
         }

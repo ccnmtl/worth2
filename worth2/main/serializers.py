@@ -8,7 +8,7 @@ from worth2.main.models import Participant
 class ParticipantSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Participant
-        fields = ('pk', 'is_archived', 'study_id')
+        fields = ('pk', 'is_archived', 'study_id', 'cohort_id',)
 
     def create(self, validated_data):
         # Create an inactive User for the participant
