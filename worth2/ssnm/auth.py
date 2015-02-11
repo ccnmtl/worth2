@@ -12,7 +12,7 @@ class InactiveUserSessionAuthentication(authentication.BaseAuthentication):
         return (user, None)
 
 
-class ParticipantPermission(permissions.BasePermission):
+class IsParticipantPermission(permissions.BasePermission):
     """ Give participants permission. """
     def has_permission(self, request, view):
         user = getattr(request, 'user', None)
