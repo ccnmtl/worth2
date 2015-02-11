@@ -1,5 +1,8 @@
 {% load bootstrap3 %}
 {% load compress %}
+
+{% load avatar %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -55,27 +58,31 @@
     </ul>
 
     <ul class="nav navbar-nav navbar-right">
-        {% if request.user.profile.is_participant %}
+        {% if user.profile.is_participant %}
 
         {# Participant nav bar #}
-        {% if request.user.profile.avatar %}
-        <img src="avatar.png" height="36" width="36" />
+        {% if user.profile.participant.avatar %}
+        <li>
+            <img class="worth-avatar" src="{% avatar_url user %}">
+        </li>
         {% endif %}
-        <li><button type="button" class="btn btn-success navbar-btn"
+        <li class="last-child">
+            <button type="button" class="btn btn-success navbar-btn"
                     data-toggle="modal" data-target="#worth-break-modal"
-                    >I Need a Break.</button></li>
+                    >I Need a Break.</button>
+        </li>
         {% else %}
 
         {# Facilitator nav bar #}
-        {% if request.user.is_anonymous %}
+        {% if user.is_anonymous %}
         <li><a href="/accounts/login/">Sign In</a></li>
         {% else %}
         <li>
         <a href="/">Hi,
-                {% if request.user.first_name %}
-                {{request.user.first_name}}!
+                {% if user.first_name %}
+                {{user.first_name}}!
                 {% else %}
-                {{request.user.username}}!
+                {{user.username}}!
                 {% endif %}
         </a>
         </li>
@@ -84,7 +91,7 @@
         <li><a href="/about/">About E-WORTH</a></li>
         <li><a href="/contact/">Contact Us</a></li>
         <li><a href="/credits/">Partners</a></li>
-        {% if request.user.is_superuser %}
+        {% if user.is_superuser %}
         <li><a href="/admin/">Administer</a></li>
         {% endif %}
 
@@ -102,7 +109,7 @@
 {% block primarynav %}{% endblock %}
 {% endblock %}
 
-{% if request.user.is_superuser %}
+{% if user.is_superuser %}
 {% block navrightextra %}
 {% endblock %}
 {% endif %}
@@ -130,7 +137,7 @@
 <p>This site was last updated on: <b>{{STAGING_DEPLOY_TIME}}</b></p>
 </div>
 {% endif %}
-{% if request.user.is_impersonate %}
+{% if user.is_impersonate %}
 <div class="alert alert-danger alert-dismissable" style="position: fixed; left: 0px; top: 75px">
 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 You are impersonating.<br />
