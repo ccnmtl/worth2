@@ -251,6 +251,15 @@ footer.footer {
     margin: 10px;
 }
 
+.navbar-nav .worth-avatar {
+    max-width: 34px;
+    max-height: 34px;
+    margin: 8px;
+}
+
+.navbar-nav .last-child {
+    margin-right: 10px;
+}
 .form-inline .form-group {
     margin-right: 16px;
 }
