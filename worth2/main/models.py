@@ -163,12 +163,14 @@ class Location(models.Model):
 
 # We don't know what this format will be yet, so for now just test
 # validation by only accepting strings that begin with a '7'
-study_id_validator = RegexValidator(regex=r'^7.*$',
-                                    message='That study ID isn\'t valid')
+study_id_validator = RegexValidator(
+    regex=r'^7.*$',
+    message='That study ID isn\'t valid. (It needs to start with a 7)')
 
 # For now, accept any 3-digit number as the cohort ID.
-cohort_id_validator = RegexValidator(regex=r'\d{3}',
-                                     message='That cohort ID isn\'t valid')
+cohort_id_validator = RegexValidator(
+    regex=r'^\d{3}$',
+    message='That cohort ID isn\'t valid. (It needs to be 3 digits)')
 
 
 class Participant(InactiveUserProfile):

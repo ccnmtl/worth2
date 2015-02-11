@@ -29,17 +29,20 @@ define([
                     location.reload();
                 },
                 error: function(xhr, status, error) {
-                    var msg;
-                    if (xhr.responseJSON &&
-                        xhr.responseJSON.participant.studyId
-                       ) {
-                        msg = 'Error: Study ID: ' +
-                            xhr.responseJSON.participant.studyId;
+                    var msg = '';
+
+                    // Find validation errors in participant response object
+                    if (xhr.responseJSON && xhr.responseJSON.participant) {
+                        for (var key in xhr.responseJSON.participant) {
+                            msg += '<div>' +
+                                xhr.responseJSON.participant[key] +
+                                '</div>';
+                        }
                     } else {
                         msg = error;
                     }
                     $target.find('.worth-success').hide();
-                    $target.find('.worth-errors').show().text(msg);
+                    $target.find('.worth-errors').show().html(msg);
                 }
             });
         }

@@ -194,6 +194,11 @@ footer.footer {
     margin-bottom: 5px;
 }
 
+.worth-facilitator-manage-participants .row.row-header {
+    background-color: transparent;
+}
+
+.worth-facilitator-manage-participants .row .worth-cohort-id,
 .worth-facilitator-manage-participants .row .worth-study-id {
     font-weight: bold;
     line-height: 34px;
@@ -244,4 +249,8 @@ footer.footer {
     max-width: 150px;
     max-height: 150px;
     margin: 10px;
+}
+
+.form-inline .form-group {
+    margin-right: 16px;
 }

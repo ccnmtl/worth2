@@ -12,6 +12,14 @@
             >Add Participant</button>
 
     <h2>Active Participants</h2>
+    <div class="row row-header">
+        <div class="col-md-4">
+            Study ID
+        </div>
+        <div class="col-md-2">
+            Cohort ID
+        </div>
+    </div>
     {% for participant in active_participants %}
     {% include 'main/participant_edit_row.html' %}
     {% empty %}
@@ -51,8 +59,12 @@
                          style="display: none;"></div>
                     <div class="alert alert-success worth-success"
                          style="display: none;">Participant created.</div>
-                    Study ID # <input type="text" class="form-control"
-                                      name="study_id" />
+                    <div class="form-group">
+                        <label>
+                            Study ID # <input type="text" class="form-control"
+                                              name="study_id" />
+                        </label>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button"

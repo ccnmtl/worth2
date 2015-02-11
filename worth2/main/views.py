@@ -71,6 +71,9 @@ class IndexView(TemplateView):
 class ManageParticipants(ListView):
     model = Participant
 
+    def get_queryset(self):
+        return Participant.objects.order_by('study_id')
+
     def get_context_data(self, **kwargs):
         ctx = super(ManageParticipants, self).get_context_data(**kwargs)
         ctx['active_participants'] = [p for p in ctx['object_list']
