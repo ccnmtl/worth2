@@ -129,23 +129,49 @@ class ManageParticipantsUnAuthedTest(TestCase):
 class SignInParticipantAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
     def test_get(self):
         response = self.client.get(reverse('sign-in-participant'))
-        self.assertContains(response, 'Sign In')
+        self.assertContains(response, 'Sign In a Participant')
         self.assertEqual(response.status_code, 200)
 
-    def test_post(self):
+    def test_valid_form_submit(self):
         location = LocationFactory()
         participant = ParticipantFactory()
         self.client.post(
-            reverse('sign-in-participant'),
-            {
+            reverse('sign-in-participant'), {
                 'participant_id': participant.pk,
                 'participant_location': location.pk,
-                'participant_destination': 'last_completed_activity'
+                'participant_destination': 'last_completed_activity',
+                'session_type': 'regular',
             }
         )
+
         # FIXME: why does the authenticate() call in
         # views.SignInParticipant return None in this test?
         # self.assertEqual(response.status_code, 200)
+        # form = response.context['form']
+        # self.assertTrue(form.is_valid())
+
+    def test_invalid_form_submit(self):
+        response = self.client.post(
+            reverse('sign-in-participant'), {
+                'participant_id': None,
+                'participant_location': None,
+                'participant_destination': 'last_completed_activity',
+                'session_type': 'regular',
+            }
+        )
+
+        form = response.context['form']
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(form.is_valid())
+        self.assertContains(response, 'Select a valid choice.')
+        self.assertFormError(
+            response, 'form', 'participant_id',
+            'Select a valid choice. That choice is not one of the ' +
+            'available choices.')
+        self.assertFormError(
+            response, 'form', 'participant_location',
+            'Select a valid choice. That choice is not one of the ' +
+            'available choices.')
 
 
 class SignInParticipantUnAuthedTest(TestCase):

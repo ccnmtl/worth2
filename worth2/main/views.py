@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateView
+from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 from django.shortcuts import get_object_or_404, redirect, render
 
@@ -15,7 +16,8 @@ import quizblock
 from quizblock.models import Quiz
 
 from worth2.main.auth import generate_password, user_is_participant
-from worth2.main.models import Avatar, Location, Participant, Session
+from worth2.main.forms import SignInParticipantForm
+from worth2.main.models import Avatar, Participant, Session
 
 
 def get_quiz_blocks(css_class):
@@ -78,36 +80,34 @@ class ManageParticipants(ListView):
         return ctx
 
 
-class SignInParticipant(TemplateView):
+class SignInParticipant(FormView):
     template_name = 'main/facilitator_sign_in_participant.html'
+    form_class = SignInParticipantForm
 
-    def get_context_data(self, **kwargs):
-        context = super(SignInParticipant, self).get_context_data(**kwargs)
-        context['active_participants'] = Participant.objects.filter(
-            is_archived=False)
-        context['locations'] = Location.objects.all()
-        return context
-
-    def post(self, request, *args, **kwargs):
-        participant = get_object_or_404(
-            Participant, pk=request.POST.get('participant_id'))
+    def form_valid(self, form):
+        participant = form.cleaned_data.get('participant_id')
+        facilitator = self.request.user
         password = generate_password(participant.user.username)
         user = authenticate(
             username=participant.user.username, password=password)
 
         if user is not None:
-            location = get_object_or_404(
-                Location, pk=request.POST['participant_location'])
-
             # Create a Session and log in the participant
+            # TODO: a new Session needs to get created for each "session"
+            # in pagetree (i.e. module)? Because we need to track whether
+            # this participant session is make-up or not.
             Session.objects.get_or_create(
                 participant=participant,
-                defaults={'facilitator': request.user, 'location': location}
+                defaults={
+                    'facilitator': facilitator,
+                    'location': form.cleaned_data.get('participant_location'),
+                    'session_type': form.cleaned_data.get('session_type'),
+                }
             )
 
-            login(request, user)
+            login(self.request, user)
 
-            dest = request.POST['participant_destination']
+            dest = form.cleaned_data.get('participant_destination')
 
             if dest == 'last_completed_activity':
                 # TODO: redirect to the last completed activity

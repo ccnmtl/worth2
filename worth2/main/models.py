@@ -202,11 +202,23 @@ class Participant(InactiveUserProfile):
     # Participants can choose an avatar after their user is created.
     avatar = models.ForeignKey(Avatar, blank=True, null=True)
 
+    def __unicode__(self):
+        return unicode(self.study_id)
+
 
 class Session(models.Model):
+    """A Session represents a participant going through a WORTH session.
+
+    A Session is created each time a facilitator logs in a participant.
+    """
     facilitator = models.ForeignKey(User)
     participant = models.ForeignKey(Participant)
     location = models.ForeignKey(Location)
+    session_type = models.CharField(
+        max_length=255,
+        choices=(('regular', 'Regular'), ('makeup', 'Make-Up')),
+        default='regular',
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
