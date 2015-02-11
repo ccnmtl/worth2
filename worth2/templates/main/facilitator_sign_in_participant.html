@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+{% load bootstrap %}
 {% load webdesign %}
 
 {% block content %}
@@ -13,36 +14,14 @@
           action="">
         {% csrf_token %}
 
+        {{ form.errors }}
+
         <div class="form-group">
-            <label for="participant_id"
-                   class="control-label col-sm-3">Participant ID #</label>
-            <div class="col-sm-6">
-                <select name="participant_id"
-                        id="participant_id"
-                        class="form-control">
-                    {% for participant in active_participants %}
-                    <option value="{{participant.pk}}">
-                        {{participant.study_id}}
-                    </option>
-                    {% endfor %}
-                </select>
-            </div>
+            {{ form.participant_id|bootstrap_horizontal:'col-sm-3' }}
         </div>
 
         <div class="form-group">
-            <label for="participant_location"
-                   class="control-label col-sm-3">Location</label>
-            <div class="col-sm-6">
-                <select name="participant_location"
-                        id="participant_location"
-                        class="form-control">
-                    {% for location in locations %}
-                    <option value="{{location.pk}}">
-                        {{location.name}}
-                    </option>
-                    {% endfor %}
-                </select>
-            </div>
+            {{ form.participant_location|bootstrap_horizontal:'col-sm-3' }}
         </div>
 
         <div class="form-group worth-participant-destination">
@@ -58,6 +37,10 @@
                         The last completed activity.
                     </label>
                     <div>
+                        <!-- TODO this text needs to be updated when
+                             the facilitator changes the participant ID
+                             number in the select box above.
+                          -->
                         <em>Activity 5 "Charlene" (from Session 3 "Title")</em>
                     </div>
                 </div>
@@ -81,11 +64,20 @@
                         <select name="already_completed_session"
                                 class="form-control worth-already-completed"
                                 disabled="disabled">
-                            <option value="session_2">Session 2</option>
+                            <!-- TODO this list needs to be updated when
+                                 the facilitator changes the participant ID
+                                 number in the select box above.
+                              -->
+                            <option value="/pages/session-2/"
+                                    >Session 2</option>
                         </select>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="form-group">
+            {{ form.session_type|bootstrap_horizontal:'col-sm-3' }}
         </div>
 
         <div class="form-group">
