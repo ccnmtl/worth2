@@ -28,7 +28,7 @@ factory_boy==2.4.1
 sqlparse==0.1.14
 
 boto==2.36.0
-django-storages==1.1.8
+django-storages-redux==1.2.2
 
 djangowind==0.13.2
 sorl==3.1
