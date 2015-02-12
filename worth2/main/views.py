@@ -14,9 +14,10 @@ from pagetree.models import PageBlock
 import quizblock
 from quizblock.models import Quiz
 
+from worth2.goals.models import GoalOption, GoalSettingResponse
 from worth2.main.auth import generate_password, user_is_participant
 from worth2.main.forms import SignInParticipantForm
-from worth2.main.models import Avatar, Participant, Session
+from worth2.main.models import Participant, Session
 
 
 def get_quiz_blocks(css_class):
@@ -31,22 +32,6 @@ def has_responses(section):
                if hasattr(p.block(), 'needs_submit')
                and p.block().needs_submit()]
     return quizzes != []
-
-
-class AvatarSelector(TemplateView):
-    template_name = 'main/avatar_selector.html'
-
-    def get_context_data(self, **kwargs):
-        ctx = super(AvatarSelector, self).get_context_data(**kwargs)
-        ctx['avatars'] = Avatar.objects.all()
-        return ctx
-
-    def post(self, request, *args, **kwargs):
-        avatar_id = request.POST.get('avatar_id')
-        avatar = get_object_or_404(Avatar, pk=avatar_id)
-        request.user.profile.participant.avatar = avatar
-        request.user.profile.participant.save()
-        return redirect(request.user.profile.last_location_url())
 
 
 class IndexView(TemplateView):
@@ -176,3 +161,40 @@ class ParticipantSessionPageView(PageView):
         )
         context.update(self.get_extra_context())
         return render(request, self.template_name, context)
+
+    def _handle_goal_submission(self, request, goalsettingblock):
+        """Handle a submission for the goal setting activity."""
+
+        pk = goalsettingblock.pk
+        block = goalsettingblock.block()
+
+        for i in range(block.goal_amount):
+            name = 'main'
+            if i > 0:
+                name = 'extra'
+
+            option_key = 'pageblock-%s-goal-%s-%s' % (pk, name, i)
+            explanation_key = 'pageblock-%s-explanation-%s-%s' % \
+                              (pk, name, i)
+
+            option_pk = int(request.POST.get(option_key))
+            explanation = request.POST.get(explanation_key)
+
+            goaloption = get_object_or_404(GoalOption, pk=option_pk)
+
+            GoalSettingResponse.objects.create(
+                user=request.user,
+                goal_setting_block=block,
+                option=goaloption,
+                text=explanation)
+
+    def post(self, request, *args, **kwargs):
+        pageblocks = self.section.pageblock_set.all()
+        goalsettingtype = ContentType.objects.get(name='goal setting block')
+        goalsettingblocks = pageblocks.filter(content_type=goalsettingtype)
+
+        if goalsettingblocks.count() > 0:
+            self._handle_goal_submission(request, goalsettingblocks.first())
+
+        return super(ParticipantSessionPageView, self).post(
+            request, *args, **kwargs)

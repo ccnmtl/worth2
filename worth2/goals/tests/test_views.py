@@ -1,6 +1,8 @@
 from django.test import TestCase
 from pagetree.helpers import get_hierarchy
 
+from worth2.goals.tests.factories import GoalOptionFactory
+from worth2.goals.models import GoalSettingResponse
 from worth2.main.tests.mixins import (
     LoggedInParticipantTestMixin
 )
@@ -28,3 +30,18 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.assertContains(r, 'Goal Setting Section')
         self.assertContains(r, 'My Goals')
         self.assertContains(r, 'class="goal-setting"')
+
+    def test_post(self):
+        pageblock = self.root.get_first_child().pageblock_set.first()
+        option = GoalOptionFactory(goal_setting_block=pageblock.block())
+        goal_param = 'pageblock-%d-goal-main-0' % pageblock.pk
+        explanation_param = 'pageblock-%d-explanation-main-0' % pageblock.pk
+        r = self.client.post(self.url, {
+            goal_param: option.pk,
+            explanation_param: 'test explanation',
+        })
+
+        self.assertEqual(r.status_code, 302)
+        self.assertEqual(
+            GoalSettingResponse.objects.filter(user=self.u).count(),
+            1)

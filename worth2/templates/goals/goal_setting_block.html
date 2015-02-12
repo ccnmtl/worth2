@@ -1,13 +1,14 @@
 <div class="goal-setting">
     <h1>My Goals</h1>
 
-    {% for goalslot in block.goalslot_set.all %}
-    <h2>Setting {{goalslot.goal_type}} Goals</h2>
+    <h2>Setting {{block.goal_type}} Goals</h2>
 
-    <div class="form-horizontal">
-        {% include 'goals/goal_setting_block_formset.html' with name='main' %}
+    <form class="form-horizontal" method="post">{% csrf_token %}
+        {% include 'goals/goal_setting_block_formset.html' with name='main' i='0' %}
+
+        {% for i in block.extra_goals %}
         {% include 'goals/goal_setting_block_formset.html' with name='extra' %}
-        {% include 'goals/goal_setting_block_formset.html' with name='extra' %}
+        {% endfor %}
 
         <div class="form-group">
             <label class="col-sm-4 control-label"></label>
@@ -15,6 +16,5 @@
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>
         </div>
-    </div>
-    {% endfor %}
+    </form>
 </div>

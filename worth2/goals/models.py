@@ -1,4 +1,6 @@
+from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericRelation
+from django.core.exceptions import ValidationError
 from django.db import models
 from django import forms
 from ordered_model.models import OrderedModel
@@ -13,6 +15,9 @@ class GoalSettingBlock(models.Model):
     Participants set goals in each session. These goals are persistent -
     they are revisited by the participant at the end of each session to
     reflect on whether they've reached their goals.
+
+    You can customize this block by adding questions and options to it
+    in the admin interface.
     """
 
     pageblocks = GenericRelation(PageBlock)
@@ -26,6 +31,33 @@ class GoalSettingBlock(models.Model):
         ('session 4', 'Session 4'),
         ('session 5', 'Session 5'),
     ))
+
+    goal_type = models.CharField(
+        max_length=255,
+        choices=(
+            ('services', 'Services'),
+            ('risk reduction', 'Risk Reduction'),
+            ('social support', 'Social Support')),
+        default='services',
+    )
+
+    # goal_amount controls how many goals the participants are expected
+    # to fill out on this block. It needs to be at least 1, and the first
+    # goal is always a required 'main' goal, while any remaining questions
+    # will be optional 'extra' goals.
+    goal_amount = models.PositiveSmallIntegerField(
+        default=1,
+        help_text='The number of goals on this block, including the main one.')
+
+    def extra_goals(self):
+        """Returns the number of extra goals as an iterable list."""
+        return range(self.goal_amount - 1)
+
+    def has_na_option(self):
+        """Returns True if this block has a n/a option."""
+
+        return self.goal_type == 'general services' or \
+            self.goal_type == 'social support'
 
     def pageblock(self):
         return self.pageblocks.first()
@@ -58,7 +90,8 @@ class GoalSettingBlock(models.Model):
         return True
 
     def __unicode__(self):
-        return unicode('Goal Setting Block ' + unicode(self.pk))
+        return unicode('Goal Setting Block ' + self.goal_type + ' ' +
+                       unicode(self.pk))
 
     def submit(self, user, request_data):
         if user_is_participant(user):
@@ -70,64 +103,22 @@ class GoalSettingBlockForm(forms.ModelForm):
         model = GoalSettingBlock
 
 
-class GoalSlot(OrderedModel):
-    """A model for specifying the goal categories for a GoalSettingBlock.
-
-    GoalSlots are editable in the admin interface. After creating a
-    Goal Setting pageblock, you can customize it by adding GoalSlots to
-    it.
-    """
-
-    class Meta(OrderedModel.Meta):
-        pass
-
-    GOAL_SLOT_TYPES = (
-        ('general services', 'General Services'),
-        ('risk reduction', 'Risk Reduction'),
-        ('social support', 'Social Support'),
-    )
+class GoalOption(OrderedModel):
+    """GoalSettingBlock dropdowns are populated by GoalOptions."""
 
     goal_setting_block = models.ForeignKey(GoalSettingBlock)
-    goal_type = models.CharField(max_length=255, choices=GOAL_SLOT_TYPES)
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def has_not_any_option(self):
-        """Returns True if this goal slot has a n/a option."""
-
-        return self.goal_type == 'general services' or \
-            self.goal_type == 'social support'
-
-    def __unicode__(self):
-        return unicode(self.goal_type) + ' for ' + \
-            unicode(self.goal_setting_block)
-
-
-class GoalSlotOption(OrderedModel):
-    """GoalSlot dropdowns are populated by GoalSlotOptions."""
-
-    goal_slot = models.ForeignKey(GoalSlot)
     text = models.TextField()
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class GoalSlotSubmission(models.Model):
-    """A participant's goal submission for a goal slot."""
+class GoalSettingResponse(models.Model):
+    """Participant responses to 'main' and 'extra' goals."""
 
-    goal_slot = models.ForeignKey(GoalSlot)
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-
-class GoalSlotResponse(models.Model):
-    """Participant responses to 'main' and 'extra' GoalSlot goals."""
-
-    goal_slot_submission = models.ForeignKey(GoalSlotSubmission)
-    option = models.ForeignKey(GoalSlotOption)
+    goal_setting_block = models.ForeignKey(GoalSettingBlock)
+    user = models.ForeignKey(User)
+    option = models.ForeignKey(GoalOption)
     text = models.TextField(blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
