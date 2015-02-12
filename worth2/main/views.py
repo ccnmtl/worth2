@@ -2,7 +2,6 @@ from django import http
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
-from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateView
@@ -135,12 +134,6 @@ class ParticipantSessionPageView(PageView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        # Has the participant picked an avatar yet?
-        user = request.user
-        if hasattr(user, 'profile') and user.profile.is_participant() and \
-           (not user.profile.participant.avatar):
-            return redirect(reverse('avatar-selector'))
-
         return super(ParticipantSessionPageView, self).dispatch(
             request, *args, **kwargs)
 

@@ -4,8 +4,11 @@ from django.contrib.contenttypes.fields import GenericRelation
 from django.core.validators import RegexValidator
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.shortcuts import get_object_or_404
 from ordered_model.models import OrderedModel
 from pagetree.models import Hierarchy, UserPageVisit, PageBlock
+
+from worth2.main.auth import user_is_participant
 
 
 class InactiveUserProfile(models.Model):
@@ -107,9 +110,6 @@ class AvatarBlock(models.Model):
     def pageblock(self):
         return self.pageblocks.first()
 
-    def __unicode__(self):
-        return unicode(self.pageblock())
-
     def needs_submit(self):
         return False
 
@@ -137,6 +137,59 @@ class AvatarBlock(models.Model):
 class AvatarBlockForm(forms.ModelForm):
     class Meta:
         model = AvatarBlock
+
+
+class AvatarSelectorBlock(models.Model):
+    """A PageBlock for displaying the Avatar Selector."""
+    display_name = 'Avatar Selector Block'
+    pageblocks = GenericRelation(PageBlock)
+    template_file = 'main/avatar_selector_block.html'
+
+    def pageblock(self):
+        return self.pageblocks.first()
+
+    def needs_submit(self):
+        return True
+
+    @classmethod
+    def add_form(cls):
+        return AvatarSelectorBlockForm()
+
+    def edit_form(self):
+        return AvatarSelectorBlockForm(instance=self)
+
+    @classmethod
+    def create(cls, request):
+        form = AvatarSelectorBlockForm(request.POST)
+        return form.save()
+
+    @classmethod
+    def create_from_dict(cls, d):
+        return cls.objects.create()
+
+    def edit(self, vals, files):
+        form = AvatarSelectorBlockForm(data=vals, files=files, instance=self)
+        if form.is_valid():
+            form.save()
+
+    def unlocked(self, user):
+        return True
+
+    def avatars(self):
+        """Returns a queryset of all the available avatars in WORTH."""
+        return Avatar.objects.all()
+
+    def submit(self, user, request_data):
+        if user_is_participant(user):
+            avatar_id = request_data.get('avatar-id')
+            avatar = get_object_or_404(Avatar, pk=avatar_id)
+            user.profile.participant.avatar = avatar
+            user.profile.participant.save()
+
+
+class AvatarSelectorBlockForm(forms.ModelForm):
+    class Meta:
+        model = AvatarSelectorBlock
 
 
 class Location(models.Model):
@@ -240,9 +293,6 @@ class VideoBlock(models.Model):
 
     def pageblock(self):
         return self.pageblocks.first()
-
-    def __unicode__(self):
-        return unicode(self.pageblock())
 
     def needs_submit(self):
         return False

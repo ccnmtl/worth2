@@ -12,36 +12,41 @@ from worth2.main.tests.mixins import (
 from worth2.main.models import Participant
 
 
-class AvatarSelectorTest(LoggedInParticipantTestMixin, TestCase):
+class AvatarSelectorBlockTest(LoggedInParticipantTestMixin, TestCase):
     def setUp(self):
-        super(AvatarSelectorTest, self).setUp()
+        super(AvatarSelectorBlockTest, self).setUp()
+
         self.avatar1 = AvatarFactory()
         self.avatar2 = AvatarFactory()
         self.avatar3 = AvatarFactory()
 
-    def test_get(self):
-        r = self.client.get(reverse('avatar-selector'))
-        self.assertEqual(r.status_code, 200)
-
-    def test_participant_with_no_avatar(self):
-        h = get_hierarchy('main', '/pages/')
-        root = h.get_root()
-        root.add_child_section_from_dict({
-            'label': 'Section 1',
-            'slug': 'section-1',
-            'pageblocks': [],
+        self.h = get_hierarchy('main', '/pages/')
+        self.root = self.h.get_root()
+        self.root.add_child_section_from_dict({
+            'label': 'Avatar Selector Section',
+            'slug': 'avatar-selector-section',
+            'pageblocks': [{
+                'block_type': 'Avatar Selector Block',
+            }],
             'children': [],
         })
-        r = self.client.get('/pages/section-1')
+        self.url = '/pages/avatar-selector-section/'
 
-        # Assert that a participant with no avatar is redirected to the
-        # avatar selector when attempting to navigate to pagetree
-        self.assertEqual(r.status_code, 302)
-        self.assertRedirects(r, reverse('avatar-selector'))
+    def test_get(self):
+        r = self.client.get(self.url)
+        self.assertEqual(r.status_code, 200)
+        self.assertContains(r, 'Avatar Selector Section')
+
+        self.assertContains(r, 'class="worth-avatars"')
+        self.assertContains(r, self.avatar1.image.url)
+        self.assertContains(r, self.avatar2.image.url)
+        self.assertContains(r, self.avatar3.image.url)
 
     def test_post(self):
-        r = self.client.post(reverse('avatar-selector'), {
-            'avatar_id': self.avatar1.pk
+        pageblock = self.root.get_first_child().pageblock_set.first()
+        param_name = 'pageblock-%d-avatar-id' % pageblock.pk
+        r = self.client.post(self.url, {
+            param_name: self.avatar1.pk,
         })
         # Refresh the participant from the database
         self.participant = Participant.objects.get(pk=self.participant.pk)
@@ -65,13 +70,12 @@ class PagetreeViewTestsLoggedOut(TestCase):
     def setUp(self):
         self.h = get_hierarchy("main", "/pages/")
         self.root = self.h.get_root()
-        self.root.add_child_section_from_dict(
-            {
-                'label': 'Section 1',
-                'slug': 'section-1',
-                'pageblocks': [],
-                'children': [],
-            })
+        self.root.add_child_section_from_dict({
+            'label': 'Section 1',
+            'slug': 'section-1',
+            'pageblocks': [],
+            'children': [],
+        })
 
     def test_page(self):
         r = self.client.get('/pages/section-1/')
@@ -91,13 +95,12 @@ class PagetreeViewTestsLoggedIn(LoggedInFacilitatorTestMixin, TestCase):
         super(PagetreeViewTestsLoggedIn, self).setUp()
         self.h = get_hierarchy("main", "/pages/")
         self.root = self.h.get_root()
-        self.root.add_child_section_from_dict(
-            {
-                'label': 'Section 1',
-                'slug': 'section-1',
-                'pageblocks': [],
-                'children': [],
-            })
+        self.root.add_child_section_from_dict({
+            'label': 'Section 1',
+            'slug': 'section-1',
+            'pageblocks': [],
+            'children': [],
+        })
 
     def test_page(self):
         r = self.client.get("/pages/section-1/")
