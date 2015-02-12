@@ -1,0 +1,18 @@
+<div class="form-group">
+    <label class="col-sm-4 control-label">
+        {{name|capfirst}} {{goalslot.goal_type}} goal</label>
+    <div class="col-sm-4">
+        <select class="form-control">
+            {% for option in goalslot.goalslotoption_set.all %}
+            <option>{{option.text}}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-4 control-label">
+        How will you make this happen?</label>
+    <div class="col-sm-4">
+        <textarea class="form-control" rows="3"></textarea>
+    </div>
+</div>

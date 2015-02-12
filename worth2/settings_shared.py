@@ -138,6 +138,7 @@ INSTALLED_APPS = [
     'worth2.main',
     'worth2.protectivebehaviors',
     'worth2.ssnm',
+    'worth2.goals',
 ]
 
 REST_FRAMEWORK = {
@@ -172,6 +173,7 @@ PAGEBLOCKS = [
     'main.VideoBlock',
     'protectivebehaviors.ProtectiveBehaviorsResults',
     'protectivebehaviors.RateMyRiskQuiz',
+    'goals.GoalSettingBlock',
 ]
 
 
