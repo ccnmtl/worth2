@@ -1,13 +1,14 @@
-from django import http
+from django import forms, http
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
+from django.forms.formsets import formset_factory
 from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect, render
 
 from pagetree.generic.views import PageView
 from pagetree.models import PageBlock
@@ -115,12 +116,84 @@ class SignInParticipant(FormView):
 
 class ParticipantSessionPageView(PageView):
     """WORTH version of pagetree's PageView"""
+
     gated = True
+
+    def _create_goal_setting_formset(self, **kwargs):
+        """Create the goal setting formset.
+
+        To be used by GET and POST.
+        """
+
+        path = kwargs['path']
+        self.section = self.get_section(path)
+        goalsettingblock = self._get_goal_setting_block()
+        if goalsettingblock:
+            # I'd like to be define the GoalSettingForm instead in
+            # goals/forms.py, but the goal field depends on data I can
+            # only get here.
+            class GoalSettingForm(forms.Form):
+                goal = forms.ModelChoiceField(
+                    label='Main services goal',
+                    queryset=GoalOption.objects.filter(
+                        goal_setting_block=goalsettingblock.block()),
+                )
+                text = forms.CharField(
+                    widget=forms.Textarea(attrs={'rows': 3}),
+                    label='How will you make this happen?',
+                )
+
+            self.GoalSettingFormSet = formset_factory(
+                GoalSettingForm,
+                extra=goalsettingblock.block().goal_amount - 1,
+                # min_num is 1 because there's always a 'Main' goal form.
+                min_num=1,
+                validate_min=True,
+            )
+            self.formset = self.GoalSettingFormSet(
+                prefix='pageblock-%s' % goalsettingblock.pk,
+            )
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
+        self._create_goal_setting_formset(**kwargs)
         return super(ParticipantSessionPageView, self).dispatch(
             request, *args, **kwargs)
+
+    def _get_goal_setting_block(self):
+        """Get the first goal setting block on this page.
+
+        Returns the goal setting block if this page contains it.
+        Otherwise, returns None.
+        """
+
+        pageblocks = self.section.pageblock_set.all()
+        goalsettingtype = ContentType.objects.get(name='goal setting block')
+        goalsettingblocks = pageblocks.filter(content_type=goalsettingtype)
+        if goalsettingblocks.count() > 0:
+            return goalsettingblocks.first()
+        else:
+            return None
+
+    def get_extra_context(self):
+        ctx = super(ParticipantSessionPageView, self).get_extra_context()
+
+        goalsettingblock = self._get_goal_setting_block()
+        if goalsettingblock:
+            ctx.update({'formset': self.formset})
+
+        return ctx
+
+    def get_context_data(self, **kwargs):
+        context = dict(
+            section=self.section,
+            module=self.module,
+            is_submitted=self.section.submitted(self.request.user),
+            modules=self.root.get_children(),
+            root=self.section.hierarchy.get_root(),
+        )
+        context.update(self.get_extra_context())
+        return context
 
     def get(self, request, *args, **kwargs):
         allow_redo = False
@@ -148,53 +221,48 @@ class ParticipantSessionPageView(PageView):
                 submission.delete()
                 is_submission_empty = True
 
-        context = dict(
-            section=self.section,
-            module=self.module,
-            needs_submit=needs_submit,
-            allow_redo=allow_redo,
-            is_submitted=self.section.submitted(request.user),
-            is_submission_empty=is_submission_empty,
-            modules=self.root.get_children(),
-            root=self.section.hierarchy.get_root(),
-            instructor_link=instructor_link,
-        )
-        context.update(self.get_extra_context())
+        context = self.get_context_data(**kwargs)
+        context.update({
+            'allow_redo': allow_redo,
+            'is_submission_empty': is_submission_empty,
+            'needs_submit': needs_submit,
+            'instructor_link': instructor_link,
+        })
         return render(request, self.template_name, context)
 
     def _handle_goal_submission(self, request, goalsettingblock):
-        """Handle a submission for the goal setting activity."""
+        """Handle a submission for the goal setting activity.
 
-        pk = goalsettingblock.pk
+        This method returns the formset populated formset.
+        """
+
         block = goalsettingblock.block()
+        formset = self.GoalSettingFormSet(
+            request.POST,
+            prefix='pageblock-%s' % goalsettingblock.pk)
 
-        for i in range(block.goal_amount):
-            name = 'main'
-            if i > 0:
-                name = 'extra'
+        if formset.is_valid():
+            for formdata in formset.cleaned_data:
+                goaloption = formdata.get('goal')
+                text = formdata.get('text')
 
-            option_key = 'pageblock-%s-goal-%s-%s' % (pk, name, i)
-            explanation_key = 'pageblock-%s-explanation-%s-%s' % \
-                              (pk, name, i)
+                GoalSettingResponse.objects.create(
+                    user=request.user,
+                    goal_setting_block=block,
+                    option=goaloption,
+                    text=text)
 
-            option_pk = int(request.POST.get(option_key))
-            explanation = request.POST.get(explanation_key)
-
-            goaloption = get_object_or_404(GoalOption, pk=option_pk)
-
-            GoalSettingResponse.objects.create(
-                user=request.user,
-                goal_setting_block=block,
-                option=goaloption,
-                text=explanation)
+        return formset
 
     def post(self, request, *args, **kwargs):
-        pageblocks = self.section.pageblock_set.all()
-        goalsettingtype = ContentType.objects.get(name='goal setting block')
-        goalsettingblocks = pageblocks.filter(content_type=goalsettingtype)
+        goalsettingblock = self._get_goal_setting_block()
 
-        if goalsettingblocks.count() > 0:
-            self._handle_goal_submission(request, goalsettingblocks.first())
+        if goalsettingblock:
+            formset = self._handle_goal_submission(request, goalsettingblock)
+            if not formset.is_valid():
+                ctx = self.get_context_data()
+                ctx.update({'formset': formset})
+                return render(request, self.template_name, ctx)
 
         return super(ParticipantSessionPageView, self).post(
             request, *args, **kwargs)

@@ -49,14 +49,10 @@ class GoalSettingBlock(models.Model):
         default=1,
         help_text='The number of goals on this block, including the main one.')
 
-    def extra_goals(self):
-        """Returns the number of extra goals as an iterable list."""
-        return range(self.goal_amount - 1)
-
     def has_na_option(self):
         """Returns True if this block has a n/a option."""
 
-        return self.goal_type == 'general services' or \
+        return self.goal_type == 'services' or \
             self.goal_type == 'social support'
 
     def pageblock(self):
@@ -111,6 +107,9 @@ class GoalOption(OrderedModel):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return unicode(self.text)
 
 
 class GoalSettingResponse(models.Model):

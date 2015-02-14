@@ -34,14 +34,40 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
     def test_post(self):
         pageblock = self.root.get_first_child().pageblock_set.first()
         option = GoalOptionFactory(goal_setting_block=pageblock.block())
-        goal_param = 'pageblock-%d-goal-main-0' % pageblock.pk
-        explanation_param = 'pageblock-%d-explanation-main-0' % pageblock.pk
+        p = 'pageblock-%s' % pageblock.pk
         r = self.client.post(self.url, {
-            goal_param: option.pk,
-            explanation_param: 'test explanation',
+            # Formset Management form params
+            '%s-TOTAL_FORMS' % p: '1',
+            '%s-INITIAL_FORMS' % p: '0',
+            '%s-MIN_NUM_FORMS' % p: '1',
+            '%s-MAX_NUM_FORMS' % p: '1000',
+
+            '%s-0-goal' % p: option.pk,
+            '%s-0-text' % p: 'test explanation',
         })
 
         self.assertEqual(r.status_code, 302)
         self.assertEqual(
             GoalSettingResponse.objects.filter(user=self.u).count(),
             1)
+
+    def test_post_invalid(self):
+        pageblock = self.root.get_first_child().pageblock_set.first()
+        GoalOptionFactory(goal_setting_block=pageblock.block())
+        p = 'pageblock-%s' % pageblock.pk
+        r = self.client.post(self.url, {
+            # Formset Management form params
+            '%s-TOTAL_FORMS' % p: '1',
+            '%s-INITIAL_FORMS' % p: '0',
+            '%s-MIN_NUM_FORMS' % p: '1',
+            '%s-MAX_NUM_FORMS' % p: '1000',
+
+            '%s-0-goal' % p: None,
+            '%s-0-text' % p: None,
+        })
+
+        self.assertEqual(r.status_code, 200)
+        self.assertFormError(
+            r, 'form', 'goal',
+            'Select a valid choice. That choice is not one of the ' +
+            'available choices.')
