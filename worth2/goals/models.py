@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericRelation
-from django.core.exceptions import ValidationError
 from django.db import models
 from django import forms
 from ordered_model.models import OrderedModel

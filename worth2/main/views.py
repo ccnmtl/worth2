@@ -129,7 +129,7 @@ class ParticipantSessionPageView(PageView):
         self.section = self.get_section(path)
         goalsettingblock = self._get_goal_setting_block()
         if goalsettingblock:
-            # I'd like to be define the GoalSettingForm instead in
+            # I'd like to define the GoalSettingForm instead in
             # goals/forms.py, but the goal field depends on data I can
             # only get here.
             class GoalSettingForm(forms.Form):
