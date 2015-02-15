@@ -6,6 +6,7 @@ from ordered_model.models import OrderedModel
 from pagetree.models import PageBlock
 
 from worth2.main.auth import user_is_participant
+from worth2.main.generic.models import BasePageBlock
 
 
 class GoalSettingBlock(models.Model):
@@ -23,13 +24,10 @@ class GoalSettingBlock(models.Model):
     display_name = 'Goal Setting Block'
     template_file = 'goals/goal_setting_block.html'
 
-    session = models.CharField(max_length=255, choices=(
-        ('session 1', 'Session 1'),
-        ('session 2', 'Session 2'),
-        ('session 3', 'Session 3'),
-        ('session 4', 'Session 4'),
-        ('session 5', 'Session 5'),
-    ))
+    session_num = models.PositiveSmallIntegerField(
+        default=1,
+        help_text='The session this is associated with (i.e. 1 through 5).'
+    )
 
     goal_type = models.CharField(
         max_length=255,
@@ -119,5 +117,99 @@ class GoalSettingResponse(models.Model):
     option = models.ForeignKey(GoalOption)
     text = models.TextField(blank=True, null=True)
 
+    # Correspond this response with a specific form on the block. This
+    # can't be higher than self.goal_setting_block.goal_amount - 1.
+    form_id = models.PositiveSmallIntegerField(default=0)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = (('goal_setting_block', 'user', 'form_id'),)
+
+
+class GoalCheckInResponse(models.Model):
+    """Participant responses for the Check In page.
+
+    These are for reflecting on the goals they've set for themselves.
+    This is only used on sessions 2 through 5.
+    """
+
+    goal_setting_response = models.ForeignKey(GoalSettingResponse)
+
+    i_will_do_this = models.CharField(
+        max_length=255,
+        choices=(
+            ('yes', 'Yes'),
+            ('no', 'No'),
+            ('in progress', 'In Progress'),
+        ))
+
+    other = models.TextField(blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class GoalReviewPageBlock(BasePageBlock):
+    display_name = 'Goal Review Block'
+    template_file = 'goals/goal_review_block.html'
+
+    session_num = models.PositiveSmallIntegerField(
+        default=1,
+        help_text='The session this is associated with (i.e. 1 through 5).'
+    )
+
+    @classmethod
+    def add_form(cls):
+        return GoalReviewPageBlockForm()
+
+    def edit_form(self):
+        return GoalReviewPageBlockForm(instance=self)
+
+    @classmethod
+    def create(cls, request):
+        form = GoalReviewPageBlockForm(request.POST)
+        return form.save()
+
+    def edit(self, vals, files):
+        form = GoalReviewPageBlockForm(data=vals, files=files, instance=self)
+        if form.is_valid():
+            form.save()
+
+
+class GoalReviewPageBlockForm(forms.ModelForm):
+    class Meta:
+        model = GoalReviewPageBlock
+
+
+class GoalCheckInPageBlock(BasePageBlock):
+    display_name = 'Goal Check In Block'
+    template_file = 'goals/goal_check_in_block.html'
+
+    session_num = models.PositiveSmallIntegerField(
+        default=1,
+        help_text='The session this is associated with (i.e. 1 through 5).'
+    )
+
+    @classmethod
+    def add_form(cls):
+        return GoalCheckInPageBlockForm()
+
+    def edit_form(self):
+        return GoalCheckInPageBlockForm(instance=self)
+
+    @classmethod
+    def create(cls, request):
+        form = GoalCheckInPageBlockForm(request.POST)
+        return form.save()
+
+    def edit(self, vals, files):
+        form = GoalCheckInPageBlockForm(data=vals, files=files, instance=self)
+        if form.is_valid():
+            form.save()
+
+
+class GoalCheckInPageBlockForm(forms.ModelForm):
+    class Meta:
+        model = GoalCheckInPageBlock

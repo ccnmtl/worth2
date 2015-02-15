@@ -119,7 +119,7 @@ class ParticipantSessionPageView(PageView):
 
     gated = True
 
-    def _create_goal_setting_formset(self, **kwargs):
+    def _create_goal_setting_formset(self, request, **kwargs):
         """Create the goal setting formset.
 
         To be used by GET and POST.
@@ -133,30 +133,53 @@ class ParticipantSessionPageView(PageView):
             # goals/forms.py, but the goal field depends on data I can
             # only get here.
             class GoalSettingForm(forms.Form):
-                goal = forms.ModelChoiceField(
+                option = forms.ModelChoiceField(
                     label='Main services goal',
                     queryset=GoalOption.objects.filter(
                         goal_setting_block=goalsettingblock.block()),
+                    widget=forms.Select(attrs={'class': 'form-control'}),
                 )
                 text = forms.CharField(
                     widget=forms.Textarea(attrs={'rows': 3}),
                     label='How will you make this happen?',
                 )
 
+            # If there's existing responses to this pageblock, use them
+            # to bind the formset.
+            responses = GoalSettingResponse.objects.filter(
+                user=request.user,
+                goal_setting_block=goalsettingblock.block())
+
+            # Adapt to the strange behavior of formset_factory's "extra"
+            # param. The formset displays a different number of forms
+            # based on how many elements of initial data we give it, so
+            # we need to adjust "extra" based on "responses".
+            extra = goalsettingblock.block().goal_amount - 1
+            extra -= responses.count() - 1
+
             self.GoalSettingFormSet = formset_factory(
                 GoalSettingForm,
-                extra=goalsettingblock.block().goal_amount - 1,
+                extra=extra,
                 # min_num is 1 because there's always a 'Main' goal form.
                 min_num=1,
                 validate_min=True,
             )
+
+            initial_data = []
+            for r in responses.order_by('form_id'):
+                initial_data.append({
+                    'option': r.option,
+                    'text': r.text,
+                })
+
             self.formset = self.GoalSettingFormSet(
                 prefix='pageblock-%s' % goalsettingblock.pk,
+                initial=tuple(initial_data),
             )
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        self._create_goal_setting_formset(**kwargs)
+        self._create_goal_setting_formset(request, **kwargs)
         return super(ParticipantSessionPageView, self).dispatch(
             request, *args, **kwargs)
 
@@ -242,15 +265,31 @@ class ParticipantSessionPageView(PageView):
             prefix='pageblock-%s' % goalsettingblock.pk)
 
         if formset.is_valid():
-            for formdata in formset.cleaned_data:
-                goaloption = formdata.get('goal')
+            for i, formdata in enumerate(formset.cleaned_data):
+                option = formdata.get('option')
                 text = formdata.get('text')
 
-                GoalSettingResponse.objects.create(
-                    user=request.user,
-                    goal_setting_block=block,
-                    option=goaloption,
-                    text=text)
+                updated_values = dict(option=option, text=text)
+                try:
+                    GoalSettingResponse.objects.update_or_create(
+                        form_id=i,
+                        user=request.user,
+                        goal_setting_block=block,
+                        defaults=updated_values)
+                except:
+                    # In case there's a unique_together exception, or something
+                    # similar, (which is unlikely, but possible if you have
+                    # stale data), we can handle it by refreshing the data.
+                    GoalSettingResponse.objects.filter(
+                        form_id=i,
+                        user=request.user,
+                        goal_setting_block=block,
+                    ).delete()
+
+                    updated_values['form_id'] = i
+                    updated_values['user'] = request.user
+                    updated_values['goal_setting_block'] = block
+                    GoalSettingResponse.objects.create(**updated_values)
 
         return formset
 

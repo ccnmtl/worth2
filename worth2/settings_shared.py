@@ -175,6 +175,8 @@ PAGEBLOCKS = [
     'protectivebehaviors.RateMyRiskQuiz',
     'ssnm.SsnmPageBlock',
     'goals.GoalSettingBlock',
+    'goals.GoalReviewPageBlock',
+    'goals.GoalCheckInPageBlock',
 ]
 
 

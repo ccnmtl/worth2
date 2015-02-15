@@ -11,51 +11,6 @@ from pagetree.models import Hierarchy, UserPageVisit, PageBlock
 from worth2.main.auth import user_is_participant
 
 
-class BasePageBlock(models.Model):
-    """An abstract pageblock to be used for custom pageblocks."""
-
-    display_name = 'Custom PageBlock'
-    pageblocks = GenericRelation(PageBlock)
-
-    def pageblock(self):
-        return self.pageblocks.first()
-
-    def needs_submit(self):
-        return False
-
-    @classmethod
-    def add_form(cls):
-        return BasePageBlockForm()
-
-    def edit_form(self):
-        return BasePageBlockForm(instance=self)
-
-    @classmethod
-    def create(cls, request):
-        form = BasePageBlockForm(request.POST)
-        return form.save()
-
-    @classmethod
-    def create_from_dict(cls, d):
-        return cls.objects.create()
-
-    def edit(self, vals, files):
-        form = BasePageBlockForm(data=vals, files=files, instance=self)
-        if form.is_valid():
-            form.save()
-
-    def unlocked(self, user):
-        return True
-
-    class Meta:
-        abstract = True
-
-
-class BasePageBlockForm(forms.ModelForm):
-    class Meta:
-        model = BasePageBlock
-
-
 class InactiveUserProfile(models.Model):
     """A model for handling inactive users."""
     user = models.OneToOneField(User, related_name='profile')

@@ -8,7 +8,7 @@ class GoalSettingBlockFactory(factory.DjangoModelFactory):
     class Meta:
         model = GoalSettingBlock
 
-    session = 'session 1'
+    session = 1
     goal_amount = 3
 
 

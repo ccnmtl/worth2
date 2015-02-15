@@ -37,19 +37,89 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
         p = 'pageblock-%s' % pageblock.pk
         r = self.client.post(self.url, {
             # Formset Management form params
+            '%s-TOTAL_FORMS' % p: '3',
+            '%s-INITIAL_FORMS' % p: '0',
+            '%s-MIN_NUM_FORMS' % p: '1',
+            '%s-MAX_NUM_FORMS' % p: '1000',
+
+            '%s-0-option' % p: option.pk,
+            '%s-0-text' % p: 'test explanation',
+            '%s-1-option' % p: option.pk,
+            '%s-1-text' % p: 'test explanation 2',
+            '%s-2-option' % p: option.pk,
+            '%s-2-text' % p: 'test explanation 3',
+        })
+
+        responses = GoalSettingResponse.objects.filter(
+            goal_setting_block=pageblock,
+            user=self.u,
+        )
+        self.assertEqual(r.status_code, 302)
+        self.assertEqual(responses.count(), 3)
+        self.assertEqual(responses.first().text, 'test explanation')
+        self.assertEqual(responses.all()[1].text, 'test explanation 2')
+        self.assertEqual(responses.last().text, 'test explanation 3')
+
+    def test_post_multiple_times(self):
+        """
+        Assert that updating the first form in the formset multiple
+        times doesn't create multiple responses for it.
+        """
+
+        pageblock = self.root.get_first_child().pageblock_set.first()
+        option = GoalOptionFactory(goal_setting_block=pageblock.block())
+        option2 = GoalOptionFactory(goal_setting_block=pageblock.block())
+
+        p = 'pageblock-%s' % pageblock.pk
+        self.client.post(self.url, {
+            # Formset Management form params
             '%s-TOTAL_FORMS' % p: '1',
             '%s-INITIAL_FORMS' % p: '0',
             '%s-MIN_NUM_FORMS' % p: '1',
             '%s-MAX_NUM_FORMS' % p: '1000',
 
-            '%s-0-goal' % p: option.pk,
+            '%s-0-option' % p: option.pk,
             '%s-0-text' % p: 'test explanation',
+        })
+
+        self.client.post(self.url, {
+            # Formset Management form params
+            '%s-TOTAL_FORMS' % p: '1',
+            '%s-INITIAL_FORMS' % p: '0',
+            '%s-MIN_NUM_FORMS' % p: '1',
+            '%s-MAX_NUM_FORMS' % p: '1000',
+
+            '%s-0-option' % p: option2.pk,
+            '%s-0-text' % p: 'test explanation 2',
+        })
+
+        r = self.client.post(self.url, {
+            # Formset Management form params
+            '%s-TOTAL_FORMS' % p: '1',
+            '%s-INITIAL_FORMS' % p: '0',
+            '%s-MIN_NUM_FORMS' % p: '1',
+            '%s-MAX_NUM_FORMS' % p: '1000',
+
+            '%s-0-option' % p: option.pk,
+            '%s-0-text' % p: 'test explanation 3',
         })
 
         self.assertEqual(r.status_code, 302)
         self.assertEqual(
-            GoalSettingResponse.objects.filter(user=self.u).count(),
+            GoalSettingResponse.objects.filter(
+                goal_setting_block=pageblock.block(),
+                user=self.u,
+            ).count(),
             1)
+
+        goal_setting_response = GoalSettingResponse.objects.get(
+            goal_setting_block=pageblock,
+            user=self.u,
+        )
+
+        # Assert that the last update took effect.
+        self.assertEqual(goal_setting_response.option, option)
+        self.assertEqual(goal_setting_response.text, 'test explanation 3')
 
     def test_post_invalid(self):
         pageblock = self.root.get_first_child().pageblock_set.first()
@@ -62,12 +132,12 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
             '%s-MIN_NUM_FORMS' % p: '1',
             '%s-MAX_NUM_FORMS' % p: '1000',
 
-            '%s-0-goal' % p: None,
+            '%s-0-option' % p: None,
             '%s-0-text' % p: None,
         })
 
         self.assertEqual(r.status_code, 200)
         self.assertFormError(
-            r, 'form', 'goal',
+            r, 'form', 'option',
             'Select a valid choice. That choice is not one of the ' +
             'available choices.')
