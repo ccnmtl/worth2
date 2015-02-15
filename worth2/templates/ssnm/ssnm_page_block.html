@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load avatar %}
+
 {% block js %}
 
 {% comment %}
@@ -70,7 +72,11 @@ HTML template - there's probably a way of avoiding that step.
             <div class="ssnm-title">My Social Support Network</div>
             <div class="ssnm-box-title">Very Close</div>
             <div class="worth-ssnm-my-avatar-box">
-                <img src="placeholder.png" width="150" height="150" />
+                <div class="avatar-block">
+                    {% endverbatim %}
+                    <img src="{% avatar_url user %}">
+                    {% verbatim %}
+                </div>
                 <button type="button" class="btn btn-primary" name="add-people"
                         {{action "addSupporter"}}>
                     Add People
@@ -273,32 +279,6 @@ HTML template - there's probably a way of avoiding that step.
 </script>
 {% endverbatim %}
 
-<script src="{{STATIC_URL}}js/lib/jquery.js"></script>
-<script src="{{STATIC_URL}}js/lib/handlebars-v2.0.0.js"></script>
-
-<!-- Change this to ember.min.js for production -->
-<script src="{{STATIC_URL}}js/lib/ember.js"></script>
-<script src="{{STATIC_URL}}js/lib/ember-data.min.js"></script>
-
-<!-- The SSNM Ember application -->
-<script src="{{STATIC_URL}}js/src/ssnm/application.js"></script>
-<script src="{{STATIC_URL}}js/src/ssnm/adapters/application.js"></script>
-<script src="{{STATIC_URL}}js/src/ssnm/router.js"></script>
-<script src="{{STATIC_URL}}js/src/ssnm/routes/application.js"></script>
-<script src="{{STATIC_URL}}js/src/ssnm/models/supporter.js"></script>
-<script src="{{STATIC_URL}}js/src/ssnm/controllers/supporter.js"></script>
-<script src="{{STATIC_URL}}js/src/ssnm/controllers/supporters.js"></script>
-<script src="{{STATIC_URL}}js/src/ssnm/controllers/edit-supporter.js"></script>
-<script src="{{STATIC_URL}}js/src/ssnm/views/modal.js"></script>
-<script src="{{STATIC_URL}}js/src/ssnm/views/radio-button.js"></script>
-<script src="{{STATIC_URL}}js/src/ssnm/components/modal-dialog.js"></script>
-<script src="{{STATIC_URL}}js/src/ssnm/components/supporter-box.js"></script>
-<script src="{{STATIC_URL}}js/src/ssnm/helpers/radio-button.js"></script>
-
-{% endblock %}
-
-{% block css %}
-<link href="{{STATIC_URL}}css/ssnm.css" rel="stylesheet" type="text/css" />
 {% endblock %}
 
 {% block content %}
