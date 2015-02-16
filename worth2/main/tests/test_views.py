@@ -48,11 +48,10 @@ class AvatarSelectorBlockTest(LoggedInParticipantTestMixin, TestCase):
         r = self.client.post(self.url, {
             param_name: self.avatar1.pk,
         })
-        # Refresh the participant from the database
-        self.participant = Participant.objects.get(pk=self.participant.pk)
 
         self.assertEqual(r.status_code, 302)
-        self.assertEqual(self.participant.avatar, self.avatar1)
+        participant = Participant.objects.get(pk=self.participant.pk)
+        self.assertEqual(participant.avatar, self.avatar1)
 
 
 class BasicTest(TestCase):

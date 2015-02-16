@@ -1,20 +1,27 @@
+{% load bootstrap %}
+{% load avatar %}
+
 <div class="goal-setting">
     <h1>My Goals</h1>
 
-    {% for goalslot in block.goalslot_set.all %}
-    <h2>Setting {{goalslot.goal_type}} Goals</h2>
+    <h2>Setting {{block.goal_type}} Goals</h2>
 
-    <div class="form-horizontal">
-        {% include 'goals/goal_setting_block_formset.html' with name='main' %}
-        {% include 'goals/goal_setting_block_formset.html' with name='extra' %}
-        {% include 'goals/goal_setting_block_formset.html' with name='extra' %}
+    <div class="col-sm-10">
+        <form class="form-horizontal" method="post">{% csrf_token %}
+            {{ formset|bootstrap_horizontal }}
 
-        <div class="form-group">
-            <label class="col-sm-4 control-label"></label>
-            <div class="col-sm-4">
-                <button type="submit" class="btn btn-primary">Submit</button>
+            <div class="form-group">
+                <label class="col-sm-4 control-label"></label>
+                <div class="col-sm-4">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
-    {% endfor %}
+
+    <div class="col-sm-2 avatar-block">
+        <img src="{% avatar_url user %}">
+    </div>
+
+    <div class="clearfix"><div>
 </div>

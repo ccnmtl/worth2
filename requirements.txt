@@ -67,7 +67,7 @@ gunicorn==19.1.1
 django-infranil==0.1.0
 django-flatblocks==0.9
 django-ordered-model==0.4.0
-djangorestframework==3.0.4
+djangorestframework==3.0.5
 
 inflection==0.2.1
-rest_framework_ember==1.1.0
+rest_framework_ember==1.2.0

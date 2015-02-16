@@ -9,7 +9,6 @@ from pagetree.generic.views import EditView, InstructorView
 from rest_framework import routers
 
 from worth2.main import apiviews, auth, views
-from worth2.ssnm import views as ssnm_views
 from worth2.ssnm import apiviews as ssnm_apiviews
 
 
@@ -83,10 +82,6 @@ urlpatterns = patterns(
 
     # Social Support Network Map activity
     url(r'^ssnm/api/', include(ssnm_rest_router.urls)),
-    url(r'^ssnm/$',
-        user_passes_test(lambda u: auth.user_is_participant(u))(
-            ssnm_views.SSNM.as_view()),
-        name='ssnm'),
 )
 
 if settings.DEBUG:
