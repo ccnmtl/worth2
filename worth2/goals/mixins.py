@@ -1,9 +1,10 @@
 from django import forms
 from django.forms.formsets import formset_factory
+from django.shortcuts import get_object_or_404
 
 from worth2.goals.forms import GoalCheckInForm
 from worth2.goals.models import (
-    GoalOption, GoalSettingBlock, GoalSettingResponse
+    GoalCheckInResponse, GoalOption, GoalSettingBlock, GoalSettingResponse
 )
 
 
@@ -32,6 +33,11 @@ class GoalCheckInViewMixin(object):
         self.checkin_formset = self.GoalCheckInFormSet(
             prefix='pageblock-%s' % goalcheckinblock.pk)
 
+        # Populate the hidden goal_setting_response fields
+        for i, resp in enumerate(self.goal_setting_responses):
+            self.checkin_formset.forms[i].initial[
+                'goal_setting_response_id'] = resp.pk
+
         self.goal_checkin_context = zip(
             self.goal_setting_responses, self.checkin_formset)
 
@@ -41,7 +47,24 @@ class GoalCheckInViewMixin(object):
             prefix='pageblock-%s' % goalcheckinblock.pk)
 
         if formset.is_valid():
-            pass
+            for formdata in formset.cleaned_data:
+                if formdata == {}:
+                    continue
+
+                resp_id = formdata.pop('goal_setting_response_id')
+                resp = get_object_or_404(GoalSettingResponse, pk=resp_id)
+                updated_values = formdata.copy()
+                try:
+                    GoalCheckInResponse.objects.create_or_update(
+                        goal_setting_response=resp,
+                        defaults=updated_values)
+                except:
+                    GoalCheckInResponse.objects.filter(
+                        goal_setting_response=resp,
+                    ).delete()
+
+                    updated_values.update({'goal_setting_response': resp})
+                    GoalCheckInResponse.objects.create(**updated_values)
 
         return formset
 
@@ -126,10 +149,7 @@ class GoalSettingViewMixin(object):
                 if formdata == {}:
                     continue
 
-                option = formdata.get('option')
-                text = formdata.get('text')
-
-                updated_values = dict(option=option, text=text)
+                updated_values = formdata.copy()
                 try:
                     GoalSettingResponse.objects.update_or_create(
                         form_id=i,
@@ -146,9 +166,11 @@ class GoalSettingViewMixin(object):
                         goal_setting_block=block,
                     ).delete()
 
-                    updated_values['form_id'] = i
-                    updated_values['user'] = request.user
-                    updated_values['goal_setting_block'] = block
+                    updated_values.update({
+                        'form_id': i,
+                        'user': request.user,
+                        'goal_setting_block': block,
+                    })
                     GoalSettingResponse.objects.create(**updated_values)
 
         return formset

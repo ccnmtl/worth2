@@ -158,7 +158,7 @@ class GoalCheckInResponse(models.Model):
             ('no', 'No'),
             ('in progress', 'In Progress'),
         ))
-    what_got_in_the_way = models.ForeignKey(GoalOption)
+    what_got_in_the_way = models.ForeignKey(GoalCheckInOption)
     other = models.TextField(blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
