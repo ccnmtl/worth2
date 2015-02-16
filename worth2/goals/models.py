@@ -5,7 +5,6 @@ from django import forms
 from ordered_model.models import OrderedModel
 from pagetree.models import PageBlock
 
-from worth2.main.auth import user_is_participant
 from worth2.main.generic.models import BasePageBlock
 
 
@@ -26,7 +25,8 @@ class GoalSettingBlock(models.Model):
 
     session_num = models.PositiveSmallIntegerField(
         default=1,
-        help_text='The session this is associated with (i.e. 1 through 5).'
+        help_text='The session this is associated with (i.e. 1 through 5).',
+        db_index=True,
     )
 
     goal_type = models.CharField(
@@ -87,8 +87,7 @@ class GoalSettingBlock(models.Model):
                        unicode(self.pk))
 
     def submit(self, user, request_data):
-        if user_is_participant(user):
-            return
+        pass
 
 
 class GoalSettingBlockForm(forms.ModelForm):
@@ -152,7 +151,6 @@ class GoalCheckInResponse(models.Model):
     """
 
     goal_setting_response = models.ForeignKey(GoalSettingResponse, unique=True)
-
     i_will_do_this = models.CharField(
         max_length=255,
         choices=(
@@ -160,9 +158,7 @@ class GoalCheckInResponse(models.Model):
             ('no', 'No'),
             ('in progress', 'In Progress'),
         ))
-
     what_got_in_the_way = models.ForeignKey(GoalOption)
-
     other = models.TextField(blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -229,6 +225,9 @@ class GoalCheckInPageBlock(BasePageBlock):
         form = GoalCheckInPageBlockForm(data=vals, files=files, instance=self)
         if form.is_valid():
             form.save()
+
+    def submit(self, user, request_data):
+        pass
 
 
 class GoalCheckInPageBlockForm(forms.ModelForm):

@@ -138,8 +138,8 @@ class ParticipantSessionPageView(
     def get_first_block_of_type(self, blocktype):
         """Get the first block of type `blocktype` on this page.
 
-        Returns the goal check-in block if this page contains it.
-        Otherwise, returns None.
+        Returns the block if this page contains it. Otherwise, returns
+        None.
 
         Example usage:
             self.get_first_block_of_type('goal setting block')
@@ -162,7 +162,10 @@ class ParticipantSessionPageView(
         if goalsettingblock:
             ctx.update({'formset': self.formset})
         elif goalcheckinblock:
-            ctx.update({'formset': self.checkin_formset})
+            ctx.update({
+                'checkin_formset': self.checkin_formset,
+                'goal_checkin_context': self.goal_checkin_context,
+            })
 
         return ctx
 
