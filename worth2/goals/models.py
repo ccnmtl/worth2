@@ -100,7 +100,9 @@ class GoalOption(OrderedModel):
     """GoalSettingBlock dropdowns are populated by GoalOptions."""
 
     goal_setting_block = models.ForeignKey(GoalSettingBlock)
-    text = models.TextField()
+    text = models.TextField(
+        help_text='An option for the dropdowns in a specific ' +
+        'GoalSetting pageblock.')
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -128,6 +130,20 @@ class GoalSettingResponse(models.Model):
         unique_together = (('goal_setting_block', 'user', 'form_id'),)
 
 
+class GoalCheckInOption(OrderedModel):
+    """Editable options for the goal check-in form."""
+
+    text = models.TextField(
+        help_text='An option for the ' +
+        '"What got in the way" dropdown for goal check-in.')
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return unicode(self.text)
+
+
 class GoalCheckInResponse(models.Model):
     """Participant responses for the Check In page.
 
@@ -135,7 +151,7 @@ class GoalCheckInResponse(models.Model):
     This is only used on sessions 2 through 5.
     """
 
-    goal_setting_response = models.ForeignKey(GoalSettingResponse)
+    goal_setting_response = models.ForeignKey(GoalSettingResponse, unique=True)
 
     i_will_do_this = models.CharField(
         max_length=255,
@@ -144,6 +160,8 @@ class GoalCheckInResponse(models.Model):
             ('no', 'No'),
             ('in progress', 'In Progress'),
         ))
+
+    what_got_in_the_way = models.ForeignKey(GoalOption)
 
     other = models.TextField(blank=True, null=True)
 
@@ -191,6 +209,9 @@ class GoalCheckInPageBlock(BasePageBlock):
         default=1,
         help_text='The session this is associated with (i.e. 1 through 5).'
     )
+
+    def needs_submit(self):
+        return True
 
     @classmethod
     def add_form(cls):

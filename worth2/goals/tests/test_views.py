@@ -60,6 +60,32 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.assertEqual(responses.all()[1].text, 'test explanation 2')
         self.assertEqual(responses.last().text, 'test explanation 3')
 
+    def test_post_only_main_goal(self):
+        """Assert that a submission with only the Main form populated works."""
+
+        pageblock = self.root.get_first_child().pageblock_set.first()
+        option = GoalOptionFactory(goal_setting_block=pageblock.block())
+        p = 'pageblock-%s' % pageblock.pk
+        r = self.client.post(self.url, {
+            # Formset Management form params
+            '%s-TOTAL_FORMS' % p: '3',
+            '%s-INITIAL_FORMS' % p: '0',
+            '%s-MIN_NUM_FORMS' % p: '1',
+            '%s-MAX_NUM_FORMS' % p: '1000',
+
+            '%s-0-option' % p: option.pk,
+            '%s-0-text' % p: 'test explanation',
+        })
+
+        responses = GoalSettingResponse.objects.filter(
+            goal_setting_block=pageblock,
+            user=self.u,
+        )
+        self.assertEqual(r.status_code, 302)
+        self.assertEqual(responses.count(), 1)
+        self.assertEqual(responses.first().option, option)
+        self.assertEqual(responses.first().text, 'test explanation')
+
     def test_post_multiple_times(self):
         """
         Assert that updating the first form in the formset multiple

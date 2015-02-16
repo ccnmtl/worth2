@@ -15,6 +15,7 @@ from pagetree.models import PageBlock
 import quizblock
 from quizblock.models import Quiz
 
+from worth2.goals.mixins import GoalCheckInViewMixin
 from worth2.goals.models import GoalOption, GoalSettingResponse
 from worth2.main.auth import generate_password, user_is_participant
 from worth2.main.forms import SignInParticipantForm
@@ -114,96 +115,109 @@ class SignInParticipant(FormView):
         return http.HttpResponse('Unauthorized', status=401)
 
 
-class ParticipantSessionPageView(PageView):
-    """WORTH version of pagetree's PageView"""
+class ParticipantSessionPageView(GoalCheckInViewMixin, PageView):
+    """WORTH version of pagetree's PageView."""
 
     gated = True
 
-    def _create_goal_setting_formset(self, request, **kwargs):
+    def _create_goal_setting_formset(self, request, goalsettingblock):
         """Create the goal setting formset.
 
         To be used by GET and POST.
         """
 
-        path = kwargs['path']
-        self.section = self.get_section(path)
-        goalsettingblock = self._get_goal_setting_block()
-        if goalsettingblock:
-            # I'd like to define the GoalSettingForm instead in
-            # goals/forms.py, but the goal field depends on data I can
-            # only get here.
-            class GoalSettingForm(forms.Form):
-                option = forms.ModelChoiceField(
-                    label='Main services goal',
-                    queryset=GoalOption.objects.filter(
-                        goal_setting_block=goalsettingblock.block()),
-                    widget=forms.Select(attrs={'class': 'form-control'}),
-                )
-                text = forms.CharField(
-                    widget=forms.Textarea(attrs={'rows': 3}),
-                    label='How will you make this happen?',
-                )
-
-            # If there's existing responses to this pageblock, use them
-            # to bind the formset.
-            responses = GoalSettingResponse.objects.filter(
-                user=request.user,
-                goal_setting_block=goalsettingblock.block())
-
-            # Adapt to the strange behavior of formset_factory's "extra"
-            # param. The formset displays a different number of forms
-            # based on how many elements of initial data we give it, so
-            # we need to adjust "extra" based on "responses".
-            extra = goalsettingblock.block().goal_amount - 1
-            extra -= responses.count() - 1
-
-            self.GoalSettingFormSet = formset_factory(
-                GoalSettingForm,
-                extra=extra,
-                # min_num is 1 because there's always a 'Main' goal form.
-                min_num=1,
-                validate_min=True,
+        # I'd like to define the GoalSettingForm instead in
+        # goals/forms.py, but the goal field depends on data I can
+        # only get here.
+        class GoalSettingForm(forms.Form):
+            option = forms.ModelChoiceField(
+                label='Main services goal',
+                queryset=GoalOption.objects.filter(
+                    goal_setting_block=goalsettingblock.block()),
+                widget=forms.Select(attrs={'class': 'form-control'}),
+            )
+            text = forms.CharField(
+                widget=forms.Textarea(attrs={'rows': 3}),
+                label='How will you make this happen?',
             )
 
-            initial_data = []
-            for r in responses.order_by('form_id'):
-                initial_data.append({
-                    'option': r.option,
-                    'text': r.text,
-                })
+        # If there's existing responses to this pageblock, use them
+        # to bind the formset.
+        responses = GoalSettingResponse.objects.filter(
+            user=request.user,
+            goal_setting_block=goalsettingblock.block())
 
-            self.formset = self.GoalSettingFormSet(
-                prefix='pageblock-%s' % goalsettingblock.pk,
-                initial=tuple(initial_data),
-            )
+        # Adapt to the strange behavior of formset_factory's "extra"
+        # param. The formset displays a different number of forms
+        # based on how many elements of initial data we give it, so
+        # we need to adjust "extra" based on "responses".
+        extra = goalsettingblock.block().goal_amount - 1
+        extra -= responses.count() - 1
+
+        self.GoalSettingFormSet = formset_factory(
+            GoalSettingForm,
+            extra=extra,
+            # min_num is 1 because there's always a 'Main' goal form.
+            min_num=1,
+            validate_min=True,
+        )
+
+        initial_data = []
+        for r in responses.order_by('form_id'):
+            initial_data.append({
+                'option': r.option,
+                'text': r.text,
+            })
+
+        self.formset = self.GoalSettingFormSet(
+            prefix='pageblock-%s' % goalsettingblock.pk,
+            initial=tuple(initial_data),
+        )
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        self._create_goal_setting_formset(request, **kwargs)
+        path = kwargs['path']
+        self.section = self.get_section(path)
+        goalsettingblock = self.get_first_block_of_type('goal setting block')
+        goalcheckinblock = self.get_first_block_of_type(
+            'goal check in page block')
+
+        if goalsettingblock:
+            self._create_goal_setting_formset(request, goalsettingblock)
+        elif goalcheckinblock:
+            self.create_goal_check_in_formset(request, goalcheckinblock)
+
         return super(ParticipantSessionPageView, self).dispatch(
             request, *args, **kwargs)
 
-    def _get_goal_setting_block(self):
-        """Get the first goal setting block on this page.
+    def get_first_block_of_type(self, blocktype):
+        """Get the first block of type `blocktype` on this page.
 
-        Returns the goal setting block if this page contains it.
+        Returns the goal check-in block if this page contains it.
         Otherwise, returns None.
+
+        Example usage:
+            self.get_first_block_of_type('goal setting block')
         """
 
         pageblocks = self.section.pageblock_set.all()
-        goalsettingtype = ContentType.objects.get(name='goal setting block')
-        goalsettingblocks = pageblocks.filter(content_type=goalsettingtype)
-        if goalsettingblocks.count() > 0:
-            return goalsettingblocks.first()
+        block_contenttype = ContentType.objects.get(name=blocktype)
+        blocks = pageblocks.filter(content_type=block_contenttype)
+        if blocks.count() > 0:
+            return blocks.first()
         else:
             return None
 
     def get_extra_context(self):
         ctx = super(ParticipantSessionPageView, self).get_extra_context()
 
-        goalsettingblock = self._get_goal_setting_block()
+        goalsettingblock = self.get_first_block_of_type('goal setting block')
+        goalcheckinblock = self.get_first_block_of_type(
+            'goal check in page block')
         if goalsettingblock:
             ctx.update({'formset': self.formset})
+        elif goalcheckinblock:
+            ctx.update({'formset': self.checkin_formset})
 
         return ctx
 
@@ -266,6 +280,13 @@ class ParticipantSessionPageView(PageView):
 
         if formset.is_valid():
             for i, formdata in enumerate(formset.cleaned_data):
+                # Formsets with multiple forms put an empty dictionary in
+                # the cleaned data for unpopulated forms. We don't want
+                # to attempt to make a GoalSettingResponse for these
+                # optional, empty forms.
+                if formdata == {}:
+                    continue
+
                 option = formdata.get('option')
                 text = formdata.get('text')
 
@@ -294,7 +315,9 @@ class ParticipantSessionPageView(PageView):
         return formset
 
     def post(self, request, *args, **kwargs):
-        goalsettingblock = self._get_goal_setting_block()
+        goalsettingblock = self.get_first_block_of_type('goal setting block')
+        goalcheckinblock = self.get_first_block_of_type(
+            'goal check in page block')
 
         if goalsettingblock:
             formset = self._handle_goal_submission(request, goalsettingblock)
@@ -302,6 +325,10 @@ class ParticipantSessionPageView(PageView):
                 ctx = self.get_context_data()
                 ctx.update({'formset': formset})
                 return render(request, self.template_name, ctx)
+        elif goalcheckinblock:
+            formset = self.handle_goal_check_in_submission(
+                request, goalcheckinblock)
+            print '!'
 
         return super(ParticipantSessionPageView, self).post(
             request, *args, **kwargs)
