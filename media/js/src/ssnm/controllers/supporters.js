@@ -31,8 +31,10 @@
                 Em.debug('controller:supporters addSupporter');
                 var editSupporterController = this.get(
                     'controllers.edit-supporter');
-                editSupporterController.set(
-                    'model', this.store.createRecord('supporter'));
+                editSupporterController.setProperties({
+                    'isEditing': false,
+                    'model': this.store.createRecord('supporter')
+                });
                 this.send('openModal', 'edit-supporter-modal-1');
             },
 
@@ -45,7 +47,10 @@
                 Em.debug('controller:supporters editSupporter');
                 var editSupporterController = this.get(
                     'controllers.edit-supporter');
-                editSupporterController.set('model', supporter);
+                editSupporterController.setProperties({
+                    'isEditing': true,
+                    'model': supporter
+                });
                 this.send('openModal', 'edit-supporter-modal-1');
             }
         }

@@ -109,6 +109,14 @@ HTML template - there's probably a way of avoiding that step.
     {{outlet 'modal'}}
 </script>
 
+<script type="text/x-handlebars" data-template-name="edit-supporter-modal-delete-button">
+    {{#if isEditing}}
+    <button {{action 'deleteSupporter'}} class="btn btn-danger pull-left">
+        Delete
+    </button>
+    {{/if}}
+</script>
+
 <script type="text/x-handlebars" data-template-name="edit-supporter-modal-1">
     {{#modal-dialog action='closeModal'}}
     <div class="ssnm-modal-header">
@@ -125,6 +133,7 @@ HTML template - there's probably a way of avoiding that step.
         </form>
     </div>
     <div class="ssnm-modal-footer">
+        {{partial 'edit-supporter-modal-delete-button'}}
         <button {{action 'closeModal'}} class="btn btn-default">
             Cancel
         </button>
