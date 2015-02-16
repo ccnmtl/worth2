@@ -230,7 +230,14 @@ class ParticipantSessionPageView(
         elif goalcheckinblock:
             formset = self.handle_goal_check_in_submission(
                 request, goalcheckinblock)
-            print '!'
+            if not formset.is_valid():
+                ctx = self.get_context_data()
+                ctx.update({
+                    'checkin_formset': formset,
+                    'goal_checkin_context': zip(
+                        self.goal_setting_responses, formset),
+                })
+                return render(request, self.template_name, ctx)
 
         return super(ParticipantSessionPageView, self).post(
             request, *args, **kwargs)

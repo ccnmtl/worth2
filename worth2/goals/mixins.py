@@ -21,31 +21,19 @@ class GoalCheckInViewMixin(object):
         goalsettingblock = GoalSettingBlock.objects.get(
             session_num=goalcheckinblock.block().session_num)
 
-        goal_setting_responses = GoalSettingResponse.objects.filter(
+        self.goal_setting_responses = GoalSettingResponse.objects.filter(
             user=request.user,
             goal_setting_block=goalsettingblock)
 
-        # goal_check_in_responses = GoalCheckInResponse.objects.filter(
-        #    goal_setting_response__in=goal_setting_responses)
-
-        # Adapt to the strange behavior of formset_factory's "extra"
-        # param. The formset displays a different number of forms
-        # based on how many elements of initial data we give it, so
-        # we need to adjust "extra" based on "responses".
-        extra = goalsettingblock.goal_amount - 1
-        extra -= goal_setting_responses.count() - 1
-
-        extra = 2
         self.GoalCheckInFormSet = formset_factory(
             GoalCheckInForm,
-            min_num=1,
-            extra=extra)
+            min_num=self.goal_setting_responses.count())
 
         self.checkin_formset = self.GoalCheckInFormSet(
             prefix='pageblock-%s' % goalcheckinblock.pk)
 
         self.goal_checkin_context = zip(
-            goal_setting_responses, self.checkin_formset)
+            self.goal_setting_responses, self.checkin_formset)
 
     def handle_goal_check_in_submission(self, request, goalcheckinblock):
         formset = self.GoalCheckInFormSet(
