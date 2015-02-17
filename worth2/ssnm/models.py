@@ -1,7 +1,8 @@
 from django import forms
 from django.db import models
 
-from worth2.main.models import BasePageBlock, Participant
+from worth2.main.models import Participant
+from worth2.main.generic.models import BasePageBlock
 
 
 class Supporter(models.Model):
