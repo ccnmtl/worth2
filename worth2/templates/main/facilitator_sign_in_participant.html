@@ -17,12 +17,38 @@
         {{ form.errors }}
 
         <div class="form-group">
-            {{ form.participant_id|bootstrap_horizontal:'col-sm-3' }}
+            <label for="sign-in-cohort-filter"
+                   class="control-label col-sm-3">Filter by Cohort</label>
+            <div class="col-sm-3">
+                <select id="sign-in-cohort-filter" class="form-control">
+                    <option value="all">All Cohorts</option>
+                    <option value="">Unassigned</option>
+                    {% for cid in cohorts %}
+                    <option value="{{cid}}">{{cid}}</option>
+                    {% endfor %}
+                </select>
+            </div>
         </div>
 
         <div class="form-group">
-            {{ form.participant_location|bootstrap_horizontal:'col-sm-3' }}
+            <label class="control-label col-sm-3"
+                   for="{{form.participant_id.id_for_label}}">
+                Participant ID #</label>
+            <div class="col-sm-9">
+                <select class=" form-control" id="id_participant_id"
+                        name="participant_id">
+
+                    <option>Choose a Participant</option>
+                    {% for p in form.participant_id.field.queryset %}
+                    <option value="{{p.pk}}"
+                            data-cohort-id="{{p.cohort_id|default:''}}">
+                        {{p.study_id}}</option>
+                    {% endfor %}
+                </select>
+            </div>
         </div>
+
+        {{ form.participant_location|bootstrap_horizontal:'col-sm-3' }}
 
         <div class="form-group worth-participant-destination">
             <label for="participant_destination"
@@ -76,9 +102,7 @@
             </div>
         </div>
 
-        <div class="form-group">
-            {{ form.session_type|bootstrap_horizontal:'col-sm-3' }}
-        </div>
+        {{ form.session_type|bootstrap_horizontal:'col-sm-3' }}
 
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-6">

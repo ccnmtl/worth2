@@ -7,12 +7,15 @@ class SignInParticipantForm(forms.Form):
     participant_id = forms.ModelChoiceField(
         label='Participant ID #',
         empty_label=None,
-        queryset=Participant.objects.filter(is_archived=False),)
+        queryset=Participant.objects.filter(
+            is_archived=False).order_by('study_id'),
+        initial='Choose Participant',
+    )
 
     participant_location = forms.ModelChoiceField(
         label='Location',
         empty_label=None,
-        queryset=Location.objects.all(),)
+        queryset=Location.objects.order_by('name'))
 
     participant_destination = forms.ChoiceField(
         label='Take participant to:',

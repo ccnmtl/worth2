@@ -64,12 +64,18 @@ class ManageParticipants(ListView):
                                       if not p.is_archived]
         ctx['archived_participants'] = [p for p in ctx['object_list']
                                         if p.is_archived]
+        ctx['cohorts'] = Participant.objects.cohort_ids()
         return ctx
 
 
 class SignInParticipant(FormView):
     template_name = 'main/facilitator_sign_in_participant.html'
     form_class = SignInParticipantForm
+
+    def get_context_data(self, **kwargs):
+        ctx = super(SignInParticipant, self).get_context_data(**kwargs)
+        ctx.update({'cohorts': Participant.objects.cohort_ids()})
+        return ctx
 
     def form_valid(self, form):
         participant = form.cleaned_data.get('participant_id')

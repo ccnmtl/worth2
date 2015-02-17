@@ -3,6 +3,7 @@ from django.test import TestCase
 from pagetree.tests.factories import ModuleFactory
 from pagetree.models import Hierarchy
 
+from worth2.main.models import Participant
 from worth2.main.tests.factories import (
     AvatarFactory, LocationFactory, ParticipantFactory, SessionFactory
 )
@@ -46,6 +47,41 @@ class ParticipantTest(TestCase):
         self.assertEqual(
             self.participant.default_location().get_absolute_url(),
             self.hierarchy.get_root().get_absolute_url()
+        )
+
+
+class ParticipantManagerTest(TestCase):
+    def test_cohort_ids_empty(self):
+        self.assertEqual(Participant.objects.cohort_ids(), [])
+
+    def test_cohort_ids_removes_null(self):
+        ParticipantFactory()
+        ParticipantFactory()
+        ParticipantFactory()
+        self.assertEqual(Participant.objects.cohort_ids(), [])
+
+    def test_cohort_ids_are_sorted(self):
+        ParticipantFactory(cohort_id='111')
+        ParticipantFactory(cohort_id='333')
+        ParticipantFactory(cohort_id='222')
+        self.assertEqual(
+            Participant.objects.cohort_ids(),
+            ['111', '222', '333']
+        )
+
+    def test_cohort_ids_removes_duplicates(self):
+        ParticipantFactory(cohort_id='111')
+        ParticipantFactory(cohort_id='333')
+        ParticipantFactory(cohort_id='222')
+        ParticipantFactory(cohort_id='222')
+        ParticipantFactory(cohort_id='222')
+        ParticipantFactory(cohort_id='333')
+        ParticipantFactory(cohort_id='333')
+        ParticipantFactory(cohort_id='333')
+        ParticipantFactory(cohort_id='222')
+        self.assertEqual(
+            Participant.objects.cohort_ids(),
+            ['111', '222', '333']
         )
 
 

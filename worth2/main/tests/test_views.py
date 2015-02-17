@@ -134,6 +134,9 @@ class ManageParticipantsAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
         response = self.client.get(reverse('manage-participants'))
         self.assertContains(response, 'Manage Participants')
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['active_participants'], [])
+        self.assertEqual(response.context['archived_participants'], [])
+        self.assertEqual(response.context['cohorts'], [])
 
 
 class ManageParticipantsUnAuthedTest(TestCase):
@@ -147,6 +150,7 @@ class SignInParticipantAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
         response = self.client.get(reverse('sign-in-participant'))
         self.assertContains(response, 'Sign In a Participant')
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['cohorts'], [])
 
     def test_valid_form_submit(self):
         location = LocationFactory()
