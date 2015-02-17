@@ -22,9 +22,6 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
 
         # These blocks will be associated because they both default to
         # 'session_num' = 1.
-        # Put Goal Check In before Goal Setting (opposite of what
-        # actually will happen on production) to get around the
-        # fact that the goal setting page has needs_submit == True.
         self.root.add_child_section_from_dict({
             'label': 'Goal Setting Section',
             'slug': 'goal-setting-section',
