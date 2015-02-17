@@ -8,7 +8,27 @@
 
     <div class="col-sm-10">
         <form class="form-horizontal" method="post">{% csrf_token %}
-            {{ formset|bootstrap_horizontal }}
+            {{ formset.management_form }}
+
+            {% for form in formset %}
+
+            {% if forloop.first %}
+            {{ form|bootstrap_horizontal }}
+            {% else %}
+            {# Manually render the extra goal forms so we can give them #}
+            {# the 'Extra' label instead of 'Main'. #}
+            <div class="form-group">
+                <label class="control-label col-sm-2 col-lg-2">
+                    Extra {{block.goal_type}} goal
+                </label>
+                <div class="col-sm-10 col-lg-10">
+                    {{ form.option }}
+                </div>
+            </div>
+            {{ form.text|bootstrap_horizontal }}
+            {% endif %}
+
+            {% endfor %}
 
             <div class="form-group">
                 <label class="col-sm-4 control-label"></label>

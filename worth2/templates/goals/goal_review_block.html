@@ -1,0 +1,40 @@
+{% load bootstrap %}
+{% load avatar %}
+
+<div class="goal-review">
+    <h1>My Goals</h1>
+
+    <h2>Goal Review</h2>
+
+    <p>Let's review what you're committed to doing.</p>
+
+    <div class="col-sm-10">
+        <form class="form-horizontal">
+            <div class="well">
+                <div class="form-group">
+                    <label class="col-sm-3">
+                        My Main Support Goal
+                    </label>
+                    <div class="col-sm-7">
+                        Talk to a trustworthy person about things.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3">
+                        I will do this.
+                    </label>
+                    <div class="col-sm-7">
+                        I will talk to Pastor Debbie.
+                    </div>
+                </div>
+                <button class="btn btn-primary">Edit Goal</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-sm-2 avatar-block">
+        <img src="{% avatar_url user %}">
+    </div>
+
+    <div class="clearfix"><div>
+</div>
