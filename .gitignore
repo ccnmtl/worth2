@@ -7,3 +7,4 @@ reports
 ve
 node_modules
 media/admin-avatar.png
+media/js/lib/ember.debug.js
