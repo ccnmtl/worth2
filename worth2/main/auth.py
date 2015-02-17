@@ -30,16 +30,26 @@ def user_is_participant(user):
 
 
 def user_is_facilitator(user):
-    return not user.is_anonymous() and \
-        (not hasattr(user, 'profile') or not user.profile.is_participant())
+    """
+    Any normal user that can log in (has is_active=True) is considered
+    a facilitator in WORTH. Participants are 'authenticated' users, but
+    are not 'active'. So this permission is granted to anyone in the
+    system except for the participants.
+    """
+
+    return (hasattr(user, 'is_active') and user.is_active)
 
 
-class IsFacilitatorOrStaffPermission(permissions.BasePermission):
+class IsActivePermission(permissions.BasePermission):
     """A DRF permission to give facilitators and admins access."""
 
     def has_permission(self, request, view):
         user = getattr(request, 'user', None)
-        is_facilitator = user and hasattr(user, 'profile') and \
-            user.profile.is_facilitator()
+        return user_is_facilitator(user)
 
-        return user.is_staff or is_facilitator
+
+class IsParticipantPermission(permissions.BasePermission):
+    """A DRF permission to give participants permission."""
+    def has_permission(self, request, view):
+        user = getattr(request, 'user', None)
+        return user_is_participant(user)

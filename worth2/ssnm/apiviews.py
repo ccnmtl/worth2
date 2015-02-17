@@ -1,8 +1,7 @@
 from rest_framework import viewsets
 
-from worth2.ssnm.auth import (
-    InactiveUserSessionAuthentication, IsParticipantPermission
-)
+from worth2.ssnm.auth import InactiveUserSessionAuthentication
+from worth2.main.auth import IsParticipantPermission
 from worth2.ssnm.serializers import SupporterSerializer
 
 

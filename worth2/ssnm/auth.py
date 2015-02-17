@@ -1,5 +1,4 @@
 from rest_framework import authentication
-from rest_framework import permissions
 
 
 class InactiveUserSessionAuthentication(authentication.BaseAuthentication):
@@ -10,11 +9,3 @@ class InactiveUserSessionAuthentication(authentication.BaseAuthentication):
         request = request._request
         user = getattr(request, 'user', None)
         return (user, None)
-
-
-class IsParticipantPermission(permissions.BasePermission):
-    """ Give participants permission. """
-    def has_permission(self, request, view):
-        user = getattr(request, 'user', None)
-        return user and hasattr(user, 'profile') and \
-            user.profile.is_participant()
