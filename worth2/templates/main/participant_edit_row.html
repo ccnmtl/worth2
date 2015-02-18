@@ -1,15 +1,15 @@
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-sm-4">
         <div class="worth-study-id" title="Study ID">
             {{participant.study_id}}
         </div>
     </div>
-    <div class="col-md-2">
+    <div class="col-sm-2 worth-cohort-container">
         <div class="worth-cohort-id" title="Cohort ID">
-            {{participant.cohort_id|default_if_none:''}}
+            {{participant.cohort_id|default:''}}
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-sm-6">
         <button class="btn btn-primary"
                 data-toggle="modal"
                 data-target="#edit-participant-modal-{{participant.pk}}">

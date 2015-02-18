@@ -5,11 +5,14 @@ define([
     'views/create-participant',
     'views/edit-participant',
     'views/sign-in-participant',
+    'views/manage-participant-filter',
+    'views/sign-in-participant-filter',
     'bootstrap',
     'jquery-cookie'
 ], function(
     $, _, Backbone,
-    CreateParticipantView, EditParticipantView, SignInParticipantView
+    CreateParticipantView, EditParticipantView, SignInParticipantView,
+    ManageParticipantFilter, SignInParticipantFilter
 ) {
     $(function() {
         var csrftoken = $.cookie('csrftoken');
@@ -34,6 +37,10 @@ define([
         });
 
         new SignInParticipantView();
+
+        new ManageParticipantFilter();
+
+        new SignInParticipantFilter();
     };
 
     return {

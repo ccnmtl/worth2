@@ -226,6 +226,23 @@ cohort_id_validator = RegexValidator(
     message='That cohort ID isn\'t valid. (It needs to be 3 digits)')
 
 
+class ParticipantManager(models.Manager):
+    def cohort_ids(self):
+        """
+        Get a list of all the unique cohort IDs that have been entered
+        on the participants.
+        """
+
+        ids = self.all().values_list(
+            'cohort_id', flat=True
+        ).exclude(
+            cohort_id__isnull=True
+        ).exclude(
+            cohort_id__exact='').distinct()
+
+        return sorted(ids)
+
+
 class Participant(InactiveUserProfile):
     """ A Participant is a worth-specific inactive user profile.
     """
@@ -256,6 +273,8 @@ class Participant(InactiveUserProfile):
 
     # Participants can choose an avatar after their user is created.
     avatar = models.ForeignKey(Avatar, blank=True, null=True)
+
+    objects = ParticipantManager()
 
     def __unicode__(self):
         return unicode(self.study_id)
