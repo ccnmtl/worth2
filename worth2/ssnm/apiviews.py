@@ -1,17 +1,16 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 
-from worth2.ssnm.auth import InactiveUserSessionAuthentication
-from worth2.main.auth import IsParticipantPermission
+from worth2.ssnm.auth import AnySessionAuthentication
 from worth2.ssnm.serializers import SupporterSerializer
 
 
 class SupporterViewSet(viewsets.ModelViewSet):
     serializer_class = SupporterSerializer
-    authentication_classes = (InactiveUserSessionAuthentication,)
-    permission_classes = (IsParticipantPermission,)
+    authentication_classes = (AnySessionAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
 
     def get_queryset(self):
-        return self.request.user.profile.participant.supporters.all()
+        return self.request.user.supporters.all()
 
     def perform_create(self, serializer):
-        serializer.save(participant=self.request.user.profile.participant)
+        serializer.save(user=self.request.user)
