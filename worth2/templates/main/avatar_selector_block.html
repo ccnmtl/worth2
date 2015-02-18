@@ -5,13 +5,15 @@
 {% lorem 1 p %}
 
 <div class="worth-avatars">
-    {% for avatar in block.avatars %}
-    <span class="worth-avatar">
-        <img src="{{ avatar.image.url }}" />
-    </span>
-    <button class="btn btn-default" type="submit"
-            name="pageblock-{{block.pageblock.pk}}-avatar-id"
-            value="{{ avatar.pk }}"
-            >This is me!</button>
-    {% endfor %}
+    <form method="post" action=".">{% csrf_token %}
+        {% for avatar in block.avatars %}
+        <span class="worth-avatar">
+            <img src="{{ avatar.image.url }}" />
+        </span>
+        <button class="btn btn-default" type="submit"
+                name="pageblock-{{block.pageblock.pk}}-avatar-id"
+                value="{{ avatar.pk }}"
+                >This is me!</button>
+        {% endfor %}
+    </form>
 </div>
