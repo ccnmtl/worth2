@@ -8,9 +8,9 @@ from worth2.main.tests.mixins import LoggedInParticipantTestMixin
 
 class SupporterViewSetTest(LoggedInParticipantTestMixin, APITestCase):
     def test_list(self):
-        SupporterFactory(participant=self.participant)
-        SupporterFactory(participant=self.participant)
-        SupporterFactory(participant=self.participant)
+        SupporterFactory(user=self.u)
+        SupporterFactory(user=self.u)
+        SupporterFactory(user=self.u)
         SupporterFactory()
 
         r = self.client.get(reverse('supporter-list'))
@@ -18,7 +18,7 @@ class SupporterViewSetTest(LoggedInParticipantTestMixin, APITestCase):
         self.assertEqual(r.data.get('count'), 3)
 
     def test_retrieve(self):
-        supporter = SupporterFactory(participant=self.participant)
+        supporter = SupporterFactory(user=self.u)
         r = self.client.get(
             reverse('supporter-detail', args=(supporter.pk,))
         )
@@ -52,3 +52,34 @@ class SupporterViewSetTest(LoggedInParticipantTestMixin, APITestCase):
         self.assertEqual(supporter.name, 'Supporter name')
         self.assertEqual(supporter.provides_emotional_support, True)
         self.assertEqual(supporter.provides_practical_support, False)
+
+
+class SupporterViewSetUnAuthedTest(APITestCase):
+    def test_list(self):
+        SupporterFactory()
+        SupporterFactory()
+
+        r = self.client.get(reverse('supporter-list'))
+        self.assertEqual(r.status_code, 403)
+
+    def test_retrieve(self):
+        supporter = SupporterFactory()
+        r = self.client.get(
+            reverse('supporter-detail', args=(supporter.pk,))
+        )
+        self.assertEqual(r.status_code, 403)
+
+    def test_create(self):
+        r = self.client.post(
+            reverse('supporter-list'),
+            {
+                'closeness': 'NC',
+                'influence': 'N',
+                'name': 'Supporter name',
+                'provides_emotional_support': True,
+                'provides_practical_support': False,
+            }
+        )
+
+        self.assertEqual(r.status_code, 403)
+        self.assertEqual(Supporter.objects.count(), 0)

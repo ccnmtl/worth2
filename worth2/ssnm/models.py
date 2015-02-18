@@ -1,12 +1,12 @@
 from django import forms
+from django.contrib.auth.models import User
 from django.db import models
 
-from worth2.main.models import Participant
 from worth2.main.generic.models import BasePageBlock
 
 
 class Supporter(models.Model):
-    participant = models.ForeignKey(Participant, related_name='supporters')
+    user = models.ForeignKey(User, null=True, related_name='supporters')
     name = models.TextField()
 
     closeness = models.CharField(
