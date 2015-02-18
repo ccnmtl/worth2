@@ -189,6 +189,23 @@ class SignInParticipantAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
             'Select a valid choice. That choice is not one of the ' +
             'available choices.')
 
+    def test_invalid_form_submit_no_session_type(self):
+        location = LocationFactory()
+        participant = ParticipantFactory()
+        response = self.client.post(
+            reverse('sign-in-participant'), {
+                'participant_id': participant.pk,
+                'participant_location': location.pk,
+                'participant_destination': 'last_completed_activity',
+            }
+        )
+
+        form = response.context['form']
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(form.is_valid())
+        self.assertFormError(
+            response, 'form', 'session_type', 'This field is required.')
+
 
 class SignInParticipantUnAuthedTest(TestCase):
     def test_get(self):
