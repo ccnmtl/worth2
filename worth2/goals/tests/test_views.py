@@ -272,7 +272,8 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
             goal_setting_block=pageblock,
             user=self.u,
         )
-        self.assertEqual(r.status_code, 302)
+        self.assertEqual(r.status_code, 200)
+        self.assertContains(r, '3 goals saved.')
         self.assertEqual(responses.count(), 3)
         self.assertEqual(responses.first().text, 'test explanation')
         self.assertEqual(responses.all()[1].text, 'test explanation 2')
@@ -299,8 +300,9 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
             goal_setting_block=pageblock,
             user=self.u,
         )
-        self.assertEqual(r.status_code, 302)
+        self.assertEqual(r.status_code, 200)
         self.assertEqual(responses.count(), 1)
+        self.assertContains(r, '1 goal saved.')
         self.assertEqual(responses.first().option, option)
         self.assertEqual(responses.first().text, 'test explanation')
 
@@ -348,7 +350,8 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
             '%s-0-text' % p: 'test explanation 3',
         })
 
-        self.assertEqual(r.status_code, 302)
+        self.assertEqual(r.status_code, 200)
+        self.assertContains(r, '1 goal saved.')
         self.assertEqual(
             GoalSettingResponse.objects.filter(
                 goal_setting_block=pageblock.block(),
@@ -381,6 +384,7 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
         })
 
         self.assertEqual(r.status_code, 200)
+        self.assertNotContains(r, '1 goal saved.')
         self.assertFormError(
             r, 'form', 'option',
             'Select a valid choice. That choice is not one of the ' +

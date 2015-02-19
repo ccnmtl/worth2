@@ -10,8 +10,13 @@
         <form class="form-horizontal" method="post">{% csrf_token %}
             {{ formset.management_form }}
 
-            {% for form in formset %}
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
+            {% endif %}
 
+            {% for form in formset %}
             {% if forloop.first %}
             {{ form|bootstrap_horizontal }}
             {% else %}
