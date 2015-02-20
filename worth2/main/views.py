@@ -169,7 +169,7 @@ class ParticipantSessionPageView(
         goalcheckinblock = self.get_first_block_of_type(
             'goal check in page block')
         if goalsettingblock:
-            ctx.update({'formset': self.formset})
+            ctx.update({'setting_formset': self.setting_formset})
         elif goalcheckinblock:
             ctx.update({
                 'checkin_formset': self.checkin_formset,
@@ -234,7 +234,7 @@ class ParticipantSessionPageView(
                 request, goalsettingblock)
             if not formset.is_valid():
                 ctx = self.get_context_data()
-                ctx.update({'formset': formset})
+                ctx.update({'setting_formset': formset})
                 return render(request, self.template_name, ctx)
             else:
                 # Redirect to same page to show success state and allow

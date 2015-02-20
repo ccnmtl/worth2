@@ -159,15 +159,15 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
             '%s-0-what_got_in_the_way' % p: self.checkin_opt2.pk,
             '%s-0-other' % p: 'other text for form 1',
 
-            '%s-1-goal_setting_response_id' % p: None,
+            '%s-1-goal_setting_response_id' % p: '',
             '%s-1-i_will_do_this' % p: None,
             '%s-1-what_got_in_the_way' % p: None,
-            '%s-1-other' % p: None,
+            '%s-1-other' % p: '',
 
-            '%s-2-goal_setting_response_id' % p: None,
+            '%s-2-goal_setting_response_id' % p: '',
             '%s-2-i_will_do_this' % p: None,
             '%s-2-what_got_in_the_way' % p: None,
-            '%s-2-other' % p: None,
+            '%s-2-other' % p: '',
         })
 
         responses = GoalCheckInResponse.objects.filter(
@@ -222,8 +222,7 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.assertEqual(r.status_code, 200)
         self.assertFormsetError(
             r, 'checkin_formset', 0, 'i_will_do_this',
-            'Select a valid choice. None is not one of the ' +
-            'available choices.')
+            'Select a valid choice. None is not one of the available choices.')
 
 
 class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
@@ -261,10 +260,13 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
             '%s-MAX_NUM_FORMS' % p: '1000',
 
             '%s-0-option' % p: option.pk,
+            '%s-0-other_text' % p: '',
             '%s-0-text' % p: 'test explanation',
+            '%s-1-other_text' % p: '',
             '%s-1-option' % p: option.pk,
             '%s-1-text' % p: 'test explanation 2',
             '%s-2-option' % p: option.pk,
+            '%s-2-other_text' % p: '',
             '%s-2-text' % p: 'test explanation 3',
         })
 
@@ -293,6 +295,7 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
             '%s-MAX_NUM_FORMS' % p: '1000',
 
             '%s-0-option' % p: option.pk,
+            '%s-0-other_text' % p: '',
             '%s-0-text' % p: 'test explanation',
         })
 
@@ -325,6 +328,7 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
             '%s-MAX_NUM_FORMS' % p: '1000',
 
             '%s-0-option' % p: option.pk,
+            '%s-0-other_text' % p: '',
             '%s-0-text' % p: 'test explanation',
         })
 
@@ -336,6 +340,7 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
             '%s-MAX_NUM_FORMS' % p: '1000',
 
             '%s-0-option' % p: option2.pk,
+            '%s-0-other_text' % p: '',
             '%s-0-text' % p: 'test explanation 2',
         })
 
@@ -347,6 +352,7 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
             '%s-MAX_NUM_FORMS' % p: '1000',
 
             '%s-0-option' % p: option.pk,
+            '%s-0-other_text' % p: '',
             '%s-0-text' % p: 'test explanation 3',
         })
 
@@ -380,12 +386,90 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
             '%s-MAX_NUM_FORMS' % p: '1000',
 
             '%s-0-option' % p: None,
-            '%s-0-text' % p: None,
+            '%s-0-other_text' % p: '',
+            '%s-0-text' % p: '',
         })
 
         self.assertEqual(r.status_code, 200)
         self.assertNotContains(r, '1 goal saved.')
-        self.assertFormError(
-            r, 'form', 'option',
+        self.assertEqual(GoalSettingResponse.objects.count(), 0)
+        self.assertFormsetError(
+            r, 'setting_formset', 0, 'option',
             'Select a valid choice. That choice is not one of the ' +
             'available choices.')
+        self.assertFormsetError(
+            r, 'setting_formset', 0, 'text',
+            'This field is required.')
+
+    def test_post_na_option_makes_text_not_required(self):
+        pageblock = self.root.get_first_child().pageblock_set.first()
+        GoalOptionFactory(goal_setting_block=pageblock.block())
+        na_option = GoalOptionFactory(
+            text='n/a', goal_setting_block=pageblock.block())
+        p = 'pageblock-%s' % pageblock.pk
+        r = self.client.post(self.url, {
+            # Formset Management form params
+            '%s-TOTAL_FORMS' % p: '1',
+            '%s-INITIAL_FORMS' % p: '0',
+            '%s-MIN_NUM_FORMS' % p: '1',
+            '%s-MAX_NUM_FORMS' % p: '1000',
+
+            '%s-0-option' % p: na_option.pk,
+            '%s-0-other_text' % p: '',
+            '%s-0-text' % p: '',
+        })
+
+        self.assertEqual(r.status_code, 200)
+        self.assertNotContains(r, 'This field is required.')
+        self.assertEqual(GoalSettingResponse.objects.count(), 1)
+        self.assertContains(r, '1 goal saved.')
+
+    def test_post_other_option_makes_other_text_required(self):
+        pageblock = self.root.get_first_child().pageblock_set.first()
+        GoalOptionFactory(goal_setting_block=pageblock.block())
+        other_option = GoalOptionFactory(
+            text='Other', goal_setting_block=pageblock.block())
+        p = 'pageblock-%s' % pageblock.pk
+        r = self.client.post(self.url, {
+            # Formset Management form params
+            '%s-TOTAL_FORMS' % p: '1',
+            '%s-INITIAL_FORMS' % p: '0',
+            '%s-MIN_NUM_FORMS' % p: '1',
+            '%s-MAX_NUM_FORMS' % p: '1000',
+
+            '%s-0-option' % p: other_option.pk,
+            '%s-0-other_text' % p: '',
+            '%s-0-text' % p: 'test explanation',
+        })
+
+        self.assertEqual(r.status_code, 200)
+        self.assertContains(r, 'This field is required.')
+        self.assertNotContains(r, '1 goal saved.')
+        self.assertEqual(GoalSettingResponse.objects.count(), 0)
+        self.assertFormsetError(
+            r, 'setting_formset', 0, 'other_text', 'This field is required.')
+
+    def test_post_valid_with_other_option(self):
+        pageblock = self.root.get_first_child().pageblock_set.first()
+        GoalOptionFactory(goal_setting_block=pageblock.block())
+        other_option = GoalOptionFactory(
+            text='Other', goal_setting_block=pageblock.block())
+        p = 'pageblock-%s' % pageblock.pk
+        r = self.client.post(self.url, {
+            # Formset Management form params
+            '%s-TOTAL_FORMS' % p: '1',
+            '%s-INITIAL_FORMS' % p: '0',
+            '%s-MIN_NUM_FORMS' % p: '1',
+            '%s-MAX_NUM_FORMS' % p: '1000',
+
+            '%s-0-option' % p: other_option.pk,
+            '%s-0-other_text' % p: 'Some other goal',
+            '%s-0-text' % p: 'test explanation',
+        })
+
+        self.assertEqual(r.status_code, 200)
+        self.assertNotContains(r, 'This field is required.')
+        self.assertContains(r, '1 goal saved.')
+        self.assertEqual(GoalSettingResponse.objects.count(), 1)
+        response = GoalSettingResponse.objects.first()
+        self.assertEqual(response.other_text, 'Some other goal')

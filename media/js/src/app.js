@@ -7,12 +7,13 @@ define([
     'views/sign-in-participant',
     'views/manage-participant-filter',
     'views/sign-in-participant-filter',
+    'views/goal-setting-form',
     'bootstrap',
     'jquery-cookie'
 ], function(
     $, _, Backbone,
     CreateParticipantView, EditParticipantView, SignInParticipantView,
-    ManageParticipantFilter, SignInParticipantFilter
+    ManageParticipantFilter, SignInParticipantFilter, GoalSettingFormView
 ) {
     $(function() {
         var csrftoken = $.cookie('csrftoken');
@@ -41,6 +42,8 @@ define([
         new ManageParticipantFilter();
 
         new SignInParticipantFilter();
+
+        new GoalSettingFormView();
     };
 
     return {

@@ -1,8 +1,9 @@
+from collections import OrderedDict
 from django import forms
 from django.forms.formsets import formset_factory
 from django.shortcuts import get_object_or_404
 
-from worth2.goals.forms import GoalCheckInForm
+from worth2.goals.forms import GoalCheckInForm, GoalSettingForm
 from worth2.goals.models import (
     GoalCheckInResponse, GoalOption, GoalSettingResponse
 )
@@ -78,20 +79,21 @@ class GoalSettingViewMixin(object):
         To be used by GET and POST.
         """
 
-        # I'd like to define the GoalSettingForm instead in
-        # goals/forms.py, but the goal field depends on data I can
-        # only get here.
-        class GoalSettingForm(forms.Form):
+        class DynamicGoalSettingForm(GoalSettingForm):
+
             option = forms.ModelChoiceField(
                 label='Main services goal',
                 queryset=GoalOption.objects.filter(
                     goal_setting_block=goalsettingblock.block()),
-                widget=forms.Select(attrs={'class': 'form-control'}),
+                widget=forms.Select(
+                    attrs={'class': 'form-control goal-option'}),
             )
-            text = forms.CharField(
-                widget=forms.Textarea(attrs={'rows': 3}),
-                label='How will you make this happen?',
-            )
+
+        # Put the form's fields in the right order.
+        DynamicGoalSettingForm.base_fields = OrderedDict(
+            (k, DynamicGoalSettingForm.base_fields[k])
+            for k in ['option', 'other_text', 'text']
+        )
 
         # If there's existing responses to this pageblock, use them
         # to bind the formset.
@@ -107,7 +109,7 @@ class GoalSettingViewMixin(object):
         extra -= responses.count() - 1
 
         self.GoalSettingFormSet = formset_factory(
-            GoalSettingForm,
+            DynamicGoalSettingForm,
             extra=extra,
             # min_num is 1 because there's always a 'Main' goal form.
             min_num=1,
@@ -121,7 +123,7 @@ class GoalSettingViewMixin(object):
                 'text': r.text,
             })
 
-        self.formset = self.GoalSettingFormSet(
+        self.setting_formset = self.GoalSettingFormSet(
             prefix='pageblock-%s' % goalsettingblock.pk,
             initial=tuple(initial_data),
         )

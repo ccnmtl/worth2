@@ -268,3 +268,7 @@ footer.footer {
 .form-inline .form-group {
     margin-right: 16px;
 }
+
+.goal-setting .goal-other-container {
+    display: none;
+}
