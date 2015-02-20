@@ -153,14 +153,17 @@ class GoalCheckInResponse(models.Model):
     """
 
     goal_setting_response = models.ForeignKey(GoalSettingResponse, unique=True)
+
+    # This field is actually "How did it go?"
     i_will_do_this = models.CharField(
         max_length=255,
         choices=(
-            ('yes', 'Yes'),
-            ('no', 'No'),
-            ('in progress', 'In Progress'),
+            ('yes', 'I did it!'),
+            ('in progress', 'I\'m still working on it.'),
+            ('no', 'I haven\'t started this goal.'),
         ))
-    what_got_in_the_way = models.ForeignKey(GoalCheckInOption)
+
+    what_got_in_the_way = models.ForeignKey(GoalCheckInOption, null=True)
     other = models.TextField(blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)

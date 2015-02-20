@@ -1,7 +1,7 @@
 {% load bootstrap %}
 {% load avatar %}
 
-<div class="goal-check-in">
+<div class="goal-check-in" id="goal-checkin-block">
     <h1>My Goals</h1>
 
     <h2>Goal Check In</h2>
@@ -11,9 +11,15 @@
     <form class="form-horizontal" method="post">{% csrf_token %}
         {{ checkin_formset.management_form }}
 
+        {% comment %}
+        This is kind of non-standard but necessary because we need to
+        iterate over the goal setting responses and the goal checkin
+        formset at the same time. I've done this by zipping them
+        together and putting them in the view's context.
+        {% endcomment %}
         {% for t in goal_checkin_context %}
-        <div class="well">
-            <div class="form-group">
+        <div class="well checkin-group">
+            <div class="form-group non-interactive">
                 <label class="control-label col-sm-2">
                     My Support Goal
                 </label>
@@ -23,7 +29,7 @@
                     </p>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group non-interactive">
                 <label class="control-label col-sm-2">
                     I will do this.
                 </label>
