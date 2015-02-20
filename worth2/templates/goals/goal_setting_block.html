@@ -1,14 +1,14 @@
 {% load bootstrap %}
 {% load avatar %}
 
-<div class="goal-setting">
+<div class="goal-setting" id="goal-setting-block">
     <h1>My Goals</h1>
 
-    <h2>Setting {{block.goal_type}} Goals</h2>
+    <h2>Setting {{block.get_goal_type_display}} Goals</h2>
 
     <div class="col-sm-10">
         <form class="form-horizontal" method="post">{% csrf_token %}
-            {{ formset.management_form }}
+            {{ setting_formset.management_form }}
 
             {% if messages %}
             {% for message in messages %}
@@ -16,21 +16,33 @@
             {% endfor %}
             {% endif %}
 
-            {% for form in formset %}
+            {% for form in setting_formset %}
             {% if forloop.first %}
-            {{ form|bootstrap_horizontal }}
+            <span class="goal-form">
+                {{ form.option|bootstrap_horizontal }}
+                <div class="goal-other-container">
+                    {{ form.other_text|bootstrap_horizontal }}
+                </div>
+                {{ form.text|bootstrap_horizontal }}
+            </span>
             {% else %}
             {# Manually render the extra goal forms so we can give them #}
             {# the 'Extra' label instead of 'Main'. #}
-            <div class="form-group">
-                <label class="control-label col-sm-2 col-lg-2">
-                    Extra {{block.goal_type}} goal
-                </label>
-                <div class="col-sm-10 col-lg-10">
-                    {{ form.option }}
+            <hr>
+            <span class="goal-form">
+                <div class="form-group">
+                    <label class="control-label col-sm-2 col-lg-2">
+                        Extra {{block.goal_type}} goal
+                    </label>
+                    <div class="col-sm-10 col-lg-10">
+                        {{ form.option }}
+                    </div>
                 </div>
-            </div>
-            {{ form.text|bootstrap_horizontal }}
+                <div class="goal-other-container">
+                    {{ form.other_text|bootstrap_horizontal }}
+                </div>
+                {{ form.text|bootstrap_horizontal }}
+            </span>
             {% endif %}
 
             {% endfor %}

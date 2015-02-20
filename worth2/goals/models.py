@@ -83,7 +83,7 @@ class GoalSettingBlock(models.Model):
             slug = 'no section'
 
         return unicode(self.get_goal_type_display() + ' goals ' +
-                       slug + '. id: ' +
+                       '[' + slug + '] id: ' +
                        unicode(self.pk))
 
     def submit(self, user, request_data):
@@ -115,7 +115,9 @@ class GoalSettingResponse(models.Model):
 
     goal_setting_block = models.ForeignKey(GoalSettingBlock)
     user = models.ForeignKey(User)
+
     option = models.ForeignKey(GoalOption)
+    other_text = models.TextField(blank=True, null=True)
     text = models.TextField(blank=True, null=True)
 
     # Correspond this response with a specific form on the block. This
