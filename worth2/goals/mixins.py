@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 
 from worth2.goals.forms import GoalCheckInForm
 from worth2.goals.models import (
-    GoalCheckInResponse, GoalOption, GoalSettingBlock, GoalSettingResponse
+    GoalCheckInResponse, GoalOption, GoalSettingResponse
 )
 
 
@@ -17,10 +17,7 @@ class GoalCheckInViewMixin(object):
     def create_goal_check_in_formset(self, request, goalcheckinblock):
         """Attach the formset's class and instance to this view."""
 
-        # Find the goal setting block by the goal checkin block's session
-        # number.
-        goalsettingblock = GoalSettingBlock.objects.get(
-            session_num=goalcheckinblock.block().session_num)
+        goalsettingblock = goalcheckinblock.block().goal_setting_block
 
         self.goal_setting_responses = GoalSettingResponse.objects.filter(
             user=request.user,

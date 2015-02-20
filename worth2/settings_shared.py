@@ -77,6 +77,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'stagingcontext.staging_processor',
     'djangowind.context.context_processor',
     'django.core.context_processors.static',
+    'django.contrib.messages.context_processors.messages',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -175,7 +176,6 @@ PAGEBLOCKS = [
     'protectivebehaviors.RateMyRiskQuiz',
     'ssnm.SsnmPageBlock',
     'goals.GoalSettingBlock',
-    'goals.GoalReviewPageBlock',
     'goals.GoalCheckInPageBlock',
 ]
 

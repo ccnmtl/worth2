@@ -2,12 +2,14 @@ from django import http
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
+from django.contrib import messages
 from django.db.models import Q
 from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 from django.shortcuts import redirect, render
+from django.template.defaultfilters import pluralize
 
 from pagetree.generic.views import PageView
 from pagetree.models import PageBlock
@@ -120,7 +122,8 @@ class SignInParticipant(FormView):
 
 
 class ParticipantSessionPageView(
-        GoalCheckInViewMixin, GoalSettingViewMixin, PageView):
+        GoalCheckInViewMixin, GoalSettingViewMixin,
+        PageView):
     """WORTH version of pagetree's PageView."""
 
     gated = True
@@ -232,6 +235,19 @@ class ParticipantSessionPageView(
             if not formset.is_valid():
                 ctx = self.get_context_data()
                 ctx.update({'formset': formset})
+                return render(request, self.template_name, ctx)
+            else:
+                # Redirect to same page to show success state and allow
+                # the participant to edit their choices.
+                ctx = self.get_context_data()
+                if formset.has_changed():
+                    goals_created = len([f for f in formset.cleaned_data
+                                         if f != {}])
+                    messages.success(
+                        request,
+                        str(goals_created) + ' goal' +
+                        pluralize(goals_created) +
+                        ' saved.')
                 return render(request, self.template_name, ctx)
         elif goalcheckinblock:
             formset = self.handle_goal_check_in_submission(

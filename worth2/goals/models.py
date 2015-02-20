@@ -23,12 +23,6 @@ class GoalSettingBlock(models.Model):
     display_name = 'Goal Setting Block'
     template_file = 'goals/goal_setting_block.html'
 
-    session_num = models.PositiveSmallIntegerField(
-        default=1,
-        help_text='The session this is associated with (i.e. 1 through 5).',
-        db_index=True,
-    )
-
     goal_type = models.CharField(
         max_length=255,
         choices=(
@@ -83,7 +77,13 @@ class GoalSettingBlock(models.Model):
         return True
 
     def __unicode__(self):
-        return unicode('Goal Setting Block ' + self.goal_type + ' ' +
+        try:
+            slug = self.pageblock().section.get_parent().slug
+        except AttributeError:
+            slug = 'no section'
+
+        return unicode(self.get_goal_type_display() + ' goals ' +
+                       slug + '. id: ' +
                        unicode(self.pk))
 
     def submit(self, user, request_data):
@@ -165,46 +165,11 @@ class GoalCheckInResponse(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class GoalReviewPageBlock(BasePageBlock):
-    display_name = 'Goal Review Block'
-    template_file = 'goals/goal_review_block.html'
-
-    session_num = models.PositiveSmallIntegerField(
-        default=1,
-        help_text='The session this is associated with (i.e. 1 through 5).'
-    )
-
-    @classmethod
-    def add_form(cls):
-        return GoalReviewPageBlockForm()
-
-    def edit_form(self):
-        return GoalReviewPageBlockForm(instance=self)
-
-    @classmethod
-    def create(cls, request):
-        form = GoalReviewPageBlockForm(request.POST)
-        return form.save()
-
-    def edit(self, vals, files):
-        form = GoalReviewPageBlockForm(data=vals, files=files, instance=self)
-        if form.is_valid():
-            form.save()
-
-
-class GoalReviewPageBlockForm(forms.ModelForm):
-    class Meta:
-        model = GoalReviewPageBlock
-
-
 class GoalCheckInPageBlock(BasePageBlock):
     display_name = 'Goal Check In Block'
     template_file = 'goals/goal_check_in_block.html'
 
-    session_num = models.PositiveSmallIntegerField(
-        default=1,
-        help_text='The session this is associated with (i.e. 1 through 5).'
-    )
+    goal_setting_block = models.ForeignKey(GoalSettingBlock, null=True)
 
     def needs_submit(self):
         return True

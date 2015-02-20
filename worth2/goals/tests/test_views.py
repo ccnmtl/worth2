@@ -20,8 +20,6 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.h = get_hierarchy('main', '/pages/')
         self.root = self.h.get_root()
 
-        # These blocks will be associated because they both default to
-        # 'session_num' = 1.
         self.root.add_child_section_from_dict({
             'label': 'Goal Setting Section',
             'slug': 'goal-setting-section',
@@ -30,6 +28,9 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
             }],
             'children': [],
         })
+        goalsettingblock = \
+            self.root.get_first_child().pageblock_set.first()
+
         self.root.add_child_section_from_dict({
             'label': 'Goal Check In Section',
             'slug': 'goal-check-in-section',
@@ -38,12 +39,18 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
             }],
             'children': [],
         })
+        self.goalcheckinblock = \
+            self.root.get_first_child().get_next().pageblock_set.first()
+
+        # Set the check-in block's setting block to the one we just
+        # created.
+        self.goalcheckinblock.block().goal_setting_block = \
+            goalsettingblock.block()
+
         unlock_hierarchy(self.root.get_first_child(), self.u)
 
         self.url = '/pages/goal-check-in-section/'
 
-        goalsettingblock = \
-            self.root.get_first_child().pageblock_set.first()
         opt1 = GoalOptionFactory(goal_setting_block=goalsettingblock.block())
         opt2 = GoalOptionFactory(goal_setting_block=goalsettingblock.block())
         opt3 = GoalOptionFactory(goal_setting_block=goalsettingblock.block())
@@ -71,9 +78,6 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
             self.setting_resp1, self.setting_resp2, self.setting_resp3
         ]
         self.assertEqual(GoalSettingBlock.objects.count(), 1)
-
-        self.goalcheckinblock = \
-            self.root.get_first_child().get_next().pageblock_set.first()
 
         self.checkin_opt1 = GoalCheckInOptionFactory()
         self.checkin_opt2 = GoalCheckInOptionFactory()
@@ -154,6 +158,16 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
             '%s-0-i_will_do_this' % p: 'no',
             '%s-0-what_got_in_the_way' % p: self.checkin_opt2.pk,
             '%s-0-other' % p: 'other text for form 1',
+
+            '%s-1-goal_setting_response_id' % p: None,
+            '%s-1-i_will_do_this' % p: None,
+            '%s-1-what_got_in_the_way' % p: None,
+            '%s-1-other' % p: None,
+
+            '%s-2-goal_setting_response_id' % p: None,
+            '%s-2-i_will_do_this' % p: None,
+            '%s-2-what_got_in_the_way' % p: None,
+            '%s-2-other' % p: None,
         })
 
         responses = GoalCheckInResponse.objects.filter(
@@ -162,13 +176,12 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
 
         self.assertEqual(responses.count(), 0)
         self.assertEqual(r.status_code, 200)
-        self.assertContains(r, 'required')
         self.assertFormsetError(
             r, 'checkin_formset', 1, 'i_will_do_this',
-            'This field is required.')
+            'Select a valid choice. None is not one of the available choices.')
         self.assertFormsetError(
             r, 'checkin_formset', 2, 'i_will_do_this',
-            'This field is required.')
+            'Select a valid choice. None is not one of the available choices.')
 
     def test_post_multiple_times(self):
         """
@@ -259,7 +272,8 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
             goal_setting_block=pageblock,
             user=self.u,
         )
-        self.assertEqual(r.status_code, 302)
+        self.assertEqual(r.status_code, 200)
+        self.assertContains(r, '3 goals saved.')
         self.assertEqual(responses.count(), 3)
         self.assertEqual(responses.first().text, 'test explanation')
         self.assertEqual(responses.all()[1].text, 'test explanation 2')
@@ -286,8 +300,9 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
             goal_setting_block=pageblock,
             user=self.u,
         )
-        self.assertEqual(r.status_code, 302)
+        self.assertEqual(r.status_code, 200)
         self.assertEqual(responses.count(), 1)
+        self.assertContains(r, '1 goal saved.')
         self.assertEqual(responses.first().option, option)
         self.assertEqual(responses.first().text, 'test explanation')
 
@@ -335,7 +350,8 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
             '%s-0-text' % p: 'test explanation 3',
         })
 
-        self.assertEqual(r.status_code, 302)
+        self.assertEqual(r.status_code, 200)
+        self.assertContains(r, '1 goal saved.')
         self.assertEqual(
             GoalSettingResponse.objects.filter(
                 goal_setting_block=pageblock.block(),
@@ -368,6 +384,7 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
         })
 
         self.assertEqual(r.status_code, 200)
+        self.assertNotContains(r, '1 goal saved.')
         self.assertFormError(
             r, 'form', 'option',
             'Select a valid choice. That choice is not one of the ' +

@@ -260,6 +260,11 @@ footer.footer {
 .navbar-nav .last-child {
     margin-right: 10px;
 }
+
+.navbar-inverse .navbar-nav>li>a {
+    color: #e0e0e0;
+}
+
 .form-inline .form-group {
     margin-right: 16px;
 }

@@ -12,7 +12,6 @@ class GoalSettingBlockFactory(factory.DjangoModelFactory):
     class Meta:
         model = GoalSettingBlock
 
-    session_num = 1
     goal_amount = 3
 
 
@@ -38,7 +37,7 @@ class GoalCheckInBlockFactory(factory.DjangoModelFactory):
     class Meta:
         model = GoalCheckInPageBlock
 
-    session_num = 1
+    goal_setting_block = factory.SubFactory(GoalSettingBlockFactory)
 
 
 class GoalCheckInOptionFactory(factory.DjangoModelFactory):
