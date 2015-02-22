@@ -71,25 +71,22 @@ class GoalCheckInViewMixin(object):
     def goal_check_in_post(self, request, goalcheckinblock):
         formset = self.handle_goal_check_in_submission(
             request, goalcheckinblock)
-        if not formset.is_valid():
-            ctx = self.get_context_data()
-            ctx.update({
-                'checkin_formset': formset,
-                'goal_checkin_context': zip(
-                    self.goal_setting_responses, formset),
-            })
-            return render(request, self.template_name, ctx)
-        else:
-            # Redirect to same page to show success state and allow
-            # the participant to edit their choices.
-            ctx = self.get_context_data()
+        ctx = self.get_context_data()
+        ctx.update({
+            'checkin_formset': formset,
+            'goal_checkin_context': zip(
+                self.goal_setting_responses, formset),
+        })
+
+        if formset.is_valid():
             if formset.has_changed():
                 checkins_saved = len([f for f in formset.cleaned_data
                                       if f != {}])
                 messages.success(
                     request, str(checkins_saved) + ' goal check-in' +
                     pluralize(checkins_saved) + ' saved.')
-            return render(request, self.template_name, ctx)
+
+        return render(request, self.template_name, ctx)
 
 
 class GoalSettingViewMixin(object):
@@ -202,18 +199,15 @@ class GoalSettingViewMixin(object):
     def goal_setting_post(self, request, goalsettingblock):
         formset = self.handle_goal_setting_submission(
             request, goalsettingblock)
-        if not formset.is_valid():
-            ctx = self.get_context_data()
-            ctx.update({'setting_formset': formset})
-            return render(request, self.template_name, ctx)
-        else:
-            # Redirect to same page to show success state and allow
-            # the participant to edit their choices.
-            ctx = self.get_context_data()
+        ctx = self.get_context_data()
+        ctx.update({'setting_formset': formset})
+
+        if formset.is_valid():
             if formset.has_changed():
                 goals_saved = len([f for f in formset.cleaned_data
                                    if f != {}])
                 messages.success(
                     request, str(goals_saved) + ' goal' +
                     pluralize(goals_saved) + ' saved.')
-            return render(request, self.template_name, ctx)
+
+        return render(request, self.template_name, ctx)
