@@ -47,6 +47,7 @@ class ParticipantFactory(factory.django.DjangoModelFactory):
     first_location = factory.SubFactory(LocationFactory)
     location = factory.SubFactory(LocationFactory)
     study_id = FuzzyText(prefix='7')
+    is_archived = False
 
 
 class SessionFactory(factory.django.DjangoModelFactory):

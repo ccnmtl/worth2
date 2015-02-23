@@ -152,6 +152,37 @@ class SignInParticipantAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context['cohorts'], [])
 
+    def test_get_has_correct_data(self):
+        """
+        Test that when updating a participant's cohort ID on the
+        management page then visiting the sign-in page, the participant
+        dropdown has the correct cohort ID.
+        """
+
+        p1 = ParticipantFactory(cohort_id='367')
+        response = self.client.get(reverse('manage-participants'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, p1.study_id)
+        self.assertContains(response, p1.cohort_id)
+
+        p1.cohort_id = '389'
+        p1.save()
+
+        response = self.client.get(reverse('sign-in-participant'))
+        self.assertContains(response, 'Sign In a Participant')
+        self.assertEqual(response.status_code, 200)
+
+        self.assertContains(
+            response, '<option value="%s"' % p1.cohort_id,
+            msg_prefix='Incorrect cohort dropdown cohort ID')
+        self.assertEqual(response.context['cohorts'], [p1.cohort_id])
+
+        # TODO: Why is the participant ID dropdown empty here?
+        # self.assertContains(response, p1.study_id)
+        # self.assertContains(
+        #     response, 'data-cohort-id="%s"' % p1.cohort_id,
+        #     msg_prefix='Incorrect participant dropdown cohort ID')
+
     def test_valid_form_submit(self):
         location = LocationFactory()
         participant = ParticipantFactory()

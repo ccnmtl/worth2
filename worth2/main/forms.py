@@ -3,8 +3,28 @@ from django import forms
 from worth2.main.models import Location, Participant
 
 
+class RawModelChoiceIterator(forms.models.ModelChoiceIterator):
+    def choice(self, obj):
+        return obj
+
+
+class RawModelChoiceField(forms.ModelChoiceField):
+    """
+    A ModelChoiceField that returns the model instance instead of
+    a single field.
+    """
+
+    def _get_choices(self):
+        if hasattr(self, '_choices'):
+            return self._choices
+
+        return RawModelChoiceIterator(self)
+
+    choices = property(_get_choices, forms.ChoiceField._set_choices)
+
+
 class SignInParticipantForm(forms.Form):
-    participant_id = forms.ModelChoiceField(
+    participant_id = RawModelChoiceField(
         label='Participant ID #',
         empty_label=None,
         queryset=Participant.objects.filter(

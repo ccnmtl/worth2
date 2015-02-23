@@ -39,7 +39,7 @@
                         name="participant_id">
 
                     <option>Choose a Participant</option>
-                    {% for p in form.participant_id.field.queryset %}
+                    {% for p in form.participant_id.field.choices %}
                     <option value="{{p.pk}}"
                             data-cohort-id="{{p.cohort_id|default:''}}">
                         {{p.study_id}}</option>
