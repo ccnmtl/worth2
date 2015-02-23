@@ -4,7 +4,9 @@ from ordered_model.admin import OrderedModelAdmin
 from worth2.goals.models import GoalSettingBlock, GoalCheckInOption, GoalOption
 
 
-admin.site.register(GoalCheckInOption)
+class GoalCheckInOptionAdmin(OrderedModelAdmin):
+    list_display = ('text', 'move_up_down_links')
+    model = GoalCheckInOption
 
 
 class GoalOptionAdmin(OrderedModelAdmin):
@@ -20,5 +22,6 @@ class GoalSettingBlockAdmin(admin.ModelAdmin):
     inlines = [GoalOptionInline]
 
 
+admin.site.register(GoalCheckInOption, GoalCheckInOptionAdmin)
 admin.site.register(GoalOption, GoalOptionAdmin)
 admin.site.register(GoalSettingBlock, GoalSettingBlockAdmin)

@@ -8,21 +8,42 @@ class GoalCheckInForm(forms.Form):
     goal_setting_response_id = forms.IntegerField(widget=forms.HiddenInput())
 
     i_will_do_this = forms.ChoiceField(
-        label='I will do this.',
+        label='How did it go?',
         choices=(
-            ('yes', 'Yes'),
-            ('no', 'No'),
-            ('in progress', 'In Progress'),
+            ('yes', 'I did it!'),
+            ('in progress', 'I\'m still working on it.'),
+            ('no', 'I haven\'t started this goal.'),
         ),
-        widget=forms.RadioSelect,
+        widget=forms.RadioSelect(attrs={'class': 'how-it-went'}),
     )
 
     what_got_in_the_way = forms.ModelChoiceField(
         label='What got in the way?',
         queryset=GoalCheckInOption.objects.all(),
+        required=False,
+        widget=forms.Select(attrs={'class': 'what-got-in-the-way'}),
     )
 
-    other = forms.CharField(required=False)
+    other = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'goal-checkin-other'}),
+    )
+
+    def clean(self):
+        cleaned_data = super(GoalCheckInForm, self).clean()
+        how_it_went = cleaned_data.get('i_will_do_this')
+        what_got_in_the_way = cleaned_data.get('what_got_in_the_way')
+        other = cleaned_data.get('other')
+
+        if how_it_went != 'yes':
+            if not what_got_in_the_way:
+                self.add_error('what_got_in_the_way',
+                               u'This field is required.')
+
+        if hasattr(what_got_in_the_way, 'text') and (
+                what_got_in_the_way.text.lower() == 'other'):
+            if not other:
+                self.add_error('other', u'This field is required.')
 
 
 GoalCheckInFormSet = formset_factory(GoalCheckInForm, min_num=1)

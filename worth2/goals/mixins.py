@@ -1,7 +1,9 @@
 from collections import OrderedDict
 from django import forms
+from django.contrib import messages
 from django.forms.formsets import formset_factory
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
+from django.template.defaultfilters import pluralize
 
 from worth2.goals.forms import GoalCheckInForm, GoalSettingForm
 from worth2.goals.models import (
@@ -65,6 +67,26 @@ class GoalCheckInViewMixin(object):
                     GoalCheckInResponse.objects.create(**updated_values)
 
         return formset
+
+    def goal_check_in_post(self, request, goalcheckinblock):
+        formset = self.handle_goal_check_in_submission(
+            request, goalcheckinblock)
+        ctx = self.get_context_data()
+        ctx.update({
+            'checkin_formset': formset,
+            'goal_checkin_context': zip(
+                self.goal_setting_responses, formset),
+        })
+
+        if formset.is_valid():
+            if formset.has_changed():
+                checkins_saved = len([f for f in formset.cleaned_data
+                                      if f != {}])
+                messages.success(
+                    request, str(checkins_saved) + ' goal check-in' +
+                    pluralize(checkins_saved) + ' saved.')
+
+        return render(request, self.template_name, ctx)
 
 
 class GoalSettingViewMixin(object):
@@ -173,3 +195,19 @@ class GoalSettingViewMixin(object):
                     GoalSettingResponse.objects.create(**updated_values)
 
         return formset
+
+    def goal_setting_post(self, request, goalsettingblock):
+        formset = self.handle_goal_setting_submission(
+            request, goalsettingblock)
+        ctx = self.get_context_data()
+        ctx.update({'setting_formset': formset})
+
+        if formset.is_valid():
+            if formset.has_changed():
+                goals_saved = len([f for f in formset.cleaned_data
+                                   if f != {}])
+                messages.success(
+                    request, str(goals_saved) + ' goal' +
+                    pluralize(goals_saved) + ' saved.')
+
+        return render(request, self.template_name, ctx)

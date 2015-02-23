@@ -82,6 +82,7 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.checkin_opt1 = GoalCheckInOptionFactory()
         self.checkin_opt2 = GoalCheckInOptionFactory()
         self.checkin_opt3 = GoalCheckInOptionFactory()
+        self.checkin_opt_other = GoalCheckInOptionFactory(text='Other')
 
         p = 'pageblock-%s' % self.goalcheckinblock.pk
         self.valid_post_data = {
@@ -122,7 +123,7 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
             goal_setting_response__in=self.setting_responses,
         )
 
-        self.assertEqual(r.status_code, 302)
+        self.assertEqual(r.status_code, 200)
         self.assertEqual(responses.count(), 3)
 
         self.assertEqual(responses.first().what_got_in_the_way,
@@ -198,7 +199,7 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
         })
         r = self.client.post(self.url, new_post_data)
 
-        self.assertEqual(r.status_code, 302)
+        self.assertEqual(r.status_code, 200)
 
         responses = GoalCheckInResponse.objects.filter(
             goal_setting_response=self.setting_resp1,
@@ -223,6 +224,102 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.assertFormsetError(
             r, 'checkin_formset', 0, 'i_will_do_this',
             'Select a valid choice. None is not one of the available choices.')
+
+    def test_post_i_did_it_makes_other_inputs_not_required(self):
+        p = 'pageblock-%s' % self.goalcheckinblock.pk
+        my_post_data = self.valid_post_data.copy()
+        my_post_data.update({
+            '%s-0-i_will_do_this' % p: 'yes',
+            '%s-0-what_got_in_the_way' % p: '',
+            '%s-0-other' % p: '',
+        })
+        r = self.client.post(self.url, my_post_data)
+
+        responses = GoalCheckInResponse.objects.filter(
+            goal_setting_response=self.setting_resp1,
+        )
+        self.assertEqual(responses.count(), 1)
+
+        self.assertEqual(r.status_code, 200)
+        self.assertNotContains(r, 'This field is required.')
+
+    def test_post_in_progress_makes_dropdown_required(self):
+        p = 'pageblock-%s' % self.goalcheckinblock.pk
+        my_post_data = self.valid_post_data.copy()
+        my_post_data.update({
+            '%s-0-i_will_do_this' % p: 'in progress',
+            '%s-0-what_got_in_the_way' % p: '',
+            '%s-0-other' % p: '',
+        })
+        r = self.client.post(self.url, my_post_data)
+
+        responses = GoalCheckInResponse.objects.filter(
+            goal_setting_response=self.setting_resp1,
+        )
+        self.assertEqual(responses.count(), 0)
+
+        self.assertEqual(r.status_code, 200)
+        self.assertFormsetError(
+            r, 'checkin_formset', 0, 'what_got_in_the_way',
+            'This field is required.')
+
+    def test_post_in_progress_makes_dropdown_required2(self):
+        p = 'pageblock-%s' % self.goalcheckinblock.pk
+        my_post_data = self.valid_post_data.copy()
+        my_post_data.update({
+            '%s-0-i_will_do_this' % p: 'in progress',
+            '%s-0-what_got_in_the_way' % p: self.checkin_opt1.pk,
+            '%s-0-other' % p: '',
+        })
+        r = self.client.post(self.url, my_post_data)
+
+        responses = GoalCheckInResponse.objects.filter(
+            goal_setting_response=self.setting_resp1,
+        )
+        self.assertEqual(responses.count(), 1)
+
+        self.assertEqual(r.status_code, 200)
+        self.assertNotContains(r, 'This field is required.')
+
+    def test_post_other_text_is_required(self):
+        p = 'pageblock-%s' % self.goalcheckinblock.pk
+        my_post_data = self.valid_post_data.copy()
+        my_post_data.update({
+            '%s-0-i_will_do_this' % p: 'in progress',
+            '%s-0-what_got_in_the_way' % p: self.checkin_opt_other.pk,
+            '%s-0-other' % p: '',
+        })
+        r = self.client.post(self.url, my_post_data)
+
+        responses = GoalCheckInResponse.objects.filter(
+            goal_setting_response=self.setting_resp1,
+        )
+        self.assertEqual(responses.count(), 0)
+
+        self.assertEqual(r.status_code, 200)
+        self.assertFormsetError(
+            r, 'checkin_formset', 0, 'other', 'This field is required.')
+
+    def test_post_other_text_is_saved(self):
+        p = 'pageblock-%s' % self.goalcheckinblock.pk
+        my_post_data = self.valid_post_data.copy()
+        my_post_data.update({
+            '%s-0-i_will_do_this' % p: 'in progress',
+            '%s-0-what_got_in_the_way' % p: self.checkin_opt_other.pk,
+            '%s-0-other' % p: 'Some other goal',
+        })
+        r = self.client.post(self.url, my_post_data)
+
+        responses = GoalCheckInResponse.objects.filter(
+            goal_setting_response=self.setting_resp1,
+        )
+        self.assertEqual(responses.count(), 1)
+
+        self.assertEqual(r.status_code, 200)
+        self.assertEqual(responses.first().i_will_do_this, 'in progress')
+        self.assertEqual(responses.first().what_got_in_the_way,
+                         self.checkin_opt_other)
+        self.assertEqual(responses.first().other, 'Some other goal')
 
 
 class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):

@@ -272,3 +272,8 @@ footer.footer {
 .goal-setting .goal-other-container {
     display: none;
 }
+
+#goal-checkin-block .form-group:nth-child(5),
+#goal-checkin-block .form-group:nth-child(6) {
+    display: none;
+}
