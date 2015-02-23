@@ -28,20 +28,20 @@ class PositiveQuizResponses(template.Node):
         positive_answers = []
         for b in blocks:
             # assumption: each of these quiz types has one question
-            question = b.content_object.question_set.first()
-
             latest_submission = Submission.objects.filter(
                 quiz=b.content_object, user=u).order_by('-submitted').first()
 
             if latest_submission:
                 positive_responses = Response.objects.filter(
-                    submission=latest_submission, value=1)
+                    submission=latest_submission, value__gte=1)
                 for r in positive_responses:
                     # TODO add question_class to quiz questions
-                    question_class = 'dangerous'
-                    positive_answers.append((question.text, question_class))
+                    positive_answers.append(r)
 
-        context[self.var_name] = positive_answers
+        sorted_answers = sorted(positive_answers,
+                                key=lambda answer: answer.value,
+                                reverse=True)
+        context[self.var_name] = sorted_answers
         return ''
 
 

@@ -3,14 +3,12 @@ from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 
 from pagetree.models import PageBlock
-from quizblock.models import Quiz
 
 
 class ProtectiveBehaviorsResults(models.Model):
-    pageblocks = GenericRelation(
-        PageBlock,
-        related_query_name='protective_behaviors_results')
-    quiz_class = models.CharField(max_length=255, help_text='Required')
+    pageblocks = GenericRelation(PageBlock)
+    quiz_class = models.CharField(max_length=255, help_text='Required',
+                                  default='protective-behaviors')
     display_name = 'Protective Behaviors Results'
     template_file = 'protectivebehaviors/protective_behaviors_results.html'
 
@@ -48,28 +46,3 @@ class ProtectiveBehaviorsResults(models.Model):
 class ProtectiveBehaviorsResultsForm(forms.ModelForm):
     class Meta:
         model = ProtectiveBehaviorsResults
-
-
-class RateMyRiskQuiz(Quiz):
-    quiz_class = models.CharField(max_length=255, help_text='Required')
-    display_name = 'Rate My Risk Quiz'
-    template_file = 'protectivebehaviors/quizblock.html'
-
-    @classmethod
-    def create(cls, request):
-        return cls.objects.create(
-            description=request.POST.get('description', ''),
-            rhetorical=request.POST.get('rhetorical', ''),
-            allow_redo=request.POST.get('allow_redo', ''),
-            show_submit_state=request.POST.get('show_submit_state', False))
-
-    @classmethod
-    def create_from_dict(cls, d):
-        q = cls.objects.create(
-            description=d.get('description', ''),
-            rhetorical=d.get('rhetorical', False),
-            allow_redo=d.get('allow_redo', True),
-            show_submit_state=d.get('show_submit_state', True)
-        )
-        q.import_from_dict(d)
-        return q

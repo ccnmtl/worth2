@@ -277,3 +277,15 @@ footer.footer {
 #goal-checkin-block .form-group:nth-child(6) {
     display: none;
 }
+
+.protective-behaviors-results .pb-result-level-1 {
+    background-color: #dff0d8;
+}
+
+.protective-behaviors-results .pb-result-level-2 {
+    background-color: #fcf8e3;
+}
+
+.protective-behaviors-results .pb-result-level-3 {
+    background-color: #f2dede;
+}

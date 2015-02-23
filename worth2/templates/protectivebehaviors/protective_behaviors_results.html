@@ -9,7 +9,9 @@
         <h4>Stuff I Do</h4>
         <ul>
             {% for item in results %}
-            <li class="{{item.1}}">{{item.0}}</li>
+            <li class="pb-result-level-{{item.value}}">
+                {{item.question.text}}
+            </li>
             {% endfor %}
         </ul>
     </div>

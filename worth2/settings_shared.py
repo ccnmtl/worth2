@@ -173,7 +173,6 @@ PAGEBLOCKS = [
     'main.AvatarBlock',
     'main.VideoBlock',
     'protectivebehaviors.ProtectiveBehaviorsResults',
-    'protectivebehaviors.RateMyRiskQuiz',
     'ssnm.SsnmPageBlock',
     'goals.GoalSettingBlock',
     'goals.GoalCheckInPageBlock',
