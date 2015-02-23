@@ -1,0 +1,44 @@
+{% load markup %}
+
+{% ifequal question.quiz.pageblock.css_extra 'rate-my-risk' %}
+{% include 'protectivebehaviors/rate_my_risk_quiz.html' %}
+{% else %}
+<ol type="A">
+    {% for answer in question.answer_set.all %}
+    {% if block.rhetorical %}
+    <li class="{{answer.css_extra}}">
+        <label>
+            <input name="question{{question.id}}" value="{{answer.label}}"
+                   type="radio">
+            {{answer.label}}
+        </label>
+    </li>
+    {% else %}
+    <li class="{{answer.css_extra}}">
+        {% if response %}
+        {% ifequal response.value answer.value %}
+        <span class="yours {% if response.is_correct %}correct{% else %}incorrect{% endif %}"
+              >{{answer.label}}</span>
+        {% else %}
+        {{answer.label}}
+        {% endifequal %}
+        {% else %}
+        <label>
+            <input name="pageblock-{{block.pageblock.id}}-question{{question.id}}"
+                   value="{{answer.value}}" type="radio">
+            {{answer.label}}
+        </label>
+        {% endif %}
+    </li>
+    {% endif %}
+    {% endfor %}
+</ol>
+{% endifequal %}
+
+{% for answer in question.answer_set.all %}
+{% if response %}
+{% ifequal response.value answer.value %}
+{{answer.explanation|safe}}
+{% endifequal %}
+{% endif %}
+{% endfor %}
