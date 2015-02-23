@@ -124,7 +124,7 @@ class ParticipantSessionPageView(
         PageView):
     """WORTH version of pagetree's PageView."""
 
-    gated = True
+    gated = False
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
