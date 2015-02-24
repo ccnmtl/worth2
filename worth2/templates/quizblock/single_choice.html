@@ -1,4 +1,5 @@
 {% load markup %}
+{% load avatar %}
 
 {% if 'likert' in question.quiz.pageblock.css_extra %}
     {% include 'quizblock/likert.html' %}
@@ -26,6 +27,11 @@
 </ol>
 <div class="clearfix"></div>
 {% endif %}
+
+<div class="avatar-block">
+    <img src="{% avatar_url user %}">
+</div>
+<div class="clearfix"></div>
 
 {% for answer in question.answer_set.all %}
     {% if response %}
