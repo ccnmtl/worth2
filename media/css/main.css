@@ -220,13 +220,22 @@ footer.footer {
     flex-direction: row;
 }
 
+.likert .answers-container .answer {
+    -webkit-flex: 1 100%;
+    flex: 1 100%;
+}
+
 .likert .answers-container .colored-box {
     padding: 8px;
     padding-bottom: 2px;
-    width: 175px;
     text-align: center;
     text-transform: uppercase;
     color: white;
+    margin-bottom: 5px;
+}
+
+.protective-behaviors.likert .answers-container .colored-box {
+    text-transform: none;
 }
 
 .likert .answers-container .clear-box {
@@ -234,19 +243,19 @@ footer.footer {
 }
 
 .likert .not-an-issue .colored-box {
-    background-color: lightgreen;
+    background-color: #4f8f00;
 }
 
 .likert .somewhat-an-issue .colored-box {
-    background-color: #ee8;
+    background-color: #ffd479;
 }
 
 .likert .an-issue .colored-box {
-    background-color: orange;
+    background-color: #ff9300;
 }
 
 .likert .a-big-issue .colored-box {
-    background-color: red;
+    background-color: #ff2600;
 }
 
 .post-video-quiz .casetitle,
@@ -324,9 +333,11 @@ footer.footer {
 }
 
 .pageblock.protective-behaviors {
-    width: 55%;
+    width: 65%;
     float: left;
+    padding-right: 10px;
 }
+
 .pageblock.protective-behaviors .avatar-block {
     float: right;
 }
