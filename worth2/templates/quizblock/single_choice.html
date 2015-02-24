@@ -1,7 +1,7 @@
 {% load markup %}
 
-{% ifequal question.quiz.pageblock.css_extra 'rate-my-risk' %}
-{% include 'protectivebehaviors/rate_my_risk_quiz.html' %}
+{% if 'likert' in question.quiz.pageblock.css_extra %}
+    {% include 'quizblock/likert.html' %}
 {% else %}
 <ol type="A">
     {% for answer in question.answer_set.all %}
@@ -33,7 +33,7 @@
     {% endif %}
     {% endfor %}
 </ol>
-{% endifequal %}
+{% endif %}
 
 {% for answer in question.answer_set.all %}
 {% if response %}
