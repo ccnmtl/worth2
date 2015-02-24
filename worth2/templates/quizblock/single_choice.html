@@ -15,13 +15,15 @@
             </label>
         </li>
         {% else %}
-        <li class="{{answer.css_extra}}">
+    <li class="{{answer.css_extra}}">
+        <label>
             <input name="pageblock-{{block.pageblock.id}}-question{{question.id}}"
                 value="{{answer.value}}" type="radio"
                 {% if response %}disabled="disabled"
                     {% ifequal response.value answer.value %}checked="checked"{% endifequal %}
-                {% endif %}> {{answer.label}}
-        </li>
+                   {% endif %}> {{answer.label}}
+        </label>
+    </li>
         {% endif %}
     {% endfor %}
 </ol>
