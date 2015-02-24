@@ -249,12 +249,45 @@ footer.footer {
     background-color: red;
 }
 
-.post-video-quiz .casetitle {
+.post-video-quiz .casetitle,
+.post-video-quiz .casesanswerdisplay,
+.post-video-quiz .caseanswercorrect {
     display: none;
 }
 
 .post-video-quiz .casequestiontext {
     font-weight: bold;
+}
+
+.myth-fact .casetitle {
+    display: none;
+}
+
+.myth-fact .casequestiontext {
+    font-weight: bold;
+}
+
+.myth-fact ol.caseanswercontainer {
+    list-style: none;
+}
+
+.myth-fact ol.caseanswercontainer li {
+    float: left;
+    margin-right: 20px;
+    font-weight: normal;
+}
+
+.myth-fact .casequestionresult {
+    font-size: 1.2em;
+    margin-top: 10px;    
+}
+
+.myth-fact .casequestionresult .correct {
+    color: green;
+}
+
+.myth-fact .casequestionresult .incorrect {
+    color: red;
 }
 
 .avatar-block>img {
