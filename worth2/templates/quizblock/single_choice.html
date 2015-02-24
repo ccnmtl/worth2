@@ -3,42 +3,34 @@
 {% if 'likert' in question.quiz.pageblock.css_extra %}
     {% include 'quizblock/likert.html' %}
 {% else %}
-<ol type="A">
+<ol class="caseanswercontainer" type="A">
     {% for answer in question.answer_set.all %}
-    {% if block.rhetorical %}
-    <li class="{{answer.css_extra}}">
-        <label>
-            <input name="question{{question.id}}" value="{{answer.label}}"
-                   type="radio">
-            {{answer.label}}
-        </label>
-    </li>
-    {% else %}
-    <li class="{{answer.css_extra}}">
-        {% if response %}
-        {% ifequal response.value answer.value %}
-        <span class="yours {% if response.is_correct %}correct{% else %}incorrect{% endif %}"
-              >{{answer.label}}</span>
+        {% if block.rhetorical %}
+        <li class="{{answer.css_extra}}">
+            <label>
+                <input name="question{{question.id}}" value="{{answer.label}}"
+                       type="radio">
+                {{answer.label}}
+            </label>
+        </li>
         {% else %}
-        {{answer.label}}
-        {% endifequal %}
-        {% else %}
-        <label>
+        <li class="{{answer.css_extra}}">
             <input name="pageblock-{{block.pageblock.id}}-question{{question.id}}"
-                   value="{{answer.value}}" type="radio">
-            {{answer.label}}
-        </label>
+                value="{{answer.value}}" type="radio"
+                {% if response %}disabled="disabled"
+                    {% ifequal response.value answer.value %}checked="checked"{% endifequal %}
+                {% endif %}> {{answer.label}}
+        </li>
         {% endif %}
-    </li>
-    {% endif %}
     {% endfor %}
 </ol>
+<div class="clearfix"></div>
 {% endif %}
 
 {% for answer in question.answer_set.all %}
-{% if response %}
-{% ifequal response.value answer.value %}
-{{answer.explanation|safe}}
-{% endifequal %}
-{% endif %}
+    {% if response %}
+        {% ifequal response.value answer.value %}
+        {{answer.explanation|safe}}
+        {% endifequal %}
+    {% endif %}
 {% endfor %}
