@@ -35,7 +35,6 @@ class PositiveQuizResponses(template.Node):
                 positive_responses = Response.objects.filter(
                     submission=latest_submission, value__gte=1)
                 for r in positive_responses:
-                    # TODO add question_class to quiz questions
                     positive_answers.append(r)
 
         sorted_answers = sorted(positive_answers,
