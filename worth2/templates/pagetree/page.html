@@ -71,6 +71,7 @@
 
 {% if is_submitted %}
 {% if allow_redo or user.is_superuser %}
+<div class="clearfix"></div>
 <form action="." method="post">{% csrf_token %}
 <br /><br />
 <input type="hidden" name="action" value="reset" />
@@ -80,6 +81,9 @@
 {% else %}
 
 <br /><br />
+
+<div class="clearfix"></div>
+
 <input type="submit" value="Submit" class="btn btn-primary" />
 
 </form>
