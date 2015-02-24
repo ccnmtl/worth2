@@ -2,9 +2,6 @@
 {% load quizresults %}
 
 <div class="casesanswerdisplay">
-    {% if 'protective-behaviors' in question.quiz.pageblock.css_extra %}
-    <p>{{question.explanation|markdown}}</p>
-    {% else %}
     {% if block.rhetorical %}
     <a href="#q{{question.id}}" class="moretoggle">Show answer &gt;&gt;</a>
     <div id="q{{question.id}}" class="toggleable" style="display: none">
@@ -25,6 +22,5 @@
         {% endif %}
     </div>
     <p>{{question.explanation|markdown}}</p>
-    {% endif %}
     {% endif %}
 </div>

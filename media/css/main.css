@@ -344,6 +344,11 @@ footer.footer {
     padding-left: 0;
 }
 
+.protective-behaviors ol li {
+    float: left;
+    margin-right: 20px;
+}
+
 .protective-behaviors ol li,
 .protective-behaviors-results ul li {
     list-style: none;
@@ -370,3 +375,9 @@ footer.footer {
 .protective-behaviors-results .pb-result-level-3 {
     background-color: #ff7e79;
 }
+
+.protective-behaviors .casequestionresult,
+.protective-behaviors .casetitle {
+    display: none;
+}
+
