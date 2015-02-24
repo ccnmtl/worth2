@@ -1,0 +1,26 @@
+{% load markup %}
+{% load quizresults %}
+
+<div class="casesanswerdisplay">
+{% if block.rhetorical %}
+    <a href="#q{{question.id}}" class="moretoggle">Show answer &gt;&gt;</a>
+    <div id="q{{question.id}}" class="toggleable" style="display: none">
+        <p>
+            {% if question.correct_answer_letter %}
+            <i>The correct answer is {{question.correct_answer_letter}}:</i>
+            {% endif %}
+            {{question.explanation|markdown}}
+        </p>
+    </div>
+{% else %}
+    <div class="casequestionresult">
+        {% is_user_correct request.user question as is_correct %}
+        {% if is_correct %}
+            <div class="correct">That's Correct</div>
+        {% else %}
+             <div class="incorrect">That's Incorrect</div>
+        {% endif %}
+    </div>
+    <p>{{question.explanation|markdown}}</p>
+{% endif %}
+</div>
