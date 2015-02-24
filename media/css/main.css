@@ -234,6 +234,7 @@ footer.footer {
     margin-bottom: 5px;
 }
 
+.rate-my-risk.likert .answers-container .colored-box,
 .protective-behaviors.likert .answers-container .colored-box {
     text-transform: none;
 }
@@ -332,6 +333,7 @@ footer.footer {
     display: none;
 }
 
+.pageblock.rate-my-risk,
 .pageblock.protective-behaviors {
     width: 65%;
     float: left;
@@ -387,6 +389,9 @@ footer.footer {
     background-color: #ff7e79;
 }
 
+
+.rate-my-risk .casequestionresult,
+.rate-my-risk .casetitle,
 .protective-behaviors .casequestionresult,
 .protective-behaviors .casetitle {
     display: none;
