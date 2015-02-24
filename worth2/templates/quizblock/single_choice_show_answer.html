@@ -2,7 +2,7 @@
 {% load quizresults %}
 
 <div class="casesanswerdisplay">
-{% if block.rhetorical %}
+    {% if block.rhetorical %}
     <a href="#q{{question.id}}" class="moretoggle">Show answer &gt;&gt;</a>
     <div id="q{{question.id}}" class="toggleable" style="display: none">
         <p>
@@ -12,15 +12,15 @@
             {{question.explanation|markdown}}
         </p>
     </div>
-{% else %}
+    {% else %}
     <div class="casequestionresult">
         {% is_user_correct request.user question as is_correct %}
         {% if is_correct %}
-            <div class="correct">That's Correct</div>
+        <div class="correct">That's Correct</div>
         {% else %}
-             <div class="incorrect">That's Incorrect</div>
+        <div class="incorrect">That's Incorrect</div>
         {% endif %}
     </div>
     <p>{{question.explanation|markdown}}</p>
-{% endif %}
+    {% endif %}
 </div>
