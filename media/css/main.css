@@ -214,35 +214,47 @@ footer.footer {
     max-height: 100%;
 }
 
-.rate-my-risk .answers-container {
+.likert .answers-container {
     display: -webkit-flex;
     display: flex;
     flex-direction: row;
 }
 
-.rate-my-risk .answers-container .colored-box {
+.likert .answers-container .colored-box {
     padding: 8px;
     padding-bottom: 2px;
+    width: 175px;
+    text-align: center;
+    text-transform: uppercase;
+    color: white;
 }
 
-.rate-my-risk .answers-container .clear-box {
+.likert .answers-container .clear-box {
     text-align: center;
 }
 
-.rate-my-risk .not-an-issue .colored-box {
+.likert .not-an-issue .colored-box {
     background-color: lightgreen;
 }
 
-.rate-my-risk .somewhat-an-issue .colored-box {
+.likert .somewhat-an-issue .colored-box {
     background-color: #ee8;
 }
 
-.rate-my-risk .an-issue .colored-box {
+.likert .an-issue .colored-box {
     background-color: orange;
 }
 
-.rate-my-risk .a-big-issue .colored-box {
+.likert .a-big-issue .colored-box {
     background-color: red;
+}
+
+.post-video-quiz .casetitle {
+    display: none;
+}
+
+.post-video-quiz .casequestiontext {
+    font-weight: bold;
 }
 
 .avatar-block>img {
