@@ -13,6 +13,7 @@ from worth2.main.auth import user_is_participant
 
 class InactiveUserProfile(models.Model):
     """A model for handling inactive users."""
+
     user = models.OneToOneField(User, related_name='profile')
     created_by = models.ForeignKey(User, null=True, blank=True,
                                    related_name='created_by')
@@ -103,6 +104,7 @@ class Avatar(OrderedModel):
 
 class AvatarBlock(models.Model):
     """A PageBlock for displaying the current participant's avatar."""
+
     display_name = 'Avatar Block'
     pageblocks = GenericRelation(PageBlock)
     template_file = 'main/avatar_block.html'
@@ -141,6 +143,7 @@ class AvatarBlockForm(forms.ModelForm):
 
 class AvatarSelectorBlock(models.Model):
     """A PageBlock for displaying the Avatar Selector."""
+
     display_name = 'Avatar Selector Block'
     pageblocks = GenericRelation(PageBlock)
     template_file = 'main/avatar_selector_block.html'
@@ -177,6 +180,7 @@ class AvatarSelectorBlock(models.Model):
 
     def avatars(self):
         """Returns a queryset of all the available avatars in WORTH."""
+
         return Avatar.objects.all()
 
     def submit(self, user, request_data):
@@ -285,6 +289,7 @@ class Session(models.Model):
 
     A Session is created each time a facilitator logs in a participant.
     """
+
     facilitator = models.ForeignKey(User)
     participant = models.ForeignKey(Participant)
     location = models.ForeignKey(Location)
