@@ -4,6 +4,9 @@ define([
     'backbone',
     'views/youtube-player',
 ], function($, _, Backbone, youtubePlayer) {
+    /**
+     * This is a backbone view used to initialize a gated YouTube video.
+     */
     var GatedVideo = Backbone.View.extend({
         el: '#youtube-player',
         initialize: function() {

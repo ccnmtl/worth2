@@ -2,90 +2,23 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericRelation
 from django.core.validators import RegexValidator
-from django.core.urlresolvers import reverse
 from django.db import models
 from django.shortcuts import get_object_or_404
 from ordered_model.models import OrderedModel
-from pagetree.models import Hierarchy, UserPageVisit, PageBlock
+from pagetree.models import PageBlock
 
 from worth2.main.auth import user_is_participant
-from worth2.main.generic.models import BasePageBlock
+from worth2.main.generic.models import BasePageBlock, BaseUserProfile
 
 
-class InactiveUserProfile(models.Model):
-    """A model for handling inactive users."""
+class InactiveUserProfile(BaseUserProfile):
+    """WORTH's UserProfile, which is only being used on participants."""
 
-    user = models.OneToOneField(User, related_name='profile')
+    # Participants have a created_by attr pointing to the facilitator
+    # that created them.
     created_by = models.ForeignKey(User, null=True, blank=True,
                                    related_name='created_by')
     is_archived = models.BooleanField(default=False)
-    notes = models.TextField(null=True, blank=True)
-
-    created_at = models.DateTimeField(auto_now_add=True, editable=False)
-    updated_at = models.DateTimeField(auto_now=True, editable=False)
-
-    def __unicode__(self):
-        return unicode(self.user.username)
-
-    def is_participant(self):
-        return (not self.user.is_active)
-
-    def default_location(self):
-        hierarchy = Hierarchy.get_hierarchy('main')
-        return hierarchy.get_root()
-
-    def last_access(self):
-        return self.last_access_hierarchy() or self.created
-
-    def last_access_formatted(self):
-        dt = self.last_access_hierarchy()
-        return dt.strftime("%Y-%m-%dT%H:%M:%S") if dt else ''
-
-    def last_access_hierarchy(self):
-        upv = UserPageVisit.objects.filter(
-            user=self.user).order_by("-last_visit")
-        if upv.count() < 1:
-            return None
-        else:
-            return upv.first().last_visit
-
-    def last_location_url(self):
-        if self.percent_complete() == 0:
-            return reverse('root')
-        else:
-            return self.last_location().get_absolute_url()
-
-    def last_location(self):
-        hierarchy = Hierarchy.get_hierarchy('main')
-        upv = UserPageVisit.objects.filter(
-            user=self.user).order_by("-last_visit")
-        if upv.count() < 1:
-            return hierarchy.get_root()
-        else:
-            return upv.first().section
-
-    def percent_complete(self):
-        return self.percent_complete_hierarchy()
-
-    def percent_complete_hierarchy(self):
-        hierarchy = Hierarchy.get_hierarchy('main')
-        pages = len(hierarchy.get_root().get_descendants())
-        visits = UserPageVisit.objects.filter(user=self.user).count()
-
-        if pages:
-            return int(visits / float(pages) * 100)
-        else:
-            return 0
-
-    def time_spent(self):
-        visits = UserPageVisit.objects.filter(user=self.user)
-
-        seconds = 0
-        if (visits.count() > 0):
-            start = visits.order_by('first_visit').first().first_visit
-            end = visits.order_by('-last_visit').first().last_visit
-            seconds = (end - start).total_seconds() / 60
-        return seconds
 
 
 class Avatar(OrderedModel):
@@ -339,3 +272,20 @@ class VideoBlock(BasePageBlock):
 class VideoBlockForm(forms.ModelForm):
     class Meta:
         model = VideoBlock
+
+
+class WatchedVideo(models.Model):
+    """This model records which users have viewed which videos.
+
+    When a user finishes watching a video on a VideoBlock, the user's web
+    browser makes an ajax request to create a VideoView on our server.
+    """
+
+    class Meta:
+        unique_together = ('user', 'video_block')
+
+    user = models.ForeignKey(User, related_name='watched_videos')
+    video_block = models.ForeignKey(VideoBlock)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

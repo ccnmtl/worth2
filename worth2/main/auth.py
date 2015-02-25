@@ -5,6 +5,7 @@ import hmac
 from django.conf import settings
 from django.contrib.auth.models import User
 from rest_framework import permissions
+from rest_framework.authentication import SessionAuthentication
 
 
 def generate_random_username():
@@ -53,3 +54,24 @@ class IsParticipantPermission(permissions.BasePermission):
     def has_permission(self, request, view):
         user = getattr(request, 'user', None)
         return user_is_participant(user)
+
+
+class AnySessionAuthentication(SessionAuthentication):
+    """Authenticate any user, whether active or inactive.
+
+    This is very similar to django-rest-framework's
+    SessionAuthentication. The only difference is that this will
+    authenticate users who are inactive as well as active.
+
+    Participants are inactive in worth, so this lets them use SSNM's API.
+    """
+
+    def authenticate(self, request):
+        # Get user from underlying HttpRequest, just like
+        # rest_framework.authentication.SessionAuthentication
+        request = request._request
+        user = getattr(request, 'user', None)
+
+        self.enforce_csrf(request)
+
+        return (user, None)

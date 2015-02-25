@@ -1,6 +1,7 @@
 define([
     'jquery',
-], function($) {
+    'models/watched-video'
+], function($, WatchedVideo) {
     var youtubePlayer = {
         loadYouTubeAPI: function(container, videoId) {
             if (typeof YT === 'undefined' ||
@@ -35,10 +36,26 @@ define([
         }
     };
 
+    /**
+     * Save a WatchedVideo to the server.
+     */
+    function recordWatchedVideo(data) {
+        var watchedVideo = new WatchedVideo({video_block: videoBlockId});
+        watchedVideo.save(null, {
+            success: function() {
+                $('li.next').removeClass('disabled');
+            }
+        });
+    }
+
+    /**
+     * This YouTube IFrame API calls this global function when the
+     * video's state changes.
+     */
     window.onPlayerStateChange = function(event) {
         if (event.data === YT.PlayerState.ENDED) {
             // The video ended, so unlock the 'next' button.
-            $('li.next').removeClass('disabled');
+            recordWatchedVideo({video_block: videoBlockId});
         }
     };
 

@@ -5,7 +5,7 @@ from factory.fuzzy import FuzzyText
 
 from worth2.main.auth import generate_password
 from worth2.main.models import (
-    Avatar, Location, Participant, Session
+    Avatar, Location, Participant, Session, VideoBlock, WatchedVideo
 )
 
 
@@ -57,3 +57,18 @@ class SessionFactory(factory.django.DjangoModelFactory):
     facilitator = factory.SubFactory(UserFactory)
     participant = factory.SubFactory(ParticipantFactory)
     location = factory.SubFactory(LocationFactory)
+
+
+class VideoBlockFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = VideoBlock
+
+    video_id = FuzzyText()
+
+
+class WatchedVideoFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = WatchedVideo
+
+    user = factory.SubFactory(UserFactory)
+    video_block = factory.SubFactory(VideoBlockFactory)

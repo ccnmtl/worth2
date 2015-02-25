@@ -15,7 +15,7 @@ class SupporterViewSetTest(LoggedInParticipantTestMixin, APITestCase):
 
         r = self.client.get(reverse('supporter-list'))
         self.assertEqual(r.status_code, 200)
-        self.assertEqual(r.data.get('count'), 3)
+        self.assertEqual(len(r.data), 3)
 
     def test_retrieve(self):
         supporter = SupporterFactory(user=self.u)

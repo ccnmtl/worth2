@@ -5,7 +5,8 @@ from pagetree.models import Hierarchy
 
 from worth2.main.models import Participant
 from worth2.main.tests.factories import (
-    AvatarFactory, LocationFactory, ParticipantFactory, SessionFactory
+    AvatarFactory, LocationFactory, ParticipantFactory, SessionFactory,
+    VideoBlockFactory, WatchedVideoFactory
 )
 
 
@@ -91,3 +92,19 @@ class SessionTest(TestCase):
 
     def test_is_valid_from_factory(self):
         self.session.full_clean()
+
+
+class VideoBlockTest(TestCase):
+    def setUp(self):
+        self.video_block = VideoBlockFactory()
+
+    def test_is_valid_from_factory(self):
+        self.video_block.full_clean()
+
+
+class WatchedVideoTest(TestCase):
+    def setUp(self):
+        self.watched_video = WatchedVideoFactory()
+
+    def test_is_valid_from_factory(self):
+        self.watched_video.full_clean()
