@@ -106,8 +106,17 @@
 {% endif %}
 
 {% if next_section %}
-<li class="next"><a href="{{next_section.get_absolute_url}}">{{next_section.label}} &rarr;</a></li>
 
+{% comment %}
+  The "next" link gets rendered as disabled by default. app.js
+  immediately enables this link if there's no video player on the page.
+
+  Otherwise, this link is enabled when the video finishes playing.
+{% endcomment %}
+<li class="next disabled">
+    <a href="{{next_section.get_absolute_url}}"
+       >{{next_section.label}} &rarr;</a>
+</li>
 {% endif %}
 </ul>
 {% endwith %}

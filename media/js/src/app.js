@@ -9,13 +9,14 @@ define([
     'views/sign-in-participant-filter',
     'views/goal-setting-form',
     'views/goal-checkin-form',
+    'views/gated-video',
     'bootstrap',
     'jquery-cookie'
 ], function(
     $, _, Backbone,
     CreateParticipantView, EditParticipantView, SignInParticipantView,
     ManageParticipantFilter, SignInParticipantFilter, GoalSettingFormView,
-    GoalCheckinFormView
+    GoalCheckinFormView, GatedVideo
 ) {
     $(function() {
         var csrftoken = $.cookie('csrftoken');
@@ -48,6 +49,12 @@ define([
         new GoalSettingFormView();
 
         new GoalCheckinFormView();
+
+        new GatedVideo();
+
+        if ($('#youtube-player').length === 0) {
+            $('li.next').removeClass('disabled');
+        }
     };
 
     return {
