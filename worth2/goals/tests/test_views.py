@@ -30,6 +30,7 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
         })
         goalsettingblock = \
             self.root.get_first_child().pageblock_set.first()
+        assert(goalsettingblock is not None)
 
         self.root.add_child_section_from_dict({
             'label': 'Goal Check In Section',
@@ -41,11 +42,14 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
         })
         self.goalcheckinblock = \
             self.root.get_first_child().get_next().pageblock_set.first()
+        assert(self.goalcheckinblock is not None)
 
         # Set the check-in block's setting block to the one we just
         # created.
         self.goalcheckinblock.block().goal_setting_block = \
             goalsettingblock.block()
+        self.goalcheckinblock.block().save()
+        assert(self.goalcheckinblock.block().goal_setting_block is not None)
 
         unlock_hierarchy(self.root.get_first_child(), self.u)
 
@@ -54,6 +58,12 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
         opt1 = GoalOptionFactory(goal_setting_block=goalsettingblock.block())
         opt2 = GoalOptionFactory(goal_setting_block=goalsettingblock.block())
         opt3 = GoalOptionFactory(goal_setting_block=goalsettingblock.block())
+
+        # This option will be hidden from the check-in formset
+        opt4_na = GoalOptionFactory(
+            text='n/a',
+            goal_setting_block=goalsettingblock.block(),
+        )
         self.assertEqual(GoalSettingBlock.objects.count(), 1)
 
         self.setting_resp1 = GoalSettingResponseFactory(
@@ -74,8 +84,15 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
             goal_setting_block=goalsettingblock.block(),
             option=opt3,
         )
+        self.setting_resp4 = GoalSettingResponseFactory(
+            user=self.u,
+            form_id=3,
+            goal_setting_block=goalsettingblock.block(),
+            option=opt4_na,
+        )
         self.setting_responses = [
-            self.setting_resp1, self.setting_resp2, self.setting_resp3
+            self.setting_resp1, self.setting_resp2, self.setting_resp3,
+            self.setting_resp4
         ]
         self.assertEqual(GoalSettingBlock.objects.count(), 1)
 
@@ -111,8 +128,10 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
     def test_get(self):
         r = self.client.get(self.url)
         self.assertEqual(r.status_code, 200)
+        self.assertEqual(len(r.context['checkin_formset'].forms), 4)
         self.assertContains(r, 'Goal Check In Section')
         self.assertContains(r, 'My Goals')
+        self.assertContains(r, 'My Services Goal')
         self.assertContains(r, 'Here\'s what you committed to do')
         self.assertContains(r, 'class="goal-check-in"')
 
