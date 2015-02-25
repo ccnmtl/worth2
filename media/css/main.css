@@ -400,3 +400,14 @@ footer.footer {
 .caseanswercontainer label {
     font-weight: normal;
 }
+
+.safer-sex-quiz .casetitle {
+    display: none;
+}
+
+.safer-sex-quiz .caseanswercontainer {
+    list-style: none;
+    -webkit-column-count: 2; /* Chrome, Safari, Opera */
+    -moz-column-count: 2; /* Firefox */
+    column-count: 2;
+}
