@@ -3,6 +3,10 @@
 
 {% getquestionresponse question as response %}
 
+{% if 'rate-my-risk' in question.quiz.pageblock.css_extra %}
+    {% include 'protectivebehaviors/whats_your_level_feedback.html' %}
+{% endif %}
+
 <div class="cases">
   {{question.intro_text|markdown}}
 
