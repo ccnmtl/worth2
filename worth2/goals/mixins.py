@@ -1,6 +1,7 @@
 from collections import OrderedDict
 from django import forms
 from django.contrib import messages
+from django.db.models import Q
 from django.forms.formsets import formset_factory
 from django.shortcuts import get_object_or_404, render
 from django.template.defaultfilters import pluralize
@@ -24,7 +25,8 @@ class GoalCheckInViewMixin(object):
 
         self.goal_setting_responses = GoalSettingResponse.objects.filter(
             user=request.user,
-            goal_setting_block=goalsettingblock)
+            goal_setting_block=goalsettingblock,
+        ).filter(~Q(option__text__iexact='n/a'))
 
         self.GoalCheckInFormSet = formset_factory(
             GoalCheckInForm,
