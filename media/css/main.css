@@ -411,3 +411,13 @@ footer.footer {
     -moz-column-count: 2; /* Firefox */
     column-count: 2;
 }
+
+.assessing-relationships .casetitle, 
+.assessing-relationships .avatar-block,
+.assessing-relationships .casequestionresult {
+    display: none;
+}
+
+.assessing-relationships .caseanswercontainer {
+    list-style: none;
+}
