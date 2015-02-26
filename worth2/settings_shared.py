@@ -143,21 +143,9 @@ INSTALLED_APPS = [
 ]
 
 REST_FRAMEWORK = {
-    'PAGINATE_BY': 10,
     'DEFAULT_PERMISSION_CLASSES': (
         'worth2.main.auth.IsActivePermission',
-    ),
-    'DEFAULT_PAGINATION_SERIALIZER_CLASS':
-        'rest_framework_ember.pagination.PaginationSerializer',
-    'DEFAULT_PARSER_CLASSES': (
-        'rest_framework_ember.parsers.JSONParser',
-        'rest_framework.parsers.FormParser',
-        'rest_framework.parsers.MultiPartParser',
-    ),
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework_ember.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
-    ),
+    )
 }
 REST_EMBER_FORMAT_KEYS = True
 REST_EMBER_PLURALIZE_KEYS = True

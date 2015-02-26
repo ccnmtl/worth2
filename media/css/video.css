@@ -1,0 +1,8 @@
+/* Set .video-block width/height to match what's specified in
+   youtube-player.js, to prevent abrupt size changes on the page
+   as the video loads.
+ */
+.video-block {
+    width: 640px;
+    height: 390px;
+}

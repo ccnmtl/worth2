@@ -32,11 +32,9 @@ define([
                     var msg = '';
 
                     // Find validation errors in participant response object
-                    if (xhr.responseJSON && xhr.responseJSON.participant) {
-                        for (var key in xhr.responseJSON.participant) {
-                            msg += '<div>' +
-                                xhr.responseJSON.participant[key] +
-                                '</div>';
+                    if (xhr.responseJSON) {
+                        for (var key in xhr.responseJSON) {
+                            msg += '<div>' + xhr.responseJSON[key] + '</div>';
                         }
                     } else {
                         msg = error;

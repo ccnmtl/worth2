@@ -9,13 +9,15 @@ define([
     'views/sign-in-participant-filter',
     'views/goal-setting-form',
     'views/goal-checkin-form',
+    'views/gated-video',
+    'views/unlocker',
     'bootstrap',
     'jquery-cookie'
 ], function(
     $, _, Backbone,
     CreateParticipantView, EditParticipantView, SignInParticipantView,
     ManageParticipantFilter, SignInParticipantFilter, GoalSettingFormView,
-    GoalCheckinFormView
+    GoalCheckinFormView, GatedVideo, Unlocker
 ) {
     $(function() {
         var csrftoken = $.cookie('csrftoken');
@@ -48,6 +50,10 @@ define([
         new GoalSettingFormView();
 
         new GoalCheckinFormView();
+
+        new GatedVideo();
+
+        new Unlocker();
     };
 
     return {
