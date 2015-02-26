@@ -197,7 +197,7 @@ footer.footer {
 .worth-facilitator-manage-participants .row {
     border-radius: 5px;
     background-color: #f6f6f6;
-    margin-bottom: 5px;
+    margin-bottom: 12px;
 }
 
 .worth-facilitator-manage-participants .row.row-header {
@@ -426,4 +426,8 @@ footer.footer {
 
 .assessing-relationships .caseanswercontainer {
     list-style: none;
+}
+
+.participant-progress-modal .modal-body .table-container {
+    width: 30%;
 }

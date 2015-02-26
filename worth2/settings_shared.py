@@ -111,7 +111,6 @@ INSTALLED_APPS = [
     'django_markwhat',
     'django.contrib.staticfiles',
     'django.contrib.messages',
-    'django.contrib.webdesign',
     'sorl.thumbnail',
     'django.contrib.admin',
     'tagging',
