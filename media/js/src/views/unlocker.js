@@ -4,7 +4,7 @@ define([
     'backbone'
 ], function($, _, Backbone) {
     /**
-     * This view unlocks the page's next button.
+     * This view unlocks the page's "Next" button.
      */
     var Unlocker = Backbone.View.extend({
         unlock: function() {
@@ -12,8 +12,9 @@ define([
         },
         initialize: function() {
             if ($('#youtube-player').length === 0) {
-                // TODO: leave this disabled for other gated pageblocks.
-                this.unlock();
+                if (isSectionUnlocked === 1) {
+                    this.unlock();
+                }
             } else {
                 // There's a video on the page, so find out if the user
                 // has already watched it.

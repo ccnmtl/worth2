@@ -19,17 +19,53 @@ class BasePageBlock(models.Model):
         return self.pageblocks.first()
 
     def needs_submit(self):
+        """Determines whether this pageblock needs form controls rendered.
+
+        If needs_submit is True, then pagetree will create a <form>
+        on this pageblock's surrounding page, and a Submit button for
+        that form. It may also render a "Clear results" button, under
+        the right circumstances. The surrounding <form> allows pagetree
+        to handle form submissions for multiple blocks on the same page.
+
+        Also, when needs_submit is True, the POST data on the Section's
+        submit() step gets processed, but when needs_submit is False,
+        nothing is sent to the server.
+
+        :returns: a boolean
+        """
+
         return False
 
-    @classmethod
-    def add_form(cls):
+    def submit(self):
+        """Handle this pageblock's form submission.
+
+        :returns: None
+        """
+
+        pass
+
+    def unlocked(self, user):
+        """Determines whether the user can proceed past this block.
+
+        The current user is passed in to this function, allowing you to,
+        for example, find out if that user has submitted the info
+        necessary to proceed past this block's page.
+
+        :param user: the current user
+        :returns: a boolean
+        """
+
+        return True
+
+    @staticmethod
+    def add_form():
         return BasePageBlockForm()
 
     def edit_form(self):
         return BasePageBlockForm(instance=self)
 
-    @classmethod
-    def create(cls, request):
+    @staticmethod
+    def create(request):
         form = BasePageBlockForm(request.POST)
         return form.save()
 
@@ -41,9 +77,6 @@ class BasePageBlock(models.Model):
         form = BasePageBlockForm(data=vals, files=files, instance=self)
         if form.is_valid():
             form.save()
-
-    def unlocked(self, user):
-        return True
 
 
 class BasePageBlockForm(forms.ModelForm):

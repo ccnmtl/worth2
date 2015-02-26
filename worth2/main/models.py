@@ -1,12 +1,10 @@
 import re
 from django import forms
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.fields import GenericRelation
 from django.core.validators import RegexValidator
 from django.db import models
 from django.shortcuts import get_object_or_404
 from ordered_model.models import OrderedModel
-from pagetree.models import PageBlock
 
 from worth2.main.auth import user_is_participant
 from worth2.main.generic.models import BasePageBlock, BaseUserProfile
@@ -37,18 +35,11 @@ class Avatar(OrderedModel):
         return unicode(self.image.url)
 
 
-class AvatarBlock(models.Model):
+class AvatarBlock(BasePageBlock):
     """A PageBlock for displaying the current participant's avatar."""
 
     display_name = 'Avatar Block'
-    pageblocks = GenericRelation(PageBlock)
     template_file = 'main/avatar_block.html'
-
-    def pageblock(self):
-        return self.pageblocks.first()
-
-    def needs_submit(self):
-        return True
 
     @classmethod
     def add_form(cls):
@@ -67,37 +58,52 @@ class AvatarBlock(models.Model):
         if form.is_valid():
             form.save()
 
-    def unlocked(self, user):
-        return True
-
 
 class AvatarBlockForm(forms.ModelForm):
     class Meta:
         model = AvatarBlock
 
 
-class AvatarSelectorBlock(models.Model):
+class AvatarSelectorBlock(BasePageBlock):
     """A PageBlock for displaying the Avatar Selector."""
 
     display_name = 'Avatar Selector Block'
-    pageblocks = GenericRelation(PageBlock)
     template_file = 'main/avatar_selector_block.html'
-
-    def pageblock(self):
-        return self.pageblocks.first()
 
     def needs_submit(self):
         return True
 
-    @classmethod
-    def add_form(cls):
+    def unlocked(self, user):
+        # Staff and superusers are given a default avatar (see
+        # the avatar_url templatetag), so return True for them.
+        # Otherwise, we find out here whether the participant has
+        # chosen an avatar.
+        return (user.is_staff or user.is_superuser) or \
+            (hasattr(user, 'profile') and
+             user.profile.is_participant() and
+             user.profile.participant.avatar)
+
+    def submit(self, user, request_data):
+        if user_is_participant(user):
+            avatar_id = request_data.get('avatar-id')
+            avatar = get_object_or_404(Avatar, pk=avatar_id)
+            user.profile.participant.avatar = avatar
+            user.profile.participant.save()
+
+    def avatars(self):
+        """Returns a queryset of all the available avatars in WORTH."""
+
+        return Avatar.objects.all()
+
+    @staticmethod
+    def add_form():
         return AvatarSelectorBlockForm()
 
     def edit_form(self):
         return AvatarSelectorBlockForm(instance=self)
 
-    @classmethod
-    def create(cls, request):
+    @staticmethod
+    def create(request):
         form = AvatarSelectorBlockForm(request.POST)
         return form.save()
 
@@ -109,21 +115,6 @@ class AvatarSelectorBlock(models.Model):
         form = AvatarSelectorBlockForm(data=vals, files=files, instance=self)
         if form.is_valid():
             form.save()
-
-    def unlocked(self, user):
-        return True
-
-    def avatars(self):
-        """Returns a queryset of all the available avatars in WORTH."""
-
-        return Avatar.objects.all()
-
-    def submit(self, user, request_data):
-        if user_is_participant(user):
-            avatar_id = request_data.get('avatar-id')
-            avatar = get_object_or_404(Avatar, pk=avatar_id)
-            user.profile.participant.avatar = avatar
-            user.profile.participant.save()
 
 
 class AvatarSelectorBlockForm(forms.ModelForm):
@@ -271,15 +262,15 @@ class VideoBlock(BasePageBlock):
         help_text='The YouTube video id, e.g. "M7lc1UVf-VE"'
     )
 
-    @classmethod
-    def add_form(cls):
+    @staticmethod
+    def add_form():
         return VideoBlockForm()
 
     def edit_form(self):
         return VideoBlockForm(instance=self)
 
-    @classmethod
-    def create(cls, request):
+    @staticmethod
+    def create(request):
         form = VideoBlockForm(request.POST)
         return form.save()
 

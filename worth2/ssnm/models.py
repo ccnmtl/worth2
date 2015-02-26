@@ -46,15 +46,15 @@ class SsnmPageBlock(BasePageBlock):
     js_template_file = 'ssnm/ssnm_js.html'
     css_template_file = 'ssnm/ssnm_css.html'
 
-    @classmethod
-    def add_form(cls):
+    @staticmethod
+    def add_form():
         return SsnmPageBlockForm()
 
     def edit_form(self):
         return SsnmPageBlockForm(instance=self)
 
-    @classmethod
-    def create(cls, request):
+    @staticmethod
+    def create(request):
         form = SsnmPageBlockForm(request.POST)
         return form.save()
 

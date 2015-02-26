@@ -1,5 +1,6 @@
 {% extends 'pagetree/base_pagetree.html' %}
 {% load render %}
+{% load user_status %}
 
 {% block js %}
 {% for block in section.pageblock_set.all %}
@@ -37,17 +38,18 @@
 {% endif %}
 {% endblock %}
 
-
 {% block sidenav %}
 {% endblock %}
 
 {% block content %}
+
+<script>
+    var isSectionUnlocked = {% is_section_unlocked section user %};
+</script>
+
 <div id="content">
-{% if needs_submit %}
-{% if is_submitted %}
-{% else %}
+{% if needs_submit and not is_submitted %}
 <form action="." method="post">{% csrf_token %}
-{% endif %}
 {% endif %}
 
 {% for block in section.pageblock_set.all %}
@@ -57,9 +59,7 @@
 </div>
 {% endfor %}
 
-{% if needs_submit %}
-{% if request.user.is_anonymous %}
-{% else %}
+{% if needs_submit and not request.user.is_anonymous %}
 
 {% if is_submission_empty %}
 <div class="clearfix"></div>
@@ -84,10 +84,15 @@
 
 <div class="clearfix"></div>
 
+{% comment %}
+The avatar selector block needs to hide the submit button, since
+each avatar has its own submit button.
+{% endcomment %}
+{% if not avatarselectorblock %}
 <input type="submit" value="Submit" class="btn btn-primary" />
+{% endif %}
 
 </form>
-{% endif %}
 {% endif %}
 {% endif %}
 
