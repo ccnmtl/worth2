@@ -170,6 +170,10 @@ class ParticipantSessionPageView(
                 'goal_checkin_context': self.goal_checkin_context,
             })
 
+        avatarselectorblock = self.get_first_block_of_type(
+            'avatar selector block')
+        ctx.update({'avatarselectorblock': avatarselectorblock})
+
         return ctx
 
     def get_context_data(self, **kwargs):
@@ -199,7 +203,7 @@ class ParticipantSessionPageView(
             pageblocks.filter(content_type__in=quiztypes)]
 
         # Was the form submitted with no values selected?
-        # TODO: move this logic to a RateMyRiskViewMixin.
+        # TODO: move this logic to a mixin.
         is_submission_empty = False
         for submission in quizblock.models.Submission.objects.filter(
                 user=request.user, quiz__in=quizblocks_on_this_page):

@@ -1,14 +1,12 @@
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django import forms
 from ordered_model.models import OrderedModel
-from pagetree.models import PageBlock
 
 from worth2.main.generic.models import BasePageBlock
 
 
-class GoalSettingBlock(models.Model):
+class GoalSettingBlock(BasePageBlock):
     """A PageBlock for allowing participants to set goals.
 
     Participants set goals in each session. These goals are persistent -
@@ -19,7 +17,6 @@ class GoalSettingBlock(models.Model):
     in the admin interface.
     """
 
-    pageblocks = GenericRelation(PageBlock)
     display_name = 'Goal Setting Block'
     template_file = 'goals/goal_setting_block.html'
 
@@ -46,35 +43,17 @@ class GoalSettingBlock(models.Model):
         return self.goal_type == 'services' or \
             self.goal_type == 'social support'
 
-    def pageblock(self):
-        return self.pageblocks.first()
-
     def needs_submit(self):
         return True
 
-    @classmethod
-    def add_form(cls):
-        return GoalSettingBlockForm()
-
-    def edit_form(self):
-        return GoalSettingBlockForm(instance=self)
-
-    @classmethod
-    def create(cls, request):
-        form = GoalSettingBlockForm(request.POST)
-        return form.save()
-
-    @classmethod
-    def create_from_dict(cls, d):
-        return cls.objects.create()
-
-    def edit(self, vals, files):
-        form = GoalSettingBlockForm(data=vals, files=files, instance=self)
-        if form.is_valid():
-            form.save()
-
     def unlocked(self, user):
-        return True
+        # Find out if this user has created any GoalSettingResponses for
+        # this GoalSettingBlock.
+        c = self.goal_setting_responses.filter(user=user).count()
+        return c > 0
+
+    def submit(self, user, request_data):
+        pass
 
     def __unicode__(self):
         try:
@@ -86,8 +65,26 @@ class GoalSettingBlock(models.Model):
                        '[' + slug + '] id: ' +
                        unicode(self.pk))
 
-    def submit(self, user, request_data):
-        pass
+    @staticmethod
+    def add_form():
+        return GoalSettingBlockForm()
+
+    def edit_form(self):
+        return GoalSettingBlockForm(instance=self)
+
+    @staticmethod
+    def create(request):
+        form = GoalSettingBlockForm(request.POST)
+        return form.save()
+
+    @classmethod
+    def create_from_dict(cls, d):
+        return cls.objects.create()
+
+    def edit(self, vals, files):
+        form = GoalSettingBlockForm(data=vals, files=files, instance=self)
+        if form.is_valid():
+            form.save()
 
 
 class GoalSettingBlockForm(forms.ModelForm):
@@ -113,7 +110,8 @@ class GoalOption(OrderedModel):
 class GoalSettingResponse(models.Model):
     """Participant responses to 'main' and 'extra' goals."""
 
-    goal_setting_block = models.ForeignKey(GoalSettingBlock)
+    goal_setting_block = models.ForeignKey(
+        GoalSettingBlock, related_name='goal_setting_responses')
     user = models.ForeignKey(User)
 
     option = models.ForeignKey(GoalOption)
@@ -152,7 +150,11 @@ class GoalCheckInResponse(models.Model):
     This is only used on sessions 2 through 5.
     """
 
-    goal_setting_response = models.ForeignKey(GoalSettingResponse, unique=True)
+    goal_setting_response = models.ForeignKey(
+        GoalSettingResponse,
+        unique=True,
+        related_name='goal_checkin_response'
+    )
 
     # This field is actually "How did it go?"
     i_will_do_this = models.CharField(
@@ -179,15 +181,34 @@ class GoalCheckInPageBlock(BasePageBlock):
     def needs_submit(self):
         return True
 
-    @classmethod
-    def add_form(cls):
+    def unlocked(self, user):
+        # Find out if this user has created any GoalCheckinResponses for
+        # this GoalCheckinBlock.
+        setting_responses = \
+            self.goal_setting_block.goal_setting_responses.filter(
+                user=user)
+
+        if setting_responses.count() == 0:
+            return True
+
+        for setting_response in setting_responses:
+            if setting_response.goal_checkin_response.count() > 0:
+                return True
+
+        return False
+
+    def submit(self, user, request_data):
+        pass
+
+    @staticmethod
+    def add_form():
         return GoalCheckInPageBlockForm()
 
     def edit_form(self):
         return GoalCheckInPageBlockForm(instance=self)
 
-    @classmethod
-    def create(cls, request):
+    @staticmethod
+    def create(request):
         form = GoalCheckInPageBlockForm(request.POST)
         return form.save()
 
@@ -195,9 +216,6 @@ class GoalCheckInPageBlock(BasePageBlock):
         form = GoalCheckInPageBlockForm(data=vals, files=files, instance=self)
         if form.is_valid():
             form.save()
-
-    def submit(self, user, request_data):
-        pass
 
 
 class GoalCheckInPageBlockForm(forms.ModelForm):
