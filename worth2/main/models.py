@@ -1,3 +1,4 @@
+import re
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericRelation
@@ -216,6 +217,25 @@ class Participant(InactiveUserProfile):
 
     def __unicode__(self):
         return unicode(self.study_id)
+
+    def last_session_accessed(self, url=None):
+        """Get which session this participant is in. Returns an int."""
+
+        if url is None:
+            url = self.last_location_url()
+
+        if re.match(r'^/pages/session-1/.*', url):
+            return 1
+        elif re.match(r'^/pages/session-2/.*', url):
+            return 2
+        elif re.match(r'^/pages/session-3/.*', url):
+            return 3
+        elif re.match(r'^/pages/session-4/.*', url):
+            return 4
+        elif re.match(r'^/pages/session-5/.*', url):
+            return 5
+
+        return None
 
 
 class Session(models.Model):

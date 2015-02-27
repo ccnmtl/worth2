@@ -1,0 +1,9 @@
+<tr>
+    <td>Session {{ session }}</td>
+    <td>
+        {% if session < last_session %}
+        <span class="glyphicon glyphicon-ok"
+              aria-hidden="true"></span>
+        {% endif %}
+    </td>
+</tr>

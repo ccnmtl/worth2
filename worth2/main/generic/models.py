@@ -123,6 +123,8 @@ class BaseUserProfile(models.Model):
             return 0
 
     def time_spent(self):
+        """Returns the number of seconds the user has spent on the site."""
+
         visits = UserPageVisit.objects.filter(user=self.user)
 
         seconds = 0

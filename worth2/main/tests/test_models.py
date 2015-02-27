@@ -50,6 +50,18 @@ class ParticipantTest(TestCase):
             self.hierarchy.get_root().get_absolute_url()
         )
 
+    def test_last_session_accessed(self):
+        r = self.participant.last_session_accessed(
+            '/pages/session-1/some-activity')
+        self.assertEqual(r, 1)
+        r = self.participant.last_session_accessed(
+            '/pages/session-1/')
+        self.assertEqual(r, 1)
+
+        r = self.participant.last_session_accessed(
+            '/pages/session-5/session-5-activity')
+        self.assertEqual(r, 5)
+
 
 class ParticipantManagerTest(TestCase):
     def test_cohort_ids_empty(self):
