@@ -1,13 +1,46 @@
+from django.core.urlresolvers import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
 from worth2.main.models import Participant, WatchedVideo
 from worth2.main.tests.factories import (
-    ParticipantFactory, WatchedVideoFactory, VideoBlockFactory
+    ParticipantFactory, WatchedVideoFactory, UserFactory, VideoBlockFactory
 )
 from worth2.main.tests.mixins import (
     LoggedInFacilitatorTestMixin, LoggedInParticipantTestMixin
 )
+
+
+class LoginCheckTest(LoggedInParticipantTestMixin, APITestCase):
+    def test_post_no_user(self):
+        response = self.client.post(reverse('api-login-check'), {
+            'facilitator_username': 'fake user',
+            'facilitator_password': 'test',
+        })
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.data['error'], 'User "fake user" not found')
+
+    def test_post_correct_password(self):
+        facilitator = UserFactory(username='facilitator')
+        facilitator.set_password('password1')
+        facilitator.save()
+        response = self.client.post(reverse('api-login-check'), {
+            'facilitator_username': 'facilitator',
+            'facilitator_password': 'password1',
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['login_check'], True)
+
+    def test_post_wrong_password(self):
+        facilitator = UserFactory(username='facilitator')
+        facilitator.set_password('password1')
+        facilitator.save()
+        response = self.client.post(reverse('api-login-check'), {
+            'facilitator_username': 'facilitator',
+            'facilitator_password': 'wrong_password',
+        })
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.data['login_check'], False)
 
 
 class ParticipantViewSetTest(
