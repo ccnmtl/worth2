@@ -11,6 +11,10 @@ define([
             $('li.next').removeClass('disabled');
         },
         initialize: function() {
+            if (typeof isSectionUnlocked === 'undefined') {
+                return;
+            }
+
             if ($('#youtube-player').length === 0) {
                 if (isSectionUnlocked === 1) {
                     this.unlock();

@@ -5,6 +5,7 @@ define([
     'views/create-participant',
     'views/edit-participant',
     'views/sign-in-participant',
+    'views/sign-out-participant',
     'views/manage-participant-filter',
     'views/sign-in-participant-filter',
     'views/goal-setting-form',
@@ -16,6 +17,7 @@ define([
 ], function(
     $, _, Backbone,
     CreateParticipantView, EditParticipantView, SignInParticipantView,
+    SignOutParticipantView,
     ManageParticipantFilter, SignInParticipantFilter, GoalSettingFormView,
     GoalCheckinFormView, GatedVideo, Unlocker
 ) {
@@ -42,6 +44,8 @@ define([
         });
 
         new SignInParticipantView();
+
+        new SignOutParticipantView();
 
         new ManageParticipantFilter();
 

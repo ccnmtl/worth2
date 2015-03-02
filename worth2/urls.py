@@ -41,6 +41,8 @@ urlpatterns = patterns(
     auth_urls,
     logout_page,
     url(r'^api/', include(rest_router.urls)),
+    url(r'^api/login_check/', apiviews.LoginCheck.as_view(),
+        name='api-login-check'),
     url(r'^api-auth/', include('rest_framework.urls',
                                namespace='rest_framework')),
     (r'^registration/', include('registration.backends.default.urls')),
