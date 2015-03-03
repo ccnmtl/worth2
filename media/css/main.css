@@ -267,7 +267,8 @@ footer.footer {
 
 .post-video-quiz .casetitle,
 .post-video-quiz .casesanswerdisplay,
-.post-video-quiz .caseanswercorrect {
+.post-video-quiz .caseanswercorrect,
+.post-video-quiz .avatar-block {
     display: none;
 }
 
@@ -275,6 +276,7 @@ footer.footer {
     font-weight: bold;
 }
 
+.myth-fact .avatar-block,
 .myth-fact .casetitle {
     display: none;
 }

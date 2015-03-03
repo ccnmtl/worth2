@@ -16,9 +16,9 @@
     <div class="casequestionresult">
         {% is_user_correct request.user question as is_correct %}
         {% if is_correct %}
-        <div class="correct">That's Correct</div>
+        <div class="correct">That's Correct!</div>
         {% else %}
-        <div class="incorrect">That's Incorrect</div>
+        <div class="incorrect">That's Incorrect.</div>
         {% endif %}
     </div>
     <p>{{question.explanation|markdown}}</p>
