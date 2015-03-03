@@ -4,36 +4,52 @@
 {% if 'likert' in question.quiz.pageblock.css_extra %}
     {% include 'quizblock/likert.html' %}
 {% else %}
-<ol class="caseanswercontainer" type="A">
-    {% for answer in question.answer_set.all %}
-        {% if block.rhetorical %}
-        <li class="{{answer.css_extra}}">
-            <label>
-                <input name="question{{question.id}}" value="{{answer.label}}"
-                       type="radio">
-                {{answer.label}}
-            </label>
-        </li>
-        {% else %}
-    <li class="{{answer.css_extra}}">
-        <label>
-            <input name="pageblock-{{block.pageblock.id}}-question{{question.id}}"
-                value="{{answer.value}}" type="radio"
-                {% if response %}disabled="disabled"
-                    {% ifequal response.value answer.value %}checked="checked"{% endifequal %}
-                   {% endif %}> {{answer.label}}
-        </label>
-    </li>
-        {% endif %}
-    {% endfor %}
-</ol>
-<div class="clearfix"></div>
-{% endif %}
 
-<div class="avatar-block">
-    <img src="{% avatar_url user %}">
+<div class="container-fluid">
+    <div class="row">
+  
+        <div class="col-md-8">
+  
+            <ol class="caseanswercontainer" type="A">
+                {% for answer in question.answer_set.all %}
+                    {% if block.rhetorical %}
+                    <li class="{{answer.css_extra}}">
+                        <label>
+                            <input name="question{{question.id}}" value="{{answer.label}}"
+                                   type="radio">
+                            {{answer.label}}
+                        </label>
+                    </li>
+                    {% else %}
+                <li class="{{answer.css_extra}}">
+                    <label>
+                        <input name="pageblock-{{block.pageblock.id}}-question{{question.id}}"
+                            value="{{answer.value}}" type="radio"
+                            {% if response %}disabled="disabled"
+                                {% ifequal response.value answer.value %}checked="checked"{% endifequal %}
+                               {% endif %}> {{answer.label}}
+                    </label>
+                </li>
+                    {% endif %}
+                {% endfor %}
+            </ol>
+            <div class="clearfix"></div>
+
+        </div>
+
+{% endif %}
+  
+        <div class="col-md-4">
+  
+            <div class="avatar-block" style="border: 1px solid #ccc; padding: 15px; margin: -85px 0px 20px 0px; border-radius: 10px;">
+                <img src="{% avatar_url user %}">
+            </div>
+            <div class="clearfix"></div>
+
+        </div>
+
+    </div>
 </div>
-<div class="clearfix"></div>
 
 {% for answer in question.answer_set.all %}
     {% if response %}
