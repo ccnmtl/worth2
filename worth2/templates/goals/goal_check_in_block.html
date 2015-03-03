@@ -2,13 +2,18 @@
 {% load avatar %}
 
 <div class="goal-check-in" id="goal-checkin-block">
+
     <h1>My Goals</h1>
 
     <h2>Goal Check In</h2>
 
     <p>Here's what you committed to do during the last session.</p>
-
-    <form class="form-horizontal" method="post">{% csrf_token %}
+    
+    <div class="container">
+    <div class="row">
+    
+    <div class="col-sm-10">
+        <form class="form-horizontal" method="post">{% csrf_token %}
         {{ checkin_formset.management_form }}
 
         {% comment %}
@@ -18,7 +23,7 @@
         together and putting them in the view's context.
         {% endcomment %}
         {% for t in goal_checkin_context %}
-        <div class="well checkin-group">
+        <div class="checkin-group">
             <div class="form-group non-interactive">
                 <label class="control-label col-sm-2">
                     My {{ t.0.goal_setting_block.get_goal_type_display }} Goal
@@ -44,15 +49,18 @@
         {% endfor %}
 
         <div class="form-group">
-            <div class="col-sm-10">
                 <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
         </div>
     </form>
-
+    </div>
+    
     <div class="col-sm-2 avatar-block">
         <img src="{% avatar_url user %}">
     </div>
+    
+    </div>
+    </div>
 
-    <div class="clearfix"><div>
+    <div class="clearfix"></div>
+    
 </div>
