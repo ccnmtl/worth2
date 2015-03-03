@@ -3,17 +3,27 @@ html {
 
 body {
 	font-family: 'Raleway', sans-serif !important;
-
 }
 
 body > .container {
-    padding-top: 75px;
+    padding-top: 80px;
 }
 
 .navbar {
 	background-color: #000;
 	background-image: url(/media/img/fotolia_comp_64154101.jpg);
 	background-position: 0px 180px;
+	min-height: 60px;
+}
+
+.navbar-right {padding-top: 8px;}
+
+
+.dashboard-widgets {
+    -webkit-column-count: 2; /* Chrome, Safari, Opera */
+    -moz-column-count: 2; /* Firefox */
+    column-count: 2;
+
 }
 
 label {
@@ -415,9 +425,14 @@ footer.footer {
 
 .safer-sex-quiz .caseanswercontainer {
     list-style: none;
-    -webkit-column-count: 2; /* Chrome, Safari, Opera */
-    -moz-column-count: 2; /* Firefox */
-    column-count: 2;
+    -webkit-column-count: 4; /* Chrome, Safari, Opera */
+    -moz-column-count: 4; /* Firefox */
+    column-count: 4;
+    border: 1px solid #666;
+    padding: 120px 20px 20px 20px;
+	background-image: url(/media/img/menu.png);
+	background-repeat: no-repeat;
+	background-position: center 20px;
 }
 
 .services-quiz .casetitle,
