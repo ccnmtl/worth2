@@ -74,8 +74,7 @@ HTML template - there's probably a way of avoiding that step.
             <div class="worth-ssnm-my-avatar-box">
                 <div class="avatar-block">
                     {% endverbatim %}
-                   <!-- <img src="{% avatar_url user %}">-->
-                                <img class="img-circle" src="http://dummyimage.com/80/000000/fff&text=me" width="80" height="80" />
+                   <img class="img-thumbnail" src="{% avatar_url user %}">
 
                     {% verbatim %}
                 </div>
