@@ -50,7 +50,7 @@ HTML template - there's probably a way of avoiding that step.
 <script type="text/x-handlebars" id="components/supporter-box">
     <div class="ssnm-supporter-box">
         <div class="pull-left">
-            <img src="placeholder.png" width="80" height="80" />
+            <img class="img-thumbnail" src="http://dummyimage.com/80/000000/fff&text=placeholder" width="80" height="80" />
         </div>
         <div class="pull-right">
             <h3>{{supporter.name}}</h3>
@@ -74,7 +74,9 @@ HTML template - there's probably a way of avoiding that step.
             <div class="worth-ssnm-my-avatar-box">
                 <div class="avatar-block">
                     {% endverbatim %}
-                    <img src="{% avatar_url user %}">
+                   <!-- <img src="{% avatar_url user %}">-->
+                                <img class="img-circle" src="http://dummyimage.com/80/000000/fff&text=me" width="80" height="80" />
+
                     {% verbatim %}
                 </div>
                 <button type="button" class="btn btn-primary" name="add-people"
