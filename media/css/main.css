@@ -428,6 +428,12 @@ footer.footer {
     list-style: none;
 }
 
+.feelings-scale .casetitle,
+.feelings-scale .avatar-block,
+.feelings-scale .casequestionresult {
+    display: none;
+}
+
 .participant-progress-modal .modal-body .table-container {
     width: 30%;
 }
