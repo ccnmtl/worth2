@@ -440,6 +440,20 @@ footer.footer {
     display: none;
 }
 
+.safety-plan-quiz .casetitle,
+.services-quiz .avatar-block {
+    display: none;
+}
+
+.safety-plan-quiz .caseintrotext {
+    width: 50em;
+}
+
+.safety-plan-quiz textarea {
+    width: 50em;
+    height: 4em;
+}
+
 .assessing-relationships .casetitle, 
 .assessing-relationships .avatar-block,
 .assessing-relationships .casequestionresult {
