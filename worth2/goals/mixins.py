@@ -43,7 +43,7 @@ class GoalCheckInViewMixin(object):
         self.goal_checkin_context = zip(
             self.goal_setting_responses, self.checkin_formset)
 
-    def handle_goal_check_in_submission(self, request, goalcheckinblock):
+    def _goal_check_in_submit(self, request, goalcheckinblock):
         formset = self.GoalCheckInFormSet(
             request.POST,
             prefix='pageblock-%s' % goalcheckinblock.pk)
@@ -71,8 +71,8 @@ class GoalCheckInViewMixin(object):
         return formset
 
     def goal_check_in_post(self, request, goalcheckinblock):
-        formset = self.handle_goal_check_in_submission(
-            request, goalcheckinblock)
+        """This is meant to be called from a django view's post() method."""
+        formset = self._goal_check_in_submit(request, goalcheckinblock)
         ctx = self.get_context_data()
         ctx.update({
             'checkin_formset': formset,
@@ -100,7 +100,7 @@ class GoalSettingViewMixin(object):
     def create_goal_setting_formset(self, request, goalsettingblock):
         """Create the goal setting formset.
 
-        To be used by GET and POST.
+        To be used by both GET and POST.
         """
 
         class DynamicGoalSettingForm(GoalSettingForm):
@@ -152,10 +152,10 @@ class GoalSettingViewMixin(object):
             initial=tuple(initial_data),
         )
 
-    def handle_goal_setting_submission(self, request, goalsettingblock):
+    def _goal_setting_submit(self, request, goalsettingblock):
         """Handle a submission for the goal setting activity.
 
-        This method returns the formset populated formset.
+        This method returns the populated formset.
         """
 
         block = goalsettingblock.block()
@@ -199,8 +199,8 @@ class GoalSettingViewMixin(object):
         return formset
 
     def goal_setting_post(self, request, goalsettingblock):
-        formset = self.handle_goal_setting_submission(
-            request, goalsettingblock)
+        """This is meant to be called from a django view's post() method."""
+        formset = self._goal_setting_submit(request, goalsettingblock)
         ctx = self.get_context_data()
         ctx.update({'setting_formset': formset})
 

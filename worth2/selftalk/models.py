@@ -14,15 +14,11 @@ class Statement(OrderedModel):
     """
 
     text = models.TextField()
-    other_text = models.TextField(blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        if self.other_text:
-            return self.other_text
-
         return self.text
 
 
@@ -34,15 +30,11 @@ class Refutation(OrderedModel):
 
     statement = models.ForeignKey(Statement)
     text = models.TextField()
-    other_text = models.TextField(blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        if self.other_text:
-            return self.other_text
-
         return self.text
 
 
@@ -79,8 +71,35 @@ class StatementBlock(BasePageBlock):
         return True
 
     def unlocked(self, user):
-        # TODO create logic here
-        return False
+        qs = StatementResponse.objects.filter(
+            user=user,
+            statement_block=self,
+        )
+        return qs.count() > 0
+
+    def submit(self, user, request_data):
+        for k, v in request_data.iteritems():
+            statement = Statement.objects.get(pk=int(k))
+            if v is True:
+                StatementResponse.objects.update_or_create(
+                    statement=statement,
+                    statement_block=self,
+                    user=user,
+                )
+            elif v is False:
+                try:
+                    to_delete = StatementResponse.objects.get(
+                        statement=statement,
+                        statement_block=self,
+                        user=user)
+                    to_delete.delete()
+                except:
+                    pass
+
+    def clear_user_submissions(self, user):
+        StatementResponse.objects.filter(
+            user=user, statement_block=self
+        ).delete()
 
     def __unicode__(self):
         try:
@@ -105,7 +124,10 @@ class StatementBlock(BasePageBlock):
 
     @classmethod
     def create_from_dict(cls, d):
-        return cls.objects.create()
+        d.pop('block_type', None)
+        d.pop('label', None)
+        d.pop('css_extra', None)
+        return cls.objects.create(**d)
 
     def edit(self, vals, files):
         form = StatementBlockForm(data=vals, files=files, instance=self)
@@ -116,8 +138,9 @@ class StatementBlock(BasePageBlock):
 class StatementBlockForm(forms.ModelForm):
     class Meta:
         model = StatementBlock
-
-    subject_name = forms.CharField()
+        widgets = {
+            'subject_name': forms.TextInput()
+        }
 
 
 class RefutationBlock(BasePageBlock):
@@ -147,8 +170,33 @@ class RefutationBlock(BasePageBlock):
         return True
 
     def unlocked(self, user):
-        # TODO create logic here
-        return False
+        qs = RefutationResponse.objects.filter(
+            user=user,
+            refutation_block=self,
+        )
+        return qs.count() > 0
+
+    def submit(self, user, request_data):
+        for k, v in request_data.iteritems():
+            refutation = Refutation.objects.get(pk=int(k))
+            if v == 'on':
+                obj, created = RefutationResponse.objects.update_or_create(
+                    refutation=refutation,
+                    refutation_block=self,
+                    user=user,
+                )
+            else:
+                to_delete = RefutationResponse.objects.get(
+                    refutation=refutation,
+                    refutation_block=self,
+                    user=user)
+                if to_delete:
+                    to_delete.delete()
+
+    def clear_user_submissions(self, user):
+        RefutationResponse.objects.filter(
+            user=user, refutation_block=self
+        ).delete()
 
     def __unicode__(self):
         try:
@@ -173,7 +221,10 @@ class RefutationBlock(BasePageBlock):
 
     @classmethod
     def create_from_dict(cls, d):
-        return cls.objects.create()
+        d.pop('block_type', None)
+        d.pop('label', None)
+        d.pop('css_extra', None)
+        return cls.objects.create(**d)
 
     def edit(self, vals, files):
         form = RefutationBlockForm(data=vals, files=files, instance=self)
@@ -195,9 +246,16 @@ class StatementResponse(models.Model):
     statement = models.ForeignKey(Statement)
     statement_block = models.ForeignKey(StatementBlock)
     user = models.ForeignKey(User)
+    other_text = models.TextField(blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        if self.other_text:
+            return self.other_text
+
+        return unicode(self.statement)
 
 
 class RefutationResponse(models.Model):
@@ -209,6 +267,13 @@ class RefutationResponse(models.Model):
     refutation = models.ForeignKey(Refutation)
     refutation_block = models.ForeignKey(RefutationBlock)
     user = models.ForeignKey(User)
+    other_text = models.TextField(blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        if self.other_text:
+            return self.other_text
+
+        return unicode(self.refutation)

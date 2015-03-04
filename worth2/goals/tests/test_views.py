@@ -8,9 +8,7 @@ from worth2.goals.models import (
     GoalCheckInResponse, GoalSettingBlock, GoalSettingResponse
 )
 from worth2.main.tests.helpers import unlock_hierarchy
-from worth2.main.tests.mixins import (
-    LoggedInParticipantTestMixin
-)
+from worth2.main.tests.mixins import LoggedInParticipantTestMixin
 
 
 class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):

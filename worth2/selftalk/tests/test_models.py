@@ -8,12 +8,15 @@ from worth2.selftalk.tests.factories import (
 )
 
 
-class StatemetnTest(TestCase):
+class StatementTest(TestCase):
     def setUp(self):
         self.o = StatementFactory()
 
     def test_is_valid_from_factory(self):
         self.o.full_clean()
+
+    def test_unicode(self):
+        self.assertEqual(unicode(self.o), self.o.text)
 
 
 class RefutationTest(TestCase):
@@ -22,6 +25,9 @@ class RefutationTest(TestCase):
 
     def test_is_valid_from_factory(self):
         self.o.full_clean()
+
+    def test_unicode(self):
+        self.assertEqual(unicode(self.o), self.o.text)
 
 
 class ExternalStatementBlockTest(TestCase):
@@ -63,6 +69,9 @@ class StatementResponseTest(TestCase):
     def test_is_valid_from_factory(self):
         self.o.full_clean()
 
+    def test_unicode(self):
+        self.assertEqual(unicode(self.o), unicode(self.o.statement))
+
 
 class RefutationResponseTest(TestCase):
     def setUp(self):
@@ -70,3 +79,6 @@ class RefutationResponseTest(TestCase):
 
     def test_is_valid_from_factory(self):
         self.o.full_clean()
+
+    def test_unicode(self):
+        self.assertEqual(unicode(self.o), unicode(self.o.refutation))

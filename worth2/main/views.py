@@ -15,6 +15,9 @@ import quizblock
 from quizblock.models import Quiz
 
 from worth2.goals.mixins import GoalCheckInViewMixin, GoalSettingViewMixin
+from worth2.selftalk.mixins import (
+    SelfTalkStatementViewMixin, SelfTalkRefutationViewMixin
+)
 from worth2.main.auth import generate_password, user_is_participant
 from worth2.main.forms import SignInParticipantForm
 from worth2.main.models import Participant, Session
@@ -121,6 +124,7 @@ class SignInParticipant(FormView):
 
 class ParticipantSessionPageView(
         GoalCheckInViewMixin, GoalSettingViewMixin,
+        SelfTalkStatementViewMixin, SelfTalkRefutationViewMixin,
         PageView):
     """WORTH version of pagetree's PageView."""
 
@@ -130,14 +134,27 @@ class ParticipantSessionPageView(
     def dispatch(self, request, *args, **kwargs):
         path = kwargs['path']
         self.section = self.get_section(path)
-        goalsettingblock = self.get_first_block_of_type('goal setting block')
-        goalcheckinblock = self.get_first_block_of_type(
+        self.goalsettingblock = self.get_first_block_of_type(
+            'goal setting block')
+        self.goalcheckinblock = self.get_first_block_of_type(
             'goal check in page block')
+        self.selftalkstatementblock = self.get_first_block_of_type(
+            'statement block')
+        self.selftalkrefutationblock = self.get_first_block_of_type(
+            'refutation block')
 
-        if goalsettingblock:
-            self.create_goal_setting_formset(request, goalsettingblock)
-        elif goalcheckinblock:
-            self.create_goal_check_in_formset(request, goalcheckinblock)
+        if self.goalsettingblock:
+            self.create_goal_setting_formset(
+                request, self.goalsettingblock)
+        elif self.goalcheckinblock:
+            self.create_goal_check_in_formset(
+                request, self.goalcheckinblock)
+        elif self.selftalkstatementblock:
+            self.create_selftalk_statement_form(
+                request, self.selftalkstatementblock)
+        elif self.selftalkrefutationblock:
+            self.create_selftalk_refutation_form(
+                request, self.selftalkrefutationblock)
 
         return super(ParticipantSessionPageView, self).dispatch(
             request, *args, **kwargs)
@@ -159,15 +176,16 @@ class ParticipantSessionPageView(
     def get_extra_context(self):
         ctx = super(ParticipantSessionPageView, self).get_extra_context()
 
-        goalsettingblock = self.get_first_block_of_type('goal setting block')
-        goalcheckinblock = self.get_first_block_of_type(
-            'goal check in page block')
-        if goalsettingblock:
+        if self.goalsettingblock:
             ctx.update({'setting_formset': self.setting_formset})
-        elif goalcheckinblock:
+        elif self.goalcheckinblock:
             ctx.update({
                 'checkin_formset': self.checkin_formset,
                 'goal_checkin_context': self.goal_checkin_context,
+            })
+        elif self.selftalkstatementblock:
+            ctx.update({
+                'statement_form': self.statement_form,
             })
 
         avatarselectorblock = self.get_first_block_of_type(
@@ -224,14 +242,16 @@ class ParticipantSessionPageView(
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        goalsettingblock = self.get_first_block_of_type('goal setting block')
-        goalcheckinblock = self.get_first_block_of_type(
-            'goal check in page block')
-
-        if goalsettingblock:
-            return self.goal_setting_post(request, goalsettingblock)
-        elif goalcheckinblock:
-            return self.goal_check_in_post(request, goalcheckinblock)
+        if self.goalsettingblock:
+            return self.goal_setting_post(request, self.goalsettingblock)
+        elif self.goalcheckinblock:
+            return self.goal_check_in_post(request, self.goalcheckinblock)
+        elif self.selftalkstatementblock:
+            return self.selftalk_statement_post(
+                request, self.selftalkstatementblock)
+        elif self.selftalkrefutationblock:
+            return self.selftalk_refutation_post(
+                request, self.selftalkrefutationblock)
 
         return super(ParticipantSessionPageView, self).post(
             request, *args, **kwargs)
