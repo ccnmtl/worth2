@@ -456,6 +456,18 @@ footer.footer {
     display: none;
 }
 
+.i-am-worth-it-quiz .casetitle,
+.i-am-worth-it-quiz .casequestionresult {
+    display: none;
+}
+
+.i-am-worth-it-quiz .caseanswercontainer {
+    list-style: none;
+    -webkit-column-count: 2; /* Chrome, Safari, Opera */
+    -moz-column-count: 2; /* Firefox */
+    column-count: 2;
+}
+
 .participant-progress-modal .modal-body .table-container {
     width: 30%;
 }
