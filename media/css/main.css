@@ -419,7 +419,8 @@ footer.footer {
     font-weight: normal;
 }
 
-.safer-sex-quiz .casetitle {
+.safer-sex-quiz .casetitle,
+.safer-sex-quiz .avatar-block {
     display: none;
 }
 
@@ -470,6 +471,18 @@ footer.footer {
     display: none;
 }
 
+.i-am-worth-it-quiz .casetitle,
+.i-am-worth-it-quiz .casequestionresult {
+    display: none;
+}
+
+.i-am-worth-it-quiz .caseanswercontainer {
+    list-style: none;
+    -webkit-column-count: 2; /* Chrome, Safari, Opera */
+    -moz-column-count: 2; /* Firefox */
+    column-count: 2;
+}
+
 .quiz-game .casetitle,
 .quiz-game .avatar-block {
     display: none;
@@ -499,6 +512,17 @@ footer.footer {
     border: 1px solid transparent;
     border-radius: 4px;
 }
+
+.negotiation-quiz .casetitle,
+.negotiation-quiz .avatar-block {
+    display: none;
+}
+
+.negotiation-quiz .caseanswercontainer {
+    list-style: none;
+    padding-left: 10px;
+}
+
 
 .participant-progress-modal .modal-body .table-container {
     width: 30%;
