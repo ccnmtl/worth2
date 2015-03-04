@@ -278,16 +278,14 @@ footer.footer {
 .post-video-quiz .casetitle,
 .post-video-quiz .casesanswerdisplay,
 .post-video-quiz .caseanswercorrect,
-.post-video-quiz .avatar-block {
+.post-video-quiz .avatar-block,
+.post-video-quiz .caseanswerexplanation {
     display: none;
 }
 
-.post-video-quiz .casequestiontext {
-    font-weight: bold;
-}
-
 .myth-fact .avatar-block,
-.myth-fact .casetitle {
+.myth-fact .casetitle,
+.myth-fact .caseanswerexplanation {
     display: none;
 }
 
@@ -308,14 +306,6 @@ footer.footer {
 .myth-fact .casequestionresult {
     font-size: 1.2em;
     margin-top: 10px;    
-}
-
-.myth-fact .casequestionresult .correct {
-    color: green;
-}
-
-.myth-fact .casequestionresult .incorrect {
-    color: red;
 }
 
 .avatar-block>img {
@@ -358,8 +348,13 @@ footer.footer {
     padding-right: 10px;
 }
 
+.pageblock.protective-behaviors .col-md-8 {
+    width: 90%; /* override the default 8/4 quiz grid */
+}
+
+.pageblock.protective-behaviors .casequestionexplanation,
 .pageblock.protective-behaviors .avatar-block {
-    float: right;
+    display: none;
 }
 .pageblock.protective-behaviors-results-container {
     width: 35%;
@@ -420,7 +415,8 @@ footer.footer {
 }
 
 .safer-sex-quiz .casetitle,
-.safer-sex-quiz .avatar-block {
+.safer-sex-quiz .avatar-block, 
+.safer-sex-quiz .caseanswerresult {
     display: none;
 }
 
@@ -437,9 +433,16 @@ footer.footer {
 }
 
 .services-quiz .casetitle,
-.services-quiz .avatar-block {
+.services-quiz .avatar-block,
+.services-quiz .casequestionresult {
     display: none;
 }
+
+.services-quiz .caseanswercontainer {
+    list-style: none;
+    padding-left: 10px;
+}
+
 
 .safety-plan-quiz .casetitle,
 .services-quiz .avatar-block {
@@ -453,11 +456,14 @@ footer.footer {
 .safety-plan-quiz textarea {
     width: 50em;
     height: 4em;
+    resize: none;
 }
 
 .assessing-relationships .casetitle, 
 .assessing-relationships .avatar-block,
-.assessing-relationships .casequestionresult {
+.assessing-relationships .casequestionresult,
+.assessing-relationships .caseanswerexplanation,
+.assessing-relationships .casequestionexplanation {
     display: none;
 }
 
@@ -467,12 +473,24 @@ footer.footer {
 
 .feelings-scale .casetitle,
 .feelings-scale .avatar-block,
-.feelings-scale .casequestionresult {
+.feelings-scale .casequestionresult,
+.feelings-scale .caseanswerexplanation {
     display: none;
 }
 
+.feelings-scale .colored-box {
+    min-height: 55px;
+}
+
+.feelings-scale .casequestionexplanation {
+    margin-top: 30px;
+}
+
 .i-am-worth-it-quiz .casetitle,
-.i-am-worth-it-quiz .casequestionresult {
+.i-am-worth-it-quiz .casequestionresult,
+.i-am-worth-it-quiz .caseanswerresult,
+.i-am-worth-it-quiz .casequestionexplanation,
+.i-am-worth-it-quiz .caseanswerexplanation {
     display: none;
 }
 
@@ -484,8 +502,14 @@ footer.footer {
 }
 
 .quiz-game .casetitle,
-.quiz-game .avatar-block {
+.quiz-game .avatar-block,
+.quiz-game .caseanswerexplanation {
     display: none;
+}
+
+.quiz-game .caseanswerlabel.correctanswer {
+    background-color: #dff0d8;
+    padding: 2px 4px;
 }
 
 .quiz-game .caseanswercontainer {
@@ -493,34 +517,38 @@ footer.footer {
     padding-left: 10px;
 }
 
-.quiz-game .casequestionresult .correct {
-    color: #fff;
-    background-color: #5cb85c;
-    border-color: #4cae4c;
-    padding: 10px;
-    width: 120px;
-    border: 1px solid transparent;
-    border-radius: 4px;
-}
-
-.quiz-game .casequestionresult .incorrect {
-    color: #fff;
-    background-color: #d9534f;
-    border-color: #d43f3a;
-    width: 130px;
-    padding: 10px;
-    border: 1px solid transparent;
-    border-radius: 4px;
-}
-
 .negotiation-quiz .casetitle,
-.negotiation-quiz .avatar-block {
+.negotiation-quiz .avatar-block,
+.negotiation-quiz .caseanswerexplanation,
+.negotiation-quiz .caseanswerresult {
     display: none;
+}
+
+.negotiation-quiz .caseanswerlabel.correctanswer {
+    background-color: #dff0d8;
+    padding: 2px 4px;
 }
 
 .negotiation-quiz .caseanswercontainer {
     list-style: none;
     padding-left: 10px;
+}
+
+.quiz-game .casequestionexplanation,
+.safer-sex-quiz .casequestionexplanation,  
+.feelings-scale .casequestionexplanation,
+.services-quiz .casequestionexplanation,
+.services-quiz .caseanswerexplanation,
+.myth-fact .casequestionexplanation, 
+.negotiation-quiz .casequestionexplanation {
+    min-height: 20px;
+    padding: 19px;
+    margin-bottom: 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
 }
 
 

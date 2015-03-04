@@ -7,51 +7,60 @@
     {% include 'protectivebehaviors/whats_your_level_feedback.html' %}
 {% endif %}
 
-<div class="cases">
-  <div class="caseintrotext">{{question.intro_text|markdown}}</div>
-
-  <div class="casetitle"> Question {{question.display_number}}:</div>
-
-  <div class="casecontent">
-    <div class="casequestion">
-      <div class="casequestiontext">{{question.text|markdown}}</div>
-      {% if question.answerable %}
-      {% if block.rhetorical %}
-      <form id="form-{{question.id}}" method="post">{% csrf_token %}
-      {% endif %}
-
-    {% if question.is_single_choice %}
-      {% include 'quizblock/single_choice.html' %}
-    {% endif %}
-
-    {% if question.is_single_choice_dropdown %}
-      {% include 'quizblock/single_choice_dropdown.html' %}
-    {% endif %}
-
-    {% if question.is_multiple_choice %}
-      {% include 'quizblock/multiple_choice.html' %}
-    {% endif %}
-
-        {% if block.rhetorical %}
-          </form>
-        {% endif %}
-      {% else %}
-        {% if question.is_short_text %}
-          {% include 'quizblock/short_text.html' %}
-        {% endif %}
-
-        {% if question.is_long_text %}
-          {% include 'quizblock/long_text.html' %}
-        {% endif %}
-      {% endif %}
+<div class="container-fluid">
+    <div class="cases">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="caseintrotext">{{question.intro_text|markdown}}</div>
+                <div class="casetitle"> Question {{question.display_number}}:</div>
+            </div>
+        </div>
+    
+        <div class="casecontent">
+            <div class="casequestion">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="casequestiontext">{{question.text|markdown}}</div>
+                    </div>
+                </div>
+                {% if question.answerable %}
+                    {% if block.rhetorical %}
+                        <form id="form-{{question.id}}" method="post">{% csrf_token %}
+                    {% endif %}
+        
+                    {% if question.is_single_choice %}
+                        {% include 'quizblock/single_choice.html' %}
+                    {% endif %}
+        
+                    {% if question.is_single_choice_dropdown %}
+                        {% include 'quizblock/single_choice_dropdown.html' %}
+                    {% endif %}
+        
+                    {% if question.is_multiple_choice %}
+                        {% include 'quizblock/multiple_choice.html' %}
+                    {% endif %}
+        
+                    {% if block.rhetorical %}
+                        </form>
+                    {% endif %}
+                {% else %}
+                    {% if question.is_short_text %}
+                        {% include 'quizblock/short_text.html' %}
+                    {% endif %}
+        
+                    {% if question.is_long_text %}
+                        {% include 'quizblock/long_text.html' %}
+                    {% endif %}
+                {% endif %}
+            </div>
+        
+            {% if block.rhetorical %}
+                {% include 'quizblock/show_answer.html' %}
+            {% else %}
+                {% if response %}
+                    {% include 'quizblock/show_answer.html' %}
+                {% endif %}
+            {% endif %}
+        </div>
     </div>
-
-    {% if block.rhetorical %}
-      {% include 'quizblock/show_answer.html' %}
-    {% else %}
-      {% if response %}
-        {% include 'quizblock/show_answer.html' %}
-      {% endif %}
-  {% endif %}
-  </div>
 </div>

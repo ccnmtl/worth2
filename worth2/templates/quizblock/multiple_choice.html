@@ -2,48 +2,51 @@
 {% load getresponse %}
 {% load avatar %}
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-8">
-            <ol class="caseanswercontainer" type="A">
-                {% for answer in question.answer_set.all %}
-                    {% if block.rhetorical %}
-                        <li class="{{answer.css_extra}}">
-                            <label>
-                                <input name="question{{question.id}}"
-                                       value="{{answer.label}}" type="checkbox">
-                                {{answer.label}}
-                            </label>
-                        </li>
-                    {% else %}
-                        <li class="{{answer.css_extra}}">
-                            <label>
-                            <input name="pageblock-{{block.pageblock.id}}-question{{question.id}}"
-                                value="{{answer.value}}" type="checkbox"
-                                {% if response %}disabled="disabled"
-                                    {% ifanswerin response answer %}
-                                        checked="checked"
-                                    {% else %}{% endifanswerin %}
-                                {% endif %} />
+<div class="row">
+    <div class="col-md-8">
+        <ol class="caseanswercontainer" type="A">
+            {% for answer in question.answer_set.all %}
+                {% if block.rhetorical %}
+                    <li class="{{answer.css_extra}}">
+                        <label>
+                            <input name="question{{question.id}}"
+                                   value="{{answer.label}}" type="checkbox">
                             {{answer.label}}
-                                {% if response %}
-                                {% if answer.correct %}
-                                    <span class="correct">That's Correct</span>
-                                {% else %}
-                                    <span class="incorrect">That's Inorrect</span>
-                                {% endif %}{% endif %}
-                            </label>
-                        </li>
+                        </label>
                     </li>
-                    {% endif %}
-                {% endfor %}
-            </ol>
+                {% else %}
+                    <li class="{{answer.css_extra}}">
+                        <label>
+                        <input name="pageblock-{{block.pageblock.id}}-question{{question.id}}"
+                            value="{{answer.value}}" type="checkbox"
+                            {% if response %}disabled="disabled"
+                                {% ifanswerin response answer %}
+                                    checked="checked"
+                                {% else %}{% endifanswerin %}
+                            {% endif %} />
+                            <span class="caseanswerlabel {% if response %}{% if answer.correct %}correctanswer{% else %}incorrectanswer{% endif %}{% endif %}">
+                                {{answer.label}}
+                            </span>
+                            {% if response %}
+                                <span class="caseanswerresult">
+                                    {% if answer.correct %}
+                                        <span class="correct label label-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Correct</span>
+                                    {% else %}
+                                        <span class="incorrect label label-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Incorrect</span>
+                                    {% endif %}
+                                </span>
+                            {% endif %}
+                        </label>
+                    </li>
+                </li>
+                {% endif %}
+            {% endfor %}
+        </ol>
+    </div>
+    <div class="col-md-4">
+        <div class="avatar-block" style="border: 1px solid #ccc; padding: 15px; margin: -85px 0px 20px 0px; border-radius: 10px;">
+            <img src="{% avatar_url user %}">
         </div>
-        <div class="col-md-4">
-            <div class="avatar-block" style="border: 1px solid #ccc; padding: 15px; margin: -85px 0px 20px 0px; border-radius: 10px;">
-                <img src="{% avatar_url user %}">
-            </div>
-            <div class="clearfix"></div>
-        </div>
+        <div class="clearfix"></div>
     </div>
 </div>

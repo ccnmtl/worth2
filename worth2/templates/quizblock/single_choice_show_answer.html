@@ -1,26 +1,31 @@
 {% load markup %}
 {% load quizresults %}
 
-<div class="casesanswerdisplay">
-    {% if block.rhetorical %}
-    <a href="#q{{question.id}}" class="moretoggle">Show answer &gt;&gt;</a>
-    <div id="q{{question.id}}" class="toggleable" style="display: none">
-        <p>
-            {% if question.correct_answer_letter %}
-            <i>The correct answer is {{question.correct_answer_letter}}:</i>
+<div class="row">
+    <div class="col-md-8">
+        <div class="casesanswerdisplay">
+            {% if block.rhetorical %}
+            <a href="#q{{question.id}}" class="moretoggle">Show answer &gt;&gt;</a>
+            <div id="q{{question.id}}" class="toggleable" style="display: none">
+                <p>
+                    {% if question.correct_answer_letter %}
+                    <i>The correct answer is {{question.correct_answer_letter}}:</i>
+                    {% endif %}
+                    {{question.explanation|markdown}}
+                </p>
+            </div>
+            {% else %}
+            <div class="casequestionresult">
+                {% is_user_correct request.user question as is_correct %}
+                {% if is_correct %}
+                <h3><span class="correct label label-success">That's Correct!</span></h3>
+                {% else %}
+                <h3><span class="incorrect label label-danger">That's Incorrect.</span></h3>
+                {% endif %}
+            </div>
+            <div class="casequestionexplanation">{{question.explanation|markdown}}</div>
             {% endif %}
-            {{question.explanation|markdown}}
-        </p>
+        </div>
     </div>
-    {% else %}
-    <div class="casequestionresult">
-        {% is_user_correct request.user question as is_correct %}
-        {% if is_correct %}
-        <div class="correct">That's Correct!</div>
-        {% else %}
-        <div class="incorrect">That's Incorrect.</div>
-        {% endif %}
-    </div>
-    <p>{{question.explanation|markdown}}</p>
-    {% endif %}
+    <div class="col-md-4"></div>
 </div>
