@@ -1,10 +1,16 @@
 {% load quizsummary %}
+{% load avatar %}
 
 {% with cls="protective-behaviors" %}
 
 {% get_quiz_summary user cls as results %}
 
 <div class="protective-behaviors-results">
+    <div class="avatar-block">
+        <img src="{% avatar_url user %}">
+    </div>
+    <div class="clearfix"></div>
+    
     <div class="well">
         <h4>Stuff I Do</h4>
         <ul>
