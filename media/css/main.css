@@ -441,6 +441,20 @@ footer.footer {
     display: none;
 }
 
+.safety-plan-quiz .casetitle,
+.services-quiz .avatar-block {
+    display: none;
+}
+
+.safety-plan-quiz .caseintrotext {
+    width: 50em;
+}
+
+.safety-plan-quiz textarea {
+    width: 50em;
+    height: 4em;
+}
+
 .assessing-relationships .casetitle, 
 .assessing-relationships .avatar-block,
 .assessing-relationships .casequestionresult {
@@ -467,6 +481,35 @@ footer.footer {
     -webkit-column-count: 2; /* Chrome, Safari, Opera */
     -moz-column-count: 2; /* Firefox */
     column-count: 2;
+
+.quiz-game .casetitle,
+.quiz-game .avatar-block {
+    display: none;
+}
+
+.quiz-game .caseanswercontainer {
+    list-style: none;
+    padding-left: 10px;
+}
+
+.quiz-game .casequestionresult .correct {
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+    padding: 10px;
+    width: 120px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.quiz-game .casequestionresult .incorrect {
+    color: #fff;
+    background-color: #d9534f;
+    border-color: #d43f3a;
+    width: 130px;
+    padding: 10px;
+    border: 1px solid transparent;
+    border-radius: 4px;
 }
 
 .participant-progress-modal .modal-body .table-container {

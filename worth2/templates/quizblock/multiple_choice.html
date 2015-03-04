@@ -26,6 +26,12 @@
                                     {% else %}{% endifanswerin %}
                                 {% endif %} />
                             {{answer.label}}
+                                {% if response %}
+                                {% if answer.correct %}
+                                    <span class="correct">That's Correct</span>
+                                {% else %}
+                                    <span class="incorrect">That's Inorrect</span>
+                                {% endif %}{% endif %}
                             </label>
                         </li>
                     </li>
