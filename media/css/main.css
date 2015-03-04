@@ -419,7 +419,8 @@ footer.footer {
     font-weight: normal;
 }
 
-.safer-sex-quiz .casetitle {
+.safer-sex-quiz .casetitle,
+.safer-sex-quiz .avatar-block {
     display: none;
 }
 
