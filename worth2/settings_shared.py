@@ -139,6 +139,7 @@ INSTALLED_APPS = [
     'worth2.protectivebehaviors',
     'worth2.ssnm',
     'worth2.goals',
+    'worth2.selftalk',
 ]
 
 REST_FRAMEWORK = {
@@ -163,6 +164,8 @@ PAGEBLOCKS = [
     'ssnm.SsnmPageBlock',
     'goals.GoalSettingBlock',
     'goals.GoalCheckInPageBlock',
+    'selftalk.StatementBlock',
+    'selftalk.RefutationBlock',
 ]
 
 

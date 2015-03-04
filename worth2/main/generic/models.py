@@ -15,9 +15,6 @@ class BasePageBlock(models.Model):
     display_name = 'Unimplemented BasePageBlock'
     pageblocks = GenericRelation(PageBlock)
 
-    def pageblock(self):
-        return self.pageblocks.first()
-
     def needs_submit(self):
         """Determines whether this pageblock needs form controls rendered.
 
@@ -57,6 +54,12 @@ class BasePageBlock(models.Model):
 
         return True
 
+    def pageblock(self):
+        return self.pageblocks.first()
+
+    # TODO: I'd like to have all the following methods be inherited
+    # somehow. For now these need to be copy and pasted for each custom
+    # pageblock.
     @staticmethod
     def add_form():
         return BasePageBlockForm()
@@ -104,9 +107,6 @@ class BaseUserProfile(models.Model):
 
     def __unicode__(self):
         return unicode(self.user.username)
-
-    def is_participant(self):
-        return (not self.user.is_active)
 
     def default_location(self):
         hierarchy = Hierarchy.get_hierarchy('main')
@@ -157,7 +157,6 @@ class BaseUserProfile(models.Model):
 
     def time_spent(self):
         """Returns the number of seconds the user has spent on the site."""
-
         visits = UserPageVisit.objects.filter(user=self.user)
 
         seconds = 0

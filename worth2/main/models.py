@@ -19,6 +19,9 @@ class InactiveUserProfile(BaseUserProfile):
                                    related_name='created_by')
     is_archived = models.BooleanField(default=False)
 
+    def is_participant(self):
+        return (not self.user.is_active)
+
 
 class Avatar(OrderedModel):
     """An image that the participant can choose for their profile."""
