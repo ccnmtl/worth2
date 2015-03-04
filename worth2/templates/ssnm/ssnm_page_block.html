@@ -50,16 +50,16 @@ HTML template - there's probably a way of avoiding that step.
 <script type="text/x-handlebars" id="components/supporter-box">
     <div class="ssnm-supporter-box">
         <div class="pull-left">
-            <img class="img-thumbnail" src="http://dummyimage.com/80/000000/fff&text=placeholder" width="80" height="80" />
+            <img class="img-thumbnail" src="../../../media/img/icon-ssnm.png" width="120" />
         </div>
-        <div class="pull-right">
+        <div class="pull-right text-right">
             <h3>{{supporter.name}}</h3>
             <div>{{supporter.displayInfluence}}</div>
             {{#if supporter.providesEmotionalSupport}}
-                <div style="color: magenta;">Emotional Support</div>
+                <div style="color: magenta;"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Emotional Support</div>
             {{/if}}
             {{#if supporter.providesPracticalSupport}}
-                <div style="color: blue;">Practical Support</div>
+                <div style="color: blue;"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Practical Support</div>
             {{/if}}
         </div>
         <div class="clearfix"></div>
@@ -74,7 +74,7 @@ HTML template - there's probably a way of avoiding that step.
             <div class="worth-ssnm-my-avatar-box">
                 <div class="avatar-block">
                     {% endverbatim %}
-                   <img class="img-thumbnail" src="{% avatar_url user %}">
+                   <img class="img-thumbnail" src="{% avatar_url user %}" width="120" >
 
                     {% verbatim %}
                 </div>
@@ -210,25 +210,25 @@ HTML template - there's probably a way of avoiding that step.
             <div class="radio">
                 <label style="color: green;">
                     {{radio-button value="P" checked=influence}}
-                    &plus; Positive
+                    Positive <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                 </label>
             </div>
             <div class="radio">
                 <label style="color: tan;">
                     {{radio-button value="MP" checked=influence}}
-                    &plus; Mostly Positive
+                    Mostly Positive <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 
                 </label>
             </div>
             <div class="radio">
                 <label style="color: orange;">
                     {{radio-button value="MN" checked=influence}}
-                    &minus; Mostly Negative
+                    Mostly Negative <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> 
                 </label>
             </div>
             <div class="radio">
                 <label style="color: red;">
                     {{radio-button value="N" checked=influence}}
-                    &minus; Negative
+                   Negative <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 
                 </label>
             </div>
         </form>
