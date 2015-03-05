@@ -33,14 +33,6 @@ class BasePageBlock(models.Model):
 
         return False
 
-    def submit(self):
-        """Handle this pageblock's form submission.
-
-        :returns: None
-        """
-
-        pass
-
     def unlocked(self, user):
         """Determines whether the user can proceed past this block.
 
@@ -53,6 +45,34 @@ class BasePageBlock(models.Model):
         """
 
         return True
+
+    def submit(self, user, request_data):
+        """Handle this pageblock's form submission.
+
+        :returns: None
+        """
+
+        pass
+
+    def redirect_to_self_on_submit(self):
+        """Determines where the user is redirected to on page submission.
+
+        If submit returns True, then the user will be redirected to the
+        next page in the hierarchy. Otherwise, they be redirected to the
+        current page.
+
+        :returns: a boolean
+        """
+
+        return True
+
+    def clear_user_submissions(self, user):
+        """A hook to clear any user submissions for this block.
+
+        :returns: None
+        """
+
+        pass
 
     def pageblock(self):
         return self.pageblocks.first()
@@ -74,7 +94,10 @@ class BasePageBlock(models.Model):
 
     @classmethod
     def create_from_dict(cls, d):
-        return cls.objects.create()
+        d.pop('block_type', None)
+        d.pop('label', None)
+        d.pop('css_extra', None)
+        return cls.objects.create(**d)
 
     def edit(self, vals, files):
         form = BasePageBlockForm(data=vals, files=files, instance=self)

@@ -52,9 +52,6 @@ class GoalSettingBlock(BasePageBlock):
         c = self.goal_setting_responses.filter(user=user).count()
         return c > 0
 
-    def submit(self, user, request_data):
-        pass
-
     def __unicode__(self):
         try:
             slug = self.pageblock().section.get_parent().slug
@@ -196,9 +193,6 @@ class GoalCheckInPageBlock(BasePageBlock):
                 return True
 
         return False
-
-    def submit(self, user, request_data):
-        pass
 
     @staticmethod
     def add_form():

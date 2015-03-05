@@ -1,0 +1,30 @@
+{% load bootstrap3 %}
+
+<div class="worth-statement-block">
+    <h1>
+        {% if block.is_internal %}
+        My Self Talk
+        {% else %}
+        {{ block.subject_name }}'s Self Talk
+        {% endif %}
+    </h1>
+
+    <p>
+        {% if block.is_internal %}
+        {% else %}
+        Do you remember what {{ block.subject_name }} said?
+        {% endif %}
+    </p>
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+
+    {% bootstrap_form_errors statement_form %}
+
+    <div class="statement-form">
+        {% bootstrap_form statement_form %}
+    </div>
+</div>
