@@ -124,9 +124,6 @@ class StatementBlock(BasePageBlock):
 
     @classmethod
     def create_from_dict(cls, d):
-        d.pop('block_type', None)
-        d.pop('label', None)
-        d.pop('css_extra', None)
         return cls.objects.create(**d)
 
     def edit(self, vals, files):
@@ -179,19 +176,11 @@ class RefutationBlock(BasePageBlock):
     def submit(self, user, request_data):
         for k, v in request_data.iteritems():
             refutation = Refutation.objects.get(pk=int(k))
-            if v == 'on':
-                obj, created = RefutationResponse.objects.update_or_create(
-                    refutation=refutation,
-                    refutation_block=self,
-                    user=user,
-                )
-            else:
-                to_delete = RefutationResponse.objects.get(
-                    refutation=refutation,
-                    refutation_block=self,
-                    user=user)
-                if to_delete:
-                    to_delete.delete()
+            RefutationResponse.objects.update_or_create(
+                refutation=refutation,
+                refutation_block=self,
+                user=user,
+            )
 
     def clear_user_submissions(self, user):
         RefutationResponse.objects.filter(
@@ -221,9 +210,6 @@ class RefutationBlock(BasePageBlock):
 
     @classmethod
     def create_from_dict(cls, d):
-        d.pop('block_type', None)
-        d.pop('label', None)
-        d.pop('css_extra', None)
         return cls.objects.create(**d)
 
     def edit(self, vals, files):
