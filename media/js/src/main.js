@@ -18,8 +18,7 @@ require.config({
         jquery: '../lib/jquery',
         'jquery-cookie': '../lib/jquery.cookie',
         underscore: '../lib/underscore',
-        backbone: '../lib/backbone',
-        bootstrap: '//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min'
+        backbone: '../lib/backbone'
     },
     urlArgs: 'bust=' + (new Date()).getTime()
 });
