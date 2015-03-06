@@ -94,9 +94,6 @@ class BasePageBlock(models.Model):
 
     @classmethod
     def create_from_dict(cls, d):
-        d.pop('block_type', None)
-        d.pop('label', None)
-        d.pop('css_extra', None)
         return cls.objects.create(**d)
 
     def edit(self, vals, files):

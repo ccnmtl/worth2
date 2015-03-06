@@ -1,2 +1,19 @@
+{% load bootstrap3 %}
+
 <div class="worth-refutation-block">
+    <p>
+        {% if block.pageblock.statement_block.is_internal %}
+        Now, get back on the road by replacing that negative
+        self talk with positive statements.
+        {% else %}
+        How would you refute the negative things the Jane said
+        about herself?
+        {% endif %}
+    </p>
+
+    {% bootstrap_form_errors refutation_form %}
+
+    <div class="refutation-form">
+        {% bootstrap_form refutation_form %}
+    </div>
 </div>

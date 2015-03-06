@@ -170,8 +170,8 @@ class ParticipantSessionPageView(
         """
 
         contenttype = ContentType.objects.get(name=blocktype)
-        blocks = self.section.pageblock_set.filter(content_type=contenttype)
-        return blocks.first()
+        return self.section.pageblock_set.filter(
+            content_type=contenttype).first()
 
     def get_extra_context(self):
         ctx = super(ParticipantSessionPageView, self).get_extra_context()
@@ -186,6 +186,10 @@ class ParticipantSessionPageView(
         elif self.selftalkstatementblock:
             ctx.update({
                 'statement_form': self.statement_form,
+            })
+        elif self.selftalkrefutationblock:
+            ctx.update({
+                'refutation_form': self.refutation_form,
             })
 
         avatarselectorblock = self.get_first_block_of_type(
