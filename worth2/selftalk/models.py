@@ -56,6 +56,7 @@ class StatementBlock(BasePageBlock):
 
     display_name = 'Self-Talk Negative Statement Block'
     template_file = 'selftalk/statement_block.html'
+    css_template_file = 'selftalk/selftalk_css.html'
 
     statements = models.ManyToManyField(Statement)
     is_internal = models.BooleanField(
@@ -152,6 +153,7 @@ class RefutationBlock(BasePageBlock):
 
     display_name = 'Self-Talk Refutation Block'
     template_file = 'selftalk/refutation_block.html'
+    css_template_file = 'selftalk/selftalk_css.html'
 
     statement_block = models.ForeignKey(StatementBlock)
 

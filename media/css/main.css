@@ -186,20 +186,6 @@ li.disabled>a {
     line-height: 140%;
 }
 
-.worth-title-container {
-    width: 320px;
-    display: flex;
-}
-
-.worth-title-container p {
-    width: 50%;
-}
-
-.worth-title-container p.worth-title {
-    font-size: 32px;
-    font-weight: bold;
-}
-
 footer.footer {
     height: 40px;
 }
@@ -550,7 +536,6 @@ footer.footer {
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
     box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
 }
-
 
 .participant-progress-modal .modal-body .table-container {
     width: 30%;
