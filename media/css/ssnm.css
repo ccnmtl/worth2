@@ -104,3 +104,19 @@
     padding: 10px;
     cursor: pointer;
 }
+
+.ssnm-color-positive {
+    color: green;
+}
+
+.ssnm-color-mostly-positive {
+    color: tan;
+}
+
+.ssnm-color-mostly-negative {
+    color: orange;
+}
+
+.ssnm-color-negative {
+    color: red;
+}

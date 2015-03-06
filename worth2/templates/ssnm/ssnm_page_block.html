@@ -54,12 +54,19 @@ HTML template - there's probably a way of avoiding that step.
         </div>
         <div class="pull-right text-right">
             <h3>{{supporter.name}}</h3>
-            <div>{{supporter.displayInfluence}}</div>
+            <div {{bind-attr class=(influenceColorClass supporter.influence)}}>
+                {{{supporter.influenceGlyphicon}}}
+                {{supporter.displayInfluence}}
+            </div>
             {{#if supporter.providesEmotionalSupport}}
-                <div style="color: magenta;"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Emotional Support</div>
+            <div style="color: magenta;">
+                <span class="glyphicon glyphicon-heart"
+                      aria-hidden="true"></span> Emotional Support</div>
             {{/if}}
             {{#if supporter.providesPracticalSupport}}
-                <div style="color: blue;"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Practical Support</div>
+            <div style="color: blue;">
+                <span class="glyphicon glyphicon-cog"
+                      aria-hidden="true"></span> Practical Support</div>
             {{/if}}
         </div>
         <div class="clearfix"></div>
@@ -208,25 +215,25 @@ HTML template - there's probably a way of avoiding that step.
         </p>
         <form>
             <div class="radio">
-                <label style="color: green;">
+                <label class="ssnm-color-positive">
                     {{radio-button value="P" checked=influence}}
                     Positive <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                 </label>
             </div>
             <div class="radio">
-                <label style="color: tan;">
+                <label class="ssnm-color-mostly-positive">
                     {{radio-button value="MP" checked=influence}}
                     Mostly Positive <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 
                 </label>
             </div>
             <div class="radio">
-                <label style="color: orange;">
+                <label class="ssnm-color-mostly-negative">
                     {{radio-button value="MN" checked=influence}}
                     Mostly Negative <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> 
                 </label>
             </div>
             <div class="radio">
-                <label style="color: red;">
+                <label class="ssnm-color-negative">
                     {{radio-button value="N" checked=influence}}
                    Negative <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 
                 </label>
