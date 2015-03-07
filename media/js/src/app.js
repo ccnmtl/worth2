@@ -12,7 +12,6 @@ define([
     'views/goal-checkin-form',
     'views/gated-video',
     'views/unlocker',
-    'bootstrap',
     'jquery-cookie'
 ], function(
     $, _, Backbone,
