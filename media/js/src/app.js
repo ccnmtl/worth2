@@ -11,6 +11,7 @@ define([
     'views/goal-setting-form',
     'views/goal-checkin-form',
     'views/gated-video',
+    'views/self-talk-road',
     'views/unlocker',
     'jquery-cookie'
 ], function(
@@ -18,7 +19,7 @@ define([
     CreateParticipantView, EditParticipantView, SignInParticipantView,
     SignOutParticipantView,
     ManageParticipantFilter, SignInParticipantFilter, GoalSettingFormView,
-    GoalCheckinFormView, GatedVideo, Unlocker
+    GoalCheckinFormView, GatedVideo, SelfTalkRoad, Unlocker
 ) {
     $(function() {
         var csrftoken = $.cookie('csrftoken');
@@ -55,6 +56,8 @@ define([
         new GoalCheckinFormView();
 
         new GatedVideo();
+
+        new SelfTalkRoad();
 
         new Unlocker();
     };

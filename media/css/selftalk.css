@@ -1,0 +1,11 @@
+.worth-selftalk-flex-container,
+.worth-selftalk-flex-container {
+    display: -webkit-flex;
+    display: flex;
+}
+
+.worth-selftalk-flex-container .statement-form,
+.worth-selftalk-flex-container .refutation-form,
+.worth-selftalk-flex-container .worth-self-talk-road {
+    width: 50%;
+}

@@ -13,7 +13,11 @@
 
     {% bootstrap_form_errors refutation_form %}
 
-    <div class="refutation-form">
-        {% bootstrap_form refutation_form %}
+    <div class="worth-selftalk-flex-container">
+        <div class="refutation-form">
+            {% bootstrap_form refutation_form %}
+        </div>
+
+        {% include 'selftalk/self_talk_road.html' %}
     </div>
 </div>

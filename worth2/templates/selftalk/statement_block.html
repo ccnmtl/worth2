@@ -27,7 +27,11 @@
 
     {% bootstrap_form_errors statement_form %}
 
-    <div class="statement-form">
-        {% bootstrap_form statement_form %}
+    <div class="worth-selftalk-flex-container">
+        <div class="statement-form">
+            {% bootstrap_form statement_form %}
+        </div>
+
+        {% include 'selftalk/self_talk_road.html' %}
     </div>
 </div>
