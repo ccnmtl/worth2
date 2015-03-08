@@ -1,3 +1,4 @@
+import re
 from django import forms
 from django.contrib.auth.models import User
 from django.db import models
@@ -176,12 +177,26 @@ class RefutationBlock(BasePageBlock):
         return qs.count() > 0
 
     def submit(self, user, request_data):
+        # Loop through the refutations the user chose
         for k, v in request_data.iteritems():
-            refutation = Refutation.objects.get(pk=int(k))
+            match = re.match(r'^refutation-(\d)$', k)
+            if not match:
+                continue
+
+            refutation_pk = int(v)
+            refutation_idx = int(match.group(1))
+
+            # Find the optional 'other' text to attach to this response.
+            other_text = ''
+            if ('other-%d' % refutation_idx) in request_data:
+                other_text = request_data['other-%d' % refutation_idx]
+
+            refutation = Refutation.objects.get(pk=refutation_pk)
             RefutationResponse.objects.update_or_create(
                 refutation=refutation,
                 refutation_block=self,
                 user=user,
+                other_text=other_text,
             )
 
     def clear_user_submissions(self, user):
