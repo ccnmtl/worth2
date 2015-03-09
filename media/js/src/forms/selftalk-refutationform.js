@@ -1,8 +1,8 @@
 (function() {
     /**
-     * refreshInputDisplay looks at each form in the array '$forms' and
-     * hides or shows the 'other' input if the appropriate dropdown
-     * option is selected.
+     * refreshInputDisplay looks at each dropdown in the array
+     * '$dropdowns' and hides or shows the 'other' input if the
+     * appropriate dropdown option is selected.
      *
      * Params:
      * $dropdowns - an array of <select> elements.

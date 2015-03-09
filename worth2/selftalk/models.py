@@ -179,7 +179,7 @@ class RefutationBlock(BasePageBlock):
     def submit(self, user, request_data):
         # Loop through the refutations the user chose
         for k, v in request_data.iteritems():
-            match = re.match(r'^refutation-(\d)$', k)
+            match = re.match(r'^refutation-(\d+)$', k)
             if not match:
                 continue
 
