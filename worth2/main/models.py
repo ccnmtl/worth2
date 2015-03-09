@@ -1,10 +1,12 @@
 import re
+
 from django import forms
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.db import models
 from django.shortcuts import get_object_or_404
 from ordered_model.models import OrderedModel
+from pagetree.reports import PagetreeReport, StandaloneReportColumn
 
 from worth2.main.auth import user_is_participant
 from worth2.main.generic.models import BasePageBlock, BaseUserProfile
@@ -303,3 +305,18 @@ class WatchedVideo(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class WorthRawDataReport(PagetreeReport):
+
+    def users(self):
+        users = User.objects.filter(is_active=False)
+        return users.order_by('id')
+
+    def standalone_columns(self):
+        return [StandaloneReportColumn(
+                'study_id', 'profile', 'string', 'Randomized Study Id',
+                lambda x: x.profile.participant.study_id),
+                StandaloneReportColumn(
+                'cohort_id', 'profile', 'string', 'Assigned Cohort Id',
+                lambda x: x.profile.participant.cohort_id)]

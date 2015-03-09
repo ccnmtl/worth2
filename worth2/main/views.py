@@ -1,16 +1,21 @@
+import StringIO
+import csv
+from zipfile import ZipFile
+
 from django import http
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
+from django.http.response import HttpResponse
 from django.utils.decorators import method_decorator
-from django.views.generic.base import TemplateView
+from django.views.generic.base import TemplateView, View
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 from django.shortcuts import redirect, render
 
 from pagetree.generic.views import PageView
-from pagetree.models import PageBlock
+from pagetree.models import PageBlock, Hierarchy
 import quizblock
 from quizblock.models import Quiz
 
@@ -20,7 +25,7 @@ from worth2.selftalk.mixins import (
 )
 from worth2.main.auth import generate_password, user_is_participant
 from worth2.main.forms import SignInParticipantForm
-from worth2.main.models import Participant, Session
+from worth2.main.models import Participant, Session, WorthRawDataReport
 
 
 def get_quiz_blocks(css_class):
@@ -259,3 +264,42 @@ class ParticipantSessionPageView(
 
         return super(ParticipantSessionPageView, self).post(
             request, *args, **kwargs)
+
+
+class ParticipantReportView(View):
+
+    def get(self, request):
+        report = WorthRawDataReport()
+
+        # setup zip file for the key & value file
+        response = HttpResponse(mimetype='application/zip')
+
+        disposition = 'attachment; filename=worth.zip'
+        response['Content-Disposition'] = disposition
+
+        z = ZipFile(response, 'w')
+
+        output = StringIO()  # temp output file
+        writer = csv.writer(output)
+
+        # report on all hierarchies
+        hierarchies = Hierarchy.objects.all()
+
+        # Key file
+        for row in report.metadata(hierarchies):
+            writer.writerow(row)
+
+        z.writestr("worth_key.csv", output.getvalue())
+
+        # Results file
+        output.truncate(0)
+        output.seek(0)
+
+        writer = csv.writer(output)
+
+        for row in report.values(hierarchies):
+            writer.writerow(row)
+
+        z.writestr("worth_values.csv", output.getvalue())
+
+        return response
