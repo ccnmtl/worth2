@@ -1,7 +1,5 @@
 define([
     'jquery',
-    'underscore',
-    'backbone',
     'views/create-participant',
     'views/edit-participant',
     'views/sign-in-participant',
@@ -15,7 +13,7 @@ define([
     'views/unlocker',
     'jquery-cookie'
 ], function(
-    $, _, Backbone,
+    $,
     CreateParticipantView, EditParticipantView, SignInParticipantView,
     SignOutParticipantView,
     ManageParticipantFilter, SignInParticipantFilter, GoalSettingFormView,
