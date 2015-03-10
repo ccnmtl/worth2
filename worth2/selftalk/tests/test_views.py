@@ -8,9 +8,9 @@ from worth2.selftalk.tests.factories import (
 from worth2.selftalk.models import StatementResponse, RefutationResponse
 
 
-class StatementBlockTest(LoggedInParticipantTestMixin, TestCase):
+class ExternalStatementBlockTest(LoggedInParticipantTestMixin, TestCase):
     def setUp(self):
-        super(StatementBlockTest, self).setUp()
+        super(ExternalStatementBlockTest, self).setUp()
 
         self.h = get_hierarchy('main', '/pages/')
         self.root = self.h.get_root()
@@ -20,6 +20,7 @@ class StatementBlockTest(LoggedInParticipantTestMixin, TestCase):
             'slug': 'statement',
             'pageblocks': [{
                 'block_type': 'Self-Talk Negative Statement Block',
+                'is_internal': False,
             }],
             'children': [],
         })
@@ -74,9 +75,9 @@ class StatementBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.assertEqual(responses.count(), 2)
 
 
-class RefutationBlockTest(LoggedInParticipantTestMixin, TestCase):
+class ExternalRefutationBlockTest(LoggedInParticipantTestMixin, TestCase):
     def setUp(self):
-        super(RefutationBlockTest, self).setUp()
+        super(ExternalRefutationBlockTest, self).setUp()
 
         self.h = get_hierarchy('main', '/pages/')
         self.root = self.h.get_root()
@@ -86,6 +87,7 @@ class RefutationBlockTest(LoggedInParticipantTestMixin, TestCase):
             'slug': 'statement',
             'pageblocks': [{
                 'block_type': 'Self-Talk Negative Statement Block',
+                'is_internal': False,
             }],
             'children': [],
         })
