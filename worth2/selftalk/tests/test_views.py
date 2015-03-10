@@ -125,11 +125,14 @@ class RefutationBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.refutation8 = RefutationFactory(statement=self.statement3)
         self.refutation9 = RefutationFactory(statement=self.statement3)
 
-        p = 'pageblock-%s' % self.refutationblock.pk
+        self.p = 'pageblock-%s' % self.refutationblock.pk
         self.valid_post_data = {
-            '%s-%d' % (p, self.statement1.pk): self.refutation1.pk,
-            '%s-%d' % (p, self.statement2.pk): self.refutation4.pk,
-            '%s-%d' % (p, self.statement3.pk): self.refutation7.pk,
+            '%s-refutation-%d' % (
+                self.p, self.statement1.pk): self.refutation1.pk,
+            '%s-refutation-%d' % (
+                self.p, self.statement2.pk): self.refutation4.pk,
+            '%s-refutation-%d' % (
+                self.p, self.statement3.pk): self.refutation7.pk,
         }
 
     def test_get(self):
@@ -148,3 +151,55 @@ class RefutationBlockTest(LoggedInParticipantTestMixin, TestCase):
 
         self.assertTrue(form.is_valid())
         self.assertEqual(responses.count(), 3)
+
+        self.assertEqual(
+            RefutationResponse.objects.filter(
+                refutation_block=self.refutationblock.block(),
+                user=self.u,
+                refutation=self.refutation1
+            ).count(), 1)
+        self.assertEqual(
+            RefutationResponse.objects.filter(
+                refutation_block=self.refutationblock.block(),
+                user=self.u,
+                refutation=self.refutation4
+            ).count(), 1)
+        self.assertEqual(
+            RefutationResponse.objects.filter(
+                refutation_block=self.refutationblock.block(),
+                user=self.u,
+                refutation=self.refutation7
+            ).count(), 1)
+
+        r = self.client.get(self.url)
+        self.assertContains(r, self.refutation1.text)
+        self.assertContains(r, self.refutation4.text)
+        self.assertContains(r, self.refutation7.text)
+
+    def test_post_with_other_option(self):
+        refutation_other = RefutationFactory(statement=self.statement1,
+                                             text='Other')
+        post_data = self.valid_post_data.copy()
+        post_data['%s-refutation-%d' % (
+            self.p, self.statement1.pk)] = refutation_other.pk
+        post_data['%s-other-%d' % (
+            self.p, self.statement1.pk)] = 'Testing other text'
+
+        r = self.client.post(self.url, post_data)
+
+        responses = RefutationResponse.objects.filter(
+            refutation_block=self.refutationblock.block(),
+            user=self.u,
+        )
+        form = r.context['refutation_form']
+
+        self.assertTrue(form.is_valid())
+        self.assertEqual(responses.count(), 3)
+
+        other_response = RefutationResponse.objects.get(
+            refutation_block=self.refutationblock.block(),
+            refutation=refutation_other, user=self.u)
+        self.assertEqual(other_response.other_text, 'Testing other text')
+
+        r = self.client.get(self.url)
+        self.assertContains(r, 'Other')

@@ -104,7 +104,8 @@ define([
         },
 
         initialize: function() {
-            var $blocks = $('.worth-statement-block,.worth-refutation-block');
+            var $blocks = $(
+                '#selftalk-statement-block,#selftalk-refutation-block');
             if ($blocks.length < 1) {
                 return;
             }
