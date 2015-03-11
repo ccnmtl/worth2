@@ -1,14 +1,23 @@
+{% load avatar %}
+
 <h1>My Avatar</h1>
 <h2>Get Personal!</h2>
 
 <div class="worth-avatars">
+    {% if is_submitted %}
+    <div>Here's the avatar you selected:</div>
+    <div class="worth-avatar">
+        <img class="thumbnail" src="{% avatar_url user %}">
+    </div>
+    {% else %}
     {% for avatar in block.avatars %}
     <span class="worth-avatar">
-        <img src="{{ avatar.image.url }}" />
+        <img class="media" src="{{ avatar.image.url }}">
     </span>
     <button class="btn btn-default" type="submit"
             name="pageblock-{{block.pageblock.pk}}-avatar-id"
             value="{{ avatar.pk }}"
             >This is me!</button>
     {% endfor %}
+    {% endif %}
 </div>

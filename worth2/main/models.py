@@ -93,6 +93,11 @@ class AvatarSelectorBlock(BasePageBlock):
             user.profile.participant.avatar = avatar
             user.profile.participant.save()
 
+    def clear_user_submissions(self, user):
+        if user_is_participant(user):
+            user.profile.participant.avatar = None
+            user.profile.participant.save()
+
     def avatars(self):
         """Returns a queryset of all the available avatars in WORTH."""
 
