@@ -540,3 +540,7 @@ footer.footer {
 .participant-progress-modal .modal-body .table-container {
     width: 30%;
 }
+
+.pagetree-form-submit-area {
+    margin-top: 16px;
+}

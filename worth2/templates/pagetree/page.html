@@ -61,26 +61,27 @@
 
 {% if needs_submit and not request.user.is_anonymous %}
 
-{% if is_submission_empty %}
 <div class="clearfix"></div>
-<div class="alert alert-danger" role="alert">
+<div class="alert alert-danger worth-form-validation-error"
+     role="alert"
+     {% if not is_submission_empty %}
+     style="display: none;"
+     {% endif %}
+     >
     <h4>Oops!</h4>
     <p>Please select one.</p>
 </div>
-{% endif %}
 
 {% if is_submitted %}
 {% if allow_redo or user.is_superuser %}
 <div class="clearfix"></div>
-<form action="." method="post">{% csrf_token %}
-<br /><br />
-<input type="hidden" name="action" value="reset" />
-<input type="submit" value="change my answers" class="btn" />
+<form class="pagetree-form-submit-area"
+      action="." method="post">{% csrf_token %}
+    <input type="hidden" name="action" value="reset" />
+    <input type="submit" value="change my answers" class="btn" />
 </form>
 {% endif %}
 {% else %}
-
-<br /><br />
 
 <div class="clearfix"></div>
 
@@ -89,7 +90,9 @@ The avatar selector block needs to hide the submit button, since
 each avatar has its own submit button.
 {% endcomment %}
 {% if not avatarselectorblock %}
-<input type="submit" value="Submit" class="btn btn-primary" />
+<div class="pagetree-form-submit-area">
+    <input type="submit" value="Submit" class="btn btn-primary" />
+</div>
 {% endif %}
 
 </form>

@@ -11,13 +11,14 @@ define([
     'views/gated-video',
     'views/self-talk-road',
     'views/unlocker',
+    'views/quiz-validator',
     'jquery-cookie'
 ], function(
     $,
     CreateParticipantView, EditParticipantView, SignInParticipantView,
     SignOutParticipantView,
     ManageParticipantFilter, SignInParticipantFilter, GoalSettingFormView,
-    GoalCheckinFormView, GatedVideo, SelfTalkRoad, Unlocker
+    GoalCheckinFormView, GatedVideo, SelfTalkRoad, Unlocker, QuizValidator
 ) {
     $(function() {
         var csrftoken = $.cookie('csrftoken');
@@ -58,6 +59,8 @@ define([
         new SelfTalkRoad();
 
         new Unlocker();
+
+        new QuizValidator();
     };
 
     return {
