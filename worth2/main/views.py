@@ -1,6 +1,6 @@
-import StringIO
 import csv
 from zipfile import ZipFile
+from StringIO import StringIO
 
 from django import http
 from django.contrib.auth import authenticate, login
@@ -272,7 +272,7 @@ class ParticipantReportView(View):
         report = WorthRawDataReport()
 
         # setup zip file for the key & value file
-        response = HttpResponse(mimetype='application/zip')
+        response = HttpResponse(content_type='application/zip')
 
         disposition = 'attachment; filename=worth.zip'
         response['Content-Disposition'] = disposition

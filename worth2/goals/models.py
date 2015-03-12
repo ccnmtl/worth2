@@ -1,9 +1,46 @@
+from django import forms
 from django.contrib.auth.models import User
 from django.db import models
-from django import forms
 from ordered_model.models import OrderedModel
+from pagetree.reports import ReportableInterface, ReportColumnInterface
 
 from worth2.main.generic.models import BasePageBlock
+
+
+class GoalSettingColumn(ReportColumnInterface):
+    def __init__(self, block, goal_idx, option):
+        self.block = block
+        self.hierarchy = block.pageblock().section.hierarchy
+        self.option = option
+        self.description = block.goal_type.capitalize()
+        self.answer_identifier = block.goal_type
+
+        if goal_idx == 0:
+            self.answer_identifier += "_main_%s" % option.id
+            self.description += " Main Goal"
+        else:
+            self.answer_identifier = "_extra_%s_%s" % (goal_idx, option.id)
+            self.description += " Extra Goal %s" % goal_idx
+
+    def identifer(self):
+        return self.answer_identifier
+
+    def metadata(self):
+        '''hierarchy, itemIdentifier', 'group', 'item type', 'item text' '''
+        return [self.hierarchy.name, self.block.goal_type,
+                self.block.display_name, 'string',
+                self.description, self.answer_identifier,
+                self.option.text]
+
+    def user_value(self, user):
+        response = GoalSettingResponse.objects.filter(
+            user=user, goal_setting_block=self.block, option=self.option)
+        if response.count() < 1:
+            return ''
+        elif response[0].other_text and len(response[0].other_text) > 0:
+            return "%s, %s" % (response[0].other_text, response[0].text)
+        else:
+            return response.text
 
 
 class GoalSettingBlock(BasePageBlock):
@@ -83,10 +120,25 @@ class GoalSettingBlock(BasePageBlock):
         if form.is_valid():
             form.save()
 
+    def report_metadata(self):
+        rows = []
+        options = GoalOption.objects.filter(goal_setting_block=self)
+        for idx in xrange(0, self.goal_amount):
+            for option in options:
+                col = GoalSettingColumn(self, idx, option)
+                rows.append(col)
+        return rows
+
+    def report_values(self):
+        return []
+
 
 class GoalSettingBlockForm(forms.ModelForm):
     class Meta:
         model = GoalSettingBlock
+
+
+ReportableInterface.register(GoalSettingBlock)
 
 
 class GoalOption(OrderedModel):

@@ -26,11 +26,11 @@
     {% endcompress %}
 
 	<link rel="shortcut icon" href="{{STATIC_URL}}img/favicon.ico" type="image/x-icon" />
-	
+
 	{% block css %}{% endblock %}
 
 	{% block feeds %}{% endblock %}
-	
+
 </head>
 
 <body class="{% block bodyclass %}{% endblock %}" id="{% block bodyid %}{% endblock %}">
@@ -91,6 +91,7 @@
         {% if user.is_superuser %}
         <li><a href="/admin/">Administer</a></li>
         <li><a href="/pages/edit/">Pagetree</a></li>
+        <li><a href="/report/">Report</a></li>
         {% endif %}
 
         {% endif %}
