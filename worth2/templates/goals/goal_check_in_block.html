@@ -13,7 +13,7 @@
     <div class="row">
     
     <div class="col-sm-8">
-        <form class="form-horizontal" method="post">
+        <div class="form-horizontal">
         
         {% csrf_token %}
         {{ checkin_formset.management_form }}
@@ -61,11 +61,8 @@
         {% endfor %}
             <div class="clearfix"></div>
             <hr />
-        <div class="form-group">
-                <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
         
-    </form>
+    </div><!-- end .form-horizontal -->
     </div>
     
     <div class="col-sm-4 avatar-block">

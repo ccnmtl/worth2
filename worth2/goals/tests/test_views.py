@@ -53,15 +53,12 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
 
         self.url = '/pages/goal-check-in-section/'
 
-        opt1 = GoalOptionFactory(goal_setting_block=goalsettingblock.block())
-        opt2 = GoalOptionFactory(goal_setting_block=goalsettingblock.block())
-        opt3 = GoalOptionFactory(goal_setting_block=goalsettingblock.block())
+        opt1 = GoalOptionFactory()
+        opt2 = GoalOptionFactory()
+        opt3 = GoalOptionFactory()
 
         # This option will be hidden from the check-in formset
-        opt4_na = GoalOptionFactory(
-            text='n/a',
-            goal_setting_block=goalsettingblock.block(),
-        )
+        opt4_na = GoalOptionFactory(text='n/a')
         self.assertEqual(GoalSettingBlock.objects.count(), 1)
 
         self.setting_resp1 = GoalSettingResponseFactory(
@@ -364,7 +361,7 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
 
     def test_post(self):
         pageblock = self.root.get_first_child().pageblock_set.first()
-        option = GoalOptionFactory(goal_setting_block=pageblock.block())
+        option = GoalOptionFactory()
         p = 'pageblock-%s' % pageblock.pk
         r = self.client.post(self.url, {
             # Formset Management form params
@@ -399,7 +396,7 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
         """Assert that a submission with only the Main form populated works."""
 
         pageblock = self.root.get_first_child().pageblock_set.first()
-        option = GoalOptionFactory(goal_setting_block=pageblock.block())
+        option = GoalOptionFactory()
         p = 'pageblock-%s' % pageblock.pk
         r = self.client.post(self.url, {
             # Formset Management form params
@@ -430,8 +427,8 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
         """
 
         pageblock = self.root.get_first_child().pageblock_set.first()
-        option = GoalOptionFactory(goal_setting_block=pageblock.block())
-        option2 = GoalOptionFactory(goal_setting_block=pageblock.block())
+        option = GoalOptionFactory()
+        option2 = GoalOptionFactory()
 
         p = 'pageblock-%s' % pageblock.pk
         self.client.post(self.url, {
@@ -490,7 +487,7 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
 
     def test_post_invalid(self):
         pageblock = self.root.get_first_child().pageblock_set.first()
-        GoalOptionFactory(goal_setting_block=pageblock.block())
+        GoalOptionFactory()
         p = 'pageblock-%s' % pageblock.pk
         r = self.client.post(self.url, {
             # Formset Management form params
@@ -517,9 +514,8 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
 
     def test_post_na_option_makes_text_not_required(self):
         pageblock = self.root.get_first_child().pageblock_set.first()
-        GoalOptionFactory(goal_setting_block=pageblock.block())
-        na_option = GoalOptionFactory(
-            text='n/a', goal_setting_block=pageblock.block())
+        GoalOptionFactory()
+        na_option = GoalOptionFactory(text='n/a')
         p = 'pageblock-%s' % pageblock.pk
         r = self.client.post(self.url, {
             # Formset Management form params
@@ -540,9 +536,8 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
 
     def test_post_other_option_makes_other_text_required(self):
         pageblock = self.root.get_first_child().pageblock_set.first()
-        GoalOptionFactory(goal_setting_block=pageblock.block())
-        other_option = GoalOptionFactory(
-            text='Other', goal_setting_block=pageblock.block())
+        GoalOptionFactory()
+        other_option = GoalOptionFactory(text='Other')
         p = 'pageblock-%s' % pageblock.pk
         r = self.client.post(self.url, {
             # Formset Management form params
@@ -565,9 +560,8 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
 
     def test_post_valid_with_other_option(self):
         pageblock = self.root.get_first_child().pageblock_set.first()
-        GoalOptionFactory(goal_setting_block=pageblock.block())
-        other_option = GoalOptionFactory(
-            text='Other', goal_setting_block=pageblock.block())
+        GoalOptionFactory()
+        other_option = GoalOptionFactory(text='Other')
         p = 'pageblock-%s' % pageblock.pk
         r = self.client.post(self.url, {
             # Formset Management form params

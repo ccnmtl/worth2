@@ -108,7 +108,7 @@ class GoalSettingViewMixin(object):
             option = forms.ModelChoiceField(
                 label='Main services goal',
                 queryset=GoalOption.objects.filter(
-                    goal_setting_block=goalsettingblock.block()),
+                    goal_type=goalsettingblock.block().goal_type),
                 widget=forms.Select(
                     attrs={'class': 'form-control goal-option'}),
             )
