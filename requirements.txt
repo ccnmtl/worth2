@@ -1,5 +1,5 @@
 Django==1.7.6
-Markdown==2.5.2
+Markdown==2.6.1
 smartypants==1.8.6
 uuid==1.30
 psycopg2==2.5.4
