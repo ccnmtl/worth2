@@ -15,6 +15,8 @@ define([
                 return;
             }
 
+            $('.pagetree-form-submit-area input').hide();
+
             // Make an array containing a jQuery object for each form
             // in the formset.
             this.$forms = this.$el.find('.checkin-group');

@@ -1,7 +1,9 @@
 from django.contrib import admin
 from ordered_model.admin import OrderedModelAdmin
 
-from worth2.goals.models import GoalCheckInOption, GoalOption
+from worth2.goals.models import (
+    GoalCheckInOption, GoalOption, GoalSettingResponse, GoalCheckInResponse
+)
 
 
 class GoalCheckInOptionAdmin(OrderedModelAdmin):
@@ -16,3 +18,5 @@ class GoalOptionAdmin(OrderedModelAdmin):
 
 admin.site.register(GoalCheckInOption, GoalCheckInOptionAdmin)
 admin.site.register(GoalOption, GoalOptionAdmin)
+admin.site.register(GoalSettingResponse)
+admin.site.register(GoalCheckInResponse)

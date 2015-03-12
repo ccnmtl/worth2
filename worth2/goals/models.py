@@ -138,6 +138,9 @@ class GoalSettingResponse(models.Model):
     class Meta:
         unique_together = (('goal_setting_block', 'user', 'form_id'),)
 
+    def __unicode__(self):
+        return unicode('%s from %s' % (self.option, self.user))
+
 
 class GoalCheckInOption(OrderedModel):
     """Editable options for the goal check-in form."""
@@ -180,6 +183,10 @@ class GoalCheckInResponse(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return unicode('%s from %s' % (self.get_i_will_do_this_display(),
+                                       self.goal_setting_response.user))
 
 
 class GoalCheckInPageBlock(BasePageBlock):
