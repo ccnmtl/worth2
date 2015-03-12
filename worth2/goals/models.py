@@ -6,6 +6,13 @@ from ordered_model.models import OrderedModel
 from worth2.main.generic.models import BasePageBlock
 
 
+GOAL_TYPES = (
+    ('services', 'Services'),
+    ('risk reduction', 'Risk Reduction'),
+    ('social support', 'Social Support'),
+)
+
+
 class GoalSettingBlock(BasePageBlock):
     """A PageBlock for allowing participants to set goals.
 
@@ -22,10 +29,7 @@ class GoalSettingBlock(BasePageBlock):
 
     goal_type = models.CharField(
         max_length=255,
-        choices=(
-            ('services', 'Services'),
-            ('risk reduction', 'Risk Reduction'),
-            ('social support', 'Social Support')),
+        choices=GOAL_TYPES,
         default='services',
     )
 
@@ -90,9 +94,18 @@ class GoalSettingBlockForm(forms.ModelForm):
 
 
 class GoalOption(OrderedModel):
-    """GoalSettingBlock dropdowns are populated by GoalOptions."""
+    """GoalSettingBlock dropdowns are populated by GoalOptions.
 
-    goal_setting_block = models.ForeignKey(GoalSettingBlock)
+    The contents of each GoalSettingBlock's dropdown depends on its
+    goal_type.
+    """
+
+    goal_type = models.CharField(
+        max_length=255,
+        choices=GOAL_TYPES,
+        default='services',
+        db_index=True,
+    )
     text = models.TextField(
         help_text='An option for the dropdowns in a specific ' +
         'GoalSetting pageblock.')

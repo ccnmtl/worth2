@@ -19,7 +19,6 @@ class GoalOptionFactory(factory.DjangoModelFactory):
     class Meta:
         model = GoalOption
 
-    goal_setting_block = factory.SubFactory(GoalSettingBlockFactory)
     text = FuzzyText()
 
 
