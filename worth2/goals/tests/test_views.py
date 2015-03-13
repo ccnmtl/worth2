@@ -125,8 +125,6 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.assertEqual(r.status_code, 200)
         self.assertEqual(len(r.context['checkin_formset'].forms), 4)
         self.assertContains(r, 'Goal Check In Section')
-        self.assertContains(r, 'My Goals')
-        self.assertContains(r, 'My Services Goal')
         self.assertContains(r, 'Here\'s what you committed to do')
         self.assertContains(r, 'class="goal-check-in"')
 
@@ -356,7 +354,6 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
         r = self.client.get(self.url)
         self.assertEqual(r.status_code, 200)
         self.assertContains(r, 'Goal Setting Section')
-        self.assertContains(r, 'My Goals')
         self.assertContains(r, 'class="goal-setting"')
 
     def test_post(self):

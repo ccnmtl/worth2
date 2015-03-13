@@ -57,7 +57,6 @@ define([
                 STATIC_URL + 'img/worth-selftalk-avatar.png', {}, function() {
                     var $form = $('.statement-form:first');
                     me.updatePosition($form);
-                    var aspectRatio = map.image.width / map.image.height;
                     renderer.render(scene, camera);
                 });
 
