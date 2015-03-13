@@ -1,5 +1,7 @@
 from django import template
 
+from worth2.main.models import Avatar
+
 register = template.Library()
 
 
@@ -19,4 +21,9 @@ def avatar_url(user):
         if user.profile.participant.avatar:
             # This will be the complete s3 url
             url = user.profile.participant.avatar.image.url
+        else:
+            default_avatar = Avatar.objects.filter(is_default=True).first()
+            if default_avatar:
+                url = default_avatar.image.url
+
     return url
