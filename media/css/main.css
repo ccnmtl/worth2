@@ -542,5 +542,12 @@ footer.footer {
 }
 
 .pagetree-form-submit-area {
-    margin-top: 16px;
+    margin-top: 10px;
+}
+
+.worth-form-validation-error {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 400px;
+    text-align: center;
 }

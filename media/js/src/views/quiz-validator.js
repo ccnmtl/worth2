@@ -27,6 +27,37 @@ define([
             return true;
         },
 
+        /**
+         * This function returns false if any of the text inputs in the
+         * questions containing `cssClass` are not filled in. cssClass
+         * defaults to 'quizblock-required'.
+         */
+        validateRequiredInputs: function($form, cssClass) {
+            if (typeof cssClass === 'undefined') {
+                cssClass = 'quizblock-required';
+            }
+
+            var $requiredQuestionInputs = $form
+                .find('.casequestion.' + cssClass)
+                .find('input[type="text"],textarea');
+
+            var hasAnyBlankTextInputs = _.reduce(
+                $requiredQuestionInputs,
+                function(memo, $el) {
+                    var isBlank = $.trim($($el).val()).length === 0;
+                    return memo || isBlank;
+                },
+                false);
+
+            if ($requiredQuestionInputs.length > 0 &&
+                hasAnyBlankTextInputs
+               ) {
+                return false;
+            }
+
+            return true;
+        },
+
         initialize: function() {
             // Don't use this JS validator on the protective behaviors
             // quizzes.
@@ -41,7 +72,9 @@ define([
 
             var me = this;
             $submit.click(function() {
-                if (!me.validateRadioButtons($form)) {
+                if (!me.validateRadioButtons($form) ||
+                    !me.validateRequiredInputs($form)
+                   ) {
                     $form.find('.worth-form-validation-error').hide().fadeIn();
                     return false;
                 }
