@@ -12,7 +12,7 @@ define([
         submit: function(e) {
             e.preventDefault();
             var $target = $(e.currentTarget);
-            var newStudyId = $target.find('input[name=study_id]').val();
+            var newStudyId = $target.find('input[name="study_id"]').val();
             var person = new Participant({
                 study_id: newStudyId
             });

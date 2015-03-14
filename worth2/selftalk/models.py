@@ -69,6 +69,11 @@ class StatementBlock(BasePageBlock):
         help_text='(optional) The name of the video subject for this ' +
         'block, e.g. "Jane"')
 
+    @property
+    def css_class(self):
+        s = 'internal' if self.is_internal else 'external'
+        return 'selftalk-statement-%s' % s
+
     def needs_submit(self):
         return True
 
@@ -109,8 +114,14 @@ class StatementBlock(BasePageBlock):
         except AttributeError:
             slug = 'no section'
 
-        return unicode(self.display_name + '[' + slug + '] id: ' +
-                       unicode(self.pk))
+        if self.is_internal:
+            block_subtype = 'Internal'
+        else:
+            block_subtype = 'External'
+            if self.subject_name:
+                block_subtype = self.subject_name + '\'s'
+        return '%s Statement Block [%s] id: %s' % (
+            block_subtype, slug, unicode(self.pk))
 
     @staticmethod
     def add_form():
@@ -157,6 +168,11 @@ class RefutationBlock(BasePageBlock):
     css_template_file = 'selftalk/selftalk_css.html'
 
     statement_block = models.ForeignKey(StatementBlock)
+
+    @property
+    def css_class(self):
+        s = 'internal' if self.is_internal else 'external'
+        return 'selftalk-refutation-%s' % s
 
     @property
     def subject_name(self):
@@ -210,8 +226,8 @@ class RefutationBlock(BasePageBlock):
         except AttributeError:
             slug = 'no section'
 
-        return unicode(self.display_name + '[' + slug + '] id: ' +
-                       unicode(self.pk))
+        return '%s [%s] id: %s' % (
+            self.display_name, slug, unicode(self.pk))
 
     @staticmethod
     def add_form():

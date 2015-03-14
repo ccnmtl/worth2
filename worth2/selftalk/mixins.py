@@ -109,6 +109,12 @@ class SelfTalkRefutationViewMixin(object):
                     choices = list(statement.refutation_set.all())
                     choice_ids = [r.pk for r in choices]
 
+                    choices.insert(0, 'Select')
+                    choice_ids.insert(0, None)
+
+                    choices.append('Other')
+                    choice_ids.append(len(choice_ids))
+
                     self.fields['refutation-%d' % statement.pk] = \
                         forms.ChoiceField(
                             widget=forms.Select(

@@ -1,6 +1,7 @@
 {% load bootstrap3 %}
 
-<div class="selftalk-statement" id="selftalk-statement-block">
+<div class="selftalk-statement {{ block.css_class }}"
+     id="selftalk-statement-block">
     <h1>
         {% if block.is_internal %}
         My Self Talk

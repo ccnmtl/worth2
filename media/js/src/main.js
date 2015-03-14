@@ -3,6 +3,9 @@ require.config({
         bootstrap: {
             deps: ['jquery']
         },
+        jquery: {
+            exports: '$'
+        },
         'jquery-cookie': {
             deps: ['jquery']
         },

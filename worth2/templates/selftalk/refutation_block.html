@@ -1,6 +1,7 @@
 {% load bootstrap3 %}
 
-<div class="selftalk-refutation" id="selftalk-refutation-block">
+<div class="selftalk-refutation {{ block.css_class }}"
+     id="selftalk-refutation-block">
     <p>
         {% if block.statement_block.is_internal %}
         Now, get back on the road by replacing that negative
