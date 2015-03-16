@@ -3,6 +3,8 @@
 .worth-ssnm-container {
     display: -webkit-flex;
     display: flex;
+        border-radius: 4px;
+
 }
 
 .worth-ssnm-container .worth-ssnm-box {
@@ -14,8 +16,10 @@
     float: left;
     font-weight: bold;
     color: white;
-    background-color: #872c2c;
-    padding: 4px;
+    background-color: #5a0080;
+    padding: 8px;
+    margin: -10px 0px 0px -10px;
+    border-radius: 4px;
 }
 
 .worth-ssnm-container .worth-ssnm-box .ssnm-box-title {
@@ -27,15 +31,15 @@
 }
 
 .worth-ssnm-container .worth-ssnm-box-very-close {
-    background-color: #f3e9ea;
+    background-color: #eee5f2;
 }
 
 .worth-ssnm-container .worth-ssnm-box-close {
-    background-color: #cfabac;
+    background-color: #decce6;
 }
 
 .worth-ssnm-container .worth-ssnm-box-not-close {
-    background-color: #9e5759;
+    background-color: #cdb2d9;
 }
 
 .worth-ssnm-my-avatar-box {
@@ -48,6 +52,8 @@
     */
    padding: 10px;
 }
+
+img.worth-avatar {background-color: #fff; padding: 3px; border-radius: 3px;}
 
 .ssnm-modal-dialog {
     position: relative;
