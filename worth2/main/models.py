@@ -1,6 +1,7 @@
 import re
 from django import forms
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.db import models
 from django.shortcuts import get_object_or_404
@@ -26,16 +27,26 @@ class InactiveUserProfile(BaseUserProfile):
 class Avatar(OrderedModel):
     """An image that the participant can choose for their profile."""
 
-    class Meta(OrderedModel.Meta):
-        pass
-
     image = models.ImageField()
+
+    is_default = models.BooleanField(
+        default=False,
+        help_text='If this is the initial avatar for all participants, ' +
+        'set this option to True. There can only be one default avatar ' +
+        'in the system.')
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
         return unicode(self.image.url)
+
+    def clean(self):
+        if self.is_default:
+            qs = Avatar.objects.filter(is_default=True)
+            if qs.count() > 0 and self.pk != qs.first().pk:
+                raise ValidationError(
+                    '%s is already set as the default.' % qs.first())
 
 
 class AvatarBlock(BasePageBlock):
@@ -77,14 +88,9 @@ class AvatarSelectorBlock(BasePageBlock):
         return True
 
     def unlocked(self, user):
-        # Staff and superusers are given a default avatar (see
-        # the avatar_url templatetag), so return True for them.
-        # Otherwise, we find out here whether the participant has
-        # chosen an avatar.
-        return (user.is_staff or user.is_superuser) or \
-            (hasattr(user, 'profile') and
-             user.profile.is_participant() and
-             user.profile.participant.avatar)
+        # Avatar selection is optional. Participants start
+        # out with a default avatar.
+        return True
 
     def submit(self, user, request_data):
         if user_is_participant(user):
