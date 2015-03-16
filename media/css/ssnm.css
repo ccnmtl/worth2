@@ -3,8 +3,7 @@
 .worth-ssnm-container {
     display: -webkit-flex;
     display: flex;
-        border-radius: 4px;
-
+    
 }
 
 .worth-ssnm-container .worth-ssnm-box {
