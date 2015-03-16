@@ -56,7 +56,7 @@ define([
             var map = THREE.ImageUtils.loadTexture(
                 STATIC_URL + 'img/worth-selftalk-avatar.png', {}, function() {
                     var $form = $('.statement-form:first');
-                    me.updatePosition($form);
+                    //me.updatePosition($form);
                     renderer.render(scene, camera);
                 });
 
@@ -82,15 +82,11 @@ define([
         /**
          * @function updatePosition
          *
-         * This function looks at each input's value in the container
-         * and updates this.position based on how many are checked off
-         * (for external self-talk), or filled in (for internal self-talk).
+         * This function updates the three.js scene based on the input
+         * position.
          */
-        updatePosition: function($container) {
-            var total = $container.find('input:checkbox').length;
-            var checked = $container.find('input:checkbox:checked').length;
-            var ratio = checked / total;
-            this.position = 1 - ratio;
+        updatePosition: function(pos) {
+            this.position = pos;
 
             if (this.sprite) {
                 var target = {x: this.position * 4.5};
@@ -100,6 +96,49 @@ define([
             }
         },
 
+        /**
+         * Look at each checkbox in the statement form and set up a
+         * listener to update this.position.
+         */
+        initForStatementForm: function($form) {
+            var $inputs = $form.find('input:checkbox');
+            var total = $inputs.length;
+            var me = this;
+
+            $inputs.each(function(k, v) {
+                var $v = $(v);
+                $v.on('change', function() {
+                    var checked = $form.find('input:checkbox:checked').length;
+                    var ratio = checked / total;
+                    var newPos = 1 - ratio;
+                    me.updatePosition(newPos);
+                });
+            });
+        },
+
+        /**
+         * Look at each dropdown in the refutation form and set up a
+         * listener to update this.position.
+         */
+        initForRefutationForm: function($form) {
+            var $selects = $form.find('select');
+            var total = $selects.length;
+            var me = this;
+
+            $selects.each(function(k, v) {
+                var $v = $(v);
+                $v.on('change', function() {
+                    var selected = _.filter($selects,
+                                            function(el) {
+                                                return $(el).val() > 0;
+                                            }).length;
+                    var ratio = selected / total;
+                    var newPos = ratio;
+                    me.updatePosition(newPos);
+                });
+            });
+        },
+
         initialize: function() {
             var $blocks = $(
                 '#selftalk-statement-block,#selftalk-refutation-block');
@@ -107,21 +146,12 @@ define([
                 return;
             }
 
-            var me = this;
+            // Attach form events to this.position.
+            this.initForStatementForm($blocks.find('.statement-form:first'));
+            this.initForRefutationForm($blocks.find('.refutation-form:first'));
+
             var $container = $(
                 '.worth-self-talk-road:first .embed-responsive');
-
-            // Attach form events to this.position.
-            var $form = $('.statement-form:first');
-
-            var $inputs = $form.find('input[type=checkbox]');
-            $inputs.each(function(k, v) {
-                var $v = $(v);
-                $v.on('change', function() {
-                    me.updatePosition($form);
-                });
-            });
-
             this.draw($container);
         }
     });

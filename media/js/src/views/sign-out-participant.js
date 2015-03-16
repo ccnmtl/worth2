@@ -11,9 +11,9 @@ define([
         submit: function(e) {
             e.preventDefault();
             var $target = $(e.currentTarget);
-            var username = $target.find('input[name=facilitator_username]')
+            var username = $target.find('input[name="facilitator_username"]')
                 .val();
-            var password = $target.find('input[name=facilitator_password]')
+            var password = $target.find('input[name="facilitator_password"]')
                 .val();
             $.ajax({
                 type: 'POST',
