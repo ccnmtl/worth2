@@ -36,6 +36,11 @@ li.disabled>a {
     cursor: default;
 }
 
+li.disabled>a:before {
+    content: "Locked Section: ";
+}
+
+
 #content {
     min-height: 100%;
 }
@@ -186,6 +191,7 @@ li.disabled>a {
     line-height: 140%;
 }
 
+
 footer.footer {
     height: 40px;
 }
@@ -228,12 +234,12 @@ footer.footer {
 }
 
 .likert .answers-container .colored-box {
-    padding: 8px;
-    padding-bottom: 2px;
+    padding: 20px 10px 12px 10px;
     text-align: center;
     text-transform: uppercase;
-    color: white;
+    color: black;
     margin-bottom: 5px;
+    font-size: 12px;
 }
 
 .rate-my-risk.likert .answers-container .colored-box,
@@ -246,7 +252,7 @@ footer.footer {
 }
 
 .likert .not-an-issue .colored-box {
-    background-color: #4f8f00;
+    background-color: #6c6;
 }
 
 .likert .somewhat-an-issue .colored-box {
@@ -258,7 +264,7 @@ footer.footer {
 }
 
 .likert .a-big-issue .colored-box {
-    background-color: #ff2600;
+    background-color: #f63;
 }
 
 .post-video-quiz .casetitle,
