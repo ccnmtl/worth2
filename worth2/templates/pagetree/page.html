@@ -78,7 +78,7 @@
 <form class="pagetree-form-submit-area"
       action="." method="post">{% csrf_token %}
     <input type="hidden" name="action" value="reset" />
-    <input type="submit" value="change my answers" class="btn" />
+    <input type="submit" value="I want to change my answers." class="btn" />
 </form>
 {% endif %}
 {% else %}
@@ -91,7 +91,7 @@ each avatar has its own submit button.
 {% endcomment %}
 {% if not avatarselectorblock %}
 <div class="pagetree-form-submit-area">
-    <input type="submit" value="Submit" class="btn btn-primary" />
+    <input type="submit" value="Submit Answers to Unlock the Next Section" class="btn btn-primary" />
 </div>
 {% endif %}
 
@@ -106,6 +106,7 @@ each avatar has its own submit button.
 
 {% block content-nav %}
 {% with previous=section.get_previous next_section=section.get_next %}
+<hr />
 <ul class="pager">
 {% if previous %}
   <li class="previous">
