@@ -3,8 +3,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.db import models
 from ordered_model.models import OrderedModel
-
-from worth2.main.generic.models import BasePageBlock
+from pagetree.generic.models import BasePageBlock
 
 
 class Statement(OrderedModel):
