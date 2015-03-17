@@ -482,9 +482,9 @@ footer.footer {
 
 .i-am-worth-it-quiz .caseanswercontainer {
     list-style: none;
-    -webkit-column-count: 2; /* Chrome, Safari, Opera */
-    -moz-column-count: 2; /* Firefox */
-    column-count: 2;
+    -webkit-column-count: 4; /* Chrome, Safari, Opera */
+    -moz-column-count: 4; /* Firefox */
+    column-count: 4;
 }
 
 .quiz-game .casetitle,
