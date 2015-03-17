@@ -50,7 +50,9 @@ HTML template - there's probably a way of avoiding that step.
 <script type="text/x-handlebars" id="components/supporter-box">
     <div class="ssnm-supporter-box">
         <div class="pull-left">
-            <img class="img-thumbnail" src="../../../media/img/icon-ssnm.png" width="120" />
+            {% endverbatim %}
+            <img class="img-thumbnail" src="{{STATIC_URL}}img/icon-ssnm.png" width="120" />
+            {% verbatim %}
         </div>
         <div class="pull-right text-right">
             <h3>{{supporter.name}}</h3>
