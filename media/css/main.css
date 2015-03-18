@@ -328,11 +328,6 @@ footer.footer {
     display: none;
 }
 
-#goal-checkin-block .form-group:nth-child(5),
-#goal-checkin-block .form-group:nth-child(6) {
-    display: none;
-}
-
 .pageblock.rate-my-risk,
 .pageblock.protective-behaviors {
     width: 65%;
