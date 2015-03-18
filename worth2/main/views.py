@@ -13,7 +13,7 @@ from pagetree.models import PageBlock
 from quizblock.models import Quiz
 
 from worth2.goals.mixins import GoalCheckInViewMixin, GoalSettingViewMixin
-from worth2.protectivebehaviors.mixins import ProtectiveBehaviorsMixin
+from worth2.protectivebehaviors.utils import remove_empty_submission
 from worth2.selftalk.mixins import (
     SelfTalkStatementViewMixin, SelfTalkRefutationViewMixin
 )
@@ -123,7 +123,6 @@ class SignInParticipant(FormView):
 
 class ParticipantSessionPageView(
         GoalCheckInViewMixin, GoalSettingViewMixin,
-        ProtectiveBehaviorsMixin,
         SelfTalkStatementViewMixin, SelfTalkRefutationViewMixin,
         PageView):
     """WORTH version of pagetree's PageView."""
@@ -218,8 +217,8 @@ class ParticipantSessionPageView(
         instructor_link = has_responses(self.section)
 
         # This flag is always False on non-protective behaviors quizzes.
-        is_submission_empty = self.protectivebehaviors_remove_empty_submission(
-            request.user)
+        is_submission_empty = remove_empty_submission(request.user,
+                                                      self.section)
 
         context = self.get_context_data(**kwargs)
         context.update({
