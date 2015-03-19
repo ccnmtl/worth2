@@ -37,10 +37,6 @@
                 str = this.get('influenceDisplay');
             }
 
-            if (str) {
-                str = str + ' Influence';
-            }
-
             return str;
         }.property('influence', 'influenceDisplay'),
 
