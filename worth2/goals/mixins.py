@@ -26,7 +26,7 @@ class GoalCheckInViewMixin(object):
         self.goal_setting_responses = GoalSettingResponse.objects.filter(
             user=request.user,
             goal_setting_block=goalsettingblock,
-        ).filter(~Q(option__text__iexact='n/a'))
+        ).filter(~Q(option__text__iexact='n/a')).order_by('form_id')
 
         self.GoalCheckInFormSet = formset_factory(
             GoalCheckInForm,
@@ -125,12 +125,7 @@ class GoalSettingViewMixin(object):
             user=request.user,
             goal_setting_block=goalsettingblock.block())
 
-        # Adapt to the strange behavior of formset_factory's "extra"
-        # param. The formset displays a different number of forms
-        # based on how many elements of initial data we give it, so
-        # we need to adjust "extra" based on "responses".
         extra = goalsettingblock.block().goal_amount - 1
-        extra -= responses.count() - 1
 
         self.GoalSettingFormSet = formset_factory(
             DynamicGoalSettingForm,
@@ -144,6 +139,7 @@ class GoalSettingViewMixin(object):
         for r in responses.order_by('form_id'):
             initial_data.append({
                 'option': r.option,
+                'other_text': r.other_text,
                 'text': r.text,
             })
 
