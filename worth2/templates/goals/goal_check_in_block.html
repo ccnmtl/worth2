@@ -26,9 +26,7 @@
                     together and putting them in the view's context.
                     {% endcomment %}
                     {% for t in goal_checkin_context %}
-
-                    <div class="checkin-group">
-
+                    <div class="checkin-group well">
                         <div class="form-group non-interactive">
                             <label class="control-label col-sm-2">
                                 My {{ t.0.goal_setting_block.get_goal_type_display }} Goal
@@ -55,6 +53,8 @@
                         </div>
 
                         {% if t.0.other_text %}
+                        <div class="clearfix"></div>
+                        <hr />
                         <div class="form-group non-interactive">
                             <label class="control-label col-sm-2">
                                 Other
@@ -71,13 +71,14 @@
                         <hr />
 
                         {{ t.1|bootstrap_horizontal }}
-
-                    </div>
-                    {% endfor %}
+                        <div class="clearfix"></div>
+                    </div><!-- end .checkin-group -->
                     <div class="clearfix"></div>
+                    {% endfor %}
                     <hr />
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit"
+                                class="btn btn-primary">Submit</button>
                     </div>
 
                 </form><!-- end .form-horizontal -->
