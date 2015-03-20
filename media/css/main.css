@@ -19,16 +19,11 @@ body > .container {
 .navbar-right {padding-top: 8px;}
 
 
-.dashboard-widgets {
-    -webkit-column-count: 2; /* Chrome, Safari, Opera */
-    -moz-column-count: 2; /* Firefox */
-    column-count: 2;
-
-}
-
 label {
     cursor: pointer;
 }
+.dashboard-widget {min-height: 200px; position: relative;}
+.dashboard-widget a {position: absolute; bottom: 1em;}
 
 /* Deactivate any link that's in a disabled list-item. */
 li.disabled>a {
@@ -222,6 +217,8 @@ footer.footer {
     max-height: 100%;
 }
 
+ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px;}
+
 .likert .answers-container {
     display: -webkit-flex;
     display: flex;
@@ -378,16 +375,17 @@ footer.footer {
 }
 
 .protective-behaviors-results .pb-result-level-1 {
-    background-color: #4f8f00;
+   background-color: rgb(227, 240, 216);
 }
 
 .protective-behaviors-results .pb-result-level-2 {
-    background-color: #ffd479;
+    background-color: rgb(251, 248, 227);
 }
 
 .protective-behaviors-results .pb-result-level-3 {
-    background-color: #ff7e79;
-}
+   background-color: rgb(236, 221, 221);
+} 
+
 
 
 .rate-my-risk .casequestionresult,
