@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row">
 
-            <div class="col-sm-10">
+            <div class="col-sm-8">
                 <form class="form-horizontal" method="post">
                     {% csrf_token %}
                     {{ setting_formset.management_form }}
@@ -17,7 +17,8 @@
                     {% endif %}
                     {% for form in setting_formset %}
                     {% if forloop.first %}
-                    <span class="goal-form">
+                   <div class="well">
+                   <span class="goal-form">
                         {{ form.option|bootstrap_horizontal }}
                         <div class="goal-other-container">
                             {{ form.other_text|bootstrap_horizontal }}
@@ -25,11 +26,12 @@
                         <div class="clearfix"></div>
                         {{ form.text|bootstrap_horizontal }}
                     </span>
+                    </div>
                     <div class="clearfix"></div>
                     {% else %}
                     {# Manually render the extra goal forms so we can give them #}
                     {# the 'Extra' label instead of 'Main'. #}
-                    <hr>
+                   <div class="well">
                     <span class="goal-form">
                         <div class="form-group">
                             <label class="control-label col-sm-2 col-lg-2">
@@ -39,13 +41,12 @@
                                 {{ form.option }}
                             </div>
                         </div>
-                        <div class="clearfix"></div>
                         <div class="goal-other-container">
                             {{ form.other_text|bootstrap_horizontal }}
                         </div>
                         {{ form.text|bootstrap_horizontal }}
                     </span>
-                    <div class="clearfix"></div>
+                    </div>
                     {% endif %}
                     {% endfor %}
                     <div class="clearfix"></div>
@@ -58,7 +59,7 @@
                 </form><!-- end .form-horizontal -->
             </div>
 
-            <div class="col-sm-2 avatar-block">
+            <div class="col-sm-4 avatar-block">
                 <img src="{% avatar_url user %}">
             </div>
 
