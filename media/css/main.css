@@ -19,16 +19,11 @@ body > .container {
 .navbar-right {padding-top: 8px;}
 
 
-.dashboard-widgets {
-    -webkit-column-count: 2; /* Chrome, Safari, Opera */
-    -moz-column-count: 2; /* Firefox */
-    column-count: 2;
-
-}
-
 label {
     cursor: pointer;
 }
+.dashboard-widget {min-height: 200px; position: relative;}
+.dashboard-widget a {position: absolute; bottom: 1em;}
 
 /* Deactivate any link that's in a disabled list-item. */
 li.disabled>a {
