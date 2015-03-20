@@ -578,3 +578,6 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.assertEqual(GoalSettingResponse.objects.count(), 1)
         response = GoalSettingResponse.objects.first()
         self.assertEqual(response.other_text, 'Some other goal')
+
+        r = self.client.get(self.url)
+        self.assertContains(r, response.other_text)

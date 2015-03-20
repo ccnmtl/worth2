@@ -58,7 +58,7 @@ class GoalSettingBlock(BasePageBlock):
 
     def __unicode__(self):
         try:
-            slug = self.pageblock().section.get_parent().slug
+            slug = unicode(self.pageblock().section.get_parent().slug)
         except AttributeError:
             slug = 'no section'
 
@@ -139,7 +139,8 @@ class GoalSettingResponse(models.Model):
         unique_together = (('goal_setting_block', 'user', 'form_id'),)
 
     def __unicode__(self):
-        return unicode('%s from %s' % (self.option, self.user))
+        return unicode('"%s" from %s' % (unicode(self.option),
+                                         unicode(self.user)))
 
 
 class GoalCheckInOption(OrderedModel):
@@ -185,8 +186,9 @@ class GoalCheckInResponse(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        return unicode('%s from %s' % (self.get_i_will_do_this_display(),
-                                       self.goal_setting_response.user))
+        return unicode('"%s" from %s' % (
+            unicode(self.get_i_will_do_this_display()),
+            unicode(self.goal_setting_response.user)))
 
 
 class GoalCheckInPageBlock(BasePageBlock):
