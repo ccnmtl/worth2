@@ -29,7 +29,7 @@
                     <div class="checkin-group well">
                         <div class="form-group non-interactive">
                             <label class="control-label col-sm-2">
-                                My {{ t.0.goal_setting_block.get_goal_type_display }} Goal
+                                My {{ t.0.goal_setting_block.get_goal_type_display }} goal this week will be to:
                             </label>
                             <div class="col-sm-10">
                                 <p class="form-control-static">
@@ -39,11 +39,10 @@
                         </div>
 
                         <div class="clearfix"></div>
-                        <hr />
 
                         <div class="form-group non-interactive">
                             <label class="control-label col-sm-2">
-                                I will do this.
+                                I will reach this goal by doing this:
                             </label>
                             <div class="col-sm-10">
                                 <p class="form-control-static">
@@ -54,7 +53,7 @@
 
                         {% if t.0.other_text %}
                         <div class="clearfix"></div>
-                        <hr />
+
                         <div class="form-group non-interactive">
                             <label class="control-label col-sm-2">
                                 Other
@@ -68,14 +67,13 @@
                         {% endif %}
 
                         <div class="clearfix"></div>
-                        <hr />
 
                         {{ t.1|bootstrap_horizontal }}
                         <div class="clearfix"></div>
                     </div><!-- end .checkin-group -->
                     <div class="clearfix"></div>
                     {% endfor %}
-                    <hr />
+
                     <div class="form-group">
                         <button type="submit"
                                 class="btn btn-primary">Submit</button>
@@ -84,8 +82,19 @@
                 </form><!-- end .form-horizontal -->
             </div>
 
-            <div class="col-sm-4 avatar-block">
+            <div class="col-sm-4 avatar-block text-center">
                 <img src="{% avatar_url user %}">
+                
+               
+<div class="panel panel-default text-left">
+  <div class="panel-heading">
+    <h3 class="panel-title">Tip</h3>
+  </div>
+  <div class="panel-body">
+    Panel content
+  </div>
+</div>               
+                
             </div>
 
         </div>
