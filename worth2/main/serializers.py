@@ -27,4 +27,4 @@ class ParticipantSerializer(serializers.HyperlinkedModelSerializer):
 class WatchedVideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = WatchedVideo
-        fields = ('video_block',)
+        fields = ('video_id',)
