@@ -9,9 +9,7 @@
     <div class="avatar-block">
         <img src="{% avatar_url user %}">
     </div>
-    <div class="clearfix"></div>
-    
-    <div class="well">
+
         <h4>Stuff I Do</h4>
         <ul>
             {% for item in results %}
@@ -20,7 +18,7 @@
             </li>
             {% endfor %}
         </ul>
-    </div>
+
 </div>
 
 {% endwith %}
