@@ -39,8 +39,8 @@ define([
     /**
      * Save a WatchedVideo to the server.
      */
-    function recordWatchedVideo(data) {
-        var watchedVideo = new WatchedVideo({video_block: videoBlockId});
+    function recordWatchedVideo(videoId) {
+        var watchedVideo = new WatchedVideo({'video_id': videoId});
         watchedVideo.save(null, {
             success: function() {
                 $('li.next').removeClass('disabled');
@@ -55,7 +55,7 @@ define([
     window.onPlayerStateChange = function(event) {
         if (event.data === YT.PlayerState.ENDED) {
             // The video ended, so unlock the 'next' button.
-            recordWatchedVideo({video_block: videoBlockId});
+            recordWatchedVideo(lockedVideoId);
         }
     };
 

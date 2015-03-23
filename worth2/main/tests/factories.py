@@ -71,4 +71,4 @@ class WatchedVideoFactory(factory.django.DjangoModelFactory):
         model = WatchedVideo
 
     user = factory.SubFactory(UserFactory)
-    video_block = factory.SubFactory(VideoBlockFactory)
+    video_id = FuzzyText()

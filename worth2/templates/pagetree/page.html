@@ -52,12 +52,13 @@
 <form action="." method="post">{% csrf_token %}
 {% endif %}
 
-{% for block in section.pageblock_set.all %}
-<div class="pageblock{% if block.css_extra %} {{block.css_extra}}{% endif %}">
-{% if block.label %}<h3>{{block.label}}</h3>{% endif %}
-{% render block %}
-</div>
-{% endfor %}
+    {% for block in section.pageblock_set.all %}
+
+    <div class="pageblock{% if block.css_extra %} {{block.css_extra}}{% endif %}">
+        {% if block.label %}<h3>{{block.label}}</h3>{% endif %}
+        {% render block %}
+    </div>
+    {% endfor %}
 
 {% if needs_submit and not request.user.is_anonymous %}
 

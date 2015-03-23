@@ -301,17 +301,15 @@ class VideoBlockForm(forms.ModelForm):
 
 
 class WatchedVideo(models.Model):
-    """This model records which users have viewed which videos.
-
-    When a user finishes watching a video on a VideoBlock, the user's web
-    browser makes an ajax request to create a VideoView on our server.
-    """
+    """This model records which users have viewed which videos."""
 
     class Meta:
-        unique_together = ('user', 'video_block')
+        unique_together = ('user', 'video_id')
 
     user = models.ForeignKey(User, related_name='watched_videos')
-    video_block = models.ForeignKey(VideoBlock)
+    video_id = models.CharField(max_length=255, db_index=True,
+                                help_text='The youtube video ID',
+                                null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
