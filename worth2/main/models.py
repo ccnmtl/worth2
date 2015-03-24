@@ -230,16 +230,9 @@ class Participant(InactiveUserProfile):
         if url is None:
             url = self.last_location_url()
 
-        if re.match(r'^/pages/session-1/.*', url):
-            return 1
-        elif re.match(r'^/pages/session-2/.*', url):
-            return 2
-        elif re.match(r'^/pages/session-3/.*', url):
-            return 3
-        elif re.match(r'^/pages/session-4/.*', url):
-            return 4
-        elif re.match(r'^/pages/session-5/.*', url):
-            return 5
+        m = re.match(r'^/pages/session-(\d+)/.*', url)
+        if m:
+            return int(m.groups()[0])
 
         return None
 

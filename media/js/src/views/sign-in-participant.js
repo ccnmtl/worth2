@@ -19,10 +19,11 @@ define([
             this.refreshDisabledState($target);
 
             if ($target.attr('name') === 'participant_id') {
-                var lastLocation = $target.find('option:selected')
-                    .data('last-location');
-                var nextLocation = $target.find('option:selected')
-                    .data('next-location');
+                var $selectedOption = $target.find('option:selected');
+                var lastLocation = $selectedOption.data('last-location');
+                var nextLocation = $selectedOption.data('next-location');
+                var lastAccessedSession =
+                    $selectedOption.data('last-accessed');
 
                 $target.closest('form')
                     .find('.worth-participant-last-location')
@@ -30,8 +31,18 @@ define([
                 $target.closest('form')
                     .find('.worth-participant-next-location')
                     .text(nextLocation);
-            }
 
+                var $alreadyCompletedDropdown = $target.closest('form')
+                    .find('.worth-already-completed');
+                $alreadyCompletedDropdown.html('');
+                var i;
+                for (i = 1; i < lastAccessedSession; i++) {
+                    $alreadyCompletedDropdown.append(
+                        '<option value="' + i + '">' +
+                            'Session ' + i +
+                            '</option>');
+                }
+            }
         },
 
         refreshDisabledState: function($el) {
