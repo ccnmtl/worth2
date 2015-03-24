@@ -62,6 +62,19 @@ class ParticipantTest(TestCase):
             '/pages/session-5/session-5-activity')
         self.assertEqual(r, 5)
 
+    def test_verbose_section_name(self):
+        s = self.participant.verbose_section_name(
+            self.participant.last_location())
+        self.assertEqual(s, 'Root')
+
+    def test_last_location_verbose(self):
+        s = self.participant.last_location_verbose()
+        self.assertEqual(s, 'Root')
+
+    def test_next_location_verbose(self):
+        s = self.participant.next_location_verbose()
+        self.assertEqual(s, 'One (one)')
+
 
 class ParticipantManagerTest(TestCase):
     def test_cohort_ids_empty(self):

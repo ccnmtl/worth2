@@ -37,7 +37,9 @@
                     <option>Choose a Participant</option>
                     {% for p in form.participant_id.field.choices %}
                     <option value="{{p.pk}}"
-                            data-cohort-id="{{p.cohort_id|default:''}}">
+                            data-cohort-id="{{p.cohort_id|default:''}}"
+                            data-last-location="{{p.last_location_verbose}}"
+                            data-next-location="{{p.next_location_verbose}}">
                         {{p.study_id}}</option>
                     {% endfor %}
                 </select>
@@ -62,11 +64,7 @@
                         The last completed activity.
                     </label>
                     <div>
-                        <!-- TODO this text needs to be updated when
-                             the facilitator changes the participant ID
-                             number in the select box above.
-                          -->
-                        <em>Activity 5 "Charlene" (from Session 3 "Title")</em>
+                        <span class="worth-participant-last-location"></span>
                     </div>
                 </div>
                 <div class="radio">
@@ -76,7 +74,7 @@
                         The next, new session.
                     </label>
                     <div>
-                        <em>Session 4 "title"</em>
+                        <span class="worth-participant-next-location"></span>
                     </div>
                 </div>
                 <div class="radio">
