@@ -12,7 +12,7 @@ define([
          * form are unchecked. Otherwise, it returns true.
          */
         validateRadioButtons: function($form) {
-            $radioButtons = $form.find('input[type="radio"]');
+            var $radioButtons = $form.find('input[type="radio"]');
             var hasAnyCheckedRadioButtons = _.reduce(
                 $radioButtons,
                 function(memo, $el) {
