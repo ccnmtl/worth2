@@ -2,14 +2,16 @@ import re
 
 from django import forms
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.db import models
 from django.shortcuts import get_object_or_404
 from ordered_model.models import OrderedModel
 from pagetree.reports import PagetreeReport, StandaloneReportColumn
+from pagetree.generic.models import BasePageBlock
 
 from worth2.main.auth import user_is_participant
-from worth2.main.generic.models import BasePageBlock, BaseUserProfile
+from worth2.main.generic.models import BaseUserProfile
 
 
 class InactiveUserProfile(BaseUserProfile):
@@ -28,16 +30,26 @@ class InactiveUserProfile(BaseUserProfile):
 class Avatar(OrderedModel):
     """An image that the participant can choose for their profile."""
 
-    class Meta(OrderedModel.Meta):
-        pass
-
     image = models.ImageField()
+
+    is_default = models.BooleanField(
+        default=False,
+        help_text='If this is the initial avatar for all participants, ' +
+        'set this option to True. There can only be one default avatar ' +
+        'in the system.')
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
         return unicode(self.image.url)
+
+    def clean(self):
+        if self.is_default:
+            qs = Avatar.objects.filter(is_default=True)
+            if qs.count() > 0 and self.pk != qs.first().pk:
+                raise ValidationError(
+                    '%s is already set as the default.' % qs.first())
 
 
 class AvatarBlock(BasePageBlock):
@@ -79,20 +91,20 @@ class AvatarSelectorBlock(BasePageBlock):
         return True
 
     def unlocked(self, user):
-        # Staff and superusers are given a default avatar (see
-        # the avatar_url templatetag), so return True for them.
-        # Otherwise, we find out here whether the participant has
-        # chosen an avatar.
-        return (user.is_staff or user.is_superuser) or \
-            (hasattr(user, 'profile') and
-             user.profile.is_participant() and
-             user.profile.participant.avatar)
+        # Avatar selection is optional. Participants start
+        # out with a default avatar.
+        return True
 
     def submit(self, user, request_data):
         if user_is_participant(user):
             avatar_id = request_data.get('avatar-id')
             avatar = get_object_or_404(Avatar, pk=avatar_id)
             user.profile.participant.avatar = avatar
+            user.profile.participant.save()
+
+    def clear_user_submissions(self, user):
+        if user_is_participant(user):
+            user.profile.participant.avatar = None
             user.profile.participant.save()
 
     def avatars(self):
@@ -149,11 +161,11 @@ class Location(models.Model):
 #
 # Some of these types of users have special data associated with them.
 
-# We don't know what this format will be yet, so for now just test
-# validation by only accepting strings that begin with a '7'
+# ID spec is here:
+# http://wiki.ccnmtl.columbia.edu/index.php/WORTH_2_User_Stories#Participant_ID_number_scheme
 study_id_validator = RegexValidator(
-    regex=r'^7.*$',
-    message='That study ID isn\'t valid. (It needs to start with a 7)')
+    regex=r'^\d{12}$',
+    message='That study ID isn\'t valid. (It needs to be 12 digits)')
 
 # For now, accept any 3-digit number as the cohort ID.
 cohort_id_validator = RegexValidator(
@@ -220,16 +232,9 @@ class Participant(InactiveUserProfile):
         if url is None:
             url = self.last_location_url()
 
-        if re.match(r'^/pages/session-1/.*', url):
-            return 1
-        elif re.match(r'^/pages/session-2/.*', url):
-            return 2
-        elif re.match(r'^/pages/session-3/.*', url):
-            return 3
-        elif re.match(r'^/pages/session-4/.*', url):
-            return 4
-        elif re.match(r'^/pages/session-5/.*', url):
-            return 5
+        m = re.match(r'^/pages/session-(\d+)/.*', url)
+        if m:
+            return int(m.groups()[0])
 
         return None
 
@@ -291,17 +296,15 @@ class VideoBlockForm(forms.ModelForm):
 
 
 class WatchedVideo(models.Model):
-    """This model records which users have viewed which videos.
-
-    When a user finishes watching a video on a VideoBlock, the user's web
-    browser makes an ajax request to create a VideoView on our server.
-    """
+    """This model records which users have viewed which videos."""
 
     class Meta:
-        unique_together = ('user', 'video_block')
+        unique_together = ('user', 'video_id')
 
     user = models.ForeignKey(User, related_name='watched_videos')
-    video_block = models.ForeignKey(VideoBlock)
+    video_id = models.CharField(max_length=255, db_index=True,
+                                help_text='The youtube video ID',
+                                null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

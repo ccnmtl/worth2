@@ -19,22 +19,22 @@ body > .container {
 .navbar-right {padding-top: 8px;}
 
 
-.dashboard-widgets {
-    -webkit-column-count: 2; /* Chrome, Safari, Opera */
-    -moz-column-count: 2; /* Firefox */
-    column-count: 2;
-
-}
-
 label {
     cursor: pointer;
 }
+.dashboard-widget {min-height: 200px; position: relative;}
+.dashboard-widget a {position: absolute; bottom: 1em;}
 
 /* Deactivate any link that's in a disabled list-item. */
 li.disabled>a {
     pointer-events: none;
     cursor: default;
 }
+
+li.disabled>a:before {
+    content: "Locked Section: ";
+}
+
 
 #content {
     min-height: 100%;
@@ -186,6 +186,7 @@ li.disabled>a {
     line-height: 140%;
 }
 
+
 footer.footer {
     height: 40px;
 }
@@ -216,6 +217,8 @@ footer.footer {
     max-height: 100%;
 }
 
+ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px;}
+
 .likert .answers-container {
     display: -webkit-flex;
     display: flex;
@@ -228,12 +231,12 @@ footer.footer {
 }
 
 .likert .answers-container .colored-box {
-    padding: 8px;
-    padding-bottom: 2px;
+    padding: 20px 10px 12px 10px;
     text-align: center;
     text-transform: uppercase;
-    color: white;
+    color: black;
     margin-bottom: 5px;
+    font-size: 12px;
 }
 
 .rate-my-risk.likert .answers-container .colored-box,
@@ -246,7 +249,7 @@ footer.footer {
 }
 
 .likert .not-an-issue .colored-box {
-    background-color: #4f8f00;
+    background-color: #6c6;
 }
 
 .likert .somewhat-an-issue .colored-box {
@@ -258,7 +261,7 @@ footer.footer {
 }
 
 .likert .a-big-issue .colored-box {
-    background-color: #ff2600;
+    background-color: #f63;
 }
 
 .post-video-quiz .casetitle,
@@ -322,11 +325,6 @@ footer.footer {
     display: none;
 }
 
-#goal-checkin-block .form-group:nth-child(5),
-#goal-checkin-block .form-group:nth-child(6) {
-    display: none;
-}
-
 .pageblock.rate-my-risk,
 .pageblock.protective-behaviors {
     width: 65%;
@@ -377,16 +375,17 @@ footer.footer {
 }
 
 .protective-behaviors-results .pb-result-level-1 {
-    background-color: #4f8f00;
+   background-color: rgb(227, 240, 216);
 }
 
 .protective-behaviors-results .pb-result-level-2 {
-    background-color: #ffd479;
+    background-color: rgb(251, 248, 227);
 }
 
 .protective-behaviors-results .pb-result-level-3 {
-    background-color: #ff7e79;
-}
+   background-color: rgb(236, 221, 221);
+} 
+
 
 
 .rate-my-risk .casequestionresult,
@@ -482,9 +481,9 @@ footer.footer {
 
 .i-am-worth-it-quiz .caseanswercontainer {
     list-style: none;
-    -webkit-column-count: 2; /* Chrome, Safari, Opera */
-    -moz-column-count: 2; /* Firefox */
-    column-count: 2;
+    -webkit-column-count: 4; /* Chrome, Safari, Opera */
+    -moz-column-count: 4; /* Firefox */
+    column-count: 4;
 }
 
 .quiz-game .casetitle,
@@ -539,4 +538,20 @@ footer.footer {
 
 .participant-progress-modal .modal-body .table-container {
     width: 30%;
+}
+
+.pagetree-form-submit-area {
+    margin-top: 10px;
+}
+
+.worth-form-validation-error {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 400px;
+    text-align: center;
+}
+
+.worth-participant-last-location,
+.worth-participant-next-location {
+    font-style: italic;
 }

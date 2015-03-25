@@ -1,7 +1,5 @@
 define([
     'jquery',
-    'underscore',
-    'backbone',
     'views/create-participant',
     'views/edit-participant',
     'views/sign-in-participant',
@@ -10,16 +8,17 @@ define([
     'views/sign-in-participant-filter',
     'views/goal-setting-form',
     'views/goal-checkin-form',
-    'views/gated-video',
+    'views/locked-video',
     'views/self-talk-road',
     'views/unlocker',
+    'views/quiz-validator',
     'jquery-cookie'
 ], function(
-    $, _, Backbone,
+    $,
     CreateParticipantView, EditParticipantView, SignInParticipantView,
     SignOutParticipantView,
     ManageParticipantFilter, SignInParticipantFilter, GoalSettingFormView,
-    GoalCheckinFormView, GatedVideo, SelfTalkRoad, Unlocker
+    GoalCheckinFormView, LockedVideo, SelfTalkRoad, Unlocker, QuizValidator
 ) {
     $(function() {
         var csrftoken = $.cookie('csrftoken');
@@ -55,11 +54,13 @@ define([
 
         new GoalCheckinFormView();
 
-        new GatedVideo();
+        new LockedVideo();
 
         new SelfTalkRoad();
 
         new Unlocker();
+
+        new QuizValidator();
     };
 
     return {

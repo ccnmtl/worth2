@@ -6,7 +6,7 @@ define([
         urlRoot: '/api/watched_videos/',
         defaults: function() {
             return {
-                video_block: null
+                video_id: null
             };
         }
     });

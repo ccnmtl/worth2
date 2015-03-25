@@ -14,10 +14,10 @@ define([
             this.id = this.$el.closest('.modal').data('id');
             this.model = new Participant({
                 id: this.id,
-                study_id: this.$el.find('input[name=study_id]').val(),
-                cohort_id: this.$el.find('input[name=cohort_id]').val()
+                study_id: this.$el.find('input[name="study_id"]').val(),
+                cohort_id: this.$el.find('input[name="cohort_id"]').val()
             });
-            this.$el.find('button[name=is_archived]')
+            this.$el.find('button[name="is_archived"]')
                 .on('click', function(e) {
                     me.updateModel({
                         study_id: me.model.get('study_id'),
@@ -29,8 +29,8 @@ define([
             this.id = this.$el.closest('.modal').data('id');
             e.preventDefault();
             var $target = $(e.currentTarget);
-            var newStudyId = $target.find('input[name=study_id]').val();
-            var newCohortId = $target.find('input[name=cohort_id]').val();
+            var newStudyId = $target.find('input[name="study_id"]').val();
+            var newCohortId = $target.find('input[name="cohort_id"]').val();
             this.updateModel({
                 study_id: newStudyId,
                 cohort_id: newCohortId

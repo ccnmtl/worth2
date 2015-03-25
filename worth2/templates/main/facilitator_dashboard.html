@@ -10,18 +10,22 @@
         Dashboard
     </h1>
 
-    <div class="dashboard-widgets">
+    <div class="row dashboard-widgets">
     
-    <div class="well">
+    <div class="col-md-6">
+    <div class="well dashboard-widget">
     <h2>Intervene</h2>
     <p>Lead a participant through the E-WORTH experience.</p>
     <a href="{% url 'sign-in-participant' %}" class="btn btn-primary">Sign In Participant</a>
     </div>
+    </div>
     
-    <div class="well">
+    <div class="col-md-6">
+    <div class="well dashboard-widget">
     <h2>Manage</h2>
     <p>Add, edit, and delete all kinds of cohort and participant information.</p>
     <a href="{% url 'manage-participants' %}" class="btn btn-primary">Manage Participant IDs</a>
+    </div>
     </div>
     
     </div>

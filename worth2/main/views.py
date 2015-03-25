@@ -6,7 +6,6 @@ from django import http
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
-from django.db.models import Q
 from django.http.response import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateView, View
@@ -16,10 +15,10 @@ from django.shortcuts import redirect, render
 
 from pagetree.generic.views import PageView
 from pagetree.models import PageBlock, Hierarchy
-import quizblock
 from quizblock.models import Quiz
 
 from worth2.goals.mixins import GoalCheckInViewMixin, GoalSettingViewMixin
+from worth2.protectivebehaviors.utils import remove_empty_submission
 from worth2.selftalk.mixins import (
     SelfTalkStatementViewMixin, SelfTalkRefutationViewMixin
 )
@@ -222,24 +221,9 @@ class ParticipantSessionPageView(
         self.upv.visit()
         instructor_link = has_responses(self.section)
 
-        pageblocks = self.section.pageblock_set.all()
-        quiztypes = ContentType.objects.filter(
-            Q(name='quiz') | Q(name='rate my risk quiz'))
-        quizblocks_on_this_page = [
-            page.block() for page in
-            pageblocks.filter(content_type__in=quiztypes)]
-
-        # Was the form submitted with no values selected?
-        # TODO: move this logic to a mixin.
-        is_submission_empty = False
-        for submission in quizblock.models.Submission.objects.filter(
-                user=request.user, quiz__in=quizblocks_on_this_page):
-            if quizblock.models.Response.objects.filter(
-                    submission=submission).count() == 0:
-                # Delete empty submission, and tell the template that it was
-                # empty, so it can display an error message.
-                submission.delete()
-                is_submission_empty = True
+        # This flag is always False on non-protective behaviors quizzes.
+        is_submission_empty = remove_empty_submission(request.user,
+                                                      self.section)
 
         context = self.get_context_data(**kwargs)
         context.update({

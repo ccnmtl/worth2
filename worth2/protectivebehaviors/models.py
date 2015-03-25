@@ -1,7 +1,7 @@
 from django import forms
 from django.db import models
 
-from worth2.main.generic.models import BasePageBlock
+from pagetree.generic.models import BasePageBlock
 
 
 class ProtectiveBehaviorsResults(BasePageBlock):

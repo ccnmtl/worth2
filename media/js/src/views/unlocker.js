@@ -25,7 +25,7 @@ define([
                 var me = this;
                 $.get('/api/watched_videos/', function(data) {
                     var match = _.find(data, function(e) {
-                        return e.video_block === videoBlockId;
+                        return e.video_id === lockedVideoId;
                     });
                     if (typeof match !== 'undefined') {
                         me.unlock();

@@ -4,7 +4,14 @@ from django.db import models
 from ordered_model.models import OrderedModel
 from pagetree.reports import ReportableInterface, ReportColumnInterface
 
-from worth2.main.generic.models import BasePageBlock
+from pagetree.generic.models import BasePageBlock
+
+
+GOAL_TYPES = (
+    ('services', 'Services'),
+    ('risk reduction', 'Risk Reduction'),
+    ('social support', 'Social Support'),
+)
 
 
 class GoalSettingColumn(ReportColumnInterface):
@@ -59,10 +66,7 @@ class GoalSettingBlock(BasePageBlock):
 
     goal_type = models.CharField(
         max_length=255,
-        choices=(
-            ('services', 'Services'),
-            ('risk reduction', 'Risk Reduction'),
-            ('social support', 'Social Support')),
+        choices=GOAL_TYPES,
         default='services',
     )
 
@@ -91,7 +95,7 @@ class GoalSettingBlock(BasePageBlock):
 
     def __unicode__(self):
         try:
-            slug = self.pageblock().section.get_parent().slug
+            slug = unicode(self.pageblock().section.get_parent().slug)
         except AttributeError:
             slug = 'no section'
 
@@ -142,9 +146,18 @@ ReportableInterface.register(GoalSettingBlock)
 
 
 class GoalOption(OrderedModel):
-    """GoalSettingBlock dropdowns are populated by GoalOptions."""
+    """GoalSettingBlock dropdowns are populated by GoalOptions.
 
-    goal_setting_block = models.ForeignKey(GoalSettingBlock)
+    The contents of each GoalSettingBlock's dropdown depends on its
+    goal_type.
+    """
+
+    goal_type = models.CharField(
+        max_length=255,
+        choices=GOAL_TYPES,
+        default='services',
+        db_index=True,
+    )
     text = models.TextField(
         help_text='An option for the dropdowns in a specific ' +
         'GoalSetting pageblock.')
@@ -176,6 +189,10 @@ class GoalSettingResponse(models.Model):
 
     class Meta:
         unique_together = (('goal_setting_block', 'user', 'form_id'),)
+
+    def __unicode__(self):
+        return unicode('"%s" from %s' % (unicode(self.option),
+                                         unicode(self.user)))
 
 
 class GoalCheckInOption(OrderedModel):
@@ -219,6 +236,11 @@ class GoalCheckInResponse(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return unicode('"%s" from %s' % (
+            unicode(self.get_i_will_do_this_display()),
+            unicode(self.goal_setting_response.user)))
 
 
 class GoalCheckInPageBlock(BasePageBlock):

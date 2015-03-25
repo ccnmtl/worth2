@@ -15,7 +15,7 @@ define([
 
             this.$targetInput = this.$el.closest(
                 '.worth-facilitator-sign-in-participant'
-            ).find('form select[name=participant_id]');
+            ).find('form select[name="participant_id"]');
 
             // Make an array containing a jQuery object for each
             // cohort ID.

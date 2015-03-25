@@ -11,7 +11,7 @@ admin.site.register(Participant)
 
 
 class AvatarAdmin(OrderedModelAdmin):
-    list_display = ('image', 'move_up_down_links')
+    list_display = ('image', 'is_default', 'move_up_down_links')
 
 
 admin.site.register(Avatar, AvatarAdmin)

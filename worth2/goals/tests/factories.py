@@ -2,8 +2,8 @@ import factory
 from factory.fuzzy import FuzzyText
 
 from worth2.goals.models import (
-    GoalCheckInOption, GoalCheckInPageBlock, GoalOption, GoalSettingBlock,
-    GoalSettingResponse
+    GoalCheckInOption, GoalCheckInPageBlock, GoalCheckInResponse,
+    GoalOption, GoalSettingBlock, GoalSettingResponse
 )
 from worth2.main.tests.factories import UserFactory
 
@@ -19,7 +19,6 @@ class GoalOptionFactory(factory.DjangoModelFactory):
     class Meta:
         model = GoalOption
 
-    goal_setting_block = factory.SubFactory(GoalSettingBlockFactory)
     text = FuzzyText()
 
 
@@ -45,3 +44,12 @@ class GoalCheckInOptionFactory(factory.DjangoModelFactory):
         model = GoalCheckInOption
 
     text = FuzzyText()
+
+
+class GoalCheckInResponseFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = GoalCheckInResponse
+
+    goal_setting_response = factory.SubFactory(GoalSettingResponseFactory)
+    i_will_do_this = 'no'
+    what_got_in_the_way = factory.SubFactory(GoalCheckInOptionFactory)

@@ -1,9 +1,9 @@
+import re
 from django import forms
 from django.contrib.auth.models import User
 from django.db import models
 from ordered_model.models import OrderedModel
-
-from worth2.main.generic.models import BasePageBlock
+from pagetree.generic.models import BasePageBlock
 
 
 class Statement(OrderedModel):
@@ -68,6 +68,11 @@ class StatementBlock(BasePageBlock):
         help_text='(optional) The name of the video subject for this ' +
         'block, e.g. "Jane"')
 
+    @property
+    def css_class(self):
+        s = 'internal' if self.is_internal else 'external'
+        return 'selftalk-statement-%s' % s
+
     def needs_submit(self):
         return True
 
@@ -108,8 +113,14 @@ class StatementBlock(BasePageBlock):
         except AttributeError:
             slug = 'no section'
 
-        return unicode(self.display_name + '[' + slug + '] id: ' +
-                       unicode(self.pk))
+        if self.is_internal:
+            block_subtype = 'Internal'
+        else:
+            block_subtype = 'External'
+            if self.subject_name:
+                block_subtype = self.subject_name + '\'s'
+        return '%s Statement Block [%s] id: %s' % (
+            block_subtype, slug, unicode(self.pk))
 
     @staticmethod
     def add_form():
@@ -158,6 +169,11 @@ class RefutationBlock(BasePageBlock):
     statement_block = models.ForeignKey(StatementBlock)
 
     @property
+    def css_class(self):
+        s = 'internal' if self.is_internal else 'external'
+        return 'selftalk-refutation-%s' % s
+
+    @property
     def subject_name(self):
         return self.statement_block.subject_name
 
@@ -176,12 +192,26 @@ class RefutationBlock(BasePageBlock):
         return qs.count() > 0
 
     def submit(self, user, request_data):
+        # Loop through the refutations the user chose
         for k, v in request_data.iteritems():
-            refutation = Refutation.objects.get(pk=int(k))
+            match = re.match(r'^refutation-(\d+)$', k)
+            if not match:
+                continue
+
+            refutation_pk = int(v)
+            refutation_idx = int(match.group(1))
+
+            # Find the optional 'other' text to attach to this response.
+            other_text = ''
+            if ('other-%d' % refutation_idx) in request_data:
+                other_text = request_data['other-%d' % refutation_idx]
+
+            refutation = Refutation.objects.get(pk=refutation_pk)
             RefutationResponse.objects.update_or_create(
                 refutation=refutation,
                 refutation_block=self,
                 user=user,
+                other_text=other_text,
             )
 
     def clear_user_submissions(self, user):
@@ -195,8 +225,8 @@ class RefutationBlock(BasePageBlock):
         except AttributeError:
             slug = 'no section'
 
-        return unicode(self.display_name + '[' + slug + '] id: ' +
-                       unicode(self.pk))
+        return '%s [%s] id: %s' % (
+            self.display_name, slug, unicode(self.pk))
 
     @staticmethod
     def add_form():

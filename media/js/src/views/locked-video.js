@@ -5,9 +5,9 @@ define([
     'views/youtube-player',
 ], function($, _, Backbone, youtubePlayer) {
     /**
-     * This is a backbone view used to initialize a gated YouTube video.
+     * This is a backbone view used to initialize a locked YouTube video.
      */
-    var GatedVideo = Backbone.View.extend({
+    var LockedVideo = Backbone.View.extend({
         el: '#youtube-player',
         initialize: function() {
             if ($('#youtube-player').length === 0) {
@@ -15,9 +15,9 @@ define([
             }
 
             youtubePlayer.loadYouTubeAPI(
-                $('#youtube-player')[0], gatedVideoId);
+                $('#youtube-player')[0], lockedVideoId);
         }
     });
 
-    return GatedVideo;
+    return LockedVideo;
 });

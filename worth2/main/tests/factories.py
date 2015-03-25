@@ -46,7 +46,7 @@ class ParticipantFactory(factory.django.DjangoModelFactory):
     user = factory.SubFactory(InactiveUserFactory)
     first_location = factory.SubFactory(LocationFactory)
     location = factory.SubFactory(LocationFactory)
-    study_id = FuzzyText(prefix='7')
+    study_id = FuzzyText(length=12, chars='1234567890')
     is_archived = False
 
 
@@ -71,4 +71,4 @@ class WatchedVideoFactory(factory.django.DjangoModelFactory):
         model = WatchedVideo
 
     user = factory.SubFactory(UserFactory)
-    video_block = factory.SubFactory(VideoBlockFactory)
+    video_id = FuzzyText()

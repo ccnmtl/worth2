@@ -5,16 +5,16 @@
 {% get_aggregate_level user 'protective-behaviors' as level %}
 
 {% if level == 3 %}
-<p>
+<p class="alert alert-danger">
     Some of the stuff you do is high risk. It would be a good idea to think
     about some ways to keep yourself safer.
 </p>
 {% elif level == 2 %}
-<p>
+<p class="alert alert-warning">
     Some of the stuff you do is mildly risky.
 </p>
 {% else %}
-<p>
+<p class="alert alert-success">
     Great! It doesn't sound like you're involved in any of the
     dangerous sexual activity we addressed.
 </p>

@@ -4,7 +4,7 @@ from rest_framework.test import APITestCase
 
 from worth2.main.models import Participant, WatchedVideo
 from worth2.main.tests.factories import (
-    ParticipantFactory, WatchedVideoFactory, UserFactory, VideoBlockFactory
+    ParticipantFactory, WatchedVideoFactory, UserFactory
 )
 from worth2.main.tests.mixins import (
     LoggedInFacilitatorTestMixin, LoggedInParticipantTestMixin
@@ -46,61 +46,66 @@ class LoginCheckTest(LoggedInParticipantTestMixin, APITestCase):
 class ParticipantViewSetTest(
         LoggedInFacilitatorTestMixin, APITestCase):
     def test_create(self):
+        study_id = '123456789012'
         response = self.client.post(
-            '/api/participants/', {'study_id': '777'}
+            '/api/participants/', {'study_id': study_id}
         )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data['study_id'], '777')
+        self.assertEqual(response.data['study_id'], study_id)
 
-        participant = Participant.objects.get(study_id='777')
-        self.assertEqual(participant.study_id, '777')
+        participant = Participant.objects.get(study_id=study_id)
+        self.assertEqual(participant.study_id, study_id)
         self.assertEqual(participant.created_by, self.u)
 
     def test_update_study_id(self):
-        p = ParticipantFactory(study_id='777')
+        p = ParticipantFactory(study_id='123456789012')
+        study_id = '012345678901'
         response = self.client.put(
             '/api/participants/' + unicode(p.pk) + '/',
-            {'study_id': '7878'}
+            {'study_id': study_id}
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['study_id'], '7878')
+        self.assertEqual(response.data['study_id'], study_id)
 
-        participant = Participant.objects.get(study_id='7878')
-        self.assertEqual(participant.study_id, '7878')
+        participant = Participant.objects.get(study_id=study_id)
+        self.assertEqual(participant.study_id, study_id)
 
     def test_update_study_id_invalid(self):
-        p = ParticipantFactory(study_id='777')
+        study_id = '012345678901'
+        p = ParticipantFactory(study_id=study_id)
         response = self.client.put(
             '/api/participants/' + unicode(p.pk) + '/',
-            {'study_id': 'j87878'}
+            {'study_id': '12345678901'}
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(
             response.data['study_id'],
-            ['That study ID isn\'t valid. (It needs to start with a 7)'])
+            ['That study ID isn\'t valid. (It needs to be 12 digits)'])
 
         with self.assertRaises(Participant.DoesNotExist):
-            Participant.objects.get(study_id='j87878')
+            Participant.objects.get(study_id='12345678901')
 
     def test_update_cohort_id(self):
-        p = ParticipantFactory(study_id='700', cohort_id='111')
+        study_id = '012345678901'
+        p = ParticipantFactory(study_id=study_id, cohort_id='111')
         response = self.client.put(
             '/api/participants/' + unicode(p.pk) + '/', {
-                'study_id': '700',
+                'study_id': study_id,
                 'cohort_id': '787',
             }
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['cohort_id'], '787')
 
-        participant = Participant.objects.get(study_id='700')
+        participant = Participant.objects.get(study_id=study_id)
         self.assertEqual(participant.cohort_id, '787')
 
     def test_update_cohort_id_invalid(self):
-        p = ParticipantFactory(study_id='700', cohort_id='111')
+        study_id = '012345678901'
+        p = ParticipantFactory(study_id=study_id, cohort_id='111')
         response = self.client.put(
             '/api/participants/' + unicode(p.pk) + '/', {
-                'study_id': '700',
+                'study_id': study_id,
                 'cohort_id': 'j87878',
             }
         )
@@ -126,35 +131,37 @@ class ParticipantViewSetTest(
 
 class ParticipantViewSetUnAuthedTest(APITestCase):
     def test_create(self):
+        study_id = '012345678901'
         response = self.client.post(
-            '/api/participants/', {'study_id': '777'}
+            '/api/participants/', {'study_id': study_id}
         )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         with self.assertRaises(Participant.DoesNotExist):
-            Participant.objects.get(study_id='777')
+            Participant.objects.get(study_id=study_id)
 
     def test_update_study_id(self):
-        p = ParticipantFactory(study_id='777')
+        study_id = '012345678901'
+        p = ParticipantFactory(study_id=study_id)
         response = self.client.put(
             '/api/participants/' + unicode(p.pk) + '/',
-            {'study_id': '7878'}
+            {'study_id': '123456789012'}
         )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         with self.assertRaises(Participant.DoesNotExist):
-            Participant.objects.get(study_id='7878')
+            Participant.objects.get(study_id='123456789012')
 
 
 class WatchedVideoViewSetUnAuthedTest(APITestCase):
     def test_create(self):
-        block = VideoBlockFactory()
+        video_id = 'test_video_id'
         response = self.client.post('/api/watched_videos/',
-                                    {'video_block': block})
+                                    {'video_id': video_id})
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         with self.assertRaises(WatchedVideo.DoesNotExist):
-            WatchedVideo.objects.get(video_block=block)
+            WatchedVideo.objects.get(video_id=video_id)
 
     def test_list(self):
         r = self.client.get('/api/watched_videos/')
@@ -170,22 +177,18 @@ class WatchedVideoViewSetTest(
     """This endpoint should be accessible to any authenticated user."""
 
     def test_create(self):
-        block = VideoBlockFactory()
-        r = self.client.post('/api/watched_videos/',
-                             {'video_block': block.pk})
+        video_id = 'test_video_id'
+        r = self.client.post('/api/watched_videos/', {'video_id': video_id})
         self.assertEqual(r.status_code, status.HTTP_201_CREATED)
 
-        objs = WatchedVideo.objects.filter(video_block=block, user=self.u)
+        objs = WatchedVideo.objects.filter(user=self.u)
         self.assertEqual(objs.count(), 1)
+        self.assertEqual(objs.first().video_id, video_id)
 
     def test_list(self):
-        v1 = VideoBlockFactory()
-        v2 = VideoBlockFactory()
-        v3 = VideoBlockFactory()
-
-        WatchedVideoFactory(user=self.u, video_block=v1)
-        WatchedVideoFactory(user=self.u, video_block=v2)
-        WatchedVideoFactory(user=self.u, video_block=v3)
+        WatchedVideoFactory(user=self.u, video_id='abc')
+        WatchedVideoFactory(user=self.u, video_id='def')
+        WatchedVideoFactory(user=self.u, video_id='ghi')
 
         r = self.client.get('/api/watched_videos/')
         self.assertEqual(r.status_code, 200)
