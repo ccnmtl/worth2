@@ -24,28 +24,14 @@ class SelfTalkStatementViewMixin(object):
                         label='"' + statement.text + '"',
                         required=False)
 
-        # TODO: waiting on spec for this form, PMT #98029
         class DynamicInternalStatementForm(forms.Form):
-            statement1 = forms.ModelChoiceField(
-                widget=forms.Select(
-                    attrs={'class': 'statement-dropdown'}),
-                label="My Negative Thing",
-                queryset=statementblock.block().statements.all(),
-                empty_label="Select")
-            statement1_other = forms.CharField(
-                label="Other", required=False)
-            statement2 = forms.ModelChoiceField(
-                widget=forms.Select(
-                    attrs={'class': 'statement-dropdown'}),
-                label="My Negative Thing",
-                queryset=statementblock.block().statements.all(),
-                empty_label="Select")
-            statement3 = forms.ModelChoiceField(
-                widget=forms.Select(
-                    attrs={'class': 'statement-dropdown'}),
-                label="My Negative Thing",
-                queryset=statementblock.block().statements.all(),
-                empty_label="Select")
+            def __init__(self, *args, **kwargs):
+                super(DynamicInternalStatementForm, self).__init__(
+                    *args, **kwargs)
+                for statement in statementblock.block().statements.all():
+                    self.fields['%d' % statement.pk] = forms.BooleanField(
+                        label='"' + statement.text + '"',
+                        required=False)
 
         if statementblock.block().is_internal:
             return DynamicInternalStatementForm
