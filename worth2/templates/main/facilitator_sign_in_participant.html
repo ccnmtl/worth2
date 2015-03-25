@@ -39,7 +39,8 @@
                     <option value="{{p.pk}}"
                             data-cohort-id="{{p.cohort_id|default:''}}"
                             data-last-location="{{p.last_location_verbose}}"
-                            data-next-location="{{p.next_location_verbose}}">
+                            data-next-location="{{p.next_location_verbose}}"
+                            data-last-accessed="{{p.last_session_accessed}}">
                         {{p.study_id}}</option>
                     {% endfor %}
                 </select>
@@ -87,12 +88,6 @@
                         <select name="already_completed_session"
                                 class="form-control worth-already-completed"
                                 disabled="disabled">
-                            <!-- TODO this list needs to be updated when
-                                 the facilitator changes the participant ID
-                                 number in the select box above.
-                              -->
-                            <option value="/pages/session-2/"
-                                    >Session 2</option>
                         </select>
                     </div>
                 </div>
