@@ -63,6 +63,7 @@ define([
 
             // Draw avatar
             var me = this;
+            THREE.ImageUtils.crossOrigin = '';
             var map = THREE.ImageUtils.loadTexture(
                 STATIC_URL + 'img/selftalk-avatar3.png', {}, function() {
                     renderer.render(scene, camera);
