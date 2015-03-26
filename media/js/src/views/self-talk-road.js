@@ -13,6 +13,69 @@ define([
         // Position of the avatar on the road, on a scale of 0 to 1.
         position: 0,
 
+        addLighting: function(scene) {
+            var directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(0, 1, 0.5);
+            scene.add(directionalLight);
+
+            var lights = [];
+            lights[0] = new THREE.PointLight(0xffffff, 1, 2.3);
+            lights[1] = new THREE.PointLight(0xffffff, 1, 2.3);
+            lights[2] = new THREE.PointLight(0xffffff, 1, 2.3);
+
+            lights[0].position.set(6, 1, 0);
+            lights[1].position.set(6, 1, 1);
+            lights[2].position.set(6, 1, -1);
+
+            scene.add(lights[0]);
+            scene.add(lights[1]);
+            scene.add(lights[2]);
+        },
+
+        addObjects: function(scene, renderer, camera) {
+            // Draw ground
+            var groundGeometry = new THREE.PlaneBufferGeometry(44, 100, 0);
+            var ground = new THREE.Mesh(
+                groundGeometry,
+                new THREE.MeshLambertMaterial({
+                    color: 0xd092f0
+                })
+            );
+            ground.position.x = -15;
+            ground.position.y = -0.61;
+            ground.rotation.x = -Math.PI / 2;
+
+            scene.add(ground);
+
+            // Draw road
+            var roadGeometry = new THREE.BoxGeometry(44, 1, 0.1);
+            var road = new THREE.Mesh(
+                roadGeometry,
+                new THREE.MeshLambertMaterial({
+                    color: 0xfff010
+                })
+            );
+            road.position.x = -15;
+            road.position.y = -0.6;
+            road.rotation.x = -Math.PI / 2;
+
+            scene.add(road);
+
+            // Draw avatar
+            var me = this;
+            var map = THREE.ImageUtils.loadTexture(
+                STATIC_URL + 'img/worth-selftalk-avatar.png', {}, function() {
+                    renderer.render(scene, camera);
+                });
+
+            var material = new THREE.SpriteMaterial({
+                map: map, color: 0xffffff, fog: true});
+            this.sprite = new THREE.Sprite(material);
+            this.sprite.position.x = this.position * 4.5;
+
+            scene.add(this.sprite);
+        },
+
         /**
          * @function draw
          *
@@ -38,53 +101,11 @@ define([
             $(renderer.domElement).addClass('embed-responsive-item');
             $container.append(renderer.domElement);
 
-            // Draw road
-            var roadGeometry = new THREE.BoxGeometry(25, 1, 0.1);
-            var road = new THREE.Mesh(
-                roadGeometry,
-                new THREE.MeshLambertMaterial({
-                    color: 0xfff010
-                })
-            );
-            road.position.x = -5;
-            road.position.y = -0.5;
-            road.rotation.x = -Math.PI / 2;
+            this.addObjects(scene, renderer, camera);
+            this.addLighting(scene);
 
-            scene.add(road);
-
-            // Draw avatar
-            var me = this;
-            var map = THREE.ImageUtils.loadTexture(
-                STATIC_URL + 'img/worth-selftalk-avatar.png', {}, function() {
-                    renderer.render(scene, camera);
-                });
-
-            var material = new THREE.SpriteMaterial({
-                map: map, color: 0xffffff, fog: true});
-            this.sprite = new THREE.Sprite(material);
-            this.sprite.position.x = this.position * 4.5;
-
-            scene.add(this.sprite);
-
-            // Lighting
-            var light = new THREE.AmbientLight(0xf0e000);
-            scene.add(light);
-
-            var lights = [];
-            lights[0] = new THREE.PointLight(0xffffff, 1, 0);
-            lights[1] = new THREE.PointLight(0xffffff, 1, 0);
-            lights[2] = new THREE.PointLight(0xffffff, 1, 0);
-
-            lights[0].position.set(0, 0, 0);
-            lights[1].position.set(1, 0, 1);
-            lights[2].position.set(-1, 0, -1);
-
-            scene.add(lights[0]);
-            scene.add(lights[1]);
-            scene.add(lights[2]);
-
-            camera.position.set(6, 1, 1);
-            camera.lookAt(new THREE.Vector3(3, 0, 0));
+            camera.position.set(6, 0.6, 1);
+            camera.lookAt(new THREE.Vector3(3, -0.5, 0));
 
             requestAnimationFrame(function render() {
                 requestAnimationFrame(render);
@@ -111,74 +132,97 @@ define([
         },
 
         /**
-         * Calculate position based on the statement form.
+         * Calculate position based on the checkbox form.
+         *
+         * 'type' is either "refutation" or "statement".
          *
          * Returns a number.
          */
-        calcPosForStatementForm: function($form) {
+        calcPosForCheckboxForm: function($form, type) {
             var total = $form.find('input:checkbox').length;
             var checked = $form.find('input:checkbox:checked').length;
             var ratio = checked / total;
-            var newPos = 1 - ratio;
+
+            var newPos;
+            if (type === 'statement') {
+                newPos = ratio;
+            } else {
+                newPos = 1 - ratio;
+            }
+
             return newPos;
         },
 
         /**
-         * Look at each checkbox in the statement form and set up a
+         * Look at each checkbox in the form and set up a
          * listener to update this.position.
+         *
+         * 'type' is either "refutation" or "statement".
          */
-        initForStatementForm: function($form) {
+        initForCheckboxForm: function($form, type) {
             var $inputs = $form.find('input:checkbox');
             var me = this;
 
             $inputs.each(function(k, v) {
                 var $v = $(v);
                 $v.on('change', function() {
-                    var newPos = me.calcPosForStatementForm($form);
+                    var newPos = me.calcPosForCheckboxForm($form, type);
                     me.updatePosition(newPos);
                 });
             });
 
             this.updatePosition(
-                this.calcPosForStatementForm($form));
+                this.calcPosForCheckboxForm($form, type));
         },
 
         /**
-         * Calculate position based on the refutation form.
+         * Calculate position based on the dropdown form.
+         *
+         * 'type' is either "refutation" or "statement".
          *
          * Returns a number.
          */
-        calcPosForRefutationForm: function($form) {
+        calcPosForDropdownForm: function($form, type) {
             var $selects = $form.find('select');
             var total = $selects.length;
             var selected = _.filter(
                 $selects,
                 function(el) {
                     return $(el).val() > 0;
-                }).length;
+                }
+            ).length;
             var ratio = selected / total;
-            var newPos = ratio;
+
+            var newPos;
+            if (type === 'statement') {
+                newPos = 1 - ratio;
+            } else {
+                newPos = ratio;
+            }
+
             return newPos;
         },
 
         /**
-         * Look at each dropdown in the refutation form and set up a
+         * Look at each dropdown in the form and set up a
          * listener to update this.position.
+         *
+         * 'type' is either "refutation" or "statement".
          */
-        initForRefutationForm: function($form) {
+        initForDropdownForm: function($form, type) {
             var $selects = $form.find('select');
             var me = this;
 
             $selects.each(function(k, v) {
                 var $v = $(v);
                 $v.on('change', function() {
-                    var newPos = me.calcPosForRefutationForm($form);
+                    var newPos = me.calcPosForDropdownForm($form, type);
                     me.updatePosition(newPos);
                 });
             });
 
             this.updatePosition(
-                this.calcPosForRefutationForm($form));
+                this.calcPosForDropdownForm($form, type));
         },
 
         initialize: function() {
@@ -189,12 +233,16 @@ define([
             }
 
             // Attach form events to this.position.
-            if ($('#selftalk-statement-block').length === 1) {
-                this.initForStatementForm(
-                    $blocks.find('.statement-form:first'));
-            } else if ($('#selftalk-refutation-block').length === 1) {
-                this.initForRefutationForm(
-                    $blocks.find('.refutation-form:first'));
+            var $refutationForm = $('.refutation-form:first');
+            var $statementForm = $('.statement-form:first');
+            if ($refutationForm.find('select').length > 0) {
+                this.initForDropdownForm($refutationForm, 'refutation');
+            } else if ($statementForm.find('select').length > 0) {
+                this.initForDropdownForm($statementForm, 'statement');
+            } else if ($refutationForm.find('input:checkbox').length > 0) {
+                this.initForCheckboxForm($refutationForm);
+            } else if ($statementForm.find('input:checkbox').length > 0) {
+                this.initForCheckboxForm($statementForm);
             }
 
             var $container = $(
