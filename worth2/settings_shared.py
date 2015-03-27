@@ -154,7 +154,7 @@ PAGEBLOCKS = [
     'pageblocks.TextBlock',
     'pageblocks.HTMLBlock',
     'pageblocks.PullQuoteBlock',
-    'pageblocks.ImageBlock',
+    'main.SimpleImageBlock',
     'pageblocks.ImagePullQuoteBlock',
     'quizblock.Quiz',
     'main.AvatarSelectorBlock',
