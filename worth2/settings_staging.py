@@ -21,7 +21,7 @@ DATABASES = {
 }
 
 DEBUG = False
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 STAGING_ENV = True
 
 AWS_STORAGE_BUCKET_NAME = "ccnmtl-worth2-static-stage"
@@ -38,10 +38,6 @@ DEFAULT_FILE_STORAGE = 'worth2.s3utils.MediaRootS3BotoStorage'
 MEDIA_URL = S3_URL + '/media/'
 COMPRESS_STORAGE = 'worth2.s3utils.CompressorS3BotoStorage'
 AWS_QUERYSTRING_AUTH = False
-
-DEBUG = False
-TEMPLATE_DEBUG = DEBUG
-STAGING_ENV = True
 
 STATSD_PREFIX = 'worth2-staging'
 
