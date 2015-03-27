@@ -229,16 +229,17 @@ class ParticipantSessionPageView(
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        if self.goalsettingblock:
-            return self.goal_setting_post(request, self.goalsettingblock)
-        elif self.goalcheckinblock:
-            return self.goal_check_in_post(request, self.goalcheckinblock)
-        elif self.selftalkstatementblock:
-            return self.selftalk_statement_post(
-                request, self.selftalkstatementblock)
-        elif self.selftalkrefutationblock:
-            return self.selftalk_refutation_post(
-                request, self.selftalkrefutationblock)
+        if request.POST.get('action') != 'reset':
+            if self.goalsettingblock:
+                return self.goal_setting_post(request, self.goalsettingblock)
+            elif self.goalcheckinblock:
+                return self.goal_check_in_post(request, self.goalcheckinblock)
+            elif self.selftalkstatementblock:
+                return self.selftalk_statement_post(
+                    request, self.selftalkstatementblock)
+            elif self.selftalkrefutationblock:
+                return self.selftalk_refutation_post(
+                    request, self.selftalkrefutationblock)
 
         return super(ParticipantSessionPageView, self).post(
             request, *args, **kwargs)

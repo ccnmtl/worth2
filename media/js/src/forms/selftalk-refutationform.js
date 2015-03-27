@@ -12,7 +12,7 @@
             var $v = $(v);
             var val = $v.val();
             var selectedText = $.trim(
-                $v.find('option[value=' + val + ']').text());
+                $v.find('option[value="' + val + '"]').text());
 
             var $otherInput = $v.closest('.form-group').next().find('input');
             if (selectedText.toLowerCase() === 'other') {

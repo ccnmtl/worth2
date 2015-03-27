@@ -209,17 +209,19 @@ class RefutationBlock(BasePageBlock):
             if not match:
                 continue
 
+            statement_pk = int(match.groups()[0])
             refutation_pk = int(v)
-            refutation_idx = int(match.group(1))
 
             # Find the optional 'other' text to attach to this response.
             other_text = ''
-            if ('other-%d' % refutation_idx) in request_data:
-                other_text = request_data['other-%d' % refutation_idx]
+            if ('other-%d' % statement_pk) in request_data:
+                other_text = request_data['other-%d' % statement_pk]
 
-            refutation = Refutation.objects.get(pk=refutation_pk)
+            refutation = Refutation.objects.filter(pk=refutation_pk).first()
+            statement = Statement.objects.get(pk=statement_pk)
             RefutationResponse.objects.update_or_create(
                 refutation=refutation,
+                statement=statement,
                 refutation_block=self,
                 user=user,
                 other_text=other_text,
@@ -293,7 +295,9 @@ class RefutationResponse(models.Model):
     class Meta:
         unique_together = ('refutation', 'refutation_block', 'user')
 
-    refutation = models.ForeignKey(Refutation)
+    # refutation is null if this is an 'Other' option
+    refutation = models.ForeignKey(Refutation, null=True)
+    statement = models.ForeignKey(Statement, null=True)
     refutation_block = models.ForeignKey(RefutationBlock)
     user = models.ForeignKey(User)
     other_text = models.TextField(blank=True, null=True)

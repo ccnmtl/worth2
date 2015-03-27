@@ -3,7 +3,7 @@ from pagetree.helpers import get_hierarchy
 
 from worth2.main.tests.mixins import LoggedInParticipantTestMixin
 from worth2.selftalk.tests.factories import (
-    StatementFactory, RefutationFactory
+    StatementFactory, StatementResponseFactory, RefutationFactory
 )
 from worth2.selftalk.models import StatementResponse, RefutationResponse
 
@@ -108,9 +108,23 @@ class ExternalRefutationBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.statement1 = StatementFactory()
         self.statement2 = StatementFactory()
         self.statement3 = StatementFactory()
+
         self.statementblock.block().statements.add(self.statement1)
         self.statementblock.block().statements.add(self.statement2)
         self.statementblock.block().statements.add(self.statement3)
+
+        self.statementresponse1 = StatementResponseFactory(
+            user=self.u,
+            statement_block=self.statementblock.block(),
+            statement=self.statement1)
+        self.statementresponse2 = StatementResponseFactory(
+            user=self.u,
+            statement_block=self.statementblock.block(),
+            statement=self.statement2)
+        self.statementresponse3 = StatementResponseFactory(
+            user=self.u,
+            statement_block=self.statementblock.block(),
+            statement=self.statement3)
 
         self.root.add_child_section_from_dict({
             'label': 'Refutation Page',
@@ -327,9 +341,23 @@ class InternalRefutationBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.statement1 = StatementFactory()
         self.statement2 = StatementFactory()
         self.statement3 = StatementFactory()
+
         self.statementblock.block().statements.add(self.statement1)
         self.statementblock.block().statements.add(self.statement2)
         self.statementblock.block().statements.add(self.statement3)
+
+        self.statementresponse1 = StatementResponseFactory(
+            user=self.u,
+            statement_block=self.statementblock.block(),
+            statement=self.statement1)
+        self.statementresponse2 = StatementResponseFactory(
+            user=self.u,
+            statement_block=self.statementblock.block(),
+            statement=self.statement2)
+        self.statementresponse3 = StatementResponseFactory(
+            user=self.u,
+            statement_block=self.statementblock.block(),
+            statement=self.statement3)
 
         self.root.add_child_section_from_dict({
             'label': 'Refutation Page',
