@@ -20,11 +20,20 @@ DATABASES = {
     }
 }
 
-MEDIA_ROOT = "/var/www/worth2/uploads/"
+# Media settings
 MEDIA_URL = '/uploads/'
-ADMIN_MEDIA_PREFIX = '/media/'
-STATIC_ROOT = "/tmp/worth2/static"
+MEDIA_ROOT = 'uploads'
 STATIC_URL = '/media/'
+STATIC_ROOT = '/tmp/worth2/static/'
+STATICFILES_DIRS = ('media/',)
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+)
+COMPRESS_URL = '/media/'
+COMPRESS_ROOT = 'media/'
+AWS_QUERYSTRING_AUTH = False
 
 if 'test' in sys.argv or 'jenkins' in sys.argv:
     MEDIA_ROOT = '/tmp/'
@@ -191,16 +200,6 @@ EMAIL_SUBJECT_PREFIX = "[worth2] "
 EMAIL_HOST = 'localhost'
 SERVER_EMAIL = "worth2@ccnmtl.columbia.edu"
 DEFAULT_FROM_EMAIL = SERVER_EMAIL
-
-STATICFILES_DIRS = ('media/',)
-
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',
-)
-COMPRESS_URL = "/media/"
-COMPRESS_ROOT = STATIC_ROOT
 
 # CAS settings
 AUTHENTICATION_BACKENDS = ('djangowind.auth.SAMLAuthBackend',
