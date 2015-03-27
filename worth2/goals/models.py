@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.db import models
 from ordered_model.models import OrderedModel
-from pagetree.reports import ReportableInterface, ReportColumnInterface
+from pagetree.reports import ReportColumnInterface
 
 from pagetree.generic.models import BasePageBlock
 
@@ -124,25 +124,10 @@ class GoalSettingBlock(BasePageBlock):
         if form.is_valid():
             form.save()
 
-    def report_metadata(self):
-        rows = []
-        options = GoalOption.objects.filter(goal_setting_block=self)
-        for idx in xrange(0, self.goal_amount):
-            for option in options:
-                col = GoalSettingColumn(self, idx, option)
-                rows.append(col)
-        return rows
-
-    def report_values(self):
-        return []
-
 
 class GoalSettingBlockForm(forms.ModelForm):
     class Meta:
         model = GoalSettingBlock
-
-
-ReportableInterface.register(GoalSettingBlock)
 
 
 class GoalOption(OrderedModel):
