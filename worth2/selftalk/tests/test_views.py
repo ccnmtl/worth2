@@ -60,6 +60,17 @@ class ExternalStatementBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.assertTrue(form.is_valid())
         self.assertEqual(responses.count(), 3)
 
+        self.assertTrue(r.context['needs_submit'])
+        self.assertTrue(r.context['is_submitted'])
+        self.assertTrue(r.context['allow_redo'])
+        self.assertContains(r, 'I want to change my answers.')
+
+        r = self.client.get(self.url)
+        self.assertTrue(r.context['needs_submit'])
+        self.assertTrue(r.context['is_submitted'])
+        self.assertTrue(r.context['allow_redo'])
+        self.assertContains(r, 'I want to change my answers.')
+
     def test_post_2(self):
         post_data = self.valid_post_data.copy()
         post_data['%s-%d' % (self.p, self.statement3.pk)] = False
@@ -173,10 +184,19 @@ class ExternalRefutationBlockTest(LoggedInParticipantTestMixin, TestCase):
                 refutation=self.refutation7
             ).count(), 1)
 
+        self.assertTrue(r.context['needs_submit'])
+        self.assertTrue(r.context['is_submitted'])
+        self.assertTrue(r.context['allow_redo'])
+        self.assertContains(r, 'I want to change my answers.')
+
         r = self.client.get(self.url)
         self.assertContains(r, self.refutation1.text)
         self.assertContains(r, self.refutation4.text)
         self.assertContains(r, self.refutation7.text)
+        self.assertTrue(r.context['needs_submit'])
+        self.assertTrue(r.context['is_submitted'])
+        self.assertTrue(r.context['allow_redo'])
+        self.assertContains(r, 'I want to change my answers.')
 
     def test_post_with_other_option(self):
         refutation_other = RefutationFactory(statement=self.statement1,
@@ -258,6 +278,17 @@ class InternalStatementBlockTest(LoggedInParticipantTestMixin, TestCase):
 
         self.assertTrue(form.is_valid())
         self.assertEqual(responses.count(), 3)
+
+        self.assertTrue(r.context['needs_submit'])
+        self.assertTrue(r.context['is_submitted'])
+        self.assertTrue(r.context['allow_redo'])
+        self.assertContains(r, 'I want to change my answers.')
+
+        r = self.client.get(self.url)
+        self.assertTrue(r.context['needs_submit'])
+        self.assertTrue(r.context['is_submitted'])
+        self.assertTrue(r.context['allow_redo'])
+        self.assertContains(r, 'I want to change my answers.')
 
     def test_post_2(self):
         post_data = self.valid_post_data.copy()
@@ -372,10 +403,19 @@ class InternalRefutationBlockTest(LoggedInParticipantTestMixin, TestCase):
                 refutation=self.refutation7
             ).count(), 1)
 
+        self.assertTrue(r.context['needs_submit'])
+        self.assertTrue(r.context['is_submitted'])
+        self.assertTrue(r.context['allow_redo'])
+        self.assertContains(r, 'I want to change my answers.')
+
         r = self.client.get(self.url)
         self.assertContains(r, self.refutation1.text)
         self.assertContains(r, self.refutation4.text)
         self.assertContains(r, self.refutation7.text)
+        self.assertTrue(r.context['needs_submit'])
+        self.assertTrue(r.context['is_submitted'])
+        self.assertTrue(r.context['allow_redo'])
+        self.assertContains(r, 'I want to change my answers.')
 
     def test_post_with_other_option(self):
         refutation_other = RefutationFactory(statement=self.statement1,

@@ -72,6 +72,10 @@ class StatementBlock(BasePageBlock):
         'block, e.g. "Jane"')
 
     @property
+    def allow_redo(self):
+        return True
+
+    @property
     def css_class(self):
         s = 'internal' if self.is_internal else 'external'
         return 'selftalk-statement-%s' % s
@@ -170,6 +174,10 @@ class RefutationBlock(BasePageBlock):
     css_template_file = 'selftalk/selftalk_css.html'
 
     statement_block = models.ForeignKey(StatementBlock)
+
+    @property
+    def allow_redo(self):
+        return True
 
     @property
     def css_class(self):
