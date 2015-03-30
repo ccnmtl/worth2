@@ -250,3 +250,59 @@ class SignInParticipantUnAuthedTest(TestCase):
     def test_get(self):
         response = self.client.get(reverse('sign-in-participant'))
         self.assertEqual(response.status_code, 302)
+
+
+class ParticipantJournalsTest(LoggedInFacilitatorTestMixin, TestCase):
+    def setUp(self):
+        super(ParticipantJournalsTest, self).setUp()
+        self.participant = ParticipantFactory()
+
+    def test_get_session_1(self):
+        session_num = 1
+        response = self.client.get(
+            reverse('participant-journal',
+                    args=(self.participant.pk, session_num)))
+        self.assertContains(
+            response,
+            'Participant %s\'s Journal' % self.participant.study_id)
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_session_2(self):
+        session_num = 2
+        response = self.client.get(
+            reverse('participant-journal',
+                    args=(self.participant.pk, session_num)))
+        self.assertContains(
+            response,
+            'Participant %s\'s Journal' % self.participant.study_id)
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_session_3(self):
+        session_num = 3
+        response = self.client.get(
+            reverse('participant-journal',
+                    args=(self.participant.pk, session_num)))
+        self.assertContains(
+            response,
+            'Participant %s\'s Journal' % self.participant.study_id)
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_session_4(self):
+        session_num = 4
+        response = self.client.get(
+            reverse('participant-journal',
+                    args=(self.participant.pk, session_num)))
+        self.assertContains(
+            response,
+            'Participant %s\'s Journal' % self.participant.study_id)
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_session_5(self):
+        session_num = 5
+        response = self.client.get(
+            reverse('participant-journal',
+                    args=(self.participant.pk, session_num)))
+        self.assertContains(
+            response,
+            'Participant %s\'s Journal' % self.participant.study_id)
+        self.assertEqual(response.status_code, 200)
