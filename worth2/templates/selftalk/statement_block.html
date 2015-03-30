@@ -2,19 +2,10 @@
 
 <div class="selftalk-statement {{ block.css_class }}"
      id="selftalk-statement-block">
-    <h1>
-        {% if block.is_internal %}
-        My Self Talk
-        {% else %}
-        {{ block.subject_name }}'s Self Talk
-        {% endif %}
-    </h1>
-
     <p>
         {% if block.is_internal %}
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-        sed do eiusmod tempor incididunt ut labore et dolore magna
-        aliqua.
+        Imagine some negative things that you might say to yourself
+        in the coming week.
         {% else %}
         Do you remember what {{ block.subject_name }} said?
         {% endif %}

@@ -64,11 +64,12 @@ django-pagetree==1.1.0
 django-pageblocks==1.0.0
 django-quizblock==1.0.8
 django-markwhat==2014.9.20
-gunicorn==19.1.1
+gunicorn==19.3.0
 django-infranil==0.1.0
 django-flatblocks==0.9
 django-ordered-model==0.4.0
 djangorestframework==3.0.5
+django-cacheds3storage==0.1.1
 
 inflection==0.2.1
 rest_framework_ember==1.2.0

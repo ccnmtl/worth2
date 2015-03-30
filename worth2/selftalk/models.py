@@ -46,9 +46,12 @@ class StatementBlock(BasePageBlock):
     user themselves. "External" indicates that this is a scenario based
     around a video, rather than a self-reflective excercise.
 
-    If this block is "external", it gives the participant a list of
-    statements to check off what they remember hearing in the video they
-    just watched.
+    This block gives the participant a list of statements to check off
+    either:
+      * What they remember hearing in the video they just watched. (If
+        is_internal is False).
+      * Or, what negative statements they might say to themselves (If
+        is_internal is True).
 
     The statements the participant chooses will populate the fields in
     the next page, which will be a RefutationBlock.
@@ -67,6 +70,10 @@ class StatementBlock(BasePageBlock):
         blank=True, null=True,
         help_text='(optional) The name of the video subject for this ' +
         'block, e.g. "Jane"')
+
+    @property
+    def allow_redo(self):
+        return True
 
     @property
     def css_class(self):
@@ -167,6 +174,10 @@ class RefutationBlock(BasePageBlock):
     css_template_file = 'selftalk/selftalk_css.html'
 
     statement_block = models.ForeignKey(StatementBlock)
+
+    @property
+    def allow_redo(self):
+        return True
 
     @property
     def css_class(self):

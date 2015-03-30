@@ -203,9 +203,15 @@ class ParticipantSessionPageView(
         return ctx
 
     def get_context_data(self, **kwargs):
+        allow_redo = False
+        needs_submit = self.section.needs_submit()
+        if needs_submit:
+            allow_redo = self.section.allow_redo()
         context = dict(
             section=self.section,
             module=self.module,
+            needs_submit=needs_submit,
+            allow_redo=allow_redo,
             is_submitted=self.section.submitted(self.request.user),
             modules=self.root.get_children(),
             root=self.section.hierarchy.get_root(),
@@ -214,22 +220,15 @@ class ParticipantSessionPageView(
         return context
 
     def get(self, request, *args, **kwargs):
-        allow_redo = False
-        needs_submit = self.section.needs_submit()
-        if needs_submit:
-            allow_redo = self.section.allow_redo()
+        context = self.get_context_data(**kwargs)
         self.upv.visit()
         instructor_link = has_responses(self.section)
 
         # This flag is always False on non-protective behaviors quizzes.
         is_submission_empty = remove_empty_submission(request.user,
                                                       self.section)
-
-        context = self.get_context_data(**kwargs)
         context.update({
-            'allow_redo': allow_redo,
             'is_submission_empty': is_submission_empty,
-            'needs_submit': needs_submit,
             'instructor_link': instructor_link,
         })
         return render(request, self.template_name, context)

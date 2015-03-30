@@ -14,18 +14,19 @@ define([
         position: 0,
 
         addLighting: function(scene) {
-            var directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-            directionalLight.position.set(0, 1, 0.5);
+            var directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(100, 100, 50);
             scene.add(directionalLight);
 
             var lights = [];
-            lights[0] = new THREE.PointLight(0xffffff, 1, 2.3);
-            lights[1] = new THREE.PointLight(0xffffff, 1, 2.3);
-            lights[2] = new THREE.PointLight(0xffffff, 1, 2.3);
+            var strength = 2.2;
+            lights[0] = new THREE.PointLight(0xffffff, 1, strength);
+            lights[1] = new THREE.PointLight(0xffffff, 1, strength);
+            lights[2] = new THREE.PointLight(0xffffff, 1, strength);
 
             lights[0].position.set(6, 1, 0);
-            lights[1].position.set(6, 1, 1);
-            lights[2].position.set(6, 1, -1);
+            lights[1].position.set(6, 0.5, 0.7);
+            lights[2].position.set(6, 1, -0.1);
 
             scene.add(lights[0]);
             scene.add(lights[1]);
@@ -34,7 +35,7 @@ define([
 
         addObjects: function(scene, renderer, camera) {
             // Draw ground
-            var groundGeometry = new THREE.PlaneBufferGeometry(44, 100, 0);
+            var groundGeometry = new THREE.PlaneBufferGeometry(44, 130, 0);
             var ground = new THREE.Mesh(
                 groundGeometry,
                 new THREE.MeshLambertMaterial({
@@ -63,8 +64,9 @@ define([
 
             // Draw avatar
             var me = this;
+            THREE.ImageUtils.crossOrigin = '';
             var map = THREE.ImageUtils.loadTexture(
-                STATIC_URL + 'img/worth-selftalk-avatar.png', {}, function() {
+                STATIC_URL + 'img/selftalk-avatar3.png', {}, function() {
                     renderer.render(scene, camera);
                 });
 
@@ -105,7 +107,10 @@ define([
             this.addLighting(scene);
 
             camera.position.set(6, 0.6, 1);
-            camera.lookAt(new THREE.Vector3(3, -0.5, 0));
+            camera.lookAt(new THREE.Vector3(3, -0.5, 1));
+
+            var axis = new THREE.Vector3(0, 1, 0.33);
+            camera.rotateOnAxis(axis, -0.3);
 
             requestAnimationFrame(function render() {
                 requestAnimationFrame(render);
