@@ -70,6 +70,110 @@ class ManageParticipants(ListView):
         return ctx
 
 
+class ParticipantJournalView(TemplateView):
+    model = Participant
+    template_name = 'main/participant_journal.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ParticipantJournalView, self).get_context_data(
+            **kwargs)
+
+        # Participant's pk is in the URL
+        context['participant'] = Participant.objects.get(pk=kwargs['pk'])
+        # user = context['participant'].user
+
+        context['info'] = []
+
+        session_num = int(kwargs['session_num'])
+        if session_num == 1:
+            # session = Section.objects.get(slug='session-1')
+            context['info'] = [
+                'General Info About WORTH (static)',
+                'General info about HIV Testing (static)',
+
+                'Goals set for Services (participant answers)',
+                'I will (goal field)',
+                'My plan (details field)',
+
+                'Services info selected to view (participant answers)',
+                'My issue (issue selected)',
+
+                'List of organizations with name/address/contact ' +
+                'info for above issue',
+            ]
+        elif session_num == 2:
+            context['info'] = [
+                'Introduction to Session 2 Road map (static)',
+                'Here is your personal road map for this week. It lists ' +
+                'information you learned this week, as well as your ' +
+                'answers to some of the questions from the session, the ' +
+                'goals you set, and service organizations you can reach ' +
+                'out to for help meeting your goals.',
+
+                'I am WORTH it!',
+                'It is important to take a moment out of our busy lives to ' +
+                'remind ourselves why we are WORTH it. Here are some words ' +
+                'that describe why you are worth it:',
+                'I am worth it selected words (participant answers)',
+                'Info from montage 2(static)',
+                'Karen/Blondell to write',
+                'Reflect on the characters answers (participant answers)',
+                'static intro paragraph: "This week you learned about five ' +
+                'women and listened to them talk about issues in their ' +
+                'lives. Here are some of the issues they raised and how ' +
+                'important you think they are in your life:"',
+                'question text',
+                'participant answer',
+                'example: "Sometimes it is just too hard to cope" ' +
+                'This is [a big issue] for me.',
+                'Myth/fact info (static)'
+                'Protective behaviors (participant answers)',
+                'static intro paragraph "This week you thought about ' +
+                'activities you do and how risky they are. Here is the ' +
+                'list you wrote of things you do ranked by risk level."',
+                'list of behaviors participant does ranked/coded by risk ' +
+                'level',
+                'Static intro paragraph to rating: "Here is how you rated ' +
+                'your own risk level:"',
+                'participant\'s self risk rating',
+                'Goals set in session 2(participant answers)',
+                'Static intro paragraph: "In this session you set goals to ' +
+                'reduce your risk of contracting HIV or other sexually ' +
+                'transmitted infections and goals to access a service."',
+                'My risk reduction goals',
+                'I will (goal field)',
+                'My plan (details field)',
+                'My services goals',
+                'I will (goal field)',
+                'My plan (details field)',
+                'Services info selected to view (participant answers)',
+                'My issue (issue selected)',
+                'List of organizations with name/address/contact info ' +
+                'for above issue',
+                'example: "This week you looked for information on ' +
+                '[selected issue]. Here is a list of organizations you ' +
+                'can contact to help you with this issue."',
+                'Wrap up(static)',
+                'Congratulations on completing session two of E-WORTH! ' +
+                'Remember that your homework for the week is to work on ' +
+                'the goals you set today.',
+                'I am WORTH IT! and I will stay healthy',
+                'I am WORTH IT! and I will protect myself',
+                'I am WORTH IT! and I will find support for my health',
+            ]
+        elif session_num == 3:
+            # TODO
+            pass
+        elif session_num == 4:
+            # TODO
+            pass
+        elif session_num == 5:
+            # TODO
+            pass
+
+        return context
+
+
 class SignInParticipant(FormView):
     template_name = 'main/facilitator_sign_in_participant.html'
     form_class = SignInParticipantForm
