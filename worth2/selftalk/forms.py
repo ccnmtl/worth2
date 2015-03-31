@@ -1,19 +1,23 @@
 from django import forms
+from django.conf import settings
 
 
 class InternalStatementForm(forms.Form):
     class Media:
         extend = False
         css = {
-            'all': ('/media/css/selftalk-internalstatementform.css',)
+            'all': (settings.STATIC_URL +
+                    '/css/selftalk-internalstatementform.css',)
         }
-        js = ('/media/js/src/forms/selftalk-internalstatementform.js',)
+        js = (settings.STATIC_URL +
+              '/js/src/forms/selftalk-internalstatementform.js',)
 
 
 class RefutationForm(forms.Form):
     class Media:
         extend = False
         css = {
-            'all': ('/media/css/selftalk-refutationform.css',)
+            'all': (settings.STATIC_URL + '/css/selftalk-refutationform.css',)
         }
-        js = ('/media/js/src/forms/selftalk-refutationform.js',)
+        js = (settings.STATIC_URL +
+              '/js/src/forms/selftalk-refutationform.js',)
