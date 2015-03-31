@@ -14,11 +14,17 @@ jshint: node_modules/jshint/bin/jshint
 jscs: node_modules/jscs/bin/jscs
 	./node_modules/jscs/bin/jscs media/js/src/
 
+js: node_modules/.bin/r.js
+	./node_modules/.bin/r.js -o build.js
+
 node_modules/jshint/bin/jshint:
 	npm install jshint --prefix .
 
 node_modules/jscs/bin/jscs:
 	npm install jscs --prefix .
+
+node_modules/.bin/r.js:
+	npm install requirejs --prefix .
 
 test: ./ve/bin/python
 	npm install
