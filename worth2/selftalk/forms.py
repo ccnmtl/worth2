@@ -7,17 +7,17 @@ class InternalStatementForm(forms.Form):
         extend = False
         css = {
             'all': (settings.STATIC_URL +
-                    '/css/selftalk-internalstatementform.css',)
+                    'css/selftalk-internalstatementform.css',)
         }
         js = (settings.STATIC_URL +
-              '/js/src/forms/selftalk-internalstatementform.js',)
+              'js/src/forms/selftalk-internalstatementform.js',)
 
 
 class RefutationForm(forms.Form):
     class Media:
         extend = False
         css = {
-            'all': (settings.STATIC_URL + '/css/selftalk-refutationform.css',)
+            'all': (settings.STATIC_URL + 'css/selftalk-refutationform.css',)
         }
         js = (settings.STATIC_URL +
-              '/js/src/forms/selftalk-refutationform.js',)
+              'js/src/forms/selftalk-refutationform.js',)
