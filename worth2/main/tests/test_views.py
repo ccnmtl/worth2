@@ -256,6 +256,15 @@ class ParticipantJournalsTest(LoggedInFacilitatorTestMixin, TestCase):
     def setUp(self):
         super(ParticipantJournalsTest, self).setUp()
         self.participant = ParticipantFactory()
+        h = get_hierarchy('main', '/pages/')
+        root = h.get_root()
+        for i in range(1, 6):
+            root.add_child_section_from_dict({
+                'label': 'Session %d' % i,
+                'slug': 'session-%d' % i,
+                'pageblocks': [],
+                'children': [],
+            })
 
     def test_get_session_1(self):
         session_num = 1

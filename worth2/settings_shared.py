@@ -123,6 +123,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'sorl.thumbnail',
     'django.contrib.admin',
+    'django.contrib.webdesign',
     'tagging',
     'ordered_model',
     'typogrify',
