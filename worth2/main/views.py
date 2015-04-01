@@ -7,7 +7,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 
 from pagetree.generic.views import PageView
 from pagetree.models import PageBlock
@@ -79,6 +79,37 @@ class ParticipantJournalView(TemplateView):
     model = Participant
     template_name = 'main/participant_journal.html'
 
+    @staticmethod
+    def _render_goals(goalsettingblock, user):
+        """Render a goalsettingblock's responses.
+
+        :param goalsettingblock: The Goal Setting block to render.
+
+        :rtype: string
+        """
+        out = [u'']
+        responses = []
+        if goalsettingblock:
+            responses = GoalSettingResponse.objects.filter(
+                goal_setting_block=goalsettingblock.block(),
+                user=user)
+
+        for response in responses:
+            s = [u'']
+            # I will (goal field)
+            # My plan (details field)
+            s.append(u'<div>Goal option: ' +
+                     u'<strong>%s</strong></div>' % response.option)
+            if response.other_text:
+                s.append(u'<div>Other: ' +
+                         u'<strong>%s</strong></div>' % response.other_text)
+            s.append(
+                u'<div>My plan: <strong>%s</strong></div>' % response.text)
+
+            out.append(u''.join(s))
+
+        return u''.join(out)
+
     def _render_session_1(self, user):
         """Render info for session 1 summary.
 
@@ -86,41 +117,32 @@ class ParticipantJournalView(TemplateView):
 
         :returns: An array.
         """
-
+        # 'info' is the array of strings that's returned at the end of
+        # this function. Make sure the strings are unicode, because
+        # there could be unicode data in participant's responses, and
+        # adding unicode data to a non-unicode string causes an error.
         info = [
-            u'<h3>General Info About WORTH (static)</h3>' +
+            u'<h3>General Info About WORTH</h3>' +
             u'<p>' + lorem_ipsum.paragraph() + u'</p>',
 
-            u'<h3>General info about HIV Testing (static)</h3>' +
+            u'<h3>General info about HIV Testing</h3>' +
             u'<p>' + lorem_ipsum.paragraph() + u'</p>',
         ]
 
+        # Find the first 'services' type goal setter in Session 1
         goalsettingblock = get_first_block_in_session(
-            'goal setting block', 1)
-        if goalsettingblock:
-            r = GoalSettingResponse.objects.filter(
-                goal_setting_block=goalsettingblock.block(),
-                user=user)
-        else:
-            r = []
+            'goal setting block', 1,
+            lambda (b): b.block().goal_type == 'services')
 
-        info.append(u'<h3>Goals set for "services"</h3>')
-        for response in r:
-            # Goals set for Services (participant answers)
-
-            s = u''
-            # I will (goal field)
-            # My plan (details field)
-            s += u'<div>Goal option: ' + \
-                 u'<strong>%s</strong></div>' % response.option
-            if response.other_text:
-                s += u'<div><strong>%s</strong></div>' % response.other_text
-            s += u'<div>My plan: <strong>%s</strong></div>' % response.text
-
-            info.append(s)
+        info.append(u'<h3>Goals set for Services</h3>')
+        info.append(self._render_goals(goalsettingblock, user))
 
         info += [
-            u'Services info selected to view (participant answers)',
+            u'<h3>Services info selected to view (participant answers)</h3>' +
+            u'<strong>TODO: implement this once the services activity is ' +
+            u'in place: ' +
+            u'https://worth2.ccnmtl.columbia.edu/' +
+            u'pages/edit/session-1/services/',
             u'My issue (issue selected)',
 
             u'List of organizations with name/address/contact ' +
@@ -131,63 +153,92 @@ class ParticipantJournalView(TemplateView):
 
     def _render_session_2(self, user):
         info = [
-            'Introduction to Session 2 Road map (static)',
-            'Here is your personal road map for this week. It lists ' +
-            'information you learned this week, as well as your ' +
-            'answers to some of the questions from the session, the ' +
-            'goals you set, and service organizations you can reach ' +
-            'out to for help meeting your goals.',
+            u'<h3>Introduction to Session 2 Road Map</h3>' +
+            u'<p>Here is your personal road map for this week. It lists ' +
+            u'information you learned this week, as well as your ' +
+            u'answers to some of the questions from the session, the ' +
+            u'goals you set, and service organizations you can reach ' +
+            u'out to for help meeting your goals.</p>',
 
-            'I am WORTH it!',
-            'It is important to take a moment out of our busy lives to ' +
-            'remind ourselves why we are WORTH it. Here are some words ' +
-            'that describe why you are worth it:',
-            'I am worth it selected words (participant answers)',
-            'Info from montage 2(static)',
-            'Karen/Blondell to write',
-            'Reflect on the characters answers (participant answers)',
-            'static intro paragraph: "This week you learned about five ' +
-            'women and listened to them talk about issues in their ' +
-            'lives. Here are some of the issues they raised and how ' +
-            'important you think they are in your life:"',
-            'question text',
-            'participant answer',
-            'example: "Sometimes it is just too hard to cope" ' +
-            'This is [a big issue] for me.',
-            'Myth/fact info (static)'
-            'Protective behaviors (participant answers)',
-            'static intro paragraph "This week you thought about ' +
-            'activities you do and how risky they are. Here is the ' +
-            'list you wrote of things you do ranked by risk level."',
-            'list of behaviors participant does ranked/coded by risk ' +
-            'level',
-            'Static intro paragraph to rating: "Here is how you rated ' +
-            'your own risk level:"',
-            'participant\'s self risk rating',
-            'Goals set in session 2(participant answers)',
-            'Static intro paragraph: "In this session you set goals to ' +
-            'reduce your risk of contracting HIV or other sexually ' +
-            'transmitted infections and goals to access a service."',
-            'My risk reduction goals',
-            'I will (goal field)',
-            'My plan (details field)',
-            'My services goals',
-            'I will (goal field)',
-            'My plan (details field)',
-            'Services info selected to view (participant answers)',
-            'My issue (issue selected)',
-            'List of organizations with name/address/contact info ' +
-            'for above issue',
-            'example: "This week you looked for information on ' +
-            '[selected issue]. Here is a list of organizations you ' +
-            'can contact to help you with this issue."',
-            'Wrap up(static)',
-            'Congratulations on completing session two of E-WORTH! ' +
-            'Remember that your homework for the week is to work on ' +
-            'the goals you set today.',
-            'I am WORTH IT! and I will stay healthy',
-            'I am WORTH IT! and I will protect myself',
-            'I am WORTH IT! and I will find support for my health',
+            u'<h3>I am WORTH it!</h3>' +
+            u'<p>It is important to take a moment out of our busy lives to ' +
+            u'remind ourselves why we are WORTH it. Here are some words ' +
+            u'that describe why you are worth it:</p>' +
+
+            u'<p>I am worth it selected words (participant answers) ' +
+            u'<strong>TODO: Implement this when activity here is filled in: ' +
+            u'https://worth2.ccnmtl.columbia.edu/' +
+            u'pages/edit/session-2/i-am-worth-it/' +
+            u'</strong></p>',
+
+            u'<h3>Info from montage 2</h3>' +
+            u'<em>Karen/Blondell to write</em>',
+
+            # TODO
+            u'<h3>Reflect on the characters answers ' +
+            u'(participant answers)</h3>' +
+            u'<p>This week you learned about five ' +
+            u'women and listened to them talk about issues in their ' +
+            u'lives. Here are some of the issues they raised and how ' +
+            u'important you think they are in your life:</p>' +
+            u'<p>question text</p>' +
+            u'<p>participant answer</p>' +
+            u'<p>example: "Sometimes it is just too hard to cope" ' +
+            u'This is [a big issue] for me.</p>',
+
+            u'<h3>Myth/Fact Info</h3>' +
+            u'<p>' + lorem_ipsum.paragraph() + u'</p>',
+
+            # TODO
+            u'<h3>Protective behaviors (participant answers)</h3>' +
+            u'<p>This week you thought about ' +
+            u'activities you do and how risky they are. Here is the ' +
+            u'list you wrote of things you do ranked by risk level."',
+            u'list of behaviors participant does ranked/coded by risk ' +
+            u'level</p>' +
+            u'<p>Here is how you rated your own risk level:</p>' +
+            u'<p>participant\'s self risk rating</p>',
+
+            # TODO
+            u'<h3>Goals set in session 2 (participant answers)</h3>' +
+            u'<p>In this session you set goals to ' +
+            u'reduce your risk of contracting HIV or other sexually ' +
+            u'transmitted infections and goals to access a service.</p>',
+        ]
+
+        # Find the first 'risk reduction' goal setter in Session 2
+        risk_goalsettingblock = get_first_block_in_session(
+            'goal setting block', 2,
+            lambda (b): b.block().goal_type == 'risk reduction')
+
+        info.append('<h3>My risk reduction goals</h3>')
+        info.append(self._render_goals(risk_goalsettingblock, user))
+
+        # Find the first 'services' goal setter in Session 2
+        services_goalsettingblock = get_first_block_in_session(
+            'goal setting block', 2,
+            lambda (b): b.block().goal_type == 'services')
+
+        info.append('<h3>My services goals</h3>')
+        info.append(self._render_goals(services_goalsettingblock, user))
+
+        info += [
+            # TODO
+            u'<h3>Services info selected to view (participant answers)</h3>' +
+            u'<p>My issue (issue selected)</p>' +
+            u'<p>List of organizations with name/address/contact info ' +
+            u'for above issue.</p>' +
+            u'<p>example: "This week you looked for information on ' +
+            u'[selected issue]. Here is a list of organizations you ' +
+            u'can contact to help you with this issue."</p>',
+
+            u'<h3>Wrap Up</h3>' +
+            u'<p>Congratulations on completing session two of E-WORTH! ' +
+            u'Remember that your homework for the week is to work on ' +
+            u'the goals you set today.</p>' +
+            u'<p>I am WORTH IT! And I will stay healthy.</p>' +
+            u'<p>I am WORTH IT! And I will protect myself.</p>' +
+            u'<p>I am WORTH IT! And I will find support for my health</p>',
         ]
         return info
 
@@ -205,7 +256,8 @@ class ParticipantJournalView(TemplateView):
             **kwargs)
 
         # Participant's pk is in the URL
-        context['participant'] = Participant.objects.get(pk=kwargs['pk'])
+        context['participant'] = get_object_or_404(Participant,
+                                                   pk=kwargs['pk'])
         user = context['participant'].user
 
         context['journal_info'] = []
