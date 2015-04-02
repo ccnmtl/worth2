@@ -48,7 +48,14 @@ class SignInParticipantForm(forms.Form):
         initial='last_completed_activity',
     )
 
-    already_completed_session = forms.ChoiceField(required=False)
+    already_completed_session = forms.ChoiceField(
+        choices=(
+            ('1', 'Session 1'),
+            ('2', 'Session 2'),
+            ('3', 'Session 3'),
+            ('4', 'Session 4'),
+            ('5', 'Session 5')),
+        required=False)
 
     session_type = forms.ChoiceField(
         label='Session Type',
