@@ -10,7 +10,7 @@ from django.views.generic.list import ListView
 from django.shortcuts import get_object_or_404, redirect, render
 
 from pagetree.generic.views import PageView
-from pagetree.models import PageBlock
+from pagetree.models import PageBlock, Section
 from quizblock.models import Quiz
 
 from worth2.goals.mixins import GoalCheckInViewMixin, GoalSettingViewMixin
@@ -311,19 +311,20 @@ class SignInParticipant(FormView):
 
             dest = form.cleaned_data.get('participant_destination')
 
-            if dest == 'last_completed_activity':
-                # TODO: redirect to the last completed activity
-                pass
-            elif dest == 'next_new_session':
-                # TODO: redirect to the next new session
-                pass
-            elif dest == 'already_completed_session':
-                # TODO redirect to the session that the user chose
-                # session = request.POST['already_completed_session']
-                pass
+            # Go to the first session in pagetree by default.
+            section = get_object_or_404(Section, slug='session-1')
 
-            # Go to the first session in pagetree
-            return redirect('/pages/session-1/')
+            if dest == 'last_completed_activity':
+                section = participant.last_location()
+            elif dest == 'next_new_session':
+                section = participant.last_location().get_next()
+            elif dest == 'already_completed_session':
+                session_num = form.cleaned_data.get(
+                    'already_completed_session')
+                slug = 'session-%s' % session_num
+                section = get_object_or_404(Section, slug=slug)
+
+            return redirect(section.get_absolute_url())
 
         return http.HttpResponse('Unauthorized', status=401)
 

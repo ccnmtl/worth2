@@ -45,6 +45,10 @@ class BaseUserProfile(models.Model):
             return self.last_location().get_absolute_url()
 
     def last_location(self):
+        """Returns the last location this user accessed.
+
+        :rtype: Section
+        """
         hierarchy = Hierarchy.get_hierarchy('main')
         upv = UserPageVisit.objects.filter(
             user=self.user).order_by("-last_visit")
