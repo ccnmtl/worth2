@@ -5,7 +5,7 @@ from worth2.main.utils import get_first_block_in_session
 
 
 class UtilsTest(TestCase):
-    def test_get_block_in_session(self):
+    def test_get_first_block_in_session(self):
         h = get_hierarchy('main', '/pages/')
         root = h.get_root()
         root.add_child_section_from_dict({
@@ -28,5 +28,21 @@ class UtilsTest(TestCase):
                 }]
             }],
         })
+
+        block = get_first_block_in_session('goal setting block', 1)
+        self.assertEqual(block, None)
+
         block = get_first_block_in_session('goal setting block', 2)
         self.assertEqual(block.section.slug, 'goal-setting')
+
+        block = get_first_block_in_session(
+            'goal setting block', 2,
+            lambda (b): b.block().goal_type == 'services'
+        )
+        self.assertEqual(block.section.slug, 'goal-setting')
+
+        block = get_first_block_in_session(
+            'goal setting block', 2,
+            lambda (b): b.block().goal_type == 'risk reduction'
+        )
+        self.assertEqual(block, None)

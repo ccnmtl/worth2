@@ -3,6 +3,7 @@ from django.test import TestCase
 
 from pagetree.helpers import get_hierarchy
 
+from worth2.goals.models import GoalOption, GoalSettingResponse
 from worth2.main.tests.factories import (
     AvatarFactory, LocationFactory, ParticipantFactory
 )
@@ -11,6 +12,8 @@ from worth2.main.tests.mixins import (
     LoggedInSuperuserTestMixin
 )
 from worth2.main.models import Participant
+from worth2.main.utils import get_first_block_in_session
+from worth2.main.views import ParticipantJournalView
 
 
 class AvatarSelectorBlockTest(LoggedInParticipantTestMixin, TestCase):
@@ -262,56 +265,79 @@ class ParticipantJournalsTest(LoggedInFacilitatorTestMixin, TestCase):
             root.add_child_section_from_dict({
                 'label': 'Session %d' % i,
                 'slug': 'session-%d' % i,
-                'pageblocks': [],
+                'pageblocks': [{
+                    'block_type': 'Goal Setting Block',
+                }],
                 'children': [],
             })
+
+    def test_render_goals(self):
+        goalsettingblock = get_first_block_in_session(
+            'goal setting block', 1)
+
+        option = GoalOption.objects.create(text='test option')
+        response = GoalSettingResponse.objects.create(
+            goal_setting_block=goalsettingblock.block(),
+            user=self.participant.user,
+            option=option,
+            other_text='test other',
+            text='test text')
+
+        s = ParticipantJournalView._render_goals(
+            goalsettingblock,
+            self.participant.user)
+
+        self.assertNotEqual(s, u'')
+        self.assertTrue(response.text in s)
+        self.assertTrue(response.other_text in s)
+        self.assertTrue(unicode(response.option) in s)
 
     def test_get_session_1(self):
         session_num = 1
         response = self.client.get(
             reverse('participant-journal',
                     args=(self.participant.pk, session_num)))
-        self.assertContains(
-            response,
-            'Participant %s\'s Journal' % self.participant.study_id)
+
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.participant.study_id)
+        self.assertContains(response, 'Journal for Session 1')
 
     def test_get_session_2(self):
         session_num = 2
         response = self.client.get(
             reverse('participant-journal',
                     args=(self.participant.pk, session_num)))
-        self.assertContains(
-            response,
-            'Participant %s\'s Journal' % self.participant.study_id)
+
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.participant.study_id)
+        self.assertContains(response, 'Journal for Session 2')
 
     def test_get_session_3(self):
         session_num = 3
         response = self.client.get(
             reverse('participant-journal',
                     args=(self.participant.pk, session_num)))
-        self.assertContains(
-            response,
-            'Participant %s\'s Journal' % self.participant.study_id)
+
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.participant.study_id)
+        self.assertContains(response, 'Journal for Session 3')
 
     def test_get_session_4(self):
         session_num = 4
         response = self.client.get(
             reverse('participant-journal',
                     args=(self.participant.pk, session_num)))
-        self.assertContains(
-            response,
-            'Participant %s\'s Journal' % self.participant.study_id)
+
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.participant.study_id)
+        self.assertContains(response, 'Journal for Session 4')
 
     def test_get_session_5(self):
         session_num = 5
         response = self.client.get(
             reverse('participant-journal',
                     args=(self.participant.pk, session_num)))
-        self.assertContains(
-            response,
-            'Participant %s\'s Journal' % self.participant.study_id)
+
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.participant.study_id)
+        self.assertContains(response, 'Journal for Session 5')
