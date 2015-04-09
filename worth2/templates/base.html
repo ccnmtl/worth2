@@ -137,6 +137,25 @@
 <script data-main="{{STATIC_URL}}main-built.js"
         src="{{STATIC_URL}}js/lib/require.js"></script>
 
+<script src="//cdn.ravenjs.com/1.1.18/jquery,native,require/raven.min.js"></script>
+<script>
+ Raven.config(
+     'https://2db6b5fd3e4a4d6bbc112abcd669ae45@sentry.ccnmtl.columbia.edu/40'
+ ).install();
+
+ {% if not user.is_anonymous %}
+ Raven.setUserContext({
+     email: '{{user.email}}',
+     id: '{{user.username}}'
+ });
+ {% else %}
+ Raven.setUserContext({
+     email: 'none',
+     id: 'anonymous'
+ });
+ {% endif %}
+</script>
+
 {% block js %}
 {% endblock %}
 {% if STAGING_ENV %}
