@@ -2,6 +2,7 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 
 from pagetree.helpers import get_hierarchy
+from pagetree.tests.factories import RootSectionFactory
 
 from worth2.goals.models import GoalOption, GoalSettingResponse
 from worth2.main.tests.factories import (
@@ -11,7 +12,7 @@ from worth2.main.tests.mixins import (
     LoggedInFacilitatorTestMixin, LoggedInParticipantTestMixin,
     LoggedInSuperuserTestMixin
 )
-from worth2.main.models import Participant
+from worth2.main.models import Encounter, Participant
 from worth2.main.utils import get_first_block_in_session
 from worth2.main.views import ParticipantJournalView
 
@@ -153,6 +154,12 @@ class ManageParticipantsUnAuthedTest(TestCase):
 
 
 class SignInParticipantAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
+    def setUp(self):
+        super(SignInParticipantAuthedTest, self).setUp()
+
+        # Worth expects this section to be there
+        self.section = RootSectionFactory(slug='session-1')
+
     def test_get(self):
         response = self.client.get(reverse('sign-in-participant'))
         self.assertContains(response, 'Sign In a Participant')
@@ -193,25 +200,36 @@ class SignInParticipantAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
     def test_valid_form_submit(self):
         location = LocationFactory()
         participant = ParticipantFactory()
-        self.client.post(
+
+        participant.user.set_password('test')
+        participant.user.save()
+        response = self.client.post(
             reverse('sign-in-participant'), {
-                'participant_id': participant.pk,
+                'participant': participant.pk,
                 'participant_location': location.pk,
                 'participant_destination': 'last_completed_activity',
                 'session_type': 'regular',
             }
         )
 
-        # FIXME: why does the authenticate() call in
-        # views.SignInParticipant return None in this test?
+        self.assertEqual(response.status_code, 302)
+
+        encounter = Encounter.objects.first()
+        self.assertEqual(encounter.facilitator, self.u)
+        self.assertEqual(encounter.participant, participant)
+        self.assertEqual(encounter.location, location)
+        self.assertEqual(encounter.session_type, 'regular')
+        self.assertEqual(encounter.section, self.section)
+
+        # TODO, assert that participant.user is the current user
+        # response = self.client.get(self.section.get_absolute_url())
         # self.assertEqual(response.status_code, 200)
-        # form = response.context['form']
-        # self.assertTrue(form.is_valid())
+        # self.assertEqual(response.context['user'], participant.user)
 
     def test_invalid_form_submit(self):
         response = self.client.post(
             reverse('sign-in-participant'), {
-                'participant_id': None,
+                'participant': None,
                 'participant_location': None,
                 'participant_destination': 'last_completed_activity',
                 'session_type': 'regular',
@@ -223,7 +241,7 @@ class SignInParticipantAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
         self.assertFalse(form.is_valid())
         self.assertContains(response, 'Select a valid choice.')
         self.assertFormError(
-            response, 'form', 'participant_id',
+            response, 'form', 'participant',
             'Select a valid choice. That choice is not one of the ' +
             'available choices.')
         self.assertFormError(
@@ -236,7 +254,7 @@ class SignInParticipantAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
         participant = ParticipantFactory()
         response = self.client.post(
             reverse('sign-in-participant'), {
-                'participant_id': participant.pk,
+                'participant': participant.pk,
                 'participant_location': location.pk,
                 'participant_destination': 'last_completed_activity',
             }

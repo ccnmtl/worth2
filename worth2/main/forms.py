@@ -24,7 +24,7 @@ class RawModelChoiceField(forms.ModelChoiceField):
 
 
 class SignInParticipantForm(forms.Form):
-    participant_id = RawModelChoiceField(
+    participant = RawModelChoiceField(
         label='Participant ID #',
         empty_label=None,
         queryset=Participant.objects.filter(
