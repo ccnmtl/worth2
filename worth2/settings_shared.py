@@ -86,6 +86,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'stagingcontext.staging_processor',
     'djangowind.context.context_processor',
     'django.core.context_processors.static',
+    'django.core.context_processors.media',
     'django.contrib.messages.context_processors.messages',
 )
 
@@ -122,6 +123,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'sorl.thumbnail',
     'django.contrib.admin',
+    'django.contrib.webdesign',
     'tagging',
     'ordered_model',
     'typogrify',

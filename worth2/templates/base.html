@@ -15,6 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
     
     <link href="//fonts.googleapis.com/css?family=Raleway:800,500"
           rel="stylesheet">
@@ -134,6 +135,25 @@
 {% block footer %}
 <footer class="footer hidden-phone"></footer>
 {% endblock %}
+
+<script src="//cdn.ravenjs.com/1.1.18/jquery,native,require/raven.min.js"></script>
+<script>
+ Raven.config(
+     'https://2db6b5fd3e4a4d6bbc112abcd669ae45@sentry.ccnmtl.columbia.edu/40'
+ ).install();
+
+ {% if not user.is_anonymous %}
+ Raven.setUserContext({
+     email: '{{user.email}}',
+     id: '{{user.username}}'
+ });
+ {% else %}
+ Raven.setUserContext({
+     email: 'none',
+     id: 'anonymous'
+ });
+ {% endif %}
+</script>
 
 <script data-main="{{STATIC_URL}}main-built.js"
         src="{{STATIC_URL}}js/lib/require.js"></script>

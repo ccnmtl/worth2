@@ -9,34 +9,22 @@ from worth2.selftalk.models import RefutationResponse, StatementResponse
 class SelfTalkStatementViewMixin(object):
     """Mixin for StatementBlock form functionality."""
 
-    def _make_statement_form_for_block(self, user, statementblock):
+    def _make_statement_form_for_block(self, statementblock):
         """Make the Form class based on the statements in the block.
 
         :returns: a class
         """
 
-        class DynamicExternalStatementForm(forms.Form):
+        class DynamicStatementForm(forms.Form):
             def __init__(self, *args, **kwargs):
-                super(DynamicExternalStatementForm, self).__init__(
+                super(DynamicStatementForm, self).__init__(
                     *args, **kwargs)
                 for statement in statementblock.block().statements.all():
                     self.fields['%d' % statement.pk] = forms.BooleanField(
                         label='"' + statement.text + '"',
                         required=False)
 
-        class DynamicInternalStatementForm(forms.Form):
-            def __init__(self, *args, **kwargs):
-                super(DynamicInternalStatementForm, self).__init__(
-                    *args, **kwargs)
-                for statement in statementblock.block().statements.all():
-                    self.fields['%d' % statement.pk] = forms.BooleanField(
-                        label='"' + statement.text + '"',
-                        required=False)
-
-        if statementblock.block().is_internal:
-            return DynamicInternalStatementForm
-        else:
-            return DynamicExternalStatementForm
+        return DynamicStatementForm
 
     def create_selftalk_statement_form(self, request, statementblock):
         initial_data = {}
@@ -49,7 +37,7 @@ class SelfTalkStatementViewMixin(object):
             initial_data[unicode(i)] = r.statement.text
 
         DynamicStatementForm = self._make_statement_form_for_block(
-            request.user, statementblock)
+            statementblock)
         prefix = 'pageblock-%s' % statementblock.pk
         self.statement_form = DynamicStatementForm(
             prefix=prefix, initial=initial_data)
@@ -63,7 +51,7 @@ class SelfTalkStatementViewMixin(object):
         ctx = self.get_context_data()
 
         DynamicStatementForm = self._make_statement_form_for_block(
-            request.user, statementblock)
+            statementblock)
         prefix = 'pageblock-%s' % statementblock.pk
         form = DynamicStatementForm(request.POST, prefix=prefix)
         if form.is_valid():
@@ -81,7 +69,7 @@ class SelfTalkRefutationViewMixin(object):
     """Mixin for RefutationBlock form functionality."""
 
     def _make_refutation_form_for_block(self, user, refutationblock):
-        """Make the Form class based on the statements in the block.
+        """Make the Form class based on the statement responses in the block.
 
         :returns: a class
         """
@@ -90,8 +78,13 @@ class SelfTalkRefutationViewMixin(object):
             def __init__(self, *args, **kwargs):
                 super(DynamicRefutationForm, self).__init__(
                     *args, **kwargs)
-                s = refutationblock.block().statement_block.statements.all()
-                for statement in s:
+
+                statement_block = refutationblock.block().statement_block
+                responses = statement_block.statementresponse_set.filter(
+                    user=user)
+
+                for response in responses:
+                    statement = response.statement
                     choices = list(statement.refutation_set.all())
                     choice_ids = [r.pk for r in choices]
 
@@ -99,7 +92,7 @@ class SelfTalkRefutationViewMixin(object):
                     choice_ids.insert(0, None)
 
                     choices.append('Other')
-                    choice_ids.append(len(choice_ids))
+                    choice_ids.append(0)
 
                     self.fields['refutation-%d' % statement.pk] = \
                         forms.ChoiceField(
@@ -126,15 +119,22 @@ class SelfTalkRefutationViewMixin(object):
         responses = RefutationResponse.objects.filter(
             user=request.user,
             refutation_block=refutationblock.block())
-        for i, r in enumerate(responses.all()):
-            initial_data['refutation-%d' % i] = r.refutation
-            initial_data['other-%d' % i] = r.other_text
+        for r in responses.all():
+            statement_pk = r.statement.pk
+            try:
+                initial_data['refutation-%d' % statement_pk] = r.refutation.pk
+            except:
+                # If r.refutation is None, this is an 'Other' answer, so give
+                # it pk=0.
+                initial_data['refutation-%d' % statement_pk] = 0
+            initial_data['other-%d' % statement_pk] = r.other_text
 
         DynamicRefutationForm = self._make_refutation_form_for_block(
             request.user, refutationblock)
         prefix = 'pageblock-%s' % refutationblock.pk
         self.refutation_form = DynamicRefutationForm(
-            prefix=prefix, initial=initial_data)
+            prefix=prefix,
+            initial=initial_data)
 
     def selftalk_refutation_post(self, request, refutationblock):
         """This is meant to be called from a django view's post() method.

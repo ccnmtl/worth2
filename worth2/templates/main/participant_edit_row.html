@@ -22,7 +22,9 @@
             <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
             Progress
         </button>
-        <button class="btn btn-primary">
+        <button class="btn btn-primary"
+                data-toggle="modal"
+                data-target="#view-participant-journal-modal-{{participant.pk}}">
             <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
             Journal
         </button>
@@ -140,6 +142,39 @@
                 </div>
                 {% endwith %}
                 <div class="clearfix"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                        class="btn btn-default"
+                        data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal participant-journal-modal"
+     id="view-participant-journal-modal-{{participant.pk}}"
+     data-id="{{participant.pk}}"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title"
+                    >Participant {{participant.study_id}}'s journal</h4>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+                {% for i in '12345' %}
+                <a href="{% url 'participant-journal' participant.pk forloop.counter %}"
+                   class="btn btn-default">Session {{ forloop.counter }}</a>
+                {% endfor %}
             </div>
             <div class="modal-footer">
                 <button type="button"

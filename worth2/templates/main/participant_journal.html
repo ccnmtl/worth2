@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Journal for Session {{ session_num }}</h1>
+
+<div>
+    Participant: <strong>{{ participant.study_id }}</strong>
+</div>
+
+{% for element in journal_info %}
+<div class="worth-journal-info-element">
+    {{ element|safe }}
+</div>
+{% endfor %}
+
+{% endblock %}

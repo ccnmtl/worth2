@@ -85,5 +85,6 @@ class RefutationResponseFactory(factory.DjangoModelFactory):
         model = RefutationResponse
 
     refutation = factory.SubFactory(RefutationFactory)
+    statement = factory.SubFactory(StatementFactory)
     refutation_block = factory.SubFactory(InternalRefutationBlockFactory)
     user = factory.SubFactory(UserFactory)
