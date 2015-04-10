@@ -23,6 +23,7 @@ class UserFactory(factory.DjangoModelFactory):
         model = User
 
     username = FuzzyText()
+    password = factory.PostGenerationMethodCall('set_password', 'test')
 
 
 class AvatarFactory(factory.django.DjangoModelFactory):

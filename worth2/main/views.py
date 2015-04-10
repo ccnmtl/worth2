@@ -1,34 +1,32 @@
 import csv
-from zipfile import ZipFile
-from StringIO import StringIO
 
 from django import http
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
-from django.http.response import HttpResponse
 from django.contrib.webdesign import lorem_ipsum
+from django.http.response import StreamingHttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateView, View
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
-from django.shortcuts import get_object_or_404, redirect, render
-
 from pagetree.generic.views import PageView
 from pagetree.models import PageBlock, Hierarchy, Section
 from quizblock.models import Quiz
 
 from worth2.goals.mixins import GoalCheckInViewMixin, GoalSettingViewMixin
 from worth2.goals.models import GoalSettingResponse
+from worth2.main.auth import generate_password, user_is_participant
+from worth2.main.forms import SignInParticipantForm
+from worth2.main.models import Participant, Session
+from worth2.main.reports import ParticipantReport
+from worth2.main.utils import (
+    get_first_block_in_session, get_first_block_of_type
+)
 from worth2.protectivebehaviors.utils import remove_empty_submission
 from worth2.selftalk.mixins import (
     SelfTalkStatementViewMixin, SelfTalkRefutationViewMixin
-)
-from worth2.main.auth import generate_password, user_is_participant
-from worth2.main.forms import SignInParticipantForm
-from worth2.main.models import Participant, Session, WorthRawDataReport
-from worth2.main.utils import (
-    get_first_block_in_session, get_first_block_of_type
 )
 
 
@@ -444,40 +442,33 @@ class ParticipantSessionPageView(
             request, *args, **kwargs)
 
 
+class Echo(object):
+    """An object that implements just the write method of the file-like
+    interface.
+    """
+    def write(self, value):
+        """Write the value by returning it, instead of storing in a buffer."""
+        return value
+
+
 class ParticipantReportView(View):
 
-    def get(self, request):
-        report = WorthRawDataReport()
+    def post(self, request):
+        hierarchies = Hierarchy.objects.filter(name="main")
 
-        # setup zip file for the key & value file
-        response = HttpResponse(content_type='application/zip')
+        report_type = request.POST.get('report-type', 'keys')
+        report = ParticipantReport(hierarchies[0])
 
-        disposition = 'attachment; filename=worth.zip'
-        response['Content-Disposition'] = disposition
+        if report_type == 'values':
+            rows = report.metadata(hierarchies)
+        else:
+            rows = report.values(hierarchies)
 
-        z = ZipFile(response, 'w')
+        pseudo_buffer = Echo()
+        writer = csv.writer(pseudo_buffer)
 
-        output = StringIO()  # temp output file
-        writer = csv.writer(output)
-
-        # report on all hierarchies
-        hierarchies = Hierarchy.objects.all()
-
-        # Key file
-        for row in report.metadata(hierarchies):
-            writer.writerow(row)
-
-        z.writestr("worth_key.csv", output.getvalue())
-
-        # Results file
-        output.truncate(0)
-        output.seek(0)
-
-        writer = csv.writer(output)
-
-        for row in report.values(hierarchies):
-            writer.writerow(row)
-
-        z.writestr("worth_values.csv", output.getvalue())
-
+        fnm = "worth2_%s.csv" % report_type
+        response = StreamingHttpResponse(
+            (writer.writerow(row) for row in rows), content_type="text/csv")
+        response['Content-Disposition'] = 'attachment; filename="' + fnm + '"'
         return response

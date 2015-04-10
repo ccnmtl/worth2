@@ -9,7 +9,6 @@ from django.db import models
 from django.shortcuts import get_object_or_404
 from django.template.defaultfilters import slugify
 from ordered_model.models import OrderedModel
-from pagetree.reports import PagetreeReport, StandaloneReportColumn
 from pagetree.generic.models import BasePageBlock
 
 from worth2.main.auth import user_is_participant
@@ -240,6 +239,19 @@ class Participant(InactiveUserProfile):
 
         return None
 
+    def encounter_id(self, module, module_idx, encounter_idx):
+        # placeholder
+        return "%s%s" % (self.cohort_id, module_idx + 1)
+        # Cohort ID #: 3 digits
+        # Module #, 1 digit
+        # Facilitator (identified by their internal user id)
+        # Year: 2 digits
+        # Month: 2 digits
+        # Day: 2 digits
+        # Time of Day: HH:MM
+        # Regular/Makeup
+        # Location?
+
 
 class Session(models.Model):
     """A Session represents a participant going through a WORTH session.
@@ -384,18 +396,3 @@ class WatchedVideo(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-
-class WorthRawDataReport(PagetreeReport):
-
-    def users(self):
-        users = User.objects.filter(is_active=False)
-        return users.order_by('id')
-
-    def standalone_columns(self):
-        return [StandaloneReportColumn(
-                'study_id', 'profile', 'string', 'Randomized Study Id',
-                lambda x: x.profile.participant.study_id),
-                StandaloneReportColumn(
-                'cohort_id', 'profile', 'string', 'Assigned Cohort Id',
-                lambda x: x.profile.participant.cohort_id)]

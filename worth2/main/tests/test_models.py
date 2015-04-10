@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from pagetree.tests.factories import ModuleFactory
 from pagetree.models import Hierarchy
+from pagetree.tests.factories import ModuleFactory
 
 from worth2.main.models import Participant
 from worth2.main.tests.factories import (
