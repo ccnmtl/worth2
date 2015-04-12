@@ -19,7 +19,7 @@ from worth2.goals.mixins import GoalCheckInViewMixin, GoalSettingViewMixin
 from worth2.goals.models import GoalSettingResponse
 from worth2.main.auth import generate_password, user_is_participant
 from worth2.main.forms import SignInParticipantForm
-from worth2.main.models import Participant, Session
+from worth2.main.models import Encounter, Participant, Session
 from worth2.main.reports import ParticipantReport
 from worth2.main.utils import (
     get_first_block_in_session, get_first_block_of_type
@@ -290,26 +290,21 @@ class SignInParticipant(FormView):
         return ctx
 
     def form_valid(self, form):
-        participant = form.cleaned_data.get('participant_id')
+        participant = form.cleaned_data.get('participant')
         facilitator = self.request.user
         password = generate_password(participant.user.username)
+
+        # I'm explicitly setting the participant's password each time
+        # they log in. In reality, this shouldn't have any effect. I'm
+        # doing this because when I don't, the authenticate() call
+        # below returns False during the tests.
+        participant.user.set_password(password)
+        participant.user.save()
+
         user = authenticate(
             username=participant.user.username, password=password)
 
         if user is not None:
-            # Create a Session and log in the participant
-            # TODO: a new Session needs to get created for each "session"
-            # in pagetree (i.e. module)? Because we need to track whether
-            # this participant session is make-up or not.
-            Session.objects.get_or_create(
-                participant=participant,
-                defaults={
-                    'facilitator': facilitator,
-                    'location': form.cleaned_data.get('participant_location'),
-                    'session_type': form.cleaned_data.get('session_type'),
-                }
-            )
-
             login(self.request, user)
 
             dest = form.cleaned_data.get('participant_destination')
@@ -327,6 +322,12 @@ class SignInParticipant(FormView):
                 slug = 'session-%s' % session_num
                 section = get_object_or_404(Section, slug=slug)
 
+            Encounter.objects.create(
+                participant=participant,
+                facilitator=facilitator,
+                location=form.cleaned_data.get('participant_location'),
+                session_type=form.cleaned_data.get('session_type'),
+                section=section)
             return redirect(section.get_absolute_url())
 
         return http.HttpResponse('Unauthorized', status=401)

@@ -5,7 +5,7 @@ from pagetree.tests.factories import ModuleFactory
 
 from worth2.main.models import Participant
 from worth2.main.tests.factories import (
-    AvatarFactory, LocationFactory, ParticipantFactory, SessionFactory,
+    AvatarFactory, EncounterFactory, LocationFactory, ParticipantFactory,
     VideoBlockFactory, WatchedVideoFactory
 )
 
@@ -19,6 +19,14 @@ class AvatarTest(TestCase):
 
     def test_unicode(self):
         self.assertEqual(str(self.avatar), self.avatar.image.url)
+
+
+class EncounterTest(TestCase):
+    def setUp(self):
+        self.encounter = EncounterFactory()
+
+    def test_is_valid_from_factory(self):
+        self.encounter.full_clean()
 
 
 class LocationTest(TestCase):
@@ -109,14 +117,6 @@ class ParticipantManagerTest(TestCase):
             Participant.objects.cohort_ids(),
             ['111', '222', '333']
         )
-
-
-class SessionTest(TestCase):
-    def setUp(self):
-        self.session = SessionFactory()
-
-    def test_is_valid_from_factory(self):
-        self.session.full_clean()
 
 
 class VideoBlockTest(TestCase):

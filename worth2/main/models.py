@@ -9,6 +9,7 @@ from django.db import models
 from django.shortcuts import get_object_or_404
 from django.template.defaultfilters import slugify
 from ordered_model.models import OrderedModel
+from pagetree.models import Section
 from pagetree.generic.models import BasePageBlock
 
 from worth2.main.auth import user_is_participant
@@ -253,10 +254,10 @@ class Participant(InactiveUserProfile):
         # Location?
 
 
-class Session(models.Model):
-    """A Session represents a participant going through a WORTH session.
+class Encounter(models.Model):
+    """An Encounter represents a participant getting signed in to WORTH.
 
-    A Session is created each time a facilitator logs in a participant.
+    An Encounter is created each time a facilitator logs in a participant.
     """
 
     facilitator = models.ForeignKey(User)
@@ -267,6 +268,9 @@ class Session(models.Model):
         choices=(('regular', 'Regular'), ('makeup', 'Make-Up')),
         default='regular',
     )
+
+    section = models.ForeignKey(Section)
+    """The section that this participant logged in to"""
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

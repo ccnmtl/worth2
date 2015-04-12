@@ -2,10 +2,11 @@ from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 import factory
 from factory.fuzzy import FuzzyText
+from pagetree.tests.factories import RootSectionFactory
 
 from worth2.main.auth import generate_password
 from worth2.main.models import (
-    Avatar, Location, Participant, Session, VideoBlock, WatchedVideo
+    Avatar, Encounter, Location, Participant, VideoBlock, WatchedVideo
 )
 
 
@@ -51,13 +52,14 @@ class ParticipantFactory(factory.django.DjangoModelFactory):
     is_archived = False
 
 
-class SessionFactory(factory.django.DjangoModelFactory):
+class EncounterFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = Session
+        model = Encounter
 
     facilitator = factory.SubFactory(UserFactory)
     participant = factory.SubFactory(ParticipantFactory)
     location = factory.SubFactory(LocationFactory)
+    section = factory.SubFactory(RootSectionFactory)
 
 
 class VideoBlockFactory(factory.django.DjangoModelFactory):
