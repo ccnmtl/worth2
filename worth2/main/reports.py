@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.core.cache import cache
 from pagetree.models import UserPageVisit
 from pagetree.reports import PagetreeReport, StandaloneReportColumn
+from worth2.main.models import Encounter
 
 
 class ParticipantReport(PagetreeReport):
@@ -44,6 +45,24 @@ class ParticipantReport(PagetreeReport):
         users = User.objects.filter(is_active=False,
                                     userpagevisit__isnull=False).distinct()
         return users.order_by('id')
+
+    def encounter_id(self, participant, module, module_idx, encounter_idx):
+        section_ids = self.get_descendant_ids(module)
+        section_ids.append(module.id)
+        encounters = Encounter.objects.filter(participant=participant,
+                                              section__id__in=section_ids)
+        if encounters.count() <= encounter_idx:
+            return None
+        else:
+            encounter = encounters.order_by('created_at')[encounter_idx]
+            return "%s%d%05d%s%d%02d" % (
+                participant.cohort_id,  # Cohort ID #: 3 digits
+                module_idx + 1,  # Module #, 1 digit
+                encounter.facilitator.id,  # Facilitator (5 digits)
+                encounter.created_at.strftime("%y%m%d%I%M"),  # YYMMDDHHMM
+                encounter_idx,
+                encounter.location.id  # Location (2 digits)
+            )
 
     def percent_complete(self, user, section):
         section_ids = self.get_descendant_ids(section)
@@ -100,18 +119,18 @@ class ParticipantReport(PagetreeReport):
             StandaloneReportColumn(
                 '%s_encounter' % module_idx, 'profile', 'string',
                 '%s Encounter' % module.label,
-                lambda x: x.profile.participant.encounter_id(
-                    module_idx, module, 0)),
+                lambda x: self.encounter_id(x.profile.participant, module_idx,
+                                            module, 0)),
             StandaloneReportColumn(
                 '%s_first_makeup' % module_idx, 'profile', 'string',
                 '%s First Makeup' % module.label,
-                lambda x: x.profile.participant.encounter_id(
-                    module_idx, module, 1)),
+                lambda x: self.encounter_id(x.profile.participant, module_idx,
+                                            module, 1)),
             StandaloneReportColumn(
                 '%s_second_makeup' % module_idx, 'profile', 'string',
                 '%s Second Makeup' % module.label,
-                lambda x: x.profile.participant.encounter_id(
-                    module_idx, module, 2))
+                lambda x: self.encounter_id(x.profile.participant, module_idx,
+                                            module, 2))
         ]
 
     def standalone_columns(self):

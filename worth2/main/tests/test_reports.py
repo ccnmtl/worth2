@@ -6,7 +6,8 @@ from pagetree.models import Hierarchy, Section, UserPageVisit
 from pagetree.tests.factories import ModuleFactory
 
 from worth2.main.reports import ParticipantReport
-from worth2.main.tests.factories import ParticipantFactory, UserFactory
+from worth2.main.tests.factories import (EncounterFactory, ParticipantFactory,
+                                         UserFactory)
 
 
 class ParticipantReportTest(TestCase):
@@ -28,6 +29,45 @@ class ParticipantReportTest(TestCase):
                                      section=section_one,
                                      status="complete")
         self.assertEquals(ParticipantReport(self.hierarchy).users().count(), 1)
+
+    def test_encounter_id(self):
+        report = ParticipantReport(self.hierarchy)
+        the_participant = self.participant.profile.participant
+        the_participant.cohort_id = '333'
+        the_participant.save()
+
+        # modules one
+        module = Section.objects.get(slug='one')
+        child = Section.objects.get(slug='introduction')
+
+        # no encounters
+        self.assertIsNone(report.encounter_id(the_participant, module, 0, 0))
+
+        # regular encounter
+        e1 = EncounterFactory(participant=the_participant,
+                              section=module)
+        # makeup encounter
+        e2 = EncounterFactory(participant=the_participant,
+                              section=child, session_type='makeup')
+
+        eid = report.encounter_id(the_participant, module, 0, 0)
+        self.assertEquals(eid[0:3], '333')
+        self.assertEquals(eid[3:4], '1')  # module index
+        self.assertEquals(int(eid[4:9]), e1.facilitator.id)
+        self.assertEquals(eid[9:19], e1.created_at.strftime("%y%m%d%I%M"))
+        self.assertEquals(eid[19:20], '0')
+        self.assertEquals(int(eid[20:22]), e1.location.id)
+
+        # makeup encounter
+        eid = report.encounter_id(the_participant, module, 0, 1)
+        self.assertEquals(eid[0:3], '333')
+        self.assertEquals(eid[3:4], '1')  # module index
+        self.assertEquals(int(eid[4:9]), e2.facilitator.id)
+        self.assertEquals(eid[9:19], e2.created_at.strftime("%y%m%d%I%M"))
+        self.assertEquals(eid[19:20], '1')
+        self.assertEquals(int(eid[20:22]), e2.location.id)
+
+        self.assertIsNone(report.encounter_id(the_participant, module, 0, 2))
 
     def test_percent_complete(self):
         report = ParticipantReport(self.hierarchy)

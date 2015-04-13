@@ -240,24 +240,6 @@ class Participant(InactiveUserProfile):
 
         return None
 
-    def encounter_id(self, module, module_idx, encounter_idx):
-        section_ids = [s.id for s in module.get_descendants()]
-        section_ids.append(module.id)
-        encounters = Encounter.objects.filter(participant=self,
-                                              section__id__in=section_ids)
-        if encounters.count() <= encounter_idx:
-            return None
-        else:
-            encounter = encounters.order_by('created_at')[encounter_idx]
-            return "%s%d%05d%s%d%02d" % (
-                self.cohort_id,  # Cohort ID #: 3 digits
-                module_idx + 1,  # Module #, 1 digit
-                encounter.facilitator.id,  # Facilitator (5 digits)
-                encounter.created_at.strftime("%y%m%d%I%M"),  # YYMMDDHHMM
-                encounter_idx,
-                encounter.location.id  # Location (2 digits)
-            )
-
 
 class Encounter(models.Model):
     """An Encounter represents a participant getting signed in to WORTH.

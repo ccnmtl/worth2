@@ -1,6 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from pagetree.models import Hierarchy, Section
+from pagetree.models import Hierarchy
 from pagetree.tests.factories import ModuleFactory
 
 from worth2.main.models import Participant
@@ -82,42 +82,6 @@ class ParticipantTest(TestCase):
     def test_next_location_verbose(self):
         s = self.participant.next_location_verbose()
         self.assertEqual(s, 'One (one)')
-
-    def test_encounter_id(self):
-        self.participant.cohort_id = '333'
-        self.participant.save()
-
-        # modules one
-        module = Section.objects.get(slug='one')
-        child = Section.objects.get(slug='introduction')
-
-        # no encounters
-        self.assertIsNone(self.participant.encounter_id(module, 0, 0))
-
-        # regular encounter
-        e1 = EncounterFactory(participant=self.participant, section=module)
-        # makeup encounter
-        e2 = EncounterFactory(participant=self.participant,
-                              section=child, session_type='makeup')
-
-        eid = self.participant.encounter_id(module, 0, 0)
-        self.assertEquals(eid[0:3], '333')
-        self.assertEquals(eid[3:4], '1')  # module index
-        self.assertEquals(int(eid[4:9]), e1.facilitator.id)
-        self.assertEquals(eid[9:19], e1.created_at.strftime("%y%m%d%I%M"))
-        self.assertEquals(eid[19:20], '0')
-        self.assertEquals(int(eid[20:22]), e1.location.id)
-
-        # makeup encounter
-        eid = self.participant.encounter_id(module, 0, 1)
-        self.assertEquals(eid[0:3], '333')
-        self.assertEquals(eid[3:4], '1')  # module index
-        self.assertEquals(int(eid[4:9]), e2.facilitator.id)
-        self.assertEquals(eid[9:19], e2.created_at.strftime("%y%m%d%I%M"))
-        self.assertEquals(eid[19:20], '1')
-        self.assertEquals(int(eid[20:22]), e2.location.id)
-
-        self.assertIsNone(self.participant.encounter_id(module, 0, 2))
 
 
 class ParticipantManagerTest(TestCase):
