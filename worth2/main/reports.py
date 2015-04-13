@@ -91,24 +91,27 @@ class ParticipantReport(PagetreeReport):
 
         return self.format_timedelta(time_spent)
 
-    def per_module_columns(self, idx, module):
+    def per_module_columns(self, module_idx, module):
         return [
             StandaloneReportColumn(
-                '%s_time_spent' % idx, 'profile', 'string',
+                '%s_time_spent' % module_idx, 'profile', 'string',
                 'Time Spent in %s' % module.label,
                 lambda x: self.time_spent(x, module)),
             StandaloneReportColumn(
-                '%s_encounter' % idx, 'profile', 'string',
+                '%s_encounter' % module_idx, 'profile', 'string',
                 '%s Encounter' % module.label,
-                lambda x: x.profile.participant.encounter_id(module, idx, 0)),
+                lambda x: x.profile.participant.encounter_id(
+                    module_idx, module, 0)),
             StandaloneReportColumn(
-                '%s_first_makeup' % idx, 'profile', 'string',
+                '%s_first_makeup' % module_idx, 'profile', 'string',
                 '%s First Makeup' % module.label,
-                lambda x: x.profile.participant.encounter_id(module, idx, 1)),
+                lambda x: x.profile.participant.encounter_id(
+                    module_idx, module, 1)),
             StandaloneReportColumn(
-                '%s_second_makeup' % idx, 'profile', 'string',
+                '%s_second_makeup' % module_idx, 'profile', 'string',
                 '%s Second Makeup' % module.label,
-                lambda x: x.profile.participant.encounter_id(module, idx, 2))
+                lambda x: x.profile.participant.encounter_id(
+                    module_idx, module, 2))
         ]
 
     def standalone_columns(self):
