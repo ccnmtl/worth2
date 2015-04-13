@@ -9,6 +9,7 @@ from worth2.main.tests.factories import (
     AvatarFactory, EncounterFactory, LocationFactory, ParticipantFactory,
     VideoBlockFactory, WatchedVideoFactory
 )
+from worth2.main.utils import get_verbose_section_name
 
 
 class AvatarTest(TestCase):
@@ -63,8 +64,8 @@ class ParticipantTest(TestCase):
         r = self.participant.last_session_accessed(
             '/pages/session-1/some-activity')
         self.assertEqual(r, 1)
-        r = self.participant.last_session_accessed(
-            '/pages/session-1/')
+
+        r = self.participant.last_session_accessed('/pages/session-1/')
         self.assertEqual(r, 1)
 
         r = self.participant.last_session_accessed(
@@ -72,8 +73,7 @@ class ParticipantTest(TestCase):
         self.assertEqual(r, 5)
 
     def test_verbose_section_name(self):
-        s = self.participant.verbose_section_name(
-            self.participant.last_location())
+        s = get_verbose_section_name(self.participant.last_location())
         self.assertEqual(s, 'Root')
 
     def test_last_location_verbose(self):
@@ -82,7 +82,7 @@ class ParticipantTest(TestCase):
 
     def test_next_location_verbose(self):
         s = self.participant.next_location_verbose()
-        self.assertEqual(s, 'One (one)')
+        self.assertEqual(s, 'One')
 
 
 class ParticipantManagerTest(TestCase):

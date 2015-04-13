@@ -13,7 +13,7 @@ from worth2.main.tests.mixins import (
     LoggedInSuperuserTestMixin
 )
 from worth2.main.models import Encounter, Participant
-from worth2.main.utils import get_first_block_in_session
+from worth2.main.utils import get_first_block_in_module
 from worth2.main.views import ParticipantJournalView
 
 
@@ -290,7 +290,7 @@ class ParticipantJournalsTest(LoggedInFacilitatorTestMixin, TestCase):
             })
 
     def test_render_goals(self):
-        goalsettingblock = get_first_block_in_session(
+        goalsettingblock = get_first_block_in_module(
             'goal setting block', 1)
 
         option = GoalOption.objects.create(text='test option')

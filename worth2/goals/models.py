@@ -7,6 +7,8 @@ from ordered_model.models import OrderedModel
 from pagetree.generic.models import BasePageBlock
 from pagetree.reports import ReportColumnInterface, ReportableInterface
 
+from worth2.main.utils import get_module_number
+
 
 GOAL_TYPES = (
     ('services', 'Services'),
@@ -59,14 +61,11 @@ class GoalSettingBlock(BasePageBlock):
         return c > 0
 
     def __unicode__(self):
-        try:
-            slug = unicode(self.pageblock().section.get_parent().slug)
-        except AttributeError:
-            slug = 'no section'
-
-        return unicode(self.get_goal_type_display() + ' goals ' +
-                       '[' + slug + '] id: ' +
-                       unicode(self.pk))
+        session_num = get_module_number(self.pageblock())
+        return unicode('%s goals [Session %d] id: %d' % (
+            self.get_goal_type_display(),
+            session_num,
+            self.pk))
 
     @staticmethod
     def add_form():
