@@ -19,7 +19,7 @@ from worth2.goals.mixins import GoalCheckInViewMixin, GoalSettingViewMixin
 from worth2.goals.models import GoalSettingResponse
 from worth2.main.auth import generate_password, user_is_participant
 from worth2.main.forms import SignInParticipantForm
-from worth2.main.models import Encounter, Participant, Session
+from worth2.main.models import Encounter, Participant
 from worth2.main.reports import ParticipantReport
 from worth2.main.utils import (
     get_first_block_in_session, get_first_block_of_type
