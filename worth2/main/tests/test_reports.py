@@ -41,7 +41,7 @@ class ParticipantReportTest(TestCase):
         child = Section.objects.get(slug='introduction')
 
         # no encounters
-        self.assertIsNone(report.encounter_id(the_participant, module, 0, 0))
+        self.assertIsNone(report.encounter_id(the_participant, 0, module, 0))
 
         # regular encounter
         e1 = EncounterFactory(participant=the_participant,
@@ -50,7 +50,7 @@ class ParticipantReportTest(TestCase):
         e2 = EncounterFactory(participant=the_participant,
                               section=child, session_type='makeup')
 
-        eid = report.encounter_id(the_participant, module, 0, 0)
+        eid = report.encounter_id(the_participant, 0, module, 0)
         self.assertEquals(eid[0:3], '333')
         self.assertEquals(eid[3:4], '1')  # module index
         self.assertEquals(int(eid[4:9]), e1.facilitator.id)
@@ -59,7 +59,7 @@ class ParticipantReportTest(TestCase):
         self.assertEquals(int(eid[20:22]), e1.location.id)
 
         # makeup encounter
-        eid = report.encounter_id(the_participant, module, 0, 1)
+        eid = report.encounter_id(the_participant, 0, module, 1)
         self.assertEquals(eid[0:3], '333')
         self.assertEquals(eid[3:4], '1')  # module index
         self.assertEquals(int(eid[4:9]), e2.facilitator.id)
@@ -67,7 +67,7 @@ class ParticipantReportTest(TestCase):
         self.assertEquals(eid[19:20], '1')
         self.assertEquals(int(eid[20:22]), e2.location.id)
 
-        self.assertIsNone(report.encounter_id(the_participant, module, 0, 2))
+        self.assertIsNone(report.encounter_id(the_participant, 0, module, 2))
 
     def test_percent_complete(self):
         report = ParticipantReport(self.hierarchy)
@@ -156,15 +156,15 @@ class ParticipantReportTest(TestCase):
             ['', 'study_id', 'profile', 'string', 'Randomized Study Id'],
             ['', 'cohort_id', 'profile', 'string', 'Assigned Cohort Id'],
             ['', 'modules_completed', 'profile', 'count', 'modules completed'],
-            ['', '0_time_spent', 'profile', 'string', 'Time Spent in One'],
+            ['', '0_time_spent', 'profile', 'string', 'One Time Spent'],
             ['', '0_encounter', 'profile', 'string', 'One Encounter'],
             ['', '0_first_makeup', 'profile', 'string', 'One First Makeup'],
             ['', '0_second_makeup', 'profile', 'string', 'One Second Makeup'],
-            ['', '1_time_spent', 'profile', 'string', 'Time Spent in Two'],
+            ['', '1_time_spent', 'profile', 'string', 'Two Time Spent'],
             ['', '1_encounter', 'profile', 'string', 'Two Encounter'],
             ['', '1_first_makeup', 'profile', 'string', 'Two First Makeup'],
             ['', '1_second_makeup', 'profile', 'string', 'Two Second Makeup'],
-            ['', '2_time_spent', 'profile', 'string', 'Time Spent in Four'],
+            ['', '2_time_spent', 'profile', 'string', 'Four Time Spent'],
             ['', '2_encounter', 'profile', 'string', 'Four Encounter'],
             ['', '2_first_makeup', 'profile', 'string', 'Four First Makeup'],
             ['', '2_second_makeup', 'profile', 'string', 'Four Second Makeup']

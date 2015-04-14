@@ -1,9 +1,11 @@
+from django import forms
 from django.contrib.auth.models import User
 from django.db import models
-from django import forms
+from django.template.defaultfilters import slugify
+from django.utils.encoding import smart_str
 from ordered_model.models import OrderedModel
-
 from pagetree.generic.models import BasePageBlock
+from pagetree.reports import ReportColumnInterface, ReportableInterface
 
 
 GOAL_TYPES = (
@@ -86,6 +88,28 @@ class GoalSettingBlock(BasePageBlock):
         form = GoalSettingBlockForm(data=vals, files=files, instance=self)
         if form.is_valid():
             form.save()
+
+    def report_metadata(self):
+        rows = []
+        options = GoalOption.objects.filter(goal_type=self.goal_type)
+        for idx in xrange(0, self.goal_amount):
+            for option in options:  # 1 row per option
+                col = GoalSettingColumn(self, idx, 'option', option)
+                rows.append(col)
+            rows.append(GoalSettingColumn(self, idx, 'other_text'))
+            rows.append(GoalSettingColumn(self, idx, 'text'))
+        return rows
+
+    def report_values(self):
+        rows = []
+        for idx in xrange(0, self.goal_amount):
+            rows.append(GoalSettingColumn(self, idx, 'option'))
+            rows.append(GoalSettingColumn(self, idx, 'other_text'))
+            rows.append(GoalSettingColumn(self, idx, 'text'))
+        return rows
+
+
+ReportableInterface.register(GoalSettingBlock)
 
 
 class GoalSettingBlockForm(forms.ModelForm):
@@ -237,3 +261,44 @@ class GoalCheckInPageBlock(BasePageBlock):
 class GoalCheckInPageBlockForm(forms.ModelForm):
     class Meta:
         model = GoalCheckInPageBlock
+
+
+class GoalSettingColumn(ReportColumnInterface):
+
+    def __init__(self, block, goal_idx, field, option=None):
+        self.block = block
+        self.hierarchy = block.pageblock().section.hierarchy
+        self.description = "%s %s %s" % (
+            block.goal_type.capitalize(), goal_idx, field.capitalize())
+        self.field = field
+        self.goal_identifier = "%s_%s_%s_%s" % (
+            block.id, slugify(block.goal_type), goal_idx, field)
+        self.option = option
+
+    def identifier(self):
+        return self.goal_identifier
+
+    def metadata(self):
+        metadata = [self.hierarchy.name, self.goal_identifier,
+                    self.block.display_name]
+        if self.field == 'option':
+            metadata.append('single choice')
+            metadata.append(self.description)
+            metadata.append(self.option.id)
+            metadata.append(smart_str(self.option.text))
+        else:
+            metadata.append('string')
+            metadata.append(self.description)
+
+        return metadata
+
+    def user_value(self, user):
+        response = GoalSettingResponse.objects.filter(
+            user=user, goal_setting_block=self.block).first()
+
+        if response is None:
+            return ''
+        elif self.field == 'option':
+            return response.option.id
+        else:
+            return getattr(response, self.field) or ''  # replace None with ''

@@ -21,11 +21,14 @@
     </div>
     
     <div class="col-md-6">
-    <div class="well dashboard-widget">
-    <h2>Manage</h2>
-    <p>Add, edit, and delete all kinds of cohort and participant information.</p>
-    <a href="{% url 'manage-participants' %}" class="btn btn-primary">Manage Participant IDs</a>
-    </div>
+        <div class="well dashboard-widget">
+            <h2>Manage</h2>
+            <p>Add, edit, and delete all kinds of cohort and participant information.</p>
+            <div>
+                <a href="{% url 'manage-participants' %}" class="btn btn-primary pull-left">Manage Participant IDs</a>
+                <a href="{% url 'participant-report' %}" class="btn btn-default pull-left">Retrieve Reports</a>
+            </div>
+        </div>
     </div>
     
     </div>
