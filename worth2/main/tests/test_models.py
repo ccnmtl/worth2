@@ -3,6 +3,7 @@ from django.test import TestCase
 from pagetree.tests.factories import ModuleFactory
 from pagetree.models import Hierarchy
 
+
 from worth2.main.models import Participant
 from worth2.main.tests.factories import (
     AvatarFactory, EncounterFactory, LocationFactory, ParticipantFactory,

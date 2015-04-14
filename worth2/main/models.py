@@ -1,4 +1,5 @@
 import re
+
 from django import forms
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -262,7 +263,7 @@ class Encounter(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        return unicode('Session for ' + self.participant.user.username)
+        return unicode('Encounter for ' + self.participant.user.username)
 
 
 class SimpleImageBlock(BasePageBlock):
