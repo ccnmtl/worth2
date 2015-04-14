@@ -23,7 +23,9 @@ label {
     cursor: pointer;
 }
 .dashboard-widget {min-height: 200px; position: relative;}
-.dashboard-widget a {position: absolute; bottom: 1em;}
+.dashboard-widget a {
+    margin: 10px 10px 0 0;
+}
 
 /* Deactivate any link that's in a disabled list-item. */
 li.disabled>a {

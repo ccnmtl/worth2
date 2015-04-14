@@ -46,7 +46,7 @@ class ParticipantReport(PagetreeReport):
                                     userpagevisit__isnull=False).distinct()
         return users.order_by('id')
 
-    def encounter_id(self, participant, module, module_idx, encounter_idx):
+    def encounter_id(self, participant, module_idx, module, encounter_idx):
         section_ids = self.get_descendant_ids(module)
         section_ids.append(module.id)
         encounters = Encounter.objects.filter(participant=participant,
@@ -114,7 +114,7 @@ class ParticipantReport(PagetreeReport):
         return [
             StandaloneReportColumn(
                 '%s_time_spent' % module_idx, 'profile', 'string',
-                'Time Spent in %s' % module.label,
+                '%s Time Spent' % module.label,
                 lambda x: self.time_spent(x, module)),
             StandaloneReportColumn(
                 '%s_encounter' % module_idx, 'profile', 'string',

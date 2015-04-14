@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
 from django.test import TestCase
-
+from pagetree.models import Hierarchy
+from pagetree.tests.factories import ModuleFactory
 from worth2.goals.tests.factories import (
     GoalSettingBlockFactory, GoalOptionFactory, GoalSettingResponseFactory,
     GoalCheckInBlockFactory, GoalCheckInOptionFactory,
     GoalCheckInResponseFactory
 )
+from worth2.main.tests.factories import (ParticipantFactory, UserFactory)
 
 
 class GoalSettingBlockTest(TestCase):
@@ -81,3 +83,26 @@ class GoalCheckInResponseTest(TestCase):
     def test_unicode(self):
         self.assertTrue(
             self.o.goal_setting_response.user.username in unicode(self.o))
+
+
+class GoalSettingColumnTest(TestCase):
+    def setUp(self):
+        self.block = GoalSettingBlockFactory()
+        self.opt = GoalOptionFactory(text="Sample Option")
+        self.opt_na = GoalOptionFactory(text="n/a")
+        self.opt_other = GoalOptionFactory(text="Other")
+
+        self.participant = ParticipantFactory().user
+        self.staff = UserFactory(is_superuser=True)
+
+        ModuleFactory("main", "/pages/")
+        self.hierarchy = Hierarchy.objects.get(name='main')
+
+    def test_identifier(self):
+        pass
+
+    def test_metadata(self):
+        pass
+
+    def test_user_value(self):
+        pass

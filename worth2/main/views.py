@@ -3,12 +3,13 @@ import csv
 from django import http
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.webdesign import lorem_ipsum
 from django.http.response import StreamingHttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.decorators import method_decorator
-from django.views.generic.base import TemplateView, View
+from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 from pagetree.generic.views import PageView
@@ -19,7 +20,7 @@ from worth2.goals.mixins import GoalCheckInViewMixin, GoalSettingViewMixin
 from worth2.goals.models import GoalSettingResponse
 from worth2.main.auth import generate_password, user_is_participant
 from worth2.main.forms import SignInParticipantForm
-from worth2.main.models import Encounter, Participant
+from worth2.main.models import Encounter, Participant, Location
 from worth2.main.reports import ParticipantReport
 from worth2.main.utils import (
     get_first_block_in_session, get_first_block_of_type
@@ -452,7 +453,20 @@ class Echo(object):
         return value
 
 
-class ParticipantReportView(View):
+class ParticipantReportView(TemplateView):
+    template_name = 'main/participant_report.html'
+
+    def facilitators(self):
+        rows = [['Facilitator ID', 'Facilitator Name']]
+        for user in User.objects.filter(is_active=True, is_superuser=False):
+            rows.append([user.id, user.username, user.get_full_name()])
+        return rows
+
+    def locations(self):
+        rows = [['Location ID', 'Location Name']]
+        for location in Location.objects.all():
+            rows.append([location.id, location.name])
+        return rows
 
     def post(self, request):
         hierarchies = Hierarchy.objects.filter(name="main")
@@ -460,10 +474,14 @@ class ParticipantReportView(View):
         report_type = request.POST.get('report-type', 'keys')
         report = ParticipantReport(hierarchies[0])
 
-        if report_type == 'values':
-            rows = report.metadata(hierarchies)
-        else:
+        if report_type == 'facilitators':
+            rows = self.facilitators()
+        elif report_type == 'locations':
+            rows = self.locations()
+        elif report_type == 'values':
             rows = report.values(hierarchies)
+        else:
+            rows = report.metadata(hierarchies)
 
         pseudo_buffer = Echo()
         writer = csv.writer(pseudo_buffer)
