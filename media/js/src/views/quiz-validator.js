@@ -8,6 +8,38 @@ define([
      */
     var QuizValidator = Backbone.View.extend({
         /**
+         * This function returns false if all the checkboxes on the
+         * form that has class `cssClass` (default: 'quizblock-required')
+         * are unchecked. Otherwise, it returns true.
+         */
+        validateCheckboxForm: function($form, cssClass) {
+            if (typeof cssClass === 'undefined') {
+                cssClass = 'quizblock-required';
+            }
+
+            var $requiredCheckboxes = $form
+                .find('.' + cssClass)
+                .find('input[type="checkbox"]');
+
+            if ($requiredCheckboxes.length > 0) {
+                var hasAnyCheckedCheckboxes = _.reduce(
+                    $requiredCheckboxes,
+                    function(memo, $el) {
+                        return memo || $($el).is(':checked');
+                    },
+                    false);
+
+                if ($requiredCheckboxes.length > 0 &&
+                    !hasAnyCheckedCheckboxes
+                   ) {
+                    return false;
+                }
+            }
+
+            return true;
+        },
+
+        /**
          * This function returns false if all the radio buttons on the
          * form are unchecked. Otherwise, it returns true.
          */
@@ -32,7 +64,7 @@ define([
          * questions containing `cssClass` are not filled in. cssClass
          * defaults to 'quizblock-required'.
          */
-        validateRequiredInputs: function($form, cssClass) {
+        validateRequiredTextInputs: function($form, cssClass) {
             if (typeof cssClass === 'undefined') {
                 cssClass = 'quizblock-required';
             }
@@ -72,8 +104,9 @@ define([
 
             var me = this;
             $submit.click(function() {
-                if (!me.validateRadioButtons($form) ||
-                    !me.validateRequiredInputs($form)
+                if (!me.validateCheckboxForm($form) ||
+                    !me.validateRadioButtons($form) ||
+                    !me.validateRequiredTextInputs($form)
                    ) {
                     $form.find('.worth-form-validation-error').hide().fadeIn();
                     return false;

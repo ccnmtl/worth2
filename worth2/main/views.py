@@ -291,7 +291,7 @@ class SignInParticipant(FormView):
         return ctx
 
     def form_valid(self, form):
-        participant = form.cleaned_data.get('participant')
+        participant = form.cleaned_data.get('participant_id')
         facilitator = self.request.user
         password = generate_password(participant.user.username)
 

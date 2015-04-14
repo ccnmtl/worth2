@@ -205,7 +205,7 @@ class SignInParticipantAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
         participant.user.save()
         response = self.client.post(
             reverse('sign-in-participant'), {
-                'participant': participant.pk,
+                'participant_id': participant.pk,
                 'participant_location': location.pk,
                 'participant_destination': 'last_completed_activity',
                 'session_type': 'regular',
@@ -229,7 +229,7 @@ class SignInParticipantAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
     def test_invalid_form_submit(self):
         response = self.client.post(
             reverse('sign-in-participant'), {
-                'participant': None,
+                'participant_id': None,
                 'participant_location': None,
                 'participant_destination': 'last_completed_activity',
                 'session_type': 'regular',
@@ -241,7 +241,7 @@ class SignInParticipantAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
         self.assertFalse(form.is_valid())
         self.assertContains(response, 'Select a valid choice.')
         self.assertFormError(
-            response, 'form', 'participant',
+            response, 'form', 'participant_id',
             'Select a valid choice. That choice is not one of the ' +
             'available choices.')
         self.assertFormError(
@@ -254,7 +254,7 @@ class SignInParticipantAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
         participant = ParticipantFactory()
         response = self.client.post(
             reverse('sign-in-participant'), {
-                'participant': participant.pk,
+                'participant_id': participant.pk,
                 'participant_location': location.pk,
                 'participant_destination': 'last_completed_activity',
             }
