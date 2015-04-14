@@ -301,4 +301,4 @@ class GoalSettingColumn(ReportColumnInterface):
         elif self.field == 'option':
             return response.option.id
         else:
-            return getattr(response, self.field, '')
+            return getattr(response, self.field) or ''  # replace None with ''

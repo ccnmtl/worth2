@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from django.test import TestCase
-from pagetree.models import Hierarchy
-from pagetree.tests.factories import ModuleFactory
+from pagetree.helpers import get_hierarchy
+
+from worth2.goals.models import GoalSettingColumn
 from worth2.goals.tests.factories import (
     GoalSettingBlockFactory, GoalOptionFactory, GoalSettingResponseFactory,
     GoalCheckInBlockFactory, GoalCheckInOptionFactory,
@@ -87,22 +88,77 @@ class GoalCheckInResponseTest(TestCase):
 
 class GoalSettingColumnTest(TestCase):
     def setUp(self):
-        self.block = GoalSettingBlockFactory()
         self.opt = GoalOptionFactory(text="Sample Option")
-        self.opt_na = GoalOptionFactory(text="n/a")
         self.opt_other = GoalOptionFactory(text="Other")
 
         self.participant = ParticipantFactory().user
         self.staff = UserFactory(is_superuser=True)
 
-        ModuleFactory("main", "/pages/")
-        self.hierarchy = Hierarchy.objects.get(name='main')
+        self.hierarchy = get_hierarchy('main', '/pages/')
+        self.root = self.hierarchy.get_root()
+        self.root.add_child_section_from_dict({
+            'label': 'Goal Setting Section',
+            'slug': 'goal-setting-section',
+            'pageblocks': [{
+                'block_type': 'Goal Setting Block',
+            }],
+            'children': [],
+        })
+        pageblock = self.root.get_first_child().pageblock_set.first()
+        self.block = pageblock.content_object
+        assert(self.block is not None)
 
     def test_identifier(self):
-        pass
+        column = GoalSettingColumn(self.block, 0, "option", self.opt)
+        self.assertEquals(column.identifier(),
+                          "%s_services_0_option" % self.block.id)
 
     def test_metadata(self):
-        pass
+        column = GoalSettingColumn(self.block, 0, "option", self.opt)
+        self.assertEquals(column.metadata(),
+                          ['main', column.identifier(), "Goal Setting Block",
+                           "single choice", "Services 0 Option",
+                           self.opt.id, "Sample Option"])
 
-    def test_user_value(self):
-        pass
+        column = GoalSettingColumn(self.block, 0, "text")
+        self.assertEquals(column.metadata(),
+                          ['main', column.identifier(), "Goal Setting Block",
+                           "string", "Services 0 Text"])
+
+    def test_user_value_no_responses(self):
+        option = GoalSettingColumn(self.block, 0, "option")
+        other_text = GoalSettingColumn(self.block, 0, "other_text")
+        text = GoalSettingColumn(self.block, 0, "text")
+
+        # no responses
+        self.assertEquals(option.user_value(self.participant), '')
+        self.assertEquals(other_text.user_value(self.participant), '')
+        self.assertEquals(text.user_value(self.participant), '')
+
+    def test_user_value_generic_option(self):
+        option = GoalSettingColumn(self.block, 0, "option")
+        other_text = GoalSettingColumn(self.block, 0, "other_text")
+        text = GoalSettingColumn(self.block, 0, "text")
+
+        # regular option selected -- text expected, no "other text" expected
+        GoalSettingResponseFactory(goal_setting_block=self.block,
+                                   user=self.participant, option=self.opt,
+                                   text="sample response")
+        self.assertEquals(option.user_value(self.participant), self.opt.id)
+        self.assertEquals(other_text.user_value(self.participant), '')
+        self.assertEquals(text.user_value(self.participant), "sample response")
+
+    def test_user_value_other_option(self):
+        option = GoalSettingColumn(self.block, 0, "option")
+        other_text = GoalSettingColumn(self.block, 0, "other_text")
+        text = GoalSettingColumn(self.block, 0, "text")
+
+        # regular option selected -- text expected, no "other text" expected
+        GoalSettingResponseFactory(goal_setting_block=self.block,
+                                   user=self.participant,
+                                   option=self.opt_other, other_text="random",
+                                   text="sample response")
+        self.assertEquals(option.user_value(self.participant),
+                          self.opt_other.id)
+        self.assertEquals(other_text.user_value(self.participant), "random")
+        self.assertEquals(text.user_value(self.participant), "sample response")
