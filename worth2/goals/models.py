@@ -108,9 +108,6 @@ class GoalSettingBlock(BasePageBlock):
         return rows
 
 
-ReportableInterface.register(GoalSettingBlock)
-
-
 class GoalSettingBlockForm(forms.ModelForm):
     class Meta:
         model = GoalSettingBlock
@@ -164,6 +161,49 @@ class GoalSettingResponse(models.Model):
     def __unicode__(self):
         return unicode('"%s" from %s' % (unicode(self.option),
                                          unicode(self.user)))
+
+
+class GoalSettingColumn(ReportColumnInterface):
+
+    def __init__(self, block, goal_idx, field, option=None):
+        self.block = block
+        self.hierarchy = block.pageblock().section.hierarchy
+        self.description = "%s %s %s" % (
+            block.goal_type.capitalize(), goal_idx, field.capitalize())
+        self.field = field
+        self.option = option
+        self.goal_idx = goal_idx
+
+    def identifier(self):
+        return "%s_%s_%s_%s" % (self.block.id, slugify(self.block.goal_type),
+                                self.goal_idx, self.field)
+
+    def metadata(self):
+        metadata = [self.hierarchy.name, self.identifier(),
+                    self.block.display_name]
+        if self.field == 'option':
+            metadata.append('single choice')
+            metadata.append(self.description)
+            metadata.append(self.option.id)
+            metadata.append(smart_str(self.option.text))
+        else:
+            metadata.append('string')
+            metadata.append(self.description)
+
+        return metadata
+
+    def user_value(self, user):
+        # retrieve last response. (though there should be just 1)
+        response = GoalSettingResponse.objects.filter(
+            user=user, goal_setting_block=self.block,
+            form_id=self.goal_idx).order_by('-updated_at').first()
+
+        if response is None:
+            return ''
+        elif self.field == 'option':
+            return response.option.id
+        else:
+            return getattr(response, self.field) or ''  # replace None with ''
 
 
 class GoalCheckInOption(OrderedModel):
@@ -220,15 +260,22 @@ class GoalCheckInPageBlock(BasePageBlock):
 
     goal_setting_block = models.ForeignKey(GoalSettingBlock, null=True)
 
+    PROGRESS_CHOICES = (
+        ('yes', 'I did it!'),
+        ('in progress', 'I\'m still working on it.'),
+        ('no', 'I haven\'t started this goal.'),
+    )
+
     def needs_submit(self):
         return True
+
+    def goal_setting_responses(self, user):
+        return self.goal_setting_block.goal_setting_responses.filter(user=user)
 
     def unlocked(self, user):
         # Find out if this user has created any GoalCheckinResponses for
         # this GoalCheckinBlock.
-        setting_responses = \
-            self.goal_setting_block.goal_setting_responses.filter(
-                user=user)
+        setting_responses = self.goal_setting_responses(user=user)
 
         if setting_responses.count() == 0:
             return True
@@ -256,48 +303,86 @@ class GoalCheckInPageBlock(BasePageBlock):
         if form.is_valid():
             form.save()
 
+    def report_metadata(self):
+        rows = []
+        for idx in xrange(0, self.goal_setting_block.goal_amount):
+            for chc in self.PROGRESS_CHOICES:
+                col = GoalCheckInColumn(self, idx, "progress", chc[0], chc[1])
+                rows.append(col)
+            for opt in GoalCheckInOption.objects.all():
+                col = GoalCheckInColumn(self, idx, "barrier", opt.id, opt.text)
+                rows.append(col)
+            rows.append(GoalCheckInColumn(self, idx, "other"))
+        return rows
+
+    def report_values(self):
+        rows = []
+        for idx in xrange(0, self.goal_setting_block.goal_amount):
+            rows.append(GoalCheckInColumn(self, idx, "progress"))
+            rows.append(GoalCheckInColumn(self, idx, "barrier"))
+            rows.append(GoalCheckInColumn(self, idx, "other"))
+        return rows
+
 
 class GoalCheckInPageBlockForm(forms.ModelForm):
     class Meta:
         model = GoalCheckInPageBlock
 
 
-class GoalSettingColumn(ReportColumnInterface):
+class GoalCheckInColumn(ReportColumnInterface):
 
-    def __init__(self, block, goal_idx, field, option=None):
+    def __init__(self, block, goal_idx, field, value=None, label=None):
         self.block = block
         self.hierarchy = block.pageblock().section.hierarchy
-        self.description = "%s %s %s" % (
-            block.goal_type.capitalize(), goal_idx, field.capitalize())
+        self.goal_idx = goal_idx
+        self.answer_value = value
+        self.answer_label = label
         self.field = field
-        self.goal_identifier = "%s_%s_%s_%s" % (
-            block.id, slugify(block.goal_type), goal_idx, field)
-        self.option = option
+
+        goal_setting_block = block.goal_setting_block
+        self.progress_identifier = "%s_%s_%s_%s" % (
+            goal_setting_block.id, slugify(goal_setting_block.goal_type),
+            goal_idx, field)
+
+        self.description = "%s %s Checkin %s" % (
+            goal_setting_block.goal_type.capitalize(),
+            goal_idx, field.capitalize())
 
     def identifier(self):
-        return self.goal_identifier
+        return self.progress_identifier
 
     def metadata(self):
-        metadata = [self.hierarchy.name, self.goal_identifier,
+        metadata = [self.hierarchy.name, self.progress_identifier,
                     self.block.display_name]
-        if self.field == 'option':
-            metadata.append('single choice')
-            metadata.append(self.description)
-            metadata.append(self.option.id)
-            metadata.append(smart_str(self.option.text))
-        else:
+
+        if self.answer_value is None:
             metadata.append('string')
             metadata.append(self.description)
+        else:
+            metadata.append('single choice')
+            metadata.append(self.description)
+            metadata.append(self.answer_value)
+            metadata.append(smart_str(self.answer_label))
 
         return metadata
 
     def user_value(self, user):
-        response = GoalSettingResponse.objects.filter(
-            user=user, goal_setting_block=self.block).first()
+        responses = GoalSettingResponse.objects.filter(
+            user=user, form_id=self.goal_idx,
+            goal_setting_block=self.block.goal_setting_block)
+
+        response = GoalCheckInResponse.objects.filter(
+            goal_setting_response=responses).order_by('-updated_at').first()
 
         if response is None:
             return ''
-        elif self.field == 'option':
-            return response.option.id
+        elif self.field == 'progress':
+            return response.i_will_do_this
+        elif self.field == 'barrier':
+            return response.what_got_in_the_way.id if \
+                response.what_got_in_the_way else ''
         else:
-            return getattr(response, self.field) or ''  # replace None with ''
+            return response.other or ''
+
+ReportableInterface.register(GoalSettingBlock)
+ReportableInterface.register(GoalCheckInPageBlock)

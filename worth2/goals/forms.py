@@ -1,7 +1,6 @@
 from django import forms
 from django.forms.formsets import formset_factory
-
-from worth2.goals.models import GoalCheckInOption
+from worth2.goals.models import GoalCheckInOption, GoalCheckInPageBlock
 
 
 class GoalCheckInForm(forms.Form):
@@ -9,11 +8,7 @@ class GoalCheckInForm(forms.Form):
 
     i_will_do_this = forms.ChoiceField(
         label='How did it go?',
-        choices=(
-            ('yes', 'I did it!'),
-            ('in progress', 'I\'m still working on it.'),
-            ('no', 'I haven\'t started this goal.'),
-        ),
+        choices=GoalCheckInPageBlock.PROGRESS_CHOICES,
         widget=forms.RadioSelect(attrs={'class': 'how-it-went'}),
     )
 

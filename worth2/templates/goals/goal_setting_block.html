@@ -18,14 +18,15 @@
                     {% for form in setting_formset %}
                     {% if forloop.first %}
                    <div class="well">
-                   <span class="goal-form">
-                        {{ form.option|bootstrap_horizontal }}
-                        <div class="goal-other-container">
-                            {{ form.other_text|bootstrap_horizontal }}
-                        </div>
+                       <span class="goal-form">
+                            {{ form.option|bootstrap_horizontal }}
+                            <div class="goal-other-container">
+                                {{ form.other_text|bootstrap_horizontal }}
+                            </div>
+                            <div class="clearfix"></div>
+                            {{ form.text|bootstrap_horizontal }}
+                        </span>
                         <div class="clearfix"></div>
-                        {{ form.text|bootstrap_horizontal }}
-                    </span>
                     </div>
                     <div class="clearfix"></div>
                     {% else %}
@@ -41,11 +42,13 @@
                                 {{ form.option }}
                             </div>
                         </div>
+                        <div class="clearfix"></div>
                         <div class="goal-other-container">
                             {{ form.other_text|bootstrap_horizontal }}
                         </div>
                         {{ form.text|bootstrap_horizontal }}
                     </span>
+                    <div class="clearfix"></div>
                     </div>
                     {% endif %}
                     {% endfor %}
