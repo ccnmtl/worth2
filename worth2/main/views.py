@@ -1,4 +1,4 @@
-import csv
+import unicodecsv
 
 from django import http
 from django.contrib.auth import authenticate, login
@@ -23,7 +23,7 @@ from worth2.main.forms import SignInParticipantForm
 from worth2.main.models import Encounter, Participant, Location
 from worth2.main.reports import ParticipantReport
 from worth2.main.utils import (
-    get_first_block_in_session, get_first_block_of_type
+    get_first_block_in_module, get_first_block_of_type
 )
 from worth2.protectivebehaviors.utils import remove_empty_submission
 from worth2.selftalk.mixins import (
@@ -134,7 +134,7 @@ class ParticipantJournalView(TemplateView):
         ]
 
         # Find the first 'services' type goal setter in Session 1
-        goalsettingblock = get_first_block_in_session(
+        goalsettingblock = get_first_block_in_module(
             'goal setting block', 1,
             lambda (b): b.block().goal_type == 'services')
 
@@ -211,7 +211,7 @@ class ParticipantJournalView(TemplateView):
         ]
 
         # Find the first 'risk reduction' goal setter in Session 2
-        risk_goalsettingblock = get_first_block_in_session(
+        risk_goalsettingblock = get_first_block_in_module(
             'goal setting block', 2,
             lambda (b): b.block().goal_type == 'risk reduction')
 
@@ -219,7 +219,7 @@ class ParticipantJournalView(TemplateView):
         info.append(self._render_goals(risk_goalsettingblock, user))
 
         # Find the first 'services' goal setter in Session 2
-        services_goalsettingblock = get_first_block_in_session(
+        services_goalsettingblock = get_first_block_in_module(
             'goal setting block', 2,
             lambda (b): b.block().goal_type == 'services')
 
@@ -484,7 +484,7 @@ class ParticipantReportView(TemplateView):
             rows = report.metadata(hierarchies)
 
         pseudo_buffer = Echo()
-        writer = csv.writer(pseudo_buffer)
+        writer = unicodecsv.writer(pseudo_buffer)
 
         fnm = "worth2_%s.csv" % report_type
         response = StreamingHttpResponse(
