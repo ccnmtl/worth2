@@ -1,4 +1,4 @@
-import csv
+import unicodecsv
 
 from django import http
 from django.contrib.auth import authenticate, login
@@ -484,7 +484,7 @@ class ParticipantReportView(TemplateView):
             rows = report.metadata(hierarchies)
 
         pseudo_buffer = Echo()
-        writer = csv.writer(pseudo_buffer)
+        writer = unicodecsv.writer(pseudo_buffer)
 
         fnm = "worth2_%s.csv" % report_type
         response = StreamingHttpResponse(
