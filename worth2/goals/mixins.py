@@ -125,7 +125,13 @@ class GoalSettingViewMixin(object):
             user=request.user,
             goal_setting_block=goalsettingblock.block())
 
-        extra = goalsettingblock.block().goal_amount - 1
+        if responses.count() > 0:
+            # django/forms/formsets.py bases form instantiation on the
+            # "initial" passed data array and the extra parameters. Specifying
+            # a default extra on top of len(initial) results in too many forms.
+            extra = goalsettingblock.block().goal_amount - responses.count()
+        else:
+            extra = goalsettingblock.block().goal_amount - 1
 
         self.GoalSettingFormSet = formset_factory(
             DynamicGoalSettingForm,
