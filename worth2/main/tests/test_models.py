@@ -1,13 +1,16 @@
+import unittest
+from datetime import datetime
+
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 from pagetree.tests.factories import ModuleFactory
-from pagetree.models import Hierarchy
-
+from pagetree.models import Hierarchy, Section
 
 from worth2.main.models import Participant
 from worth2.main.tests.factories import (
     AvatarFactory, EncounterFactory, LocationFactory, ParticipantFactory,
-    VideoBlockFactory, WatchedVideoFactory
+    VideoBlockFactory, WatchedVideoFactory, UserPageVisitFactory
 )
 from worth2.main.utils import get_verbose_section_name
 
@@ -42,6 +45,27 @@ class ParticipantTest(TestCase):
         self.participant = ParticipantFactory()
         ModuleFactory('main', 'main')
         self.hierarchy = Hierarchy.objects.get(name='main')
+        root = self.hierarchy.get_root()
+        root.add_child_section_from_dict({
+            'label': 'Session 1',
+            'slug': 'session-1',
+            'pageblocks': [{
+                'block_type': 'Avatar Selector Block',
+            }],
+            'children': [],
+        })
+        root.add_child_section_from_dict({
+            'label': 'Session 2',
+            'slug': 'session-2',
+            'pageblocks': [],
+            'children': [{
+                'label': 'Goal Setting Block page',
+                'slug': 'goal-setting',
+                'pageblocks': [{
+                    'block_type': 'Goal Setting Block',
+                }]
+            }],
+        })
 
     def test_is_valid_from_factory(self):
         self.participant.full_clean()
@@ -60,17 +84,53 @@ class ParticipantTest(TestCase):
             self.hierarchy.get_root().get_absolute_url()
         )
 
-    def test_last_session_accessed(self):
-        r = self.participant.last_session_accessed(
-            '/pages/session-1/some-activity')
-        self.assertEqual(r, 1)
+    @unittest.skipUnless(
+        settings.DATABASES['default']['ENGINE'] ==
+        'django.db.backends.postgresql_psycopg2',
+        "This test requires PostgreSQL")
+    def test_highest_module_accessed(self):
+        self.assertEqual(
+            self.participant.highest_module_accessed(), -1)
 
-        r = self.participant.last_session_accessed('/pages/session-1/')
-        self.assertEqual(r, 1)
+        section1 = Section.objects.get(slug='session-1')
+        upv1 = UserPageVisitFactory(
+            user=self.participant.user, section=section1)
+        self.assertEqual(
+            self.participant.highest_module_accessed(), 1)
 
-        r = self.participant.last_session_accessed(
-            '/pages/session-5/session-5-activity')
-        self.assertEqual(r, 5)
+        section2 = Section.objects.get(slug='session-2')
+        goalsection = Section.objects.get(slug='goal-setting')
+        UserPageVisitFactory(user=self.participant.user, section=section2)
+        UserPageVisitFactory(user=self.participant.user, section=goalsection)
+        self.assertEqual(
+            self.participant.highest_module_accessed(), 2)
+
+        upv1.last_visit = datetime.now()
+        upv1.save()
+        self.assertEqual(
+            self.participant.highest_module_accessed(), 2)
+
+    def test_last_module_accessed(self):
+        self.assertEqual(
+            self.participant.last_module_accessed(), -1)
+
+        section1 = Section.objects.get(slug='session-1')
+        upv1 = UserPageVisitFactory(
+            user=self.participant.user, section=section1)
+        self.assertEqual(
+            self.participant.last_module_accessed(), 1)
+
+        section2 = Section.objects.get(slug='session-2')
+        goalsection = Section.objects.get(slug='goal-setting')
+        UserPageVisitFactory(user=self.participant.user, section=section2)
+        UserPageVisitFactory(user=self.participant.user, section=goalsection)
+        self.assertEqual(
+            self.participant.last_module_accessed(), 2)
+
+        upv1.last_visit = datetime.now()
+        upv1.save()
+        self.assertEqual(
+            self.participant.last_module_accessed(), 1)
 
     def test_verbose_section_name(self):
         s = get_verbose_section_name(self.participant.last_location())
@@ -134,3 +194,11 @@ class WatchedVideoTest(TestCase):
 
     def test_is_valid_from_factory(self):
         self.watched_video.full_clean()
+
+
+class UserPageVisitFactoryTest(TestCase):
+    def setUp(self):
+        self.upv = UserPageVisitFactory()
+
+    def test_is_valid_from_factory(self):
+        self.upv.full_clean()

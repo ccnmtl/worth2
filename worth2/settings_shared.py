@@ -35,8 +35,7 @@ COMPRESS_URL = '/media/'
 COMPRESS_ROOT = 'media/'
 AWS_QUERYSTRING_AUTH = False
 
-if 'test' in sys.argv or 'jenkins' in sys.argv:
-    MEDIA_ROOT = '/tmp/'
+if 'jenkins' in sys.argv:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -47,6 +46,9 @@ if 'test' in sys.argv or 'jenkins' in sys.argv:
             'PASSWORD': '',
         }
     }
+
+if 'test' in sys.argv or 'jenkins' in sys.argv:
+    MEDIA_ROOT = '/tmp/'
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
