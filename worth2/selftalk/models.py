@@ -5,6 +5,8 @@ from django.db import models
 from ordered_model.models import OrderedModel
 from pagetree.generic.models import BasePageBlock
 
+from worth2.main.utils import get_module_number
+
 
 class Statement(OrderedModel):
     """A negative statement.
@@ -115,10 +117,7 @@ class StatementBlock(BasePageBlock):
         ).delete()
 
     def __unicode__(self):
-        try:
-            slug = self.pageblock().section.get_parent().slug
-        except AttributeError:
-            slug = 'no section'
+        session_num = get_module_number(self.pageblock())
 
         if self.is_internal:
             block_subtype = 'Internal'
@@ -126,8 +125,8 @@ class StatementBlock(BasePageBlock):
             block_subtype = 'External'
             if self.subject_name:
                 block_subtype = self.subject_name + '\'s'
-        return '%s Statement Block [%s] id: %s' % (
-            block_subtype, slug, unicode(self.pk))
+        return '%s Statement Block [Session %d] id: %d' % (
+            block_subtype, session_num, self.pk)
 
     @staticmethod
     def add_form():
@@ -233,13 +232,9 @@ class RefutationBlock(BasePageBlock):
         ).delete()
 
     def __unicode__(self):
-        try:
-            slug = self.pageblock().section.get_parent().slug
-        except AttributeError:
-            slug = 'no section'
+        session_num = get_module_number(self.pageblock())
 
-        return '%s [%s] id: %s' % (
-            self.display_name, slug, unicode(self.pk))
+        return '%s [%d] id: %d' % (self.display_name, session_num, self.pk)
 
     @staticmethod
     def add_form():

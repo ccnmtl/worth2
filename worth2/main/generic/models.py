@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
 from pagetree.models import Hierarchy, UserPageVisit
+from worth2.main.utils import get_verbose_section_name
 
 
 class BaseUserProfile(models.Model):
@@ -57,21 +58,11 @@ class BaseUserProfile(models.Model):
         else:
             return upv.first().section
 
-    @staticmethod
-    def verbose_section_name(section):
-        """Returns a string."""
-
-        s = unicode(section)
-        if hasattr(section, 'slug') and section.slug:
-            s += " (%s)" % section.slug
-
-        return s
-
     def last_location_verbose(self):
-        return self.verbose_section_name(self.last_location())
+        return get_verbose_section_name(self.last_location())
 
     def next_location_verbose(self):
-        return self.verbose_section_name(self.last_location().get_next())
+        return get_verbose_section_name(self.last_location().get_next())
 
     def percent_complete(self):
         return self.percent_complete_hierarchy()
