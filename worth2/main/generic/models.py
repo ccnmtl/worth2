@@ -76,14 +76,3 @@ class BaseUserProfile(models.Model):
             return int(visits / float(pages) * 100)
         else:
             return 0
-
-    def time_spent(self):
-        """Returns the number of seconds the user has spent on the site."""
-        visits = UserPageVisit.objects.filter(user=self.user)
-
-        seconds = 0
-        if (visits.count() > 0):
-            start = visits.order_by('first_visit').first().first_visit
-            end = visits.order_by('-last_visit').first().last_visit
-            seconds = (end - start).total_seconds() / 60
-        return seconds

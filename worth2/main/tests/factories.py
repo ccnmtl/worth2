@@ -3,6 +3,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 import factory
 from factory.fuzzy import FuzzyText
 from pagetree.tests.factories import RootSectionFactory
+from pagetree.models import UserPageVisit
 
 from worth2.main.auth import generate_password
 from worth2.main.models import (
@@ -75,3 +76,12 @@ class WatchedVideoFactory(factory.django.DjangoModelFactory):
 
     user = factory.SubFactory(UserFactory)
     video_id = FuzzyText()
+
+
+# TODO: Move this to django-pagetree
+class UserPageVisitFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = UserPageVisit
+
+    user = factory.SubFactory(UserFactory)
+    section = factory.SubFactory(RootSectionFactory)
