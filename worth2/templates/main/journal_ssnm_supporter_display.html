@@ -1,0 +1,51 @@
+<div class="ssnm-supporter-box">
+    <div class="pull-left">
+
+        <img class="img-thumbnail"
+             src="{{ STATIC_URL }}img/icon-ssnm.png"
+             width="120">
+
+    </div>
+    <div class="pull-right text-right">
+        <h3>{{ supporter.name }}</h3>
+
+        {% if supporter.influence == 'P' %}
+        <div class="ssnm-color-positive">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            Positive
+        </div>
+        {% endif %}
+        {% if supporter.influence == 'MP' %}
+        <div class="ssnm-color-mostly-positive">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            Mostly Positive
+        </div>
+        {% endif %}
+        {% if supporter.influence == 'MN' %}
+        <div class="ssnm-color-mostly-negative">
+            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+            Mostly Negative
+        </div>
+        {% endif %}
+        {% if supporter.influence == 'N' %}
+        <div class="ssnm-color-negative">
+            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+            Negative
+        </div>
+        {% endif %}
+
+        {% if supporter.provides_emotional_support %}
+        <div style="color: magenta;">
+            <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+            Emotional Support
+        </div>
+        {% endif %}
+        {% if supporter.provides_practical_support %}
+        <div style="color: blue;">
+            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+            Practical Support
+        </div>
+        {% endif %}
+    </div>
+    <div class="clearfix"></div>
+</div>

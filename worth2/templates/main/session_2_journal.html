@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load webdesign %}
+
+{% block content %}
+<h1>Journal for Session 2</h1>
+
+<div>
+    Participant: <strong>{{ participant.study_id }}</strong>
+</div>
+
+<h3>Introduction to Session 2 Road Map</h3>
+<div class="worth-journal-info-element">
+    <p>
+        Here is your personal road map for this week. It lists information
+        you learned this week, as well as your answers to some of the
+        questions from the session, the goals you set, and services
+        organizations you can read out to for help meeting your goals.
+    </p>
+</div>
+
+<h3>I am WORTH it!</h3>
+<div class="worth-journal-info-element">
+    <p>
+        It is important to take a moment out of our busy lives to
+        remind ourselves why we are WORTH it. Here are some words
+        that describe why you are worth it:
+    </p>
+</div>
+
+<div class="worth-journal-info-element">
+    <p>
+    I am worth it selected words (participant answers)
+    <strong>TODO: Implement this when activity here is filled in:
+        https://worth2.ccnmtl.columbia.edu/ ages/edit/session-2/i-am-worth-it/
+    </strong>
+    </p>
+</div>
+
+<div class="worth-journal-info-element">
+    <h3>Info from montage 2</h3>
+    <em>Karen/Blondell to write</em>
+</div>
+
+{# TODO #}
+<h3>Reflect on the characters answers (participant answers)</h3>
+<div class="worth-journal-info-element">
+    <p>
+        This week you learned about fix women and listened to them talk
+        about issues in their lives. Here are some of the issues they
+        raised and how important you think they are in your life:
+    </p>
+    <p>question text</p>
+    <p>participant answer</p>
+    <p>
+        example: "Sometimes it is just too hard to cope"
+        This is [a big issue] for me.
+    </p>
+</div>
+
+<h3>Myth/Fact Info</h3>
+<div class="worth-journal-info-element">
+    <p>{% lorem %}</p>
+</div>
+
+{# TODO #}
+<h3>Protective behaviors (participant answers)</h3>
+<div class="worth-journal-info-element">
+    <p>
+        This week you thought about activities you do and how risky they
+        are. Here is the list you wrote of things you do ranked by risk
+        level. List of behaviors participant does ranked/coded by risk
+        level
+    </p>
+    <p>Here is how you rated your own risk level:</p>
+    <p>participant's self risk rating</p>
+</div>
+
+{# TODO #}
+<h3>Goals set in session 2 (participant answers)</h3>
+<div class="worth-journal-info-element">
+    <p>
+        In this session you set goals to reduce your risk of
+        contracting HIV or other sexually transmitted infections
+        and goals to access a service.
+    </p>
+</div>
+
+{% comment %}
+        # Find the first 'risk reduction' goal setter in Session 2
+        risk_goalsettingblock = get_first_block_in_module(
+            'goal setting block', 2,
+            lambda (b): b.block().goal_type == 'risk reduction')
+
+        info.append('<h3>My risk reduction goals</h3>')
+        info.append(self._render_goals(risk_goalsettingblock, user))
+
+        # Find the first 'services' goal setter in Session 2
+        services_goalsettingblock = get_first_block_in_module(
+            'goal setting block', 2,
+            lambda (b): b.block().goal_type == 'services')
+
+        info.append('<h3>My services goals</h3>')
+        info.append(self._render_goals(services_goalsettingblock, user))
+{% endcomment %}
+
+{# TODO #}
+<h3>Services info selected to view (participant answers)</h3>
+<div class="worth-journal-info-element">
+    <p>My issue (issue selected)</p>
+    <p>
+        List of organizations with name/address/contact info
+        for above issue.
+    </p>
+    <p>
+        example: "This week you looked for information on
+        [selected issue]. Here is a list of organizations you
+        can contact to help you with this issue."
+    </p>
+</div>
+
+{# TODO #}
+<h3>Wrap Up</h3>
+<div class="worth-journal-info-element">
+    <p>
+        Congratulations on completing session two of E-WORTH!
+        Remember that your homework for the week is to work on
+        the goals you set today.
+    </p>
+    <p>I am WORTH IT! And I will stay healthy.</p>
+    <p>I am WORTH IT! And I will protect myself.</p>
+    <p>I am WORTH IT! And I will find support for my health</p>
+</div>
+{% endblock %}

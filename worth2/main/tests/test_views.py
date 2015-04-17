@@ -289,26 +289,23 @@ class ParticipantJournalsTest(LoggedInFacilitatorTestMixin, TestCase):
                 'children': [],
             })
 
-    def test_render_goals(self):
+    def test_get_goal_responses(self):
         goalsettingblock = get_first_block_in_module(
             'goal setting block', 1)
 
         option = GoalOption.objects.create(text='test option')
-        response = GoalSettingResponse.objects.create(
+        GoalSettingResponse.objects.create(
             goal_setting_block=goalsettingblock.block(),
             user=self.participant.user,
             option=option,
             other_text='test other',
             text='test text')
 
-        s = ParticipantJournalView._render_goals(
+        responses = ParticipantJournalView._get_goal_responses(
             goalsettingblock,
             self.participant.user)
 
-        self.assertNotEqual(s, u'')
-        self.assertTrue(response.text in s)
-        self.assertTrue(response.other_text in s)
-        self.assertTrue(unicode(response.option) in s)
+        self.assertEqual(responses.count(), 1)
 
     def test_get_session_1(self):
         session_num = 1
