@@ -176,11 +176,23 @@ class GoalSettingViewMixin(object):
 
                 updated_values = formdata.copy()
                 try:
-                    GoalSettingResponse.objects.update_or_create(
-                        form_id=i,
-                        user=request.user,
-                        goal_setting_block=block,
-                        defaults=updated_values)
+                    obj, created = GoalSettingResponse.objects \
+                        .update_or_create(
+                            form_id=i,
+                            user=request.user,
+                            goal_setting_block=block,
+                            defaults=updated_values)
+
+                    if not created:
+                        # If the goal setting response was updated, that
+                        # means the user went back and updated it. It may
+                        # have an existing checkin response associated with
+                        # it, which should be cleared since it wouldn't
+                        # make sense to have attached on the new goal.
+                        checkin_response = GoalCheckInResponse.objects.get(
+                            goal_setting_response=obj)
+                        if checkin_response:
+                            checkin_response.delete()
                 except:
                     # In case there's a unique_together exception, or something
                     # similar, (which is unlikely, but possible if you have
