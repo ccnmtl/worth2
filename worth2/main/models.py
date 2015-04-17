@@ -233,7 +233,7 @@ class Participant(InactiveUserProfile):
         :rtype: int
         """
         module_sections = UserPageVisit.objects.filter(
-            user=self.user, section__depth=2
+            user=self.user, section__depth__gte=2
         ).distinct('section__slug')
 
         module_numbers = map(
