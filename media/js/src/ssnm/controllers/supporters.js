@@ -29,13 +29,18 @@
         actions: {
             addSupporter: function() {
                 Em.debug('controller:supporters addSupporter');
-                var editSupporterController = this.get(
-                    'controllers.edit-supporter');
-                editSupporterController.setProperties({
-                    'isEditing': false,
-                    'model': this.store.createRecord('supporter')
-                });
-                this.send('openModal', 'edit-supporter-modal-1');
+                if (this.get('savedSupporters.length') < 5) {
+                    var editSupporterController = this.get(
+                        'controllers.edit-supporter');
+                    editSupporterController.setProperties({
+                        'isEditing': false,
+                        'model': this.store.createRecord('supporter')
+                    });
+                    this.send('openModal', 'edit-supporter-modal-1');
+                } else {
+                    Em.debug('Max supporters!');
+                    this.send('openModal', 'max-supporters-modal');
+                }
             },
 
             /**
