@@ -12,7 +12,9 @@ from pagetree.generic.models import BasePageBlock
 
 from worth2.main.auth import user_is_participant
 from worth2.main.generic.models import BaseUserProfile
-from worth2.main.utils import get_module_number_from_section
+from worth2.main.utils import (
+    get_module_number_from_section, get_verbose_section_name
+)
 
 
 class InactiveUserProfile(BaseUserProfile):
@@ -227,31 +229,57 @@ class Participant(InactiveUserProfile):
     def __unicode__(self):
         return unicode(self.study_id)
 
-    def highest_module_accessed(self, url=None):
+    def highest_module_accessed(self):
         """Returns the farthest module this participant has been in.
 
         :rtype: int
         """
         module_sections = UserPageVisit.objects.filter(
-            user=self.user, section__depth=2
+            user=self.user, section__depth__gte=2
         ).distinct('section__slug')
 
-        module_numbers = map(
-            lambda x: get_module_number_from_section(x.section),
-            module_sections)
+        if module_sections.count() > 0:
+            module_numbers = map(
+                lambda x: get_module_number_from_section(x.section),
+                module_sections)
 
-        if len(module_numbers) > 0:
-            return max(module_numbers)
-        else:
-            return -1
+            if len(module_numbers) > 0:
+                return max(module_numbers)
+
+        return -1
 
     def last_module_accessed(self):
-        """Get which session this participant is in.
+        """Get which module this participant is in.
 
         :rtype: int
         """
         last_section = self.last_location()
         return get_module_number_from_section(last_section)
+
+    def next_module(self):
+        """Get the next module that the participant needs to complete.
+
+        :rtype: int
+        """
+        highest_module = self.highest_module_accessed()
+        if highest_module >= 5:
+            return 5
+        elif highest_module >= 1:
+            return highest_module + 1
+        else:
+            return -1
+
+    def next_module_section(self):
+        """Get the next module as a section.
+
+        :rtype: pagetree.Section
+        """
+        module_num = self.next_module()
+        slug = 'session-%d' % module_num
+        return Section.objects.get(slug=slug)
+
+    def next_module_verbose(self):
+        return get_verbose_section_name(self.next_module_section())
 
 
 class Encounter(models.Model):
