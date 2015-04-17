@@ -110,6 +110,25 @@ class ParticipantTest(TestCase):
         self.assertEqual(
             self.participant.highest_module_accessed(), 2)
 
+    @unittest.skipUnless(
+        settings.DATABASES['default']['ENGINE'] ==
+        'django.db.backends.postgresql_psycopg2',
+        "This test requires PostgreSQL")
+    def test_highest_module_accessed2(self):
+        section1 = Section.objects.get(slug='session-1')
+        upv1 = UserPageVisitFactory(
+            user=self.participant.user, section=section1)
+        Section.objects.get(slug='session-2')
+        goalsection = Section.objects.get(slug='goal-setting')
+        UserPageVisitFactory(user=self.participant.user, section=goalsection)
+        self.assertEqual(
+            self.participant.highest_module_accessed(), 2)
+
+        upv1.last_visit = datetime.now()
+        upv1.save()
+        self.assertEqual(
+            self.participant.highest_module_accessed(), 2)
+
     def test_last_module_accessed(self):
         self.assertEqual(
             self.participant.last_module_accessed(), -1)
@@ -131,6 +150,28 @@ class ParticipantTest(TestCase):
         upv1.save()
         self.assertEqual(
             self.participant.last_module_accessed(), 1)
+
+    @unittest.skipUnless(
+        settings.DATABASES['default']['ENGINE'] ==
+        'django.db.backends.postgresql_psycopg2',
+        "This test requires PostgreSQL")
+    def test_next_module(self):
+        self.assertEqual(self.participant.next_module(), -1)
+
+        section1 = Section.objects.get(slug='session-1')
+        upv1 = UserPageVisitFactory(
+            user=self.participant.user, section=section1)
+        self.assertEqual(self.participant.next_module(), 2)
+
+        section2 = Section.objects.get(slug='session-2')
+        goalsection = Section.objects.get(slug='goal-setting')
+        UserPageVisitFactory(user=self.participant.user, section=section2)
+        UserPageVisitFactory(user=self.participant.user, section=goalsection)
+        self.assertEqual(self.participant.next_module(), 3)
+
+        upv1.last_visit = datetime.now()
+        upv1.save()
+        self.assertEqual(self.participant.next_module(), 3)
 
     def test_verbose_section_name(self):
         s = get_verbose_section_name(self.participant.last_location())
