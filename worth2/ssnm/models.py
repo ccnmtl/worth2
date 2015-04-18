@@ -80,8 +80,8 @@ class SupporterReportColumn(ReportColumnInterface):
         self.idx = idx
         self.field = field
         self.field_type = field_type
-        self.answer_value = value
-        self.answer_label = label
+        self.answer_value = value or ''
+        self.answer_label = label or ''
 
     def description(self):
         return "Supporter %s %s" % (self.idx + 1, self.field.capitalize())

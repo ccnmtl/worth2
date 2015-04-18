@@ -167,13 +167,42 @@ class ParticipantReportTest(TestCase):
             ['', '2_time_spent', 'profile', 'string', 'Four Time Spent'],
             ['', '2_encounter', 'profile', 'string', 'Four Encounter'],
             ['', '2_first_makeup', 'profile', 'string', 'Four First Makeup'],
-            ['', '2_second_makeup', 'profile', 'string', 'Four Second Makeup']
+            ['', '2_second_makeup', 'profile', 'string', 'Four Second Makeup'],
+            ['', 'supporter_count', 'Social Support Network', 'count',
+             'Supporter Count'],
+            ['', 'supporter_1_closeness', 'Social Support Network Map',
+             'single choice', 'Supporter 1 Closeness', 'VC', 'Very Close'],
+            ['', 'supporter_1_closeness', 'Social Support Network Map',
+             'single choice', 'Supporter 1 Closeness', 'C', 'Close'],
+            ['', 'supporter_1_closeness', 'Social Support Network Map',
+             'single choice', 'Supporter 1 Closeness', 'NC', 'Not Close'],
+            ['', 'supporter_1_influence', 'Social Support Network Map',
+             'single choice', 'Supporter 1 Influence', 'P', 'Positive'],
+            ['', 'supporter_1_influence', 'Social Support Network Map',
+             'single choice', 'Supporter 1 Influence', 'MP',
+             'Mostly Positive'],
+            ['', 'supporter_1_influence', 'Social Support Network Map',
+             'single choice', 'Supporter 1 Influence', 'MN',
+             'Mostly Negative'],
+            ['', 'supporter_1_influence', 'Social Support Network Map',
+             'single choice', 'Supporter 1 Influence', 'N', 'Negative'],
+            ['', 'supporter_1_provides_emotional_support',
+             'Social Support Network Map', 'boolean',
+             'Supporter 1 Provides_emotional_support', '', ''],
+            ['', 'supporter_1_provides_practical_support',
+             'Social Support Network Map', 'boolean',
+             'Supporter 1 Provides_practical_support', '', '']
         ]
 
         report = ParticipantReport(self.hierarchy)
         metadata = report.metadata(Hierarchy.objects.all())
         for row in rows:
             self.assertEquals(metadata.next(), row)
+
+        for x in range(0, 36):
+            # expecting 9 more rows for additional 4 supporters
+            # overkill to test every single value.
+            metadata.next()
 
         with self.assertRaises(StopIteration):
             metadata.next()
@@ -184,9 +213,20 @@ class ParticipantReportTest(TestCase):
              '0_encounter', '0_first_makeup', '0_second_makeup',
              '1_time_spent', '1_encounter', '1_first_makeup',
              '1_second_makeup', '2_time_spent', '2_encounter',
-             '2_first_makeup', '2_second_makeup']
+             '2_first_makeup', '2_second_makeup', 'supporter_count',
+             'supporter_1_closeness', 'supporter_1_influence',
+             'supporter_1_provides_emotional_support',
+             'supporter_1_provides_practical_support', 'supporter_2_closeness',
+             'supporter_2_influence', 'supporter_2_provides_emotional_support',
+             'supporter_2_provides_practical_support',
+             'supporter_3_closeness', 'supporter_3_influence',
+             'supporter_3_provides_emotional_support',
+             'supporter_3_provides_practical_support', 'supporter_4_closeness',
+             'supporter_4_influence', 'supporter_4_provides_emotional_support',
+             'supporter_4_provides_practical_support', 'supporter_5_closeness',
+             'supporter_5_influence', 'supporter_5_provides_emotional_support',
+             'supporter_5_provides_practical_support']
         ]
-
         report = ParticipantReport(self.hierarchy)
         values = report.values(Hierarchy.objects.all())
 
