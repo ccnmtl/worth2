@@ -1,0 +1,40 @@
+{% load avatar %}
+{% include 'ssnm/ssnm_css.html' %}
+
+<div class="worth-ssnm-container">
+    <div class="worth-ssnm-box worth-ssnm-box-very-close">
+        <div class="ssnm-title">My Social Support Network</div>
+        <div class="ssnm-box-title">Very Close</div>
+        <div class="worth-ssnm-my-avatar-box">
+            <div class="avatar-block">
+                <img class="img-thumbnail" src="{% avatar_url user %}" width="120" >
+            </div>
+        </div>
+
+        {% for supporter in supporters %}
+        {% if supporter.closeness == 'VC' %}
+        {% include 'main/journal_ssnm_supporter_display.html' %}
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="worth-ssnm-box worth-ssnm-box-close">
+        <div class="ssnm-box-title">Close</div>
+
+        {% for supporter in supporters %}
+        {% if supporter.closeness == 'C' %}
+        {% include 'main/journal_ssnm_supporter_display.html' %}
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="worth-ssnm-box worth-ssnm-box-not-close">
+        <div class="ssnm-box-title">Not Close</div>
+
+        {% for supporter in supporters %}
+        {% if supporter.closeness == 'NC' %}
+        {% include 'main/journal_ssnm_supporter_display.html' %}
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>

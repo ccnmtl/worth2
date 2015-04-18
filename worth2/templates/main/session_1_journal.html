@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load webdesign %}
+
+{% block content %}
+<h1>Journal for Session 1</h1>
+
+<div>
+    Participant: <strong>{{ participant.study_id }}</strong>
+</div>
+
+<h3>General Info About WORTH</h3>
+<div class="worth-journal-info-element">
+    <p>{% lorem %}</p>
+</div>
+
+<h3>General Info About HIV Testing</h3>
+<div class="worth-journal-info-element">
+    <p>{% lorem %}</p>
+</div>
+
+<h3>Goals set for Services</h3>
+<div class="worth-journal-info-element">
+    {% for r in goal_responses %}
+    <div>Goal option: <strong>{{ r.option }}</strong></div>
+
+    {% if r.other_text %}
+    <div>Other: <strong>{{ r.other_text }}</strong></div>
+    {% endif %}
+
+    <div>My plan: <strong>{{ r.text }}</strong></div>
+    {% endfor %}
+</div>
+
+<h3>Services info selected to view (participant answers)</h3>
+<div class="worth-journal-info-element">
+    <strong>TODO: implement this once the services activity is in place:
+    https://worth2.ccnmtl.columbia.edu/pages/edit/session-1/services/</strong>
+</div>
+
+<div class="worth-journal-info-element">
+    My issue (issue selected)
+</div>
+
+<div class="worth-journal-info-element">
+    List of organizations with name/address/contact info for above issue
+</div>
+{% endblock %}
