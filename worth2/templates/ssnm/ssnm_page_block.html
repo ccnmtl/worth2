@@ -127,6 +127,26 @@ HTML template - there's probably a way of avoiding that step.
     {{/if}}
 </script>
 
+<script type="text/x-handlebars" data-template-name="max-supporters-modal">
+    {{#modal-dialog action='closeModal'}}
+    <div class="ssnm-modal-header">
+        <h4>Too many people</h4>
+    </div>
+    <div class="ssnm-modal-body">
+        <p class="ssnm-modal-desc">
+            Sorry, this activity only works with at most <strong>5</strong>
+            people in your network. You can delete someone if you'd like
+            to add a new person.
+        </p>
+    </div>
+    <div class="ssnm-modal-footer">
+        <button {{action 'closeModal'}} class="btn btn-default">
+            Close
+        </button>
+    </div>
+    {{/modal-dialog}}
+</script>
+
 <script type="text/x-handlebars" data-template-name="edit-supporter-modal-1">
     {{#modal-dialog action='closeModal'}}
     <div class="ssnm-modal-header">

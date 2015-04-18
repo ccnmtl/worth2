@@ -114,27 +114,27 @@
                     >Participant {{participant.study_id}}'s progress</h4>
             </div>
             <div class="modal-body" style="text-align: center;">
-                {% with last_session=participant.last_session_accessed %}
+                {% with last_module=participant.last_module_accessed %}
                 <div class="table-container center-block">
                     <table class="table table-condensed col-sm-2">
                         <tbody>
-                            {% with session=1 %}
+                            {% with module=1 %}
                             {% include 'main/participant_progress_row.html' %}
                             {% endwith %}
 
-                            {% with session=2 %}
+                            {% with module=2 %}
                             {% include 'main/participant_progress_row.html' %}
                             {% endwith %}
 
-                            {% with session=3 %}
+                            {% with module=3 %}
                             {% include 'main/participant_progress_row.html' %}
                             {% endwith %}
 
-                            {% with session=4 %}
+                            {% with module=4 %}
                             {% include 'main/participant_progress_row.html' %}
                             {% endwith %}
 
-                            {% with session=5 %}
+                            {% with module=5 %}
                             {% include 'main/participant_progress_row.html' %}
                             {% endwith %}
                         </tbody>

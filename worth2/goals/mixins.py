@@ -125,7 +125,13 @@ class GoalSettingViewMixin(object):
             user=request.user,
             goal_setting_block=goalsettingblock.block())
 
-        extra = goalsettingblock.block().goal_amount - 1
+        if responses.count() > 0:
+            # django/forms/formsets.py bases form instantiation on the
+            # "initial" passed data array and the extra parameters. Specifying
+            # a default extra on top of len(initial) results in too many forms.
+            extra = goalsettingblock.block().goal_amount - responses.count()
+        else:
+            extra = goalsettingblock.block().goal_amount - 1
 
         self.GoalSettingFormSet = formset_factory(
             DynamicGoalSettingForm,
@@ -170,11 +176,23 @@ class GoalSettingViewMixin(object):
 
                 updated_values = formdata.copy()
                 try:
-                    GoalSettingResponse.objects.update_or_create(
-                        form_id=i,
-                        user=request.user,
-                        goal_setting_block=block,
-                        defaults=updated_values)
+                    obj, created = GoalSettingResponse.objects \
+                        .update_or_create(
+                            form_id=i,
+                            user=request.user,
+                            goal_setting_block=block,
+                            defaults=updated_values)
+
+                    if not created:
+                        # If the goal setting response was updated, that
+                        # means the user went back and updated it. It may
+                        # have an existing checkin response associated with
+                        # it, which should be cleared since it wouldn't
+                        # make sense to have attached on the new goal.
+                        checkin_response = GoalCheckInResponse.objects.get(
+                            goal_setting_response=obj)
+                        if checkin_response:
+                            checkin_response.delete()
                 except:
                     # In case there's a unique_together exception, or something
                     # similar, (which is unlikely, but possible if you have

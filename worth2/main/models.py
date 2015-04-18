@@ -1,5 +1,3 @@
-import re
-
 from django import forms
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -9,11 +7,14 @@ from django.db import models
 from django.shortcuts import get_object_or_404
 from django.template.defaultfilters import slugify
 from ordered_model.models import OrderedModel
-from pagetree.models import Section
+from pagetree.models import Section, UserPageVisit
 from pagetree.generic.models import BasePageBlock
 
 from worth2.main.auth import user_is_participant
 from worth2.main.generic.models import BaseUserProfile
+from worth2.main.utils import (
+    get_module_number_from_section, get_verbose_section_name
+)
 
 
 class InactiveUserProfile(BaseUserProfile):
@@ -228,17 +229,57 @@ class Participant(InactiveUserProfile):
     def __unicode__(self):
         return unicode(self.study_id)
 
-    def last_session_accessed(self, url=None):
-        """Get which session this participant is in. Returns an int."""
+    def highest_module_accessed(self):
+        """Returns the farthest module this participant has been in.
 
-        if url is None:
-            url = self.last_location_url()
+        :rtype: int
+        """
+        module_sections = UserPageVisit.objects.filter(
+            user=self.user, section__depth__gte=2
+        ).distinct('section__slug')
 
-        m = re.match(r'^/pages/session-(\d+)/.*', url)
-        if m:
-            return int(m.groups()[0])
+        if module_sections.count() > 0:
+            module_numbers = map(
+                lambda x: get_module_number_from_section(x.section),
+                module_sections)
 
-        return None
+            if len(module_numbers) > 0:
+                return max(module_numbers)
+
+        return -1
+
+    def last_module_accessed(self):
+        """Get which module this participant is in.
+
+        :rtype: int
+        """
+        last_section = self.last_location()
+        return get_module_number_from_section(last_section)
+
+    def next_module(self):
+        """Get the next module that the participant needs to complete.
+
+        :rtype: int
+        """
+        highest_module = self.highest_module_accessed()
+        if highest_module >= 5:
+            return 5
+        elif highest_module >= 1:
+            return highest_module + 1
+        else:
+            return -1
+
+    def next_module_section(self):
+        """Get the next module as a section.
+
+        :rtype: pagetree.Section
+        """
+        module_num = self.next_module()
+        slug = 'session-%d' % module_num
+        return Section.objects.get(slug=slug)
+
+    def next_module_verbose(self):
+        return get_verbose_section_name(self.next_module_section())
 
 
 class Encounter(models.Model):

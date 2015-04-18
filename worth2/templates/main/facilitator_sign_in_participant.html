@@ -39,8 +39,8 @@
                     <option value="{{p.pk}}"
                             data-cohort-id="{{p.cohort_id|default:''}}"
                             data-last-location="{{p.last_location_verbose}}"
-                            data-next-location="{{p.next_location_verbose}}"
-                            data-last-accessed="{{p.last_session_accessed}}">
+                            data-next-location="{{p.next_module_verbose}}"
+                            data-highest-accessed="{{p.highest_module_accessed}}">
                         {{p.study_id}}</option>
                     {% endfor %}
                 </select>
@@ -78,10 +78,11 @@
                         <span class="worth-participant-next-location"></span>
                     </div>
                 </div>
-                <div class="radio">
+                <div class="radio disabled">
                     <label>
                         <input type="radio" name="participant_destination"
-                               value="already_completed_session">
+                               value="already_completed_session"
+                               disabled="disabled">
                         An already completed session for review.
                     </label>
                     <div>
