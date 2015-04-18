@@ -2,7 +2,8 @@ from django.test import TestCase
 from pagetree.helpers import get_hierarchy
 
 from worth2.goals.tests.factories import (
-    GoalCheckInOptionFactory, GoalOptionFactory, GoalSettingResponseFactory
+    GoalCheckInOptionFactory, GoalCheckInResponseFactory,
+    GoalOptionFactory, GoalSettingResponseFactory
 )
 from worth2.goals.models import (
     GoalCheckInResponse, GoalSettingBlock, GoalSettingResponse
@@ -26,9 +27,9 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
             }],
             'children': [],
         })
-        goalsettingblock = \
+        self.goalsettingblock = \
             self.root.get_first_child().pageblock_set.first()
-        assert(goalsettingblock is not None)
+        assert(self.goalsettingblock is not None)
 
         self.root.add_child_section_from_dict({
             'label': 'Goal Check In Section',
@@ -45,7 +46,7 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
         # Set the check-in block's setting block to the one we just
         # created.
         self.goalcheckinblock.block().goal_setting_block = \
-            goalsettingblock.block()
+            self.goalsettingblock.block()
         self.goalcheckinblock.block().save()
         assert(self.goalcheckinblock.block().goal_setting_block is not None)
 
@@ -64,25 +65,25 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.setting_resp1 = GoalSettingResponseFactory(
             user=self.u,
             form_id=0,
-            goal_setting_block=goalsettingblock.block(),
+            goal_setting_block=self.goalsettingblock.block(),
             option=opt1,
         )
         self.setting_resp2 = GoalSettingResponseFactory(
             user=self.u,
             form_id=1,
-            goal_setting_block=goalsettingblock.block(),
+            goal_setting_block=self.goalsettingblock.block(),
             option=opt2,
         )
         self.setting_resp3 = GoalSettingResponseFactory(
             user=self.u,
             form_id=2,
-            goal_setting_block=goalsettingblock.block(),
+            goal_setting_block=self.goalsettingblock.block(),
             option=opt3,
         )
         self.setting_resp4 = GoalSettingResponseFactory(
             user=self.u,
             form_id=3,
-            goal_setting_block=goalsettingblock.block(),
+            goal_setting_block=self.goalsettingblock.block(),
             option=opt4_na,
         )
         self.setting_responses = [
@@ -332,6 +333,55 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.assertEqual(responses.first().what_got_in_the_way,
                          self.checkin_opt_other)
         self.assertEqual(responses.first().other, 'Some other goal')
+
+    def test_post_revising_goal_settings(self):
+        """
+        Test that revising goal settings for goals that already
+        have associated check-ins doesn't mess up the check-in form.
+        """
+        # Create a checkin response corresponding to the goal setting
+        # response.
+        GoalCheckInResponseFactory(
+            goal_setting_response=self.setting_resp1,
+            i_will_do_this='yes',
+        )
+        self.assertEqual(
+            GoalCheckInResponse.objects.filter(
+                goal_setting_response=self.setting_resp1).count(),
+            1)
+
+        # POST to the goal setting response form, as if the user is
+        # revising their goals.
+        option = GoalOptionFactory()
+        option2 = GoalOptionFactory()
+        p = 'pageblock-%s' % self.goalsettingblock.pk
+        goalsettingurl = '/pages/goal-setting-section/'
+        self.client.post(goalsettingurl, {
+            # Formset Management form params
+            '%s-TOTAL_FORMS' % p: '3',
+            '%s-INITIAL_FORMS' % p: '0',
+            '%s-MIN_NUM_FORMS' % p: '1',
+            '%s-MAX_NUM_FORMS' % p: '1000',
+
+            '%s-0-option' % p: option.pk,
+            '%s-0-other_text' % p: '',
+            '%s-0-text' % p: 'New explanation 1',
+            '%s-1-other_text' % p: '',
+            '%s-1-option' % p: option.pk,
+            '%s-1-text' % p: 'New explanation 2',
+            '%s-2-option' % p: option2.pk,
+            '%s-2-other_text' % p: '',
+            '%s-2-text' % p: 'New explanation 3',
+        })
+
+        # The goal setting response that the goal checkin response
+        # was pointing to just changed. We need to make sure that the
+        # checkin response was deleted, because it doesn't make sense
+        # to keep the same checkin response for a new goal.
+        self.assertEqual(
+            GoalCheckInResponse.objects.filter(
+                goal_setting_response=self.setting_resp1).count(),
+            0)
 
 
 class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
