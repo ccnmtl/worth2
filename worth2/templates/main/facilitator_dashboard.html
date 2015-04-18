@@ -12,7 +12,7 @@
 
     <div class="row dashboard-widgets">
     
-    <div class="col-md-6">
+    <div class="col-md-4">
     <div class="well dashboard-widget">
     <h2>Intervene</h2>
     <p>Lead a participant through the E-WORTH experience.</p>
@@ -20,13 +20,22 @@
     </div>
     </div>
     
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="well dashboard-widget">
             <h2>Manage</h2>
             <p>Add, edit, and delete all kinds of cohort and participant information.</p>
             <div>
                 <a href="{% url 'manage-participants' %}" class="btn btn-primary pull-left">Manage Participant IDs</a>
-                <a href="{% url 'participant-report' %}" class="btn btn-default pull-left">Retrieve Reports</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="well dashboard-widget">
+            <h2>Assess</h2>
+            <p>Generate reports for participant usage across all sessions</p>
+            <div>
+                <a href="{% url 'participant-report' %}" class="btn btn-primary pull-left">Retrieve Reports</a>
             </div>
         </div>
     </div>
