@@ -4,7 +4,9 @@ from django.contrib.auth.models import User
 from django.core.cache import cache
 from pagetree.models import UserPageVisit
 from pagetree.reports import PagetreeReport, StandaloneReportColumn
+
 from worth2.main.models import Encounter
+from worth2.ssnm.models import SsnmReport
 
 
 class ParticipantReport(PagetreeReport):
@@ -150,3 +152,19 @@ class ParticipantReport(PagetreeReport):
             base_columns += self.per_module_columns(idx, module)
 
         return base_columns
+
+    def metadata_columns(self, hierarchies):
+        columns = super(ParticipantReport, self).metadata_columns(hierarchies)
+
+        # not associated with hierarchy, but vary with metadata/values
+        ssnm = SsnmReport()
+        columns += ssnm.report_metadata()
+        return columns
+
+    def value_columns(self, hierarchies):
+        columns = super(ParticipantReport, self).value_columns(hierarchies)
+
+        # not associated with hierarchy, but vary with metadata/values
+        ssnm = SsnmReport()
+        columns += ssnm.report_values()
+        return columns
