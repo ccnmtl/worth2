@@ -50,12 +50,7 @@ if 'jenkins' in sys.argv:
 if 'test' in sys.argv or 'jenkins' in sys.argv:
     MEDIA_ROOT = '/tmp/'
 
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-
-NOSE_ARGS = [
-    '--with-coverage',
-    '--cover-package=worth2',
-]
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 JENKINS_TASKS = (
     'django_jenkins.tasks.run_pylint',
@@ -129,7 +124,6 @@ INSTALLED_APPS = [
     'tagging',
     'ordered_model',
     'typogrify',
-    'django_nose',
     'compressor',
     'django_statsd',
     'bootstrap3',
