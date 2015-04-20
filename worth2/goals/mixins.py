@@ -32,8 +32,22 @@ class GoalCheckInViewMixin(object):
             GoalCheckInForm,
             min_num=self.goal_setting_responses.count())
 
+        # If there's existing responses to this pageblock, use them
+        # to bind the formset.
+        responses = GoalCheckInResponse.objects.filter(
+            goal_setting_response__in=self.goal_setting_responses)
+
+        initial_data = []
+        for r in responses.order_by('goal_setting_response__form_id'):
+            initial_data.append({
+                'i_will_do_this': r.i_will_do_this,
+                'what_got_in_the_way': r.what_got_in_the_way,
+                'other': r.other,
+            })
+
         self.checkin_formset = self.GoalCheckInFormSet(
-            prefix='pageblock-%s' % goalcheckinblock.pk)
+            prefix='pageblock-%s' % goalcheckinblock.pk,
+            initial=tuple(initial_data))
 
         # Populate the hidden goal_setting_response fields
         for i, resp in enumerate(self.goal_setting_responses):
@@ -152,8 +166,7 @@ class GoalSettingViewMixin(object):
 
         self.setting_formset = self.GoalSettingFormSet(
             prefix='pageblock-%s' % goalsettingblock.pk,
-            initial=tuple(initial_data),
-        )
+            initial=tuple(initial_data))
 
     def _goal_setting_submit(self, request, goalsettingblock):
         """Handle a submission for the goal setting activity.
