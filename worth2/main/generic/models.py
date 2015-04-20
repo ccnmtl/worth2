@@ -48,21 +48,27 @@ class BaseUserProfile(models.Model):
     def last_location(self):
         """Returns the last location this user accessed.
 
+        If the user hasn't accessed any sections, this function returns
+        None.
+
         :rtype: Section
         """
-        hierarchy = Hierarchy.get_hierarchy('main')
-        upv = UserPageVisit.objects.filter(
+        visits = UserPageVisit.objects.filter(
             user=self.user).order_by("-last_visit")
-        if upv.count() < 1:
-            return hierarchy.get_root()
+        if visits.count() > 0:
+            return visits.first().section
         else:
-            return upv.first().section
+            return None
 
     def last_location_verbose(self):
         return get_verbose_section_name(self.last_location())
 
     def next_location_verbose(self):
-        return get_verbose_section_name(self.last_location().get_next())
+        last_location = self.last_location()
+        if last_location:
+            return get_verbose_section_name(last_location.get_next())
+        else:
+            return None
 
     def percent_complete(self):
         return self.percent_complete_hierarchy()

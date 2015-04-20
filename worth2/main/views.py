@@ -172,7 +172,7 @@ class SignInParticipant(FormView):
             if dest == 'last_completed_activity':
                 section = participant.last_location()
             elif dest == 'next_new_session':
-                section = participant.last_location().get_next()
+                section = participant.next_module_section()
             elif dest == 'already_completed_session':
                 session_num = form.cleaned_data.get(
                     'already_completed_session')

@@ -15,6 +15,10 @@ define([
             change: 'change'
         },
 
+        /**
+         * This function updates the text for participants' destinations
+         * on the participant sign-in form.
+         */
         _updateParticipantDestinations: function($target) {
             var $form = $target.closest('form');
             var $selectedOption = $target.find('option:selected');
@@ -49,13 +53,31 @@ define([
                         'Session ' + i +
                         '</option>');
             }
+
+            // Disable the "last completed activity" radio button if
+            // selected participant is new, and has "None" as their
+            // last location.
+            var $input = $form.find(
+                'input[value="last_completed_activity"]');
+            var lastLocationText = $.trim(
+                $form.find('.worth-participant-last-location').text());
+            if (lastLocationText.toLowerCase() === 'none') {
+                // disable
+                this._disableLastCompletedRadioButton($input);
+            } else {
+                // enable
+                this._enableLastCompletedRadioButton($input);
+            }
         },
 
         /**
          * @param {jQuery element} $el - The button's <input> el.
          */
         _disableAlreadyCompletedRadioButton: function($el) {
-            $el.prop('disabled', true);
+            $el.prop({
+                'checked': false,
+                'disabled': true
+            });
             $el.closest('.radio').addClass('disabled');
         },
 
@@ -85,6 +107,23 @@ define([
             $el.prop('disabled', false);
         },
 
+        _disableLastCompletedRadioButton: function($el) {
+            $el.prop({
+                'checked': false,
+                'disabled': true
+            });
+            $el.closest('.radio').addClass('disabled');
+        },
+
+        _enableLastCompletedRadioButton: function($el) {
+            $el.prop('disabled', false);
+            $el.closest('.radio').removeClass('disabled');
+        },
+
+        /**
+         * Refresh the state of the 'destination' part of the form
+         * (The "Take participant to:" radio input).
+         */
         _refreshDisabledState: function($el) {
             var $parent = $el.closest('.worth-participant-destination');
             if ($parent.length > 0) {
@@ -97,6 +136,10 @@ define([
             }
         },
 
+        /**
+         * This event executes whenever the target changes:
+         *   '.worth-facilitator-sign-in-participant form'
+         */
         change: function(e) {
             var $target = $(e.target);
             this._refreshDisabledState($target);
