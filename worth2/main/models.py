@@ -267,7 +267,11 @@ class Participant(InactiveUserProfile):
         elif highest_module >= 1:
             return highest_module + 1
         else:
-            return -1
+            # If we can't find a valid "highest module" that this user
+            # has been in, that means there isn't one - this is a new
+            # user, and the "Next Module" that they need to complete is
+            # the first module, so return 1.
+            return 1
 
     def next_module_section(self):
         """Get the next module as a section.

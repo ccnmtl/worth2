@@ -1,3 +1,6 @@
+import unittest
+
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
@@ -197,6 +200,10 @@ class SignInParticipantAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
         #     response, 'data-cohort-id="%s"' % p1.cohort_id,
         #     msg_prefix='Incorrect participant dropdown cohort ID')
 
+    @unittest.skipUnless(
+        settings.DATABASES['default']['ENGINE'] ==
+        'django.db.backends.postgresql_psycopg2',
+        "This test requires PostgreSQL")
     def test_valid_form_submit(self):
         location = LocationFactory()
         participant = ParticipantFactory()
@@ -207,7 +214,7 @@ class SignInParticipantAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
             reverse('sign-in-participant'), {
                 'participant_id': participant.pk,
                 'participant_location': location.pk,
-                'participant_destination': 'last_completed_activity',
+                'participant_destination': 'next_new_session',
                 'session_type': 'regular',
             }
         )
@@ -220,6 +227,7 @@ class SignInParticipantAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
         self.assertEqual(encounter.location, location)
         self.assertEqual(encounter.session_type, 'regular')
         self.assertEqual(encounter.section, self.section)
+        self.assertEqual(encounter.section, participant.next_module_section())
 
         # TODO, assert that participant.user is the current user
         # response = self.client.get(self.section.get_absolute_url())

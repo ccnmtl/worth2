@@ -156,7 +156,9 @@ class ParticipantTest(TestCase):
         'django.db.backends.postgresql_psycopg2',
         "This test requires PostgreSQL")
     def test_next_module(self):
-        self.assertEqual(self.participant.next_module(), -1)
+        self.assertEqual(
+            self.participant.next_module(), 1,
+            'Newly created participants have next_module set to 1')
 
         section1 = Section.objects.get(slug='session-1')
         upv1 = UserPageVisitFactory(
@@ -175,15 +177,15 @@ class ParticipantTest(TestCase):
 
     def test_verbose_section_name(self):
         s = get_verbose_section_name(self.participant.last_location())
-        self.assertEqual(s, 'Root')
+        self.assertEqual(s, 'None')
 
     def test_last_location_verbose(self):
         s = self.participant.last_location_verbose()
-        self.assertEqual(s, 'Root')
+        self.assertEqual(s, 'None')
 
     def test_next_location_verbose(self):
         s = self.participant.next_location_verbose()
-        self.assertEqual(s, 'One')
+        self.assertEqual(s, None)
 
 
 class ParticipantManagerTest(TestCase):

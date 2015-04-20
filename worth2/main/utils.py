@@ -74,6 +74,10 @@ def get_module_number_from_section(section):
 
     :rtype: int
     """
+
+    if section is None:
+        return -1
+
     if section.depth == 1:
         # This is the 'Root' section, so there's no module associated
         # with it.
