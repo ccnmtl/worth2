@@ -51,21 +51,21 @@ class ParticipantReportTest(TestCase):
                               section=child, session_type='makeup')
 
         eid = report.encounter_id(the_participant, 0, module, 0)
-        self.assertEquals(eid[0:3], '333')
-        self.assertEquals(eid[3:4], '1')  # module index
-        self.assertEquals(int(eid[4:9]), e1.facilitator.id)
-        self.assertEquals(eid[9:19], e1.created_at.strftime("%y%m%d%I%M"))
-        self.assertEquals(eid[19:20], '0')
-        self.assertEquals(int(eid[20:22]), e1.location.id)
+        self.assertEquals(eid[0:4], '333-')
+        self.assertEquals(eid[4:6], '1-')  # module index
+        self.assertEquals(int(eid[6:11]), e1.facilitator.id)
+        self.assertEquals(eid[12:22], e1.created_at.strftime("%y%m%d%I%M"))
+        self.assertEquals(eid[22:25], '-0-')
+        self.assertEquals(int(eid[25:27]), e1.location.id)
 
         # makeup encounter
         eid = report.encounter_id(the_participant, 0, module, 1)
-        self.assertEquals(eid[0:3], '333')
-        self.assertEquals(eid[3:4], '1')  # module index
-        self.assertEquals(int(eid[4:9]), e2.facilitator.id)
-        self.assertEquals(eid[9:19], e2.created_at.strftime("%y%m%d%I%M"))
-        self.assertEquals(eid[19:20], '1')
-        self.assertEquals(int(eid[20:22]), e2.location.id)
+        self.assertEquals(eid[0:4], '333-')
+        self.assertEquals(eid[4:6], '1-')  # module index
+        self.assertEquals(int(eid[6:11]), e2.facilitator.id)
+        self.assertEquals(eid[12:22], e2.created_at.strftime("%y%m%d%I%M"))
+        self.assertEquals(eid[22:25], '-1-')
+        self.assertEquals(int(eid[25:27]), e2.location.id)
 
         self.assertIsNone(report.encounter_id(the_participant, 0, module, 2))
 
@@ -157,17 +157,23 @@ class ParticipantReportTest(TestCase):
             ['', 'cohort_id', 'profile', 'string', 'Assigned Cohort Id'],
             ['', 'modules_completed', 'profile', 'count', 'modules completed'],
             ['', '0_time_spent', 'profile', 'string', 'One Time Spent'],
-            ['', '0_encounter', 'profile', 'string', 'One Encounter'],
-            ['', '0_first_makeup', 'profile', 'string', 'One First Makeup'],
-            ['', '0_second_makeup', 'profile', 'string', 'One Second Makeup'],
+            ['', '0_encounter_id', 'profile', 'string', 'One Encounter Id'],
+            ['', '0_first_makeup_id', 'profile', 'string',
+             'One First Makeup Id'],
+            ['', '0_second_makeup_id', 'profile', 'string',
+             'One Second Makeup Id'],
             ['', '1_time_spent', 'profile', 'string', 'Two Time Spent'],
-            ['', '1_encounter', 'profile', 'string', 'Two Encounter'],
-            ['', '1_first_makeup', 'profile', 'string', 'Two First Makeup'],
-            ['', '1_second_makeup', 'profile', 'string', 'Two Second Makeup'],
+            ['', '1_encounter_id', 'profile', 'string', 'Two Encounter Id'],
+            ['', '1_first_makeup_id', 'profile', 'string',
+             'Two First Makeup Id'],
+            ['', '1_second_makeup_id', 'profile', 'string',
+             'Two Second Makeup Id'],
             ['', '2_time_spent', 'profile', 'string', 'Four Time Spent'],
-            ['', '2_encounter', 'profile', 'string', 'Four Encounter'],
-            ['', '2_first_makeup', 'profile', 'string', 'Four First Makeup'],
-            ['', '2_second_makeup', 'profile', 'string', 'Four Second Makeup'],
+            ['', '2_encounter_id', 'profile', 'string', 'Four Encounter Id'],
+            ['', '2_first_makeup_id', 'profile', 'string',
+             'Four First Makeup Id'],
+            ['', '2_second_makeup_id', 'profile', 'string',
+             'Four Second Makeup Id'],
             ['', 'supporter_count', 'Social Support Network', 'count',
              'Supporter Count'],
             ['', 'supporter_1_closeness', 'Social Support Network Map',
@@ -210,10 +216,10 @@ class ParticipantReportTest(TestCase):
     def test_values(self):
         rows = [
             ['study_id', 'cohort_id', 'modules_completed', '0_time_spent',
-             '0_encounter', '0_first_makeup', '0_second_makeup',
-             '1_time_spent', '1_encounter', '1_first_makeup',
-             '1_second_makeup', '2_time_spent', '2_encounter',
-             '2_first_makeup', '2_second_makeup', 'supporter_count',
+             '0_encounter_id', '0_first_makeup_id', '0_second_makeup_id',
+             '1_time_spent', '1_encounter_id', '1_first_makeup_id',
+             '1_second_makeup_id', '2_time_spent', '2_encounter_id',
+             '2_first_makeup_id', '2_second_makeup_id', 'supporter_count',
              'supporter_1_closeness', 'supporter_1_influence',
              'supporter_1_provides_emotional_support',
              'supporter_1_provides_practical_support', 'supporter_2_closeness',
