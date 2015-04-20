@@ -149,7 +149,7 @@ class ParticipantReport(PagetreeReport):
         ]
 
         for idx, module in enumerate(self.hierarchy.get_root().get_children()):
-            base_columns += self.per_module_columns(idx, module)
+            base_columns += self.per_module_columns(idx + 1, module)
 
         return base_columns
 
