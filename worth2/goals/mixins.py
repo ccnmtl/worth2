@@ -81,6 +81,7 @@ class GoalCheckInViewMixin(object):
         })
 
         if formset.is_valid():
+            self.upv.visit(status="complete")
             if formset.has_changed():
                 checkins_saved = len([f for f in formset.cleaned_data
                                       if f != {}])
@@ -219,6 +220,8 @@ class GoalSettingViewMixin(object):
         ctx.update({'setting_formset': formset})
 
         if formset.is_valid():
+            # update page visit to reflect "complete" status
+            self.upv.visit(status="complete")
             if formset.has_changed():
                 goals_saved = len([f for f in formset.cleaned_data
                                    if f != {}])
