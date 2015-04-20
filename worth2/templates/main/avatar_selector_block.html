@@ -10,14 +10,16 @@
         <img class="thumbnail" src="{% avatar_url user %}">
     </div>
     {% else %}
-    {% for avatar in block.avatars %}
-    <span class="worth-avatar">
-        <img class="media" src="{{ avatar.image.url }}">
-    </span>
-    <button class="btn btn-default" type="submit"
-            name="pageblock-{{block.pageblock.pk}}-avatar-id"
-            value="{{ avatar.pk }}"
-            >This is me!</button>
-    {% endfor %}
+        <form action="." method="post">{% csrf_token %}
+        {% for avatar in block.avatars %}
+        <span class="worth-avatar">
+            <img class="media" src="{{ avatar.image.url }}">
+        </span>
+        <button class="btn btn-default" type="submit"
+                name="pageblock-{{block.pageblock.pk}}-avatar-id"
+                value="{{ avatar.pk }}"
+                >This is me!</button>
+        {% endfor %}
+        </form>
     {% endif %}
 </div>
