@@ -2,30 +2,36 @@ from django import forms
 from django.contrib.auth.models import User
 from django.db import models
 from pagetree.generic.models import BasePageBlock
+from pagetree.reports import ReportColumnInterface, StandaloneReportColumn, \
+    ReportableInterface
 
 
 class Supporter(models.Model):
+    CLOSENESS_CHOICES = (
+        ('VC', 'Very Close'),
+        ('C', 'Close'),
+        ('NC', 'Not Close'),
+    )
+
+    INFLUENCE_CHOICES = (
+        ('P', 'Positive'),
+        ('MP', 'Mostly Positive'),
+        ('MN', 'Mostly Negative'),
+        ('N', 'Negative'),
+    )
+
     user = models.ForeignKey(User, null=True, related_name='supporters')
     name = models.TextField()
 
     closeness = models.CharField(
         max_length=2,
-        choices=(
-            ('VC', 'Very Close'),
-            ('C', 'Close'),
-            ('NC', 'Not Close'),
-        ),
+        choices=CLOSENESS_CHOICES,
         default='VC'
     )
 
     influence = models.CharField(
         max_length=2,
-        choices=(
-            ('P', 'Positive'),
-            ('MP', 'Mostly Positive'),
-            ('MN', 'Mostly Negative'),
-            ('N', 'Negative'),
-        ),
+        choices=INFLUENCE_CHOICES,
         default='P'
     )
 
@@ -66,3 +72,82 @@ class SsnmPageBlock(BasePageBlock):
 class SsnmPageBlockForm(forms.ModelForm):
     class Meta:
         model = SsnmPageBlock
+
+
+class SupporterReportColumn(ReportColumnInterface):
+
+    def __init__(self, idx, field, field_type, value=None, label=None):
+        self.idx = idx
+        self.field = field
+        self.field_type = field_type
+        self.answer_value = value or ''
+        self.answer_label = label or ''
+
+    def description(self):
+        return "Supporter %s %s" % (self.idx + 1, self.field.capitalize())
+
+    def identifier(self):
+        return 'supporter_%s_%s' % (self.idx + 1, self.field)
+
+    def metadata(self):
+        return ['', self.identifier(), 'Social Support Network Map',
+                self.field_type, self.description(), self.answer_value,
+                self.answer_label]
+
+    def user_value(self, user):
+        supporters = Supporter.objects.filter(user=user)
+        supporters = supporters.order_by('created_at', 'id')
+
+        if supporters.count() <= self.idx:
+            return ''
+
+        supporter = supporters[self.idx]
+        return getattr(supporter, self.field, '')
+
+
+class SsnmReport(ReportableInterface):
+
+    def standalone_columns(self):
+        return [
+            StandaloneReportColumn(
+                'supporter_count', 'Social Support Network',
+                'count', 'Supporter Count',
+                lambda x: Supporter.objects.filter(user=x).count())]
+
+    def report_metadata(self):
+        cols = self.standalone_columns()
+        for idx in xrange(0, 5):
+            for choice in Supporter.CLOSENESS_CHOICES:
+                cols.append(SupporterReportColumn(idx, 'closeness',
+                                                  'single choice',
+                                                  choice[0], choice[1]))
+            for choice in Supporter.INFLUENCE_CHOICES:
+                cols.append(SupporterReportColumn(idx, 'influence',
+                                                  'single choice',
+                                                  choice[0], choice[1]))
+
+            cols.append(SupporterReportColumn(idx,
+                                              'provides_emotional_support',
+                                              'boolean'))
+            cols.append(SupporterReportColumn(idx,
+                                              'provides_practical_support',
+                                              'boolean'))
+
+        return cols
+
+    def report_values(self):
+        columns = self.standalone_columns()
+
+        for idx in xrange(0, 5):
+            columns.append(
+                SupporterReportColumn(idx, 'closeness', 'single choice'))
+            columns.append(
+                SupporterReportColumn(idx, 'influence', 'single choice'))
+            columns.append(
+                SupporterReportColumn(idx, 'provides_emotional_support',
+                                      'boolean'))
+            columns.append(
+                SupporterReportColumn(idx, 'provides_practical_support',
+                                      'boolean'))
+
+        return columns
