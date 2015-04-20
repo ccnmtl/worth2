@@ -57,7 +57,7 @@ class ParticipantReport(PagetreeReport):
             return None
         else:
             encounter = encounters.order_by('created_at')[encounter_idx]
-            return "%s%d%05d%s%d%02d" % (
+            return "%s-%d-%05d-%s-%d-%02d" % (
                 participant.cohort_id,  # Cohort ID #: 3 digits
                 module_idx + 1,  # Module #, 1 digit
                 encounter.facilitator.id,  # Facilitator (5 digits)
@@ -119,18 +119,18 @@ class ParticipantReport(PagetreeReport):
                 '%s Time Spent' % module.label,
                 lambda x: self.time_spent(x, module)),
             StandaloneReportColumn(
-                '%s_encounter' % module_idx, 'profile', 'string',
-                '%s Encounter' % module.label,
+                '%s_encounter_id' % module_idx, 'profile', 'string',
+                '%s Encounter Id' % module.label,
                 lambda x: self.encounter_id(x.profile.participant, module_idx,
                                             module, 0)),
             StandaloneReportColumn(
-                '%s_first_makeup' % module_idx, 'profile', 'string',
-                '%s First Makeup' % module.label,
+                '%s_first_makeup_id' % module_idx, 'profile', 'string',
+                '%s First Makeup Id' % module.label,
                 lambda x: self.encounter_id(x.profile.participant, module_idx,
                                             module, 1)),
             StandaloneReportColumn(
-                '%s_second_makeup' % module_idx, 'profile', 'string',
-                '%s Second Makeup' % module.label,
+                '%s_second_makeup_id' % module_idx, 'profile', 'string',
+                '%s Second Makeup Id' % module.label,
                 lambda x: self.encounter_id(x.profile.participant, module_idx,
                                             module, 2))
         ]
