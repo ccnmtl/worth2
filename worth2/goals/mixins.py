@@ -81,6 +81,7 @@ class GoalCheckInViewMixin(object):
         })
 
         if formset.is_valid():
+            self.upv.visit(status="complete")
             if formset.has_changed():
                 checkins_saved = len([f for f in formset.cleaned_data
                                       if f != {}])
