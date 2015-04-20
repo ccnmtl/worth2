@@ -193,7 +193,7 @@ define([
             var selected = _.filter(
                 $selects,
                 function(el) {
-                    return $(el).val() > 0;
+                    return $(el).val() !== '';
                 }
             ).length;
             var ratio = selected / total;
