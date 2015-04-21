@@ -154,8 +154,14 @@
  {% endif %}
 </script>
 
+
+{% if debug %}
+<script data-main="{{STATIC_URL}}js/src/main.js"
+        src="{{STATIC_URL}}js/lib/require.js"></script>
+{% else %}
 <script data-main="{{STATIC_URL}}main-built.js"
         src="{{STATIC_URL}}js/lib/require.js"></script>
+{% endif %}
 
 {% block js %}
 {% endblock %}
