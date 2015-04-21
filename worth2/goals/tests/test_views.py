@@ -131,6 +131,8 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
 
     def test_post(self):
         r = self.client.post(self.url, self.valid_post_data)
+        formset = r.context['checkin_formset']
+        self.assertEqual(formset.is_bound, True)
 
         responses = GoalCheckInResponse.objects.filter(
             goal_setting_response__in=self.setting_responses,
@@ -153,6 +155,24 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.assertEqual(responses.first().other, 'form 1')
         self.assertEqual(responses.all()[1].other, 'form 2')
         self.assertEqual(responses.last().other, 'form 3')
+
+        # Assert that the formset is populated with the submitted data
+        # on GET.
+        r = self.client.get(self.url)
+        formset = r.context['checkin_formset']
+        self.assertEqual(formset.initial[0]['i_will_do_this'], 'yes')
+        self.assertEqual(formset.initial[1]['i_will_do_this'], 'no')
+        self.assertEqual(formset.initial[2]['i_will_do_this'], 'in progress')
+
+        self.assertEqual(formset.initial[0]['what_got_in_the_way'],
+                         self.checkin_opt2)
+        self.assertEqual(formset.initial[1]['what_got_in_the_way'],
+                         self.checkin_opt1)
+        self.assertEqual(formset.initial[2]['what_got_in_the_way'],
+                         self.checkin_opt3)
+        self.assertEqual(formset.initial[0]['other'], 'form 1')
+        self.assertEqual(formset.initial[1]['other'], 'form 2')
+        self.assertEqual(formset.initial[2]['other'], 'form 3')
 
     def test_post_only_main_goal(self):
         """
