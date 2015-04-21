@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.test import TestCase
+from django.test import TestCase, TransactionTestCase
 from pagetree.helpers import get_hierarchy
 from worth2.goals.models import GoalSettingColumn, GoalCheckInColumn
 from worth2.goals.tests.factories import (
@@ -162,7 +162,9 @@ class GoalSettingColumnTest(TestCase):
         self.assertEquals(text.user_value(self.participant), "sample response")
 
 
-class GoalCheckInColumnTest(TestCase):
+class GoalCheckInColumnTest(TransactionTestCase):
+    reset_sequences = True
+
     def setUp(self):
         self.participant = ParticipantFactory().user
 
@@ -195,15 +197,19 @@ class GoalCheckInColumnTest(TestCase):
 
     def test_metadata(self):
         column = GoalCheckInColumn(self.block, 0, 'progress', 'yes', 'Yes')
-        self.assertEquals(column.metadata(),
-                          [u'main', u'1_services_0_progress',
-                           'Goal Check In Block', 'single choice',
-                           'Services 0 Checkin Progress', 'yes', 'Yes'])
+        self.assertEquals(
+            column.metadata(), [
+                u'main',
+                u'%d_services_0_progress' % self.block.goal_setting_block.id,
+                'Goal Check In Block', 'single choice',
+                u'Services 0 Checkin Progress', 'yes', 'Yes'
+            ])
         column = GoalCheckInColumn(self.block, 0, 'other')
-        self.assertEquals(column.metadata(),
-                          [u'main', u'1_services_0_other',
-                           'Goal Check In Block', 'string',
-                           'Services 0 Checkin Other'])
+        self.assertEquals(column.metadata(), [
+            u'main', u'%d_services_0_other' % self.block.goal_setting_block.id,
+            'Goal Check In Block', 'string',
+            u'Services 0 Checkin Other'
+        ])
 
     def test_user_values_no_responses(self):
         GoalCheckInColumn(self.block, 0, 'progress')

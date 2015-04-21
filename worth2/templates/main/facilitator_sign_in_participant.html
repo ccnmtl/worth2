@@ -29,12 +29,12 @@
         <div class="form-group {% if form.participant_id.errors %}has-error{% endif %}">
             <label class="control-label col-sm-3"
                    for="{{form.participant_id.id_for_label}}">
-                Participant ID #</label>
+                {{ form.participant_id.field.label }}</label>
             <div class="col-sm-9">
                 <select class=" form-control" id="id_participant_id"
                         name="participant_id">
 
-                    <option>Choose a Participant</option>
+                    <option>{{ form.participant_id.field.initial }}</option>
                     {% for p in form.participant_id.field.choices %}
                     <option value="{{p.pk}}"
                             data-cohort-id="{{p.cohort_id|default:''}}"

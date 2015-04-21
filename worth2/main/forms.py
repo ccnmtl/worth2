@@ -29,7 +29,7 @@ class SignInParticipantForm(forms.Form):
         empty_label=None,
         queryset=Participant.objects.filter(
             is_archived=False).order_by('study_id'),
-        initial='Choose Participant',
+        initial='Choose a Participant',
     )
 
     participant_location = forms.ModelChoiceField(

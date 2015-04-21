@@ -151,13 +151,6 @@ class SignInParticipant(FormView):
         facilitator = self.request.user
         password = generate_password(participant.user.username)
 
-        # I'm explicitly setting the participant's password each time
-        # they log in. In reality, this shouldn't have any effect. I'm
-        # doing this because when I don't, the authenticate() call
-        # below returns False during the tests.
-        participant.user.set_password(password)
-        participant.user.save()
-
         user = authenticate(
             username=participant.user.username, password=password)
 

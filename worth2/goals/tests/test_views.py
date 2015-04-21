@@ -6,15 +6,16 @@ from worth2.goals.tests.factories import (
     GoalOptionFactory, GoalSettingResponseFactory
 )
 from worth2.goals.models import (
-    GoalCheckInResponse, GoalSettingBlock, GoalSettingResponse
+    GoalCheckInPageBlock, GoalCheckInResponse,
+    GoalSettingBlock, GoalSettingResponse
 )
 from worth2.main.tests.helpers import unlock_hierarchy
 from worth2.main.tests.mixins import LoggedInParticipantTestMixin
 
 
-class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
+class GoalCheckInPageBlockTest(LoggedInParticipantTestMixin, TestCase):
     def setUp(self):
-        super(GoalCheckInBlockTest, self).setUp()
+        super(GoalCheckInPageBlockTest, self).setUp()
 
         self.h = get_hierarchy('main', '/pages/')
         self.root = self.h.get_root()
@@ -27,8 +28,7 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
             }],
             'children': [],
         })
-        self.goalsettingblock = \
-            self.root.get_first_child().pageblock_set.first()
+        self.goalsettingblock = GoalSettingBlock.objects.first()
         assert(self.goalsettingblock is not None)
 
         self.root.add_child_section_from_dict({
@@ -39,16 +39,14 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
             }],
             'children': [],
         })
-        self.goalcheckinblock = \
-            self.root.get_first_child().get_next().pageblock_set.first()
+        self.goalcheckinblock = GoalCheckInPageBlock.objects.first()
         assert(self.goalcheckinblock is not None)
 
         # Set the check-in block's setting block to the one we just
         # created.
-        self.goalcheckinblock.block().goal_setting_block = \
-            self.goalsettingblock.block()
-        self.goalcheckinblock.block().save()
-        assert(self.goalcheckinblock.block().goal_setting_block is not None)
+        self.goalcheckinblock.goal_setting_block = self.goalsettingblock
+        self.goalcheckinblock.save()
+        assert(self.goalcheckinblock.goal_setting_block is not None)
 
         unlock_hierarchy(self.root.get_first_child(), self.u)
 
@@ -65,25 +63,25 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.setting_resp1 = GoalSettingResponseFactory(
             user=self.u,
             form_id=0,
-            goal_setting_block=self.goalsettingblock.block(),
+            goal_setting_block=self.goalsettingblock,
             option=opt1,
         )
         self.setting_resp2 = GoalSettingResponseFactory(
             user=self.u,
             form_id=1,
-            goal_setting_block=self.goalsettingblock.block(),
+            goal_setting_block=self.goalsettingblock,
             option=opt2,
         )
         self.setting_resp3 = GoalSettingResponseFactory(
             user=self.u,
             form_id=2,
-            goal_setting_block=self.goalsettingblock.block(),
+            goal_setting_block=self.goalsettingblock,
             option=opt3,
         )
         self.setting_resp4 = GoalSettingResponseFactory(
             user=self.u,
             form_id=3,
-            goal_setting_block=self.goalsettingblock.block(),
+            goal_setting_block=self.goalsettingblock,
             option=opt4_na,
         )
         self.setting_responses = [
@@ -97,7 +95,7 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.checkin_opt3 = GoalCheckInOptionFactory()
         self.checkin_opt_other = GoalCheckInOptionFactory(text='Other')
 
-        p = 'pageblock-%s' % self.goalcheckinblock.pk
+        self.p = p = 'pageblock-%s' % self.goalcheckinblock.pageblock().pk
         self.valid_post_data = {
             # Formset Management form params
             '%s-TOTAL_FORMS' % p: '4',
@@ -180,7 +178,7 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
         doesn't validate.
         """
 
-        p = 'pageblock-%s' % self.goalcheckinblock.pk
+        p = self.p
         r = self.client.post(self.url, {
             # Formset Management form params
             '%s-TOTAL_FORMS' % p: '4',
@@ -225,7 +223,7 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
 
         self.client.post(self.url, self.valid_post_data)
 
-        p = 'pageblock-%s' % self.goalcheckinblock.pk
+        p = self.p
         new_post_data = self.valid_post_data.copy()
         new_post_data.update({
             '%s-0-other' % p: 'Updated!'
@@ -243,7 +241,7 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.assertEqual(responses.first().other, 'Updated!')
 
     def test_post_invalid(self):
-        p = 'pageblock-%s' % self.goalcheckinblock.pk
+        p = self.p
         invalid_post_data = self.valid_post_data.copy()
         invalid_post_data.update({'%s-0-i_will_do_this' % p: None})
         r = self.client.post(self.url, invalid_post_data)
@@ -259,7 +257,7 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
             'Select a valid choice. None is not one of the available choices.')
 
     def test_post_i_did_it_makes_other_inputs_not_required(self):
-        p = 'pageblock-%s' % self.goalcheckinblock.pk
+        p = self.p
         my_post_data = self.valid_post_data.copy()
         my_post_data.update({
             '%s-0-i_will_do_this' % p: 'yes',
@@ -277,7 +275,7 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.assertNotContains(r, 'This field is required.')
 
     def test_post_in_progress_makes_dropdown_required(self):
-        p = 'pageblock-%s' % self.goalcheckinblock.pk
+        p = self.p
         my_post_data = self.valid_post_data.copy()
         my_post_data.update({
             '%s-0-i_will_do_this' % p: 'in progress',
@@ -297,7 +295,7 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
             'This field is required.')
 
     def test_post_in_progress_makes_dropdown_required2(self):
-        p = 'pageblock-%s' % self.goalcheckinblock.pk
+        p = self.p
         my_post_data = self.valid_post_data.copy()
         my_post_data.update({
             '%s-0-i_will_do_this' % p: 'in progress',
@@ -315,7 +313,7 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.assertNotContains(r, 'This field is required.')
 
     def test_post_other_text_is_required(self):
-        p = 'pageblock-%s' % self.goalcheckinblock.pk
+        p = self.p
         my_post_data = self.valid_post_data.copy()
         my_post_data.update({
             '%s-0-i_will_do_this' % p: 'in progress',
@@ -334,7 +332,7 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
             r, 'checkin_formset', 0, 'other', 'This field is required.')
 
     def test_post_other_text_is_saved(self):
-        p = 'pageblock-%s' % self.goalcheckinblock.pk
+        p = self.p
         my_post_data = self.valid_post_data.copy()
         my_post_data.update({
             '%s-0-i_will_do_this' % p: 'in progress',
@@ -374,7 +372,7 @@ class GoalCheckInBlockTest(LoggedInParticipantTestMixin, TestCase):
         # revising their goals.
         option = GoalOptionFactory()
         option2 = GoalOptionFactory()
-        p = 'pageblock-%s' % self.goalsettingblock.pk
+        p = 'pageblock-%s' % self.goalsettingblock.pageblock().pk
         goalsettingurl = '/pages/goal-setting-section/'
         self.client.post(goalsettingurl, {
             # Formset Management form params
@@ -449,7 +447,7 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
         })
 
         responses = GoalSettingResponse.objects.filter(
-            goal_setting_block=pageblock,
+            goal_setting_block=pageblock.block(),
             user=self.u,
         )
         self.assertEqual(r.status_code, 200)
@@ -478,7 +476,7 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
         })
 
         responses = GoalSettingResponse.objects.filter(
-            goal_setting_block=pageblock,
+            goal_setting_block=pageblock.block(),
             user=self.u,
         )
         self.assertEqual(r.status_code, 200)
@@ -544,7 +542,7 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
             1)
 
         goal_setting_response = GoalSettingResponse.objects.get(
-            goal_setting_block=pageblock,
+            goal_setting_block=pageblock.block(),
             user=self.u,
         )
 
