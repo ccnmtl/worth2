@@ -317,7 +317,7 @@ class ParticipantJournalsTest(LoggedInFacilitatorTestMixin, TestCase):
 
     def test_get_goal_responses(self):
         goalsettingblock = get_first_block_in_module(
-            'goal setting block', 1)
+            'goals', 'goalsettingblock', 1)
 
         option = GoalOption.objects.create(text='test option')
         GoalSettingResponse.objects.create(

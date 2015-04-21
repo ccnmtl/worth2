@@ -102,7 +102,7 @@ class ParticipantJournalView(TemplateView):
         if session_num == 1:
             # Find the first 'services' type goal setter in Session 1
             goalsettingblock = get_first_block_in_module(
-                'goal setting block', 1,
+                'goals', 'goalsettingblock', 1,
                 lambda (b): b.block().goal_type == 'services')
             context['goal_responses'] = self._get_goal_responses(
                 goalsettingblock, context['participant'].user)
@@ -195,13 +195,13 @@ class ParticipantSessionPageView(
         path = kwargs['path']
         self.section = self.get_section(path)
         self.goalsettingblock = get_first_block_of_type(
-            self.section, 'goal setting block')
+            self.section, 'goals', 'goalsettingblock')
         self.goalcheckinblock = get_first_block_of_type(
-            self.section, 'goal check in page block')
+            self.section, 'goals', 'goalcheckinpageblock')
         self.selftalkstatementblock = get_first_block_of_type(
-            self.section, 'statement block')
+            self.section, 'selftalk', 'statementblock')
         self.selftalkrefutationblock = get_first_block_of_type(
-            self.section, 'refutation block')
+            self.section, 'selftalk', 'refutationblock')
 
         if self.goalsettingblock:
             self.create_goal_setting_formset(
@@ -239,7 +239,7 @@ class ParticipantSessionPageView(
             })
 
         avatarselectorblock = get_first_block_of_type(
-            self.section, 'avatar selector block')
+            self.section, 'main', 'avatarselectorblock')
         ctx.update({'avatarselectorblock': avatarselectorblock})
 
         return ctx

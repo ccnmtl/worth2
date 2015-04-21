@@ -88,7 +88,7 @@
 {% comment %}
         # Find the first 'risk reduction' goal setter in Session 2
         risk_goalsettingblock = get_first_block_in_module(
-            'goal setting block', 2,
+            'goals', 'goalsettingblock', 2,
             lambda (b): b.block().goal_type == 'risk reduction')
 
         info.append('<h3>My risk reduction goals</h3>')
@@ -96,7 +96,7 @@
 
         # Find the first 'services' goal setter in Session 2
         services_goalsettingblock = get_first_block_in_module(
-            'goal setting block', 2,
+            'goals', 'goalsettingblock', 2,
             lambda (b): b.block().goal_type == 'services')
 
         info.append('<h3>My services goals</h3>')

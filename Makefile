@@ -40,7 +40,7 @@ runserver: ./ve/bin/python check
 	$(MANAGE) runserver
 
 migrate: ./ve/bin/python check jenkins
-	$(MANAGE) migrate
+	$(MANAGE) migrate --fake-initial
 
 check: ./ve/bin/python
 	$(MANAGE) check
@@ -69,9 +69,6 @@ rebase:
 	make migrate
 	make flake8
 
-syncdb: ./ve/bin/python
-	$(MANAGE) syncdb
-
 collectstatic: ./ve/bin/python check
 	$(MANAGE) collectstatic --noinput --settings=$(APP).settings_production
 
@@ -81,5 +78,4 @@ collectstatic: ./ve/bin/python check
 # to run it after that, though.
 install: ./ve/bin/python check jenkins
 	createdb $(APP)
-	$(MANAGE) syncdb --noinput
 	make migrate

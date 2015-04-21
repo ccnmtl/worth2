@@ -72,6 +72,7 @@ class SsnmPageBlock(BasePageBlock):
 class SsnmPageBlockForm(forms.ModelForm):
     class Meta:
         model = SsnmPageBlock
+        fields = '__all__'
 
 
 class SupporterReportColumn(ReportColumnInterface):

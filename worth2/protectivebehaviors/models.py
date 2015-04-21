@@ -41,3 +41,4 @@ class ProtectiveBehaviorsResults(BasePageBlock):
 class ProtectiveBehaviorsResultsForm(forms.ModelForm):
     class Meta:
         model = ProtectiveBehaviorsResults
+        fields = '__all__'

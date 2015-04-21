@@ -77,26 +77,25 @@ TEMPLATE_LOADERS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.template.context_processors.debug',
+    'django.template.context_processors.request',
     'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.debug',
-    'django.core.context_processors.request',
+    'django.contrib.messages.context_processors.messages',
     'stagingcontext.staging_processor',
     'djangowind.context.context_processor',
-    'django.core.context_processors.static',
-    'django.core.context_processors.media',
-    'django.contrib.messages.context_processors.messages',
+    'django.template.context_processors.static',
+    'django.template.context_processors.media',
 )
 
 MIDDLEWARE_CLASSES = (
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
     'django_statsd.middleware.GraphiteRequestTimingMiddleware',
     'django_statsd.middleware.GraphiteMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
-    'django.middleware.transaction.TransactionMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
     'impersonate.middleware.ImpersonateMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'waffle.middleware.WaffleMiddleware',
@@ -121,7 +120,6 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
     'django.contrib.admin',
     'django.contrib.webdesign',
-    'tagging',
     'ordered_model',
     'typogrify',
     'compressor',
