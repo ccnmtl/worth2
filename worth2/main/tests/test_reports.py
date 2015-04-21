@@ -1,13 +1,15 @@
 import datetime
+
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.test.testcases import TestCase
+from pagetree.helpers import get_hierarchy
 from pagetree.models import Hierarchy, Section, UserPageVisit
 from pagetree.tests.factories import ModuleFactory
 
 from worth2.main.reports import ParticipantReport
 from worth2.main.tests.factories import (EncounterFactory, ParticipantFactory,
-                                         UserFactory)
+                                         UserFactory, LocationFactory)
 
 
 class ParticipantReportTest(TestCase):
@@ -16,12 +18,21 @@ class ParticipantReportTest(TestCase):
         super(ParticipantReportTest, self).setUp()
         cache.clear()
 
-        self.participant = ParticipantFactory().user
-        self.participant2 = ParticipantFactory().user
-        self.staff = UserFactory(is_superuser=True)
+        self.location = LocationFactory(name='Butler')
+
+        p = ParticipantFactory(first_location=self.location,
+                               location=self.location)
+        self.participant = p.user
+
+        p = ParticipantFactory(first_location=self.location,
+                               location=self.location)
+        self.participant2 = p.user
+        self.staff = UserFactory(username='f1',
+                                 first_name='Facilitator', last_name='One')
 
         ModuleFactory("main", "/pages/")
         self.hierarchy = Hierarchy.objects.get(name='main')
+        self.report_url = reverse('participant-report')
 
     def test_get_users(self):
         section_one = Section.objects.get(slug='one')
@@ -86,6 +97,11 @@ class ParticipantReportTest(TestCase):
         pct = report.percent_complete(self.participant, root)
         self.assertAlmostEquals(pct, 50.0)
 
+        # corner case, no descendants
+        hierarchy = get_hierarchy('foo')
+        pct = report.percent_complete(self.participant, hierarchy.get_root())
+        self.assertAlmostEquals(pct, 0)
+
     def test_modules_completed(self):
         report = ParticipantReport(self.hierarchy)
         section_one = Section.objects.get(slug='one')
@@ -147,6 +163,11 @@ class ParticipantReportTest(TestCase):
 
         time_spent = report.time_spent(self.participant, module_one)
         self.assertEquals(time_spent, "00:05:00")
+
+    def test_standalone_columns(self):
+        report = ParticipantReport(self.hierarchy)
+        columns = report.standalone_columns()
+        self.assertEquals(len(columns), 15)
 
     def test_metadata(self):
         rows = [
@@ -242,14 +263,48 @@ class ParticipantReportTest(TestCase):
         with self.assertRaises(StopIteration):
             values.next()
 
-    def test_post(self):
-        report_url = reverse('participant-report')
+    def test_post_not_logged_in(self):
         # not logged in
-        response = self.client.post(report_url)
+        response = self.client.post(self.report_url)
         self.assertEquals(response.status_code, 302)
 
-        # logged in
+    def test_post_keys(self):
         self.client.login(username=self.staff.username, password="test")
-        data = {'report_type': 'keys'}
-        response = self.client.post(report_url, data)
+        data = {'report-type': 'keys'}
+        response = self.client.post(self.report_url, data)
         self.assertEquals(response.status_code, 200)
+
+    def test_post_values(self):
+        self.client.login(username=self.staff.username, password="test")
+        data = {'report-type': 'values'}
+        response = self.client.post(self.report_url, data)
+        self.assertEquals(response.status_code, 200)
+
+    def test_post_facilitators(self):
+        self.client.login(username=self.staff.username, password="test")
+        data = {'report-type': 'facilitators'}
+        response = self.client.post(self.report_url, data)
+        self.assertEquals(response.status_code, 200)
+
+        self.assertEquals(response.streaming_content.next(),
+                          'Facilitator ID,Facilitator Name\r\n')
+
+        val = 'f1,Facilitator One\r\n'
+        self.assertTrue(val in response.streaming_content.next())
+
+        with self.assertRaises(StopIteration):
+            response.streaming_content.next()
+
+    def test_post_locations(self):
+        self.client.login(username=self.staff.username, password="test")
+        data = {'report-type': 'locations'}
+        response = self.client.post(self.report_url, data)
+        self.assertEquals(response.status_code, 200)
+
+        self.assertEquals(response.streaming_content.next(),
+                          'Location ID,Location Name\r\n')
+        val = 'Butler\r\n'
+        self.assertTrue(val in response.streaming_content.next())
+
+        with self.assertRaises(StopIteration):
+            response.streaming_content.next()
