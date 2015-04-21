@@ -55,6 +55,7 @@ class SelfTalkStatementViewMixin(object):
         prefix = 'pageblock-%s' % statementblock.pk
         form = DynamicStatementForm(request.POST, prefix=prefix)
         if form.is_valid():
+            self.upv.visit(status="complete")
             messages.success(request, 'Saved.')
             statementblock.block().submit(request.user, form.cleaned_data)
             ctx = self.get_context_data()
@@ -149,6 +150,7 @@ class SelfTalkRefutationViewMixin(object):
         prefix = 'pageblock-%s' % refutationblock.pk
         form = DynamicRefutationForm(request.POST, prefix=prefix)
         if form.is_valid():
+            self.upv.visit(status="complete")
             messages.success(request, 'Saved.')
             refutationblock.block().submit(request.user, form.cleaned_data)
             ctx = self.get_context_data()
