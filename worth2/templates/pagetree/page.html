@@ -107,25 +107,28 @@ each avatar has its own submit button.
 {% block content-nav %}
 {% with previous=section.get_previous next_section=section.get_next %}
 <hr />
+
 <ul class="pager">
-{% if previous %}
+{% comment %}Do not allow users to back into a previous module{% endcomment %}
+{% if previous and section.depth > 2 %}
   <li class="previous">
         <a href="{{previous.get_absolute_url}}">&larr; {{previous.label}}</a>
   </li>
 {% endif %}
 
-{% if next_section %}
-
-{% comment %}
-  The "next" link gets rendered as disabled by default. app.js
-  immediately enables this link if there's no video player on the page.
-
-  Otherwise, this link is enabled when the video finishes playing.
-{% endcomment %}
-<li class="next disabled">
-    <a href="{{next_section.get_absolute_url}}"
-       >{{next_section.label}} &rarr;</a>
-</li>
+{% comment %}Do not allow users to next into the next module{% endcomment %}
+{% if next_section and next_section.depth > 2 %}
+    {% comment %}
+      The "next" link gets rendered as disabled by default. app.js
+      immediately enables this link if there's no video player on the page.
+    
+      Otherwise, this link is enabled when the video finishes playing.
+    {% endcomment %}
+    <li class="next disabled">
+        <a href="{{next_section.get_absolute_url}}"
+           >{{next_section.label}} &rarr;</a>
+    </li>
+{% else %}
 {% endif %}
 </ul>
 {% endwith %}
