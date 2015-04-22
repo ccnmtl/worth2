@@ -1,7 +1,5 @@
-import unittest
 from datetime import datetime
 
-from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 from pagetree.tests.factories import ModuleFactory
@@ -84,10 +82,6 @@ class ParticipantTest(TestCase):
             self.hierarchy.get_root().get_absolute_url()
         )
 
-    @unittest.skipUnless(
-        settings.DATABASES['default']['ENGINE'] ==
-        'django.db.backends.postgresql_psycopg2',
-        "This test requires PostgreSQL")
     def test_highest_module_accessed(self):
         self.assertEqual(
             self.participant.highest_module_accessed(), -1)
@@ -110,10 +104,6 @@ class ParticipantTest(TestCase):
         self.assertEqual(
             self.participant.highest_module_accessed(), 2)
 
-    @unittest.skipUnless(
-        settings.DATABASES['default']['ENGINE'] ==
-        'django.db.backends.postgresql_psycopg2',
-        "This test requires PostgreSQL")
     def test_highest_module_accessed2(self):
         section1 = Section.objects.get(slug='session-1')
         upv1 = UserPageVisitFactory(
@@ -151,10 +141,6 @@ class ParticipantTest(TestCase):
         self.assertEqual(
             self.participant.last_module_accessed(), 1)
 
-    @unittest.skipUnless(
-        settings.DATABASES['default']['ENGINE'] ==
-        'django.db.backends.postgresql_psycopg2',
-        "This test requires PostgreSQL")
     def test_next_module(self):
         self.assertEqual(
             self.participant.next_module(), 1,

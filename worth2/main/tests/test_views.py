@@ -1,6 +1,3 @@
-import unittest
-
-from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
@@ -157,10 +154,6 @@ class ManageParticipantsUnAuthedTest(TestCase):
         self.assertEqual(response.status_code, 302)
 
 
-@unittest.skipUnless(
-    settings.DATABASES['default']['ENGINE'] ==
-    'django.db.backends.postgresql_psycopg2',
-    'This test requires PostgreSQL')
 class SignInParticipantAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
     def setUp(self):
         super(SignInParticipantAuthedTest, self).setUp()

@@ -3,39 +3,19 @@ from django import forms
 from worth2.main.models import Location, Participant
 
 
-class RawModelChoiceIterator(forms.models.ModelChoiceIterator):
-    def choice(self, obj):
-        return obj
-
-
-class RawModelChoiceField(forms.ModelChoiceField):
-    """
-    A ModelChoiceField that returns the model instance instead of
-    a single field.
-    """
-
-    def _get_choices(self):
-        if hasattr(self, '_choices'):
-            return self._choices
-
-        return RawModelChoiceIterator(self)
-
-    choices = property(_get_choices, forms.ChoiceField._set_choices)
-
-
 class SignInParticipantForm(forms.Form):
-    participant_id = RawModelChoiceField(
+    participant_id = forms.ModelChoiceField(
         label='Participant ID #',
         empty_label=None,
         queryset=Participant.objects.filter(
             is_archived=False).order_by('study_id'),
-        initial='Choose a Participant',
     )
 
     participant_location = forms.ModelChoiceField(
         label='Location',
-        empty_label=None,
-        queryset=Location.objects.order_by('name'))
+        empty_label='Choose a Location',
+        queryset=Location.objects.order_by('name'),
+    )
 
     participant_destination = forms.ChoiceField(
         label='Take participant to:',

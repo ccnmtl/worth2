@@ -77,13 +77,7 @@ def get_module_number_from_section(section):
 
     :rtype: int
     """
-
-    if section is None:
-        return -1
-
-    if section.depth == 1:
-        # This is the 'Root' section, so there's no module associated
-        # with it.
+    if section is None or section.depth == 1:
         return -1
     elif section.depth == 2:
         # depth == 2 is the expected depth for modules.
@@ -94,12 +88,11 @@ def get_module_number_from_section(section):
         while module_section.depth > 2:
             module_section = module_section.get_parent()
 
-    n = -1
     match = re.match(r'session-(\d)', module_section.slug)
     if match:
-        n = int(match.groups()[0])
-
-    return n
+        return int(match.groups()[0])
+    else:
+        return -1
 
 
 def get_module_number(pageblock):
@@ -112,14 +105,16 @@ def get_module_number(pageblock):
     if pageblock is None:
         return -1
 
-    return get_module_number_from_section(pageblock.section)
+    return get_module_number_from_section(pageblock.section.get_module())
 
 
 def get_verbose_section_name(section):
     """Returns a string."""
 
     s = smart_str(section)
-    module_num = get_module_number_from_section(section)
+    module_num = -1
+    if section is not None:
+        module_num = get_module_number_from_section(section.get_module())
 
     # Only append the module number if it's valid.
     if module_num > -1:
