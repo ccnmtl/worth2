@@ -2,17 +2,19 @@ import datetime
 
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
-from django.test.testcases import TestCase
+from django.test.testcases import TransactionTestCase
 from pagetree.helpers import get_hierarchy
 from pagetree.models import Hierarchy, Section, UserPageVisit
 from pagetree.tests.factories import ModuleFactory
 
 from worth2.main.reports import ParticipantReport
-from worth2.main.tests.factories import (EncounterFactory, ParticipantFactory,
-                                         UserFactory, LocationFactory)
+from worth2.main.tests.factories import (
+    EncounterFactory, ParticipantFactory, UserFactory, LocationFactory
+)
 
 
-class ParticipantReportTest(TestCase):
+class ParticipantReportTest(TransactionTestCase):
+    reset_sequences = True
 
     def setUp(self):
         super(ParticipantReportTest, self).setUp()

@@ -5,7 +5,10 @@ from worth2.main.tests.mixins import LoggedInParticipantTestMixin
 from worth2.selftalk.tests.factories import (
     StatementFactory, StatementResponseFactory, RefutationFactory
 )
-from worth2.selftalk.models import StatementResponse, RefutationResponse
+from worth2.selftalk.models import (
+    StatementBlock, RefutationBlock,
+    StatementResponse, RefutationResponse
+)
 
 
 class ExternalStatementBlockTest(LoggedInParticipantTestMixin, TestCase):
@@ -26,17 +29,17 @@ class ExternalStatementBlockTest(LoggedInParticipantTestMixin, TestCase):
         })
         self.url = '/pages/statement/'
 
-        self.statementblock = self.root.get_first_child().pageblock_set.first()
+        self.statementblock = StatementBlock.objects.first()
         assert(self.statementblock is not None)
 
         self.statement1 = StatementFactory()
         self.statement2 = StatementFactory()
         self.statement3 = StatementFactory()
-        self.statementblock.block().statements.add(self.statement1)
-        self.statementblock.block().statements.add(self.statement2)
-        self.statementblock.block().statements.add(self.statement3)
+        self.statementblock.statements.add(self.statement1)
+        self.statementblock.statements.add(self.statement2)
+        self.statementblock.statements.add(self.statement3)
 
-        self.p = 'pageblock-%s' % self.statementblock.pk
+        self.p = 'pageblock-%s' % self.statementblock.pageblock().pk
         self.valid_post_data = {
             '%s-%d' % (self.p, self.statement1.pk): True,
             '%s-%d' % (self.p, self.statement2.pk): True,
@@ -102,28 +105,28 @@ class ExternalRefutationBlockTest(LoggedInParticipantTestMixin, TestCase):
             }],
             'children': [],
         })
-        self.statementblock = self.root.get_first_child().pageblock_set.first()
+        self.statementblock = StatementBlock.objects.first()
         assert(self.statementblock is not None)
 
         self.statement1 = StatementFactory()
         self.statement2 = StatementFactory()
         self.statement3 = StatementFactory()
 
-        self.statementblock.block().statements.add(self.statement1)
-        self.statementblock.block().statements.add(self.statement2)
-        self.statementblock.block().statements.add(self.statement3)
+        self.statementblock.statements.add(self.statement1)
+        self.statementblock.statements.add(self.statement2)
+        self.statementblock.statements.add(self.statement3)
 
         self.statementresponse1 = StatementResponseFactory(
             user=self.u,
-            statement_block=self.statementblock.block(),
+            statement_block=self.statementblock,
             statement=self.statement1)
         self.statementresponse2 = StatementResponseFactory(
             user=self.u,
-            statement_block=self.statementblock.block(),
+            statement_block=self.statementblock,
             statement=self.statement2)
         self.statementresponse3 = StatementResponseFactory(
             user=self.u,
-            statement_block=self.statementblock.block(),
+            statement_block=self.statementblock,
             statement=self.statement3)
 
         self.root.add_child_section_from_dict({
@@ -131,14 +134,13 @@ class ExternalRefutationBlockTest(LoggedInParticipantTestMixin, TestCase):
             'slug': 'refutation',
             'pageblocks': [{
                 'block_type': 'Self-Talk Refutation Block',
-                'statement_block': self.statementblock.block(),
+                'statement_block': self.statementblock,
             }],
             'children': [],
         })
         self.url = '/pages/refutation/'
 
-        self.refutationblock = \
-            self.root.get_first_child().get_next().pageblock_set.first()
+        self.refutationblock = RefutationBlock.objects.first()
         assert(self.refutationblock is not None)
 
         # Create 3 refutations for each negative statement
@@ -152,7 +154,7 @@ class ExternalRefutationBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.refutation8 = RefutationFactory(statement=self.statement3)
         self.refutation9 = RefutationFactory(statement=self.statement3)
 
-        self.p = 'pageblock-%s' % self.refutationblock.pk
+        self.p = 'pageblock-%s' % self.refutationblock.pageblock().pk
         self.valid_post_data = {
             '%s-refutation-%d' % (
                 self.p, self.statement1.pk): self.refutation1.pk,
@@ -171,7 +173,7 @@ class ExternalRefutationBlockTest(LoggedInParticipantTestMixin, TestCase):
         r = self.client.post(self.url, self.valid_post_data)
 
         responses = RefutationResponse.objects.filter(
-            refutation_block=self.refutationblock.block(),
+            refutation_block=self.refutationblock,
             user=self.u,
         )
         form = r.context['refutation_form']
@@ -181,19 +183,19 @@ class ExternalRefutationBlockTest(LoggedInParticipantTestMixin, TestCase):
 
         self.assertEqual(
             RefutationResponse.objects.filter(
-                refutation_block=self.refutationblock.block(),
+                refutation_block=self.refutationblock,
                 user=self.u,
                 refutation=self.refutation1
             ).count(), 1)
         self.assertEqual(
             RefutationResponse.objects.filter(
-                refutation_block=self.refutationblock.block(),
+                refutation_block=self.refutationblock,
                 user=self.u,
                 refutation=self.refutation4
             ).count(), 1)
         self.assertEqual(
             RefutationResponse.objects.filter(
-                refutation_block=self.refutationblock.block(),
+                refutation_block=self.refutationblock,
                 user=self.u,
                 refutation=self.refutation7
             ).count(), 1)
@@ -224,7 +226,7 @@ class ExternalRefutationBlockTest(LoggedInParticipantTestMixin, TestCase):
         r = self.client.post(self.url, post_data)
 
         responses = RefutationResponse.objects.filter(
-            refutation_block=self.refutationblock.block(),
+            refutation_block=self.refutationblock,
             user=self.u,
         )
         form = r.context['refutation_form']
@@ -233,7 +235,7 @@ class ExternalRefutationBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.assertEqual(responses.count(), 3)
 
         other_response = RefutationResponse.objects.get(
-            refutation_block=self.refutationblock.block(),
+            refutation_block=self.refutationblock,
             refutation=refutation_other, user=self.u)
         self.assertEqual(other_response.other_text, 'Testing other text')
 
@@ -259,17 +261,17 @@ class InternalStatementBlockTest(LoggedInParticipantTestMixin, TestCase):
         })
         self.url = '/pages/statement/'
 
-        self.statementblock = self.root.get_first_child().pageblock_set.first()
+        self.statementblock = StatementBlock.objects.first()
         assert(self.statementblock is not None)
 
         self.statement1 = StatementFactory()
         self.statement2 = StatementFactory()
         self.statement3 = StatementFactory()
-        self.statementblock.block().statements.add(self.statement1)
-        self.statementblock.block().statements.add(self.statement2)
-        self.statementblock.block().statements.add(self.statement3)
+        self.statementblock.statements.add(self.statement1)
+        self.statementblock.statements.add(self.statement2)
+        self.statementblock.statements.add(self.statement3)
 
-        self.p = 'pageblock-%s' % self.statementblock.pk
+        self.p = 'pageblock-%s' % self.statementblock.pageblock().pk
         self.valid_post_data = {
             '%s-%d' % (self.p, self.statement1.pk): True,
             '%s-%d' % (self.p, self.statement2.pk): True,
@@ -335,28 +337,28 @@ class InternalRefutationBlockTest(LoggedInParticipantTestMixin, TestCase):
             }],
             'children': [],
         })
-        self.statementblock = self.root.get_first_child().pageblock_set.first()
+        self.statementblock = StatementBlock.objects.first()
         assert(self.statementblock is not None)
 
         self.statement1 = StatementFactory()
         self.statement2 = StatementFactory()
         self.statement3 = StatementFactory()
 
-        self.statementblock.block().statements.add(self.statement1)
-        self.statementblock.block().statements.add(self.statement2)
-        self.statementblock.block().statements.add(self.statement3)
+        self.statementblock.statements.add(self.statement1)
+        self.statementblock.statements.add(self.statement2)
+        self.statementblock.statements.add(self.statement3)
 
         self.statementresponse1 = StatementResponseFactory(
             user=self.u,
-            statement_block=self.statementblock.block(),
+            statement_block=self.statementblock,
             statement=self.statement1)
         self.statementresponse2 = StatementResponseFactory(
             user=self.u,
-            statement_block=self.statementblock.block(),
+            statement_block=self.statementblock,
             statement=self.statement2)
         self.statementresponse3 = StatementResponseFactory(
             user=self.u,
-            statement_block=self.statementblock.block(),
+            statement_block=self.statementblock,
             statement=self.statement3)
 
         self.root.add_child_section_from_dict({
@@ -364,14 +366,13 @@ class InternalRefutationBlockTest(LoggedInParticipantTestMixin, TestCase):
             'slug': 'refutation',
             'pageblocks': [{
                 'block_type': 'Self-Talk Refutation Block',
-                'statement_block': self.statementblock.block(),
+                'statement_block': self.statementblock,
             }],
             'children': [],
         })
         self.url = '/pages/refutation/'
 
-        self.refutationblock = \
-            self.root.get_first_child().get_next().pageblock_set.first()
+        self.refutationblock = RefutationBlock.objects.first()
         assert(self.refutationblock is not None)
 
         # Create 3 refutations for each negative statement
@@ -385,7 +386,7 @@ class InternalRefutationBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.refutation8 = RefutationFactory(statement=self.statement3)
         self.refutation9 = RefutationFactory(statement=self.statement3)
 
-        self.p = 'pageblock-%s' % self.refutationblock.pk
+        self.p = 'pageblock-%s' % self.refutationblock.pageblock().pk
         self.valid_post_data = {
             '%s-refutation-%d' % (
                 self.p, self.statement1.pk): self.refutation1.pk,
@@ -404,7 +405,7 @@ class InternalRefutationBlockTest(LoggedInParticipantTestMixin, TestCase):
         r = self.client.post(self.url, self.valid_post_data)
 
         responses = RefutationResponse.objects.filter(
-            refutation_block=self.refutationblock.block(),
+            refutation_block=self.refutationblock,
             user=self.u,
         )
         form = r.context['refutation_form']
@@ -414,19 +415,19 @@ class InternalRefutationBlockTest(LoggedInParticipantTestMixin, TestCase):
 
         self.assertEqual(
             RefutationResponse.objects.filter(
-                refutation_block=self.refutationblock.block(),
+                refutation_block=self.refutationblock,
                 user=self.u,
                 refutation=self.refutation1
             ).count(), 1)
         self.assertEqual(
             RefutationResponse.objects.filter(
-                refutation_block=self.refutationblock.block(),
+                refutation_block=self.refutationblock,
                 user=self.u,
                 refutation=self.refutation4
             ).count(), 1)
         self.assertEqual(
             RefutationResponse.objects.filter(
-                refutation_block=self.refutationblock.block(),
+                refutation_block=self.refutationblock,
                 user=self.u,
                 refutation=self.refutation7
             ).count(), 1)
@@ -457,7 +458,7 @@ class InternalRefutationBlockTest(LoggedInParticipantTestMixin, TestCase):
         r = self.client.post(self.url, post_data)
 
         responses = RefutationResponse.objects.filter(
-            refutation_block=self.refutationblock.block(),
+            refutation_block=self.refutationblock,
             user=self.u,
         )
         form = r.context['refutation_form']
@@ -466,7 +467,7 @@ class InternalRefutationBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.assertEqual(responses.count(), 3)
 
         other_response = RefutationResponse.objects.get(
-            refutation_block=self.refutationblock.block(),
+            refutation_block=self.refutationblock,
             refutation=refutation_other, user=self.u)
         self.assertEqual(other_response.other_text, 'Testing other text')
 

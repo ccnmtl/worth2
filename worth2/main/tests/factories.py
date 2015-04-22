@@ -1,6 +1,6 @@
+import factory
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
-import factory
 from factory.fuzzy import FuzzyText
 from pagetree.tests.factories import RootSectionFactory
 from pagetree.models import UserPageVisit

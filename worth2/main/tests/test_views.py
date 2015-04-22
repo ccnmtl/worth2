@@ -5,9 +5,10 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 
 from pagetree.helpers import get_hierarchy
-from pagetree.tests.factories import RootSectionFactory
+from pagetree.models import Section
 
 from worth2.goals.models import GoalOption, GoalSettingResponse
+from worth2.main.auth import generate_password
 from worth2.main.tests.factories import (
     AvatarFactory, LocationFactory, ParticipantFactory
 )
@@ -156,12 +157,31 @@ class ManageParticipantsUnAuthedTest(TestCase):
         self.assertEqual(response.status_code, 302)
 
 
+@unittest.skipUnless(
+    settings.DATABASES['default']['ENGINE'] ==
+    'django.db.backends.postgresql_psycopg2',
+    'This test requires PostgreSQL')
 class SignInParticipantAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
     def setUp(self):
         super(SignInParticipantAuthedTest, self).setUp()
 
+        h = get_hierarchy('main', '/pages/')
+        root = h.get_root()
+
         # Worth expects this section to be there
-        self.section = RootSectionFactory(slug='session-1')
+        root.add_child_section_from_dict({
+            'label': 'Session 1',
+            'slug': 'session-1',
+            'pageblocks': [{
+                'block_type': 'Avatar Selector Block',
+            }],
+            'children': [],
+        })
+        self.section = Section.objects.get(slug='session-1')
+
+        self.p1 = ParticipantFactory()
+        self.p2 = ParticipantFactory()
+        self.p3 = ParticipantFactory()
 
     def test_get(self):
         response = self.client.get(reverse('sign-in-participant'))
@@ -184,31 +204,30 @@ class SignInParticipantAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
 
         p1.cohort_id = '389'
         p1.save()
-
         response = self.client.get(reverse('sign-in-participant'))
         self.assertContains(response, 'Sign In a Participant')
         self.assertEqual(response.status_code, 200)
 
         self.assertContains(
-            response, '<option value="%s"' % p1.cohort_id,
+            response, '<option value="%s"' % '389',
             msg_prefix='Incorrect cohort dropdown cohort ID')
         self.assertEqual(response.context['cohorts'], [p1.cohort_id])
 
         # TODO: Why is the participant ID dropdown empty here?
+        # self.assertEqual(
+        #     set(response.context['form']['participant_id'].field.queryset),
+        #     set([self.p1, self.p2, self.p3]))
         # self.assertContains(response, p1.study_id)
         # self.assertContains(
         #     response, 'data-cohort-id="%s"' % p1.cohort_id,
         #     msg_prefix='Incorrect participant dropdown cohort ID')
 
-    @unittest.skipUnless(
-        settings.DATABASES['default']['ENGINE'] ==
-        'django.db.backends.postgresql_psycopg2',
-        "This test requires PostgreSQL")
     def test_valid_form_submit(self):
         location = LocationFactory()
         participant = ParticipantFactory()
 
-        participant.user.set_password('test')
+        password = generate_password(participant.user.username)
+        participant.user.set_password(password)
         participant.user.save()
         response = self.client.post(
             reverse('sign-in-participant'), {
@@ -229,10 +248,9 @@ class SignInParticipantAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
         self.assertEqual(encounter.section, self.section)
         self.assertEqual(encounter.section, participant.next_module_section())
 
-        # TODO, assert that participant.user is the current user
-        # response = self.client.get(self.section.get_absolute_url())
-        # self.assertEqual(response.status_code, 200)
-        # self.assertEqual(response.context['user'], participant.user)
+        response = self.client.get(response.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['user'], participant.user)
 
     def test_invalid_form_submit(self):
         response = self.client.post(

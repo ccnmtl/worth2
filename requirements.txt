@@ -2,7 +2,7 @@ Django==1.7.7
 Markdown==2.6.1
 smartypants==1.8.6
 uuid==1.30
-psycopg2==2.5.4
+psycopg2==2.6
 Pillow==2.8.1
 versiontools==1.9.1
 statsd==3.0.1
@@ -23,7 +23,7 @@ logilab-common==0.63.2
 logilab-astng==0.24.3
 pylint==1.4.1
 six==1.9.0
-factory_boy==2.4.1
+factory_boy==2.5.2
 sqlparse==0.1.14
 python-dateutil==2.4.0
 
