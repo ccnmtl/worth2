@@ -45,7 +45,7 @@ class SignInParticipantForm(forms.Form):
             ('next_new_session', 'The next, new session.'),
             ('already_completed_session',
              'An already completed session for review.')),
-        initial='last_completed_activity',
+        initial='next_new_session',
     )
 
     already_completed_session = forms.ChoiceField(
