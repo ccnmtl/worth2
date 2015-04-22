@@ -121,10 +121,13 @@ define([
         },
 
         /**
-         * Refresh the state of the 'destination' part of the form
-         * (The "Take participant to:" radio input).
+         * Refresh the state of the "already completed" dropdown.
          */
         _refreshDisabledState: function($el) {
+            // Only look at the radio buttons
+            if ($el.prop('type') !== 'radio') {
+                return;
+            }
             var $parent = $el.closest('.worth-participant-destination');
             if ($parent.length > 0) {
                 var $select = $parent.find('select.worth-already-completed');
