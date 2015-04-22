@@ -29,7 +29,7 @@ class ParticipantReportTest(TransactionTestCase):
         p = ParticipantFactory(first_location=self.location,
                                location=self.location)
         self.participant2 = p.user
-        self.staff = UserFactory(username='f1',
+        self.staff = UserFactory(is_staff=True, username='f1',
                                  first_name='Facilitator', last_name='One')
 
         ModuleFactory("main", "/pages/")
@@ -264,6 +264,22 @@ class ParticipantReportTest(TransactionTestCase):
 
         with self.assertRaises(StopIteration):
             values.next()
+
+    def test_get(self):
+        # not logged in
+        response = self.client.get(self.report_url)
+        self.assertEquals(response.status_code, 302)
+
+        # not staff
+        facilitator = UserFactory()
+        self.client.login(username=facilitator.username, password="test")
+        response = self.client.get(self.report_url)
+        self.assertEquals(response.status_code, 302)
+
+        # staff
+        self.client.login(username=self.staff.username, password="test")
+        response = self.client.get(self.report_url)
+        self.assertEquals(response.status_code, 200)
 
     def test_post_not_logged_in(self):
         # not logged in

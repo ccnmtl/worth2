@@ -1,8 +1,6 @@
-import unicodecsv
-
 from django import http
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.http.response import StreamingHttpResponse
@@ -15,6 +13,7 @@ from django.views.generic.list import ListView
 from pagetree.generic.views import PageView
 from pagetree.models import PageBlock, Hierarchy, Section
 from quizblock.models import Quiz
+import unicodecsv
 
 from worth2.goals.mixins import GoalCheckInViewMixin, GoalSettingViewMixin
 from worth2.goals.models import GoalSettingResponse
@@ -293,6 +292,12 @@ class ParticipantSessionPageView(
             request, *args, **kwargs)
 
 
+class LoggedInMixinStaff(object):
+    @method_decorator(user_passes_test(lambda u: u.is_staff))
+    def dispatch(self, *args, **kwargs):
+        return super(LoggedInMixinStaff, self).dispatch(*args, **kwargs)
+
+
 class Echo(object):
     """An object that implements just the write method of the file-like
     interface.
@@ -302,7 +307,7 @@ class Echo(object):
         return value
 
 
-class ParticipantReportView(TemplateView):
+class ParticipantReportView(LoggedInMixinStaff, TemplateView):
     template_name = 'main/participant_report.html'
 
     def facilitators(self):
