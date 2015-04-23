@@ -21,7 +21,7 @@ def remove_empty_submission(user, section):
         Q(css_extra__icontains='rate-my-risk')
     )
     quiztypes = ContentType.objects.filter(
-        Q(model='quiz') | Q(model='ratemyriskquiz'))
+        Q(app_label='quizblock'), Q(model='quiz'))
     quizblocks_on_this_page = [
         page.block() for page in
         pageblocks.filter(content_type__in=quiztypes)]

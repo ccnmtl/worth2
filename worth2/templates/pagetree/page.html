@@ -48,9 +48,13 @@
 </script>
 
 <div id="content">
-{% if needs_submit and not is_submitted %}
-<form action="." method="post">{% csrf_token %}
-{% endif %}
+    {% if needs_submit and not is_submitted %}
+    <form action="." method="post">{% csrf_token %}
+    {% else %}
+        {% if is_submission_empty %}
+        <form action="." method="post">{% csrf_token %}
+        {% endif %}
+    {% endif %}
 
     {% for block in section.pageblock_set.all %}
 
@@ -73,6 +77,10 @@
 </div>
 
 {% if is_submitted %}
+{% if is_submission_empty %}
+{% include 'pagetree/pagetree_submit_button.html' %}
+{% else %}
+
 {% if allow_redo or user.is_superuser %}
 <div class="clearfix"></div>
 <form class="pagetree-form-submit-area"
@@ -80,7 +88,8 @@
     <input type="hidden" name="action" value="reset" />
     <input type="submit" value="I want to change my answers." class="btn" />
 </form>
-{% endif %}
+{% endif %}{# End allow_redo or user.is_superuser #}
+{% endif %}{# End is_submission_empty #}
 {% else %}
 
 <div class="clearfix"></div>
@@ -90,13 +99,15 @@ The avatar selector block needs to hide the submit button, since
 each avatar has its own submit button.
 {% endcomment %}
 {% if not avatarselectorblock %}
-<div class="pagetree-form-submit-area">
-    <input type="submit" value="Submit" class="btn btn-primary" />
-</div>
+{% include 'pagetree/pagetree_submit_button.html' %}
 {% endif %}
 
 </form>
 {% endif %}
+{% endif %}
+
+{% if is_submission_empty %}
+</form>
 {% endif %}
 
 {% include "pagetree/toc.html" %}
