@@ -2,7 +2,7 @@ from django import forms
 from django.contrib import messages
 from django.shortcuts import render
 
-from worth2.selftalk.forms import RefutationForm
+from worth2.selftalk.forms import RefutationForm, StatementForm
 from worth2.selftalk.models import RefutationResponse, StatementResponse
 
 
@@ -15,7 +15,7 @@ class SelfTalkStatementViewMixin(object):
         :returns: a class
         """
 
-        class DynamicStatementForm(forms.Form):
+        class DynamicStatementForm(StatementForm):
             def __init__(self, *args, **kwargs):
                 super(DynamicStatementForm, self).__init__(
                     *args, **kwargs)
@@ -61,7 +61,10 @@ class SelfTalkStatementViewMixin(object):
             ctx = self.get_context_data()
             ctx.update({'statement_form': form})
         else:
-            messages.error(request, 'Error.')
+            msg = 'Error.'
+            if form.non_field_errors():
+                msg = form.non_field_errors()[0]
+            messages.error(request, msg)
 
         return render(request, self.template_name, ctx)
 

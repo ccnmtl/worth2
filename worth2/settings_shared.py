@@ -1,6 +1,7 @@
 # Django settings for worth2 project.
 import os.path
 import sys
+from django.contrib import messages
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -231,4 +232,8 @@ REGISTRATION_APPLICATION_MODEL = 'registration.Application'
 
 MIGRATION_MODULES = {
     'registration': 'worth2.migrations.registration',
+}
+
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger'
 }
