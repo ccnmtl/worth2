@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load bootstrap %}
+{% load participanttags %}
 
 {% block content %}
 <div class="worth-facilitator-sign-in-participant">
@@ -31,17 +32,21 @@
                    for="{{form.participant_id.id_for_label}}">
                 {{ form.participant_id.field.label }}</label>
             <div class="col-sm-9">
-                <select class=" form-control" id="id_participant_id"
+                <select class="form-control" id="id_participant_id"
                         name="participant_id">
-
-                    <option>{{ form.participant_id.field.initial }}</option>
+                    <option>Choose a Participant</option>
                     {% for p in form.participant_id.field.choices %}
-                    <option value="{{p.pk}}"
-                            data-cohort-id="{{p.cohort_id|default:''}}"
-                            data-last-location="{{p.last_location_verbose}}"
-                            data-next-location="{{p.next_module_verbose}}"
-                            data-highest-accessed="{{p.highest_module_accessed}}">
-                        {{p.study_id}}</option>
+                    {% get_participant p.0 as participant %}
+                    <option value="{{p.0}}"
+                            data-cohort-id="{{participant.cohort_id|default:''}}"
+                            data-last-location="{{participant.last_location_verbose}}"
+                            data-next-location="{{participant.next_module_verbose}}"
+                            data-highest-accessed="{{participant.highest_module_accessed}}"
+                            {% if form.cleaned_data.participant_id.pk == p.0 %}
+                            selected="selected"
+                            {% endif %}
+                            >
+                        {{p.1}}</option>
                     {% endfor %}
                 </select>
                 {% for error in form.participant_id.errors %}
@@ -50,7 +55,11 @@
             </div>
         </div>
 
+        <hr />
+
         {{ form.participant_location|bootstrap_horizontal:'col-sm-3' }}
+
+        <hr />
 
         <div class="form-group worth-participant-destination">
             <label for="participant_destination"
@@ -59,7 +68,11 @@
                 <div class="radio">
                     <label>
                         <input type="radio" name="participant_destination"
-                               value="next_new_session" checked>
+                               value="next_new_session"
+                               {% if form.cleaned_data.participant_destination == 'next_new_session' %}
+                               checked
+                               {% endif %}
+                               >
                         The next, new session.
                     </label>
                     <div>
@@ -70,7 +83,11 @@
                     <label>
                         <input type="radio"
                                name="participant_destination"
-                               value="last_completed_activity">
+                               value="last_completed_activity"
+                               {% if form.cleaned_data.participant_destination == 'last_completed_activity' %}
+                               checked
+                               {% endif %}
+                               >
                         The last completed activity.
                     </label>
                     <div>
@@ -81,7 +98,11 @@
                     <label>
                         <input type="radio" name="participant_destination"
                                value="already_completed_session"
-                               disabled="disabled">
+                               disabled="disabled"
+                               {% if form.cleaned_data.participant_destination == 'already_completed_session' %}
+                               checked
+                               {% endif %}
+                               >
                         An already completed session for review.
                     </label>
                     <div>

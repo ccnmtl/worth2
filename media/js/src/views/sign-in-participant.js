@@ -9,6 +9,8 @@ define([
         initialize: function() {
             this._refreshDisabledState(
                 this.$el.find('.worth-participant-destination input:checked'));
+            this._updateParticipantDestinations(
+                this.$el.find('#id_participant_id'));
         },
 
         events: {

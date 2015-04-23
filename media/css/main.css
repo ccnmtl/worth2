@@ -561,3 +561,10 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px;}
 .worth-journal-info-element {
     margin-bottom: 20px;
 }
+
+.worth-facilitator-sign-in-participant .radio.disabled {
+    color: #888;
+}
+.worth-facilitator-sign-in-participant select:disabled {
+    opacity: 0.6;
+}

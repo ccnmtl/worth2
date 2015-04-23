@@ -236,19 +236,16 @@ class Participant(InactiveUserProfile):
 
         :rtype: int
         """
-        module_sections = UserPageVisit.objects.filter(
-            user=self.user, section__depth__gte=2
-        ).distinct('section__slug')
-
-        if module_sections.count() > 0:
-            module_numbers = map(
-                lambda x: get_module_number_from_section(x.section),
-                module_sections)
-
-            if len(module_numbers) > 0:
-                return max(module_numbers)
-
-        return -1
+        # This is the UserPageVisit that is the farthest along in
+        # the intervention for this participant.
+        farthest_session_access = UserPageVisit.objects.filter(
+            user=self.user,
+            section__depth__gte=2).order_by('-section__path').first()
+        if farthest_session_access:
+            return get_module_number_from_section(
+                farthest_session_access.section.get_module())
+        else:
+            return -1
 
     def last_module_accessed(self):
         """Get which module this participant is in.
@@ -256,7 +253,10 @@ class Participant(InactiveUserProfile):
         :rtype: int
         """
         last_section = self.last_location()
-        return get_module_number_from_section(last_section)
+        if last_section:
+            return get_module_number_from_section(last_section.get_module())
+        else:
+            return -1
 
     def next_module(self):
         """Get the next module that the participant needs to complete.
