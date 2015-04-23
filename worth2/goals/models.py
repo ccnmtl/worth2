@@ -111,6 +111,7 @@ class GoalSettingBlock(BasePageBlock):
 class GoalSettingBlockForm(forms.ModelForm):
     class Meta:
         model = GoalSettingBlock
+        fields = '__all__'
 
 
 class GoalOption(OrderedModel):
@@ -327,6 +328,7 @@ class GoalCheckInPageBlock(BasePageBlock):
 class GoalCheckInPageBlockForm(forms.ModelForm):
     class Meta:
         model = GoalCheckInPageBlock
+        fields = '__all__'
 
 
 class GoalCheckInColumn(ReportColumnInterface):

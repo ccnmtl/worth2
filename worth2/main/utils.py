@@ -4,15 +4,16 @@ from django.utils.encoding import smart_str
 from pagetree.models import Section
 
 
-def get_first_block_in_module(content_type, session_num, blocktest=None):
+def get_first_block_in_module(app_label, model, session_num, blocktest=None):
     """Returns the first block of given type in the given session.
 
-    :param content_type: The pageblock ContentType, e.g. 'goal
-    setting block'.
+    :param app_label: The app label, e.g. 'goals'
+    :param model: The pageblock ContentType, e.g. 'goalsettingblock'.
     :param session_num: The session to look in.
     :param blocktest: Optional test for block filtering.
 
-    :type content_type: str
+    :type app_label: str
+    :type model: str
     :type session_num: int
     :type blocktest: function
 
@@ -21,19 +22,19 @@ def get_first_block_in_module(content_type, session_num, blocktest=None):
     slug = 'session-%d' % session_num
     topsection = Section.objects.get(slug=slug)
     for section in topsection.get_children():
-        block = get_first_block_of_type(section, content_type, blocktest)
+        block = get_first_block_of_type(section, app_label, model, blocktest)
         if block:
             return block
 
     # Finally, try searching the topsection itself
-    block = get_first_block_of_type(topsection, content_type, blocktest)
+    block = get_first_block_of_type(topsection, app_label, model, blocktest)
     if block:
         return block
 
     return None
 
 
-def get_first_block_of_type(section, blocktype, blocktest=None):
+def get_first_block_of_type(section, app_label, model, blocktest=None):
     """Get the first block of type `blocktype` on this page.
 
     Returns the block if this page contains it. Otherwise, returns None.
@@ -45,16 +46,18 @@ def get_first_block_of_type(section, blocktype, blocktest=None):
       self.get_first_block_of_type(section, 'goal setting block')
 
     :param section: The section to look in.
-    :param blocktype: The block type to search for.
+    :param app_label: The app to search for.
+    :param model: The model name in the given app to search for.
     :param blocktest: An optional function to test on the pageblock.
 
     :type section: pagetree.models.Section
-    :type blocktype: str
+    :type app_label: str
+    :type model: str
     :type blocktest: function
 
     :rtype: A pageblock.
     """
-    contenttype = ContentType.objects.get(name=blocktype)
+    contenttype = ContentType.objects.get(app_label=app_label, model=model)
     pageblocks = section.pageblock_set.filter(content_type=contenttype)
 
     if hasattr(blocktest, '__call__'):

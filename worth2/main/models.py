@@ -82,6 +82,7 @@ class AvatarBlock(BasePageBlock):
 class AvatarBlockForm(forms.ModelForm):
     class Meta:
         model = AvatarBlock
+        fields = '__all__'
 
 
 class AvatarSelectorBlock(BasePageBlock):
@@ -140,6 +141,7 @@ class AvatarSelectorBlock(BasePageBlock):
 class AvatarSelectorBlockForm(forms.ModelForm):
     class Meta:
         model = AvatarSelectorBlock
+        fields = '__all__'
 
 
 class Location(models.Model):
@@ -417,6 +419,7 @@ class VideoBlock(BasePageBlock):
 class VideoBlockForm(forms.ModelForm):
     class Meta:
         model = VideoBlock
+        fields = '__all__'
 
 
 class WatchedVideo(models.Model):

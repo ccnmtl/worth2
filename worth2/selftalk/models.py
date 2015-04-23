@@ -153,6 +153,7 @@ class StatementBlock(BasePageBlock):
 class StatementBlockForm(forms.ModelForm):
     class Meta:
         model = StatementBlock
+        fields = '__all__'
         widgets = {
             'subject_name': forms.TextInput()
         }
@@ -260,6 +261,7 @@ class RefutationBlock(BasePageBlock):
 
 class RefutationBlockForm(forms.ModelForm):
     class Meta:
+        fields = '__all__'
         model = RefutationBlock
 
 
