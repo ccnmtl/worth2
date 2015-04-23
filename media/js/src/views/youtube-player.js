@@ -23,7 +23,7 @@ define([
                 width: 640,
                 height: 390,
                 playerVars: {
-                    autoplay: 0,
+                    autoplay: 1,
                     controls: 0,
                     modestbranding: 1,
                     rel: 0,
