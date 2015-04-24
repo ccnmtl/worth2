@@ -11,22 +11,21 @@
         {% endif %}
     </p>
 
-    {% if messages %}
-    {% for message in messages %}
-    <div
-         {% if message.tags %}
-         class="alert alert-{{message.tags}}"
-         {% else %}
-         class="alert alert-info"
-         {% endif %}
-         >{{ message }}</div>
-    {% endfor %}
-    {% endif %}
-
-    {% bootstrap_form_errors statement_form %}
-
     <div class="worth-selftalk-flex-container">
         <div class="statement-form">
+            {% bootstrap_form_errors statement_form %}
+            {% if messages %}
+            {% for message in messages %}
+            <div
+                 {% if message.tags %}
+                 class="alert alert-{{message.tags}}"
+                 {% else %}
+                 class="alert alert-info"
+                 {% endif %}
+                 >{{ message }}</div>
+            {% endfor %}
+            {% endif %}
+
             {% bootstrap_form statement_form %}
         </div>
 
