@@ -2,12 +2,12 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 
 from pagetree.helpers import get_hierarchy
-from pagetree.models import Section
+from pagetree.models import Hierarchy, Section, UserPageVisit
 
 from worth2.goals.models import GoalOption, GoalSettingResponse
 from worth2.main.auth import generate_password
 from worth2.main.tests.factories import (
-    AvatarFactory, LocationFactory, ParticipantFactory
+    AvatarFactory, LocationFactory, ParticipantFactory, WorthModuleFactory
 )
 from worth2.main.tests.mixins import (
     LoggedInFacilitatorTestMixin, LoggedInParticipantTestMixin,
@@ -154,27 +154,22 @@ class ManageParticipantsUnAuthedTest(TestCase):
         self.assertEqual(response.status_code, 302)
 
 
-class SignInParticipantAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
+class SignInParticipantTest(LoggedInFacilitatorTestMixin, TestCase):
     def setUp(self):
-        super(SignInParticipantAuthedTest, self).setUp()
+        super(SignInParticipantTest, self).setUp()
 
-        h = get_hierarchy('main', '/pages/')
-        root = h.get_root()
-
-        # Worth expects this section to be there
-        root.add_child_section_from_dict({
-            'label': 'Session 1',
-            'slug': 'session-1',
-            'pageblocks': [{
-                'block_type': 'Avatar Selector Block',
-            }],
-            'children': [],
-        })
-        self.section = Section.objects.get(slug='session-1')
+        WorthModuleFactory('main', '/pages/')
+        self.hierarchy = Hierarchy.objects.get(name='main')
+        self.module1 = Section.objects.get(slug='session-1')
+        self.module2 = Section.objects.get(slug='session-2')
+        self.module3 = Section.objects.get(slug='session-3')
+        self.module4 = Section.objects.get(slug='session-4')
 
         self.p1 = ParticipantFactory()
         self.p2 = ParticipantFactory()
         self.p3 = ParticipantFactory()
+
+        self.location = LocationFactory()
 
     def test_get(self):
         response = self.client.get(reverse('sign-in-participant'))
@@ -197,6 +192,7 @@ class SignInParticipantAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
 
         p1.cohort_id = '389'
         p1.save()
+
         response = self.client.get(reverse('sign-in-participant'))
         self.assertContains(response, 'Sign In a Participant')
         self.assertEqual(response.status_code, 200)
@@ -206,17 +202,19 @@ class SignInParticipantAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
             msg_prefix='Incorrect cohort dropdown cohort ID')
         self.assertEqual(response.context['cohorts'], [p1.cohort_id])
 
-        # TODO: Why is the participant ID dropdown empty here?
-        # self.assertEqual(
-        #     set(response.context['form']['participant_id'].field.queryset),
-        #     set([self.p1, self.p2, self.p3]))
-        # self.assertContains(response, p1.study_id)
-        # self.assertContains(
-        #     response, 'data-cohort-id="%s"' % p1.cohort_id,
-        #     msg_prefix='Incorrect participant dropdown cohort ID')
+        self.assertEqual(
+            response.context['form']['participant_id'].field.queryset.filter(
+                study_id=p1.study_id).count(), 1)
+        self.assertContains(response, p1.study_id)
+        self.assertContains(
+            response, 'data-cohort-id="%s"' % p1.cohort_id,
+            msg_prefix='Incorrect participant dropdown cohort ID')
 
-    def test_valid_form_submit(self):
-        location = LocationFactory()
+    def test_valid_form_submit_next_new_session_for_new_participant(self):
+        """
+        Test that a facilitator can log in a newly created participant that
+        hasn't accessed any pages yet.
+        """
         participant = ParticipantFactory()
 
         password = generate_password(participant.user.username)
@@ -225,7 +223,7 @@ class SignInParticipantAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
         response = self.client.post(
             reverse('sign-in-participant'), {
                 'participant_id': participant.pk,
-                'participant_location': location.pk,
+                'participant_location': self.location.pk,
                 'participant_destination': 'next_new_session',
                 'session_type': 'regular',
             }
@@ -236,14 +234,144 @@ class SignInParticipantAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
         encounter = Encounter.objects.first()
         self.assertEqual(encounter.facilitator, self.u)
         self.assertEqual(encounter.participant, participant)
-        self.assertEqual(encounter.location, location)
+        self.assertEqual(encounter.location, self.location)
         self.assertEqual(encounter.session_type, 'regular')
-        self.assertEqual(encounter.section, self.section)
+        self.assertEqual(encounter.section, self.module1)
         self.assertEqual(encounter.section, participant.next_module_section())
 
+        self.assertTrue(response.url.endswith('/pages/session-1/'))
         response = self.client.get(response.url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context['user'], participant.user)
+        self.assertContains(response, 'Welcome to Session 1')
+
+    def test_valid_form_submit_next_new_session_2(self):
+        """
+        Test that the facilitator can log in a participant to session 2.
+        """
+        participant = ParticipantFactory()
+        UserPageVisit.objects.create(
+            user=participant.user,
+            section=self.module1,
+            status='complete')
+
+        password = generate_password(participant.user.username)
+        participant.user.set_password(password)
+        participant.user.save()
+        response = self.client.post(
+            reverse('sign-in-participant'), {
+                'participant_id': participant.pk,
+                'participant_location': self.location.pk,
+                'participant_destination': 'next_new_session',
+                'session_type': 'regular',
+            }
+        )
+
+        self.assertEqual(response.status_code, 302)
+
+        encounter = Encounter.objects.first()
+        self.assertEqual(encounter.facilitator, self.u)
+        self.assertEqual(encounter.participant, participant)
+        self.assertEqual(encounter.location, self.location)
+        self.assertEqual(encounter.session_type, 'regular')
+        self.assertEqual(encounter.section, self.module2)
+        self.assertEqual(encounter.section, participant.next_module_section())
+
+        self.assertTrue(response.url.endswith('/pages/session-2/'))
+        response = self.client.get(response.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['user'], participant.user)
+        self.assertContains(response, 'Welcome to Session 2')
+
+    def test_valid_form_submit_last_completed_activity(self):
+        """
+        Test that the facilitator can sign in the participant to the
+        last completed activity.
+        """
+        participant = ParticipantFactory()
+        UserPageVisit.objects.create(
+            user=participant.user,
+            section=self.module1,
+            status='complete')
+
+        password = generate_password(participant.user.username)
+        participant.user.set_password(password)
+        participant.user.save()
+        response = self.client.post(
+            reverse('sign-in-participant'), {
+                'participant_id': participant.pk,
+                'participant_location': self.location.pk,
+                'participant_destination': 'last_completed_activity',
+                'session_type': 'regular',
+            }
+        )
+
+        self.assertEqual(response.status_code, 302)
+
+        encounter = Encounter.objects.first()
+        self.assertEqual(encounter.facilitator, self.u)
+        self.assertEqual(encounter.participant, participant)
+        self.assertEqual(encounter.location, self.location)
+        self.assertEqual(encounter.session_type, 'regular')
+        self.assertEqual(encounter.section, self.module1)
+        self.assertEqual(encounter.section, participant.last_location())
+
+        self.assertTrue(response.url.endswith('/pages/session-1/'))
+        response = self.client.get(response.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['user'], participant.user)
+        self.assertContains(response, 'Welcome to Session 1')
+
+    def test_valid_form_submit_already_completed_session(self):
+        """
+        Test that the facilitator can sign in the participant to an
+        already completed session.
+        """
+        participant = ParticipantFactory()
+        UserPageVisit.objects.create(
+            user=participant.user,
+            section=self.module1,
+            status='complete')
+        UserPageVisit.objects.create(
+            user=participant.user,
+            section=self.module2,
+            status='complete')
+        UserPageVisit.objects.create(
+            user=participant.user,
+            section=self.module3,
+            status='complete')
+        UserPageVisit.objects.create(
+            user=participant.user,
+            section=self.module4,
+            status='complete')
+
+        password = generate_password(participant.user.username)
+        participant.user.set_password(password)
+        participant.user.save()
+        response = self.client.post(
+            reverse('sign-in-participant'), {
+                'participant_id': participant.pk,
+                'participant_location': self.location.pk,
+                'participant_destination': 'already_completed_session',
+                'already_completed_session': 3,
+                'session_type': 'regular',
+            }
+        )
+
+        self.assertEqual(response.status_code, 302)
+
+        encounter = Encounter.objects.first()
+        self.assertEqual(encounter.facilitator, self.u)
+        self.assertEqual(encounter.participant, participant)
+        self.assertEqual(encounter.location, self.location)
+        self.assertEqual(encounter.session_type, 'regular')
+        self.assertEqual(encounter.section, self.module3)
+
+        self.assertTrue(response.url.endswith('/pages/session-3/'))
+        response = self.client.get(response.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['user'], participant.user)
+        self.assertContains(response, 'Welcome to Session 3')
 
     def test_invalid_form_submit(self):
         response = self.client.post(

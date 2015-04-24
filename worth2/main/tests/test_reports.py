@@ -21,16 +21,18 @@ class ParticipantReportTest(TransactionTestCase):
         cache.clear()
 
         self.location = LocationFactory(name='Butler')
+        self.staff = UserFactory(is_staff=True, username='f1',
+                                 first_name='Facilitator', last_name='One')
 
         p = ParticipantFactory(first_location=self.location,
-                               location=self.location)
+                               location=self.location,
+                               created_by=self.staff)
         self.participant = p.user
 
         p = ParticipantFactory(first_location=self.location,
-                               location=self.location)
+                               location=self.location,
+                               created_by=self.staff)
         self.participant2 = p.user
-        self.staff = UserFactory(is_staff=True, username='f1',
-                                 first_name='Facilitator', last_name='One')
 
         ModuleFactory("main", "/pages/")
         self.hierarchy = Hierarchy.objects.get(name='main')

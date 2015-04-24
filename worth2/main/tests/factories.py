@@ -2,7 +2,7 @@ import factory
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 from factory.fuzzy import FuzzyText
-from pagetree.tests.factories import RootSectionFactory
+from pagetree.tests.factories import HierarchyFactory, RootSectionFactory
 from pagetree.models import UserPageVisit
 
 from worth2.main.auth import generate_password
@@ -46,11 +46,12 @@ class ParticipantFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Participant
 
+    created_by = factory.SubFactory(UserFactory)
+    is_archived = False
     user = factory.SubFactory(InactiveUserFactory)
     first_location = factory.SubFactory(LocationFactory)
     location = factory.SubFactory(LocationFactory)
     study_id = FuzzyText(length=12, chars='1234567890')
-    is_archived = False
 
 
 class EncounterFactory(factory.django.DjangoModelFactory):
@@ -85,3 +86,44 @@ class UserPageVisitFactory(factory.django.DjangoModelFactory):
 
     user = factory.SubFactory(UserFactory)
     section = factory.SubFactory(RootSectionFactory)
+
+
+class WorthModuleFactory(object):
+    """A customized version of Pagetree's ModuleFactory."""
+
+    def __init__(self, hname, base_url):
+        hierarchy = HierarchyFactory(name=hname, base_url=base_url)
+        root = hierarchy.get_root()
+        root.add_child_section_from_dict({
+            'label': 'Welcome to Session 1',
+            'slug': 'session-1',
+            'children': [
+                {'label': 'Three', 'slug': 'introduction'}
+            ]})
+        root.add_child_section_from_dict({
+            'label': 'Welcome to Session 2',
+            'slug': 'session-2'
+        })
+        root.add_child_section_from_dict({
+            'label': 'Welcome to Session 3',
+            'slug': 'session-3'
+        })
+
+        blocks = [{
+            'label': 'Welcome to E-WORTH',
+            'css_extra': '',
+            'block_type': 'Test Block',
+            'body': 'You should now use the edit link to add content'
+        }]
+        root.add_child_section_from_dict({
+            'label': 'Welcome to Session 4',
+            'slug': 'session-4',
+            'pageblocks': blocks
+        })
+
+        root.add_child_section_from_dict({
+            'label': 'Welcome to Session 5',
+            'slug': 'session-5'
+        })
+
+        self.root = root
