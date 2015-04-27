@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load bootstrap %}
+{% load bootstrap3 %}
 {% load participanttags %}
 
 {% block content %}
@@ -13,19 +14,7 @@
           action="">
         {% csrf_token %}
 
-        <div class="form-group">
-            <label for="sign-in-cohort-filter"
-                   class="control-label col-sm-3">Filter by Cohort</label>
-            <div class="col-sm-3">
-                <select id="sign-in-cohort-filter" class="form-control">
-                    <option value="all">All Cohorts</option>
-                    <option value="">Unassigned</option>
-                    {% for cid in cohorts %}
-                    <option value="{{cid}}">{{cid}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
+        {{ form.filter_by_cohort|bootstrap_horizontal:'col-sm-3' }}
 
         <div class="form-group {% if form.participant_id.errors %}has-error{% endif %}">
             <label class="control-label col-sm-3"
@@ -65,7 +54,7 @@
             <label for="participant_destination"
                    class="control-label col-sm-3">Take participant to:</label>
             <div class="col-sm-6">
-                <div class="radio">
+                <div class="radio form-group">
                     <label>
                         <input type="radio" name="participant_destination"
                                value="next_new_session"
@@ -79,7 +68,7 @@
                         <span class="worth-participant-next-location"></span>
                     </div>
                 </div>
-                <div class="radio">
+                <div class="radio form-group">
                     <label>
                         <input type="radio"
                                name="participant_destination"
@@ -94,7 +83,7 @@
                         <span class="worth-participant-last-location"></span>
                     </div>
                 </div>
-                <div class="radio disabled">
+                <div class="radio form-group">
                     <label>
                         <input type="radio" name="participant_destination"
                                value="already_completed_session"
@@ -105,12 +94,8 @@
                                >
                         An already completed session for review.
                     </label>
-                    <div>
-                        <select name="already_completed_session"
-                                class="form-control worth-already-completed"
-                                disabled="disabled">
-                        </select>
-                    </div>
+
+                    {% bootstrap_field form.already_completed_session %}
                 </div>
             </div>
         </div>
