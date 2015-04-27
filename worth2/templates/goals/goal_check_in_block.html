@@ -3,7 +3,9 @@
 
 <div class="goal-check-in" id="goal-checkin-block">
 
+    {% if goal_checkin_context %}
     <p>Here's what you committed to do during the last session.</p>
+    {% endif %}
 
     <div class="container">
         <div class="row">
@@ -72,29 +74,36 @@
                         <div class="clearfix"></div>
                     </div><!-- end .checkin-group -->
                     <div class="clearfix"></div>
+                    {% empty %}
+                    <p>
+                        You haven't completed the goal setting activity for this check-in activity, so
+                        just continue to the next page.
+                    </p>
                     {% endfor %}
 
+                    {% if goal_checkin_context %}
                     <div class="form-group">
                         <button type="submit"
                                 class="btn btn-primary">Submit</button>
                     </div>
+                    {% endif %}
 
                 </form><!-- end .form-horizontal -->
             </div>
 
             <div class="col-sm-4 avatar-block text-center">
                 <img src="{% avatar_url user %}">
-                
-               
-<div class="panel panel-default text-left">
-  <div class="panel-heading">
-    <h3 class="panel-title">Tip</h3>
-  </div>
-  <div class="panel-body">
-    Panel content
-  </div>
-</div>               
-                
+
+
+                <div class="panel panel-default text-left">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Tip</h3>
+                    </div>
+                    <div class="panel-body">
+                        Panel content
+                    </div>
+                </div>
+
             </div>
 
         </div>
