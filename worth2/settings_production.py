@@ -18,6 +18,13 @@ DATABASES = {
     }
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
+    }
+}
+
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 AWS_S3_CUSTOM_DOMAIN = 'd1tpq2w6jljbie.cloudfront.net'

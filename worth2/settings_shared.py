@@ -21,6 +21,13 @@ DATABASES = {
     }
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'worth2',
+    }
+}
+
 # Media settings
 MEDIA_URL = '/uploads/'
 MEDIA_ROOT = 'uploads'
@@ -89,6 +96,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -100,6 +108,7 @@ MIDDLEWARE_CLASSES = (
     'impersonate.middleware.ImpersonateMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'waffle.middleware.WaffleMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 )
 
 ROOT_URLCONF = 'worth2.urls'
