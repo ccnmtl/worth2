@@ -1,15 +1,10 @@
 html {
 }
 
-
-a:link, a:visited {color: #f39;}
-a:hover {color: #000; text-decoration: underline;}
-a:active {color: #ff0; text-decoration: underline;}
-
-
 body {
 	/*font-family: 'Raleway', sans-serif !important;*/
 	font-family: arial, helvetica, sans-serif;
+	background-color: #f5eaf0;
 }
 
 body > .container {
@@ -26,7 +21,6 @@ body > .container {
 }
 
 .navbar-right {padding-top: 8px;}
-
 
 label {
     cursor: pointer;
@@ -66,7 +60,7 @@ li.disabled>a:before {
 	/*background:url(/media/img/fotolia_comp_72108181.jpg) center center;
 	background-position: 100px 200px;
 		*/
-		background-color: #fcc;
+		background-color: #f5eaf0;
 }
 
 .login-description {
