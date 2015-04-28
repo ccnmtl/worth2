@@ -1,8 +1,15 @@
 html {
 }
 
+
+a:link, a:visited {color: #f39;}
+a:hover {color: #000; text-decoration: underline;}
+a:active {color: #ff0; text-decoration: underline;}
+
+
 body {
-	font-family: 'Raleway', sans-serif !important;
+	/*font-family: 'Raleway', sans-serif !important;*/
+	font-family: arial, helvetica, sans-serif;
 }
 
 body > .container {
@@ -11,8 +18,10 @@ body > .container {
 
 .navbar {
 	background-color: #000;
+	/*
 	background-image: url(/media/img/fotolia_comp_64154101.jpg);
 	background-position: 0px 180px;
+	*/
 	min-height: 60px;
 }
 
@@ -45,7 +54,7 @@ li.disabled>a:before {
 /* LOGIN PAGE */
 
 .splash-photo {
-	background:url(/media/img/eworth.gif) center center;	
+	background:url(/media/img/fotolia_comp_76229741.jpg) center center;	
 	width:100%;
 	height:100%;
 	min-height:100%;
@@ -54,8 +63,10 @@ li.disabled>a:before {
 }
 
 .login-jumbotron {
-	background:url(/media/img/fotolia_comp_72108181.jpg) center center;	
+	/*background:url(/media/img/fotolia_comp_72108181.jpg) center center;
 	background-position: 100px 200px;
+		*/
+		background-color: #fcc;
 }
 
 .login-description {

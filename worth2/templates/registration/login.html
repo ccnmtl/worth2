@@ -9,14 +9,13 @@
 {% endblock %}
 
 {% block content %}
-<div class="worth-facilitator-login col-sm-7">
+<div class="worth-facilitator-login col-sm-6" style="">
 
-<div class="jumbotron login-jumbotron">
+    <div class="jumbotron login-jumbotron">
 
-    <img class="img-responsive center-block" src="{{STATIC_URL}}img/logo-purple.png" />
+        <img class="img-responsive center-block" src="{{STATIC_URL}}img/logo-black.png" />
 
-    <form class="form-signin" role="form" method="post"
-          action="/accounts/login/">
+        <form class="form-signin" role="form" method="post" action="/accounts/login/">
         {% csrf_token %}
 
         <h3 class="form-signin-heading"></h3>
@@ -48,29 +47,23 @@
         </div>
     </form>
 
-    <hr style="border: 1px solid black;" />
+        {% if CAS_BASE %}
 
-    {% if CAS_BASE %}
+        <form method="get" action="{{ CAS_BASE }}cas/login">
 
-    <form method="get" action="{{ CAS_BASE }}cas/login">
+            {% csrf_token %}
 
-    {% csrf_token %}
+            <input type="hidden" name="destination" value="https://{{ request.get_host }}/accounts/caslogin/?next={{ next|urlencode }}" />
 
-        <input type="hidden" name="destination" value="https://{{ request.get_host }}/accounts/caslogin/?next={{ next|urlencode }}" />
+            <button type="submit" class="btn btn-lg btn-default btn-block">Sign In with Columbia UNI.</button>
 
-             <button type="submit" class="btn btn-lg btn-default btn-block">Sign In with Columbia UNI.</button>
+        </form>
 
+        {% endif %}
 
-    </form>
+        <a class="btn btn-lg btn-link btn-block" href="https://cuit.columbia.edu/cuit/manage-my-uni" title="Learn more about UNI" target="_blank">What is a UNI?</a>
 
-    {% endif %}
-
-    <a class="btn btn-lg btn-link btn-block"
-       href="https://cuit.columbia.edu/cuit/manage-my-uni"
-       title="Learn more about UNI" target="_blank">What is a UNI?</a>
+    </div>
 
 </div>
-      </div>
-
-
 {% endblock %}
