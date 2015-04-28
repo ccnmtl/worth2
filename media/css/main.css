@@ -3,7 +3,6 @@ html {
 
 body {
 	/*font-family: 'Raleway', sans-serif !important;*/
-	/**/
 	font-family: arial, helvetica, sans-serif;
 	background-color: #f5eaf0;
 }
@@ -58,11 +57,11 @@ li.disabled>a:before {
 }
 
 .login-jumbotron {
-    background-color: #f5eaf0;
 	/*
 	background:url(/media/img/fotolia_comp_72108181.jpg) center center;
 	background-position: 100px 200px;
     */
+    background-color: #f5eaf0;
 }
 
 .login-description {
