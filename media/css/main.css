@@ -3,7 +3,6 @@ html {
 
 body {
 	/*font-family: 'Raleway', sans-serif !important;*/
-	font-family: arial, helvetica, sans-serif;
 	background-color: #f5eaf0;
 }
 
@@ -12,10 +11,8 @@ body > .container {
 }
 
 .navbar {
-	/*
 	background-image: url(/media/img/fotolia_comp_64154101.jpg);
-	background-position: 0px 180px;
-	*/
+	background-position: 0px 100px;
 	background-color: #000;
 	min-height: 60px;
 }
@@ -48,12 +45,16 @@ li.disabled>a:before {
 /* LOGIN PAGE */
 
 .splash-photo {
-	background:url(/media/img/fotolia_comp_76229741.jpg) center center;	
+	/*
+	background:url(/media/img/cover.png) center center;	
+		*/
+
 	width:100%;
 	height:100%;
 	min-height:100%;
 	background-size:cover;	
 	position:absolute;
+	background-color: rgb(147, 39, 79)
 }
 
 .login-jumbotron {
@@ -63,6 +64,8 @@ li.disabled>a:before {
     */
     background-color: #f5eaf0;
 }
+
+.jumbotron-special {background-color: rgb(147, 39, 79); color: #fff;}
 
 .login-description {
     margin: 30px 30px 15px 30px;
