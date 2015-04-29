@@ -6,19 +6,21 @@
 
 {% block content %}
 <div class="worth-facilitator-sign-in-participant">
-    <h1>Sign In a Participant</h1>
 
-    <form class="form-horizontal"
-          role="form"
-          method="post"
-          action="">
+    <h1>Sign In My Participant</h1>
+
+        <form class="form-horizontal" role="form" method="post" action=""">
+
+        <div class="well">
+
+        <h2>1. Who is My Participant?</h2>
+
         {% csrf_token %}
 
         {{ form.filter_by_cohort|bootstrap_horizontal:'col-sm-3' }}
 
-        <div class="form-group {% if form.participant_id.errors %}has-error{% endif %}">
-            <label class="control-label col-sm-3"
-                   for="{{form.participant_id.id_for_label}}">
+        <div class="form-group {% if form.participant_id.errors %}has-error{% endif %}" >
+            <label class="control-label col-sm-3" for="{{form.participant_id.id_for_label}}">
                 {{ form.participant_id.field.label }}</label>
             <div class="col-sm-9">
                 <select class="form-control" id="id_participant_id"
@@ -44,67 +46,78 @@
             </div>
         </div>
 
-        <hr />
+        </div>
+        
+        <div class="well">
+        
+        <h2>2. Where are We?</h2>
 
         {{ form.participant_location|bootstrap_horizontal:'col-sm-3' }}
 
-        <hr />
+        </div>
+        
+        <div class="well">
+        <h2>3. Where Do We Want to Go?</h2>
 
-        <div class="form-group worth-participant-destination">
-            <label for="participant_destination"
-                   class="control-label col-sm-3">Take participant to:</label>
-            <div class="col-sm-6">
-                <div class="radio form-group">
-                    <label>
-                        <input type="radio" name="participant_destination"
-                               value="next_new_session"
-                               {% if form.cleaned_data.participant_destination == 'next_new_session' %}
-                               checked
-                               {% endif %}
-                               >
-                        The next, new session.
-                    </label>
-                    <div>
-                        <span class="worth-participant-next-location"></span>
+            <div class="form-group worth-participant-destination">
+                <label for="participant_destination"
+                       class="control-label col-sm-3">Take participant to:</label>
+                <div class="col-sm-6">
+                    <div class="radio form-group">
+                        <label>
+                            <input type="radio" name="participant_destination"
+                                   value="next_new_session"
+                                   {% if form.cleaned_data.participant_destination == 'next_new_session' %}
+                                   checked
+                                   {% endif %}
+                                   >
+                            the next, <b>new</b> session. &rarr; <span class="worth-participant-next-location"></span>
+                        </label>
+                        <div>
+                            
+                        </div>
                     </div>
-                </div>
-                <div class="radio form-group">
-                    <label>
-                        <input type="radio"
-                               name="participant_destination"
-                               value="last_completed_activity"
-                               {% if form.cleaned_data.participant_destination == 'last_completed_activity' %}
-                               checked
-                               {% endif %}
-                               >
-                        The last completed activity.
-                    </label>
-                    <div>
-                        <span class="worth-participant-last-location"></span>
+                    <div class="radio form-group">
+                        <label>
+                            <input type="radio"
+                                   name="participant_destination"
+                                   value="last_completed_activity"
+                                   {% if form.cleaned_data.participant_destination == 'last_completed_activity' %}
+                                   checked
+                                   {% endif %}
+                                   >
+                            the last <b>completed</b> activity. &rarr; <span class="worth-participant-last-location"></span>
+                        </label>
+                        <div>
+                            
+                        </div>
                     </div>
-                </div>
-                <div class="radio form-group">
-                    <label>
-                        <input type="radio" name="participant_destination"
-                               value="already_completed_session"
-                               disabled="disabled"
-                               {% if form.cleaned_data.participant_destination == 'already_completed_session' %}
-                               checked
-                               {% endif %}
-                               >
-                        An already completed session for review.
-                    </label>
-
-                    {% bootstrap_field form.already_completed_session %}
+                    <div class="radio form-group">
+                        <label>
+                            <input type="radio" name="participant_destination"
+                                   value="already_completed_session"
+                                   disabled="disabled"
+                                   {% if form.cleaned_data.participant_destination == 'already_completed_session' %}
+                                   checked
+                                   {% endif %}
+                                   >
+                            An already completed session for review.
+                        </label>
+    
+                        {% bootstrap_field form.already_completed_session %}
+                    </div>
                 </div>
             </div>
-        </div>
-
+        
+         </div>
+         
+        <div class="well">
+        <h2>4. What Kind of Session is This?</h2>
         {{ form.session_type|bootstrap_horizontal:'col-sm-3' }}
-
+        </div>
         <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-6">
-                <button type="submit" class="btn btn-primary">Sign In</button>
+            <div class="col-sm-offset-4 col-sm-6">
+                <button type="submit" class="btn btn-primary">Here we go!</button>
             </div>
         </div>
     </form>
