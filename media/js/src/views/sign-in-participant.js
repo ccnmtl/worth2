@@ -46,7 +46,12 @@ define([
             }
 
             var $alreadyCompletedDropdown = $form.find(
-                '.worth-already-completed');
+                '#id_already_completed_session');
+
+            // Store the checked option before re-populating it
+            // with the selected participant's specific destinations.
+            var savedVal = $alreadyCompletedDropdown.val();
+
             $alreadyCompletedDropdown.html('');
             var i;
             for (i = 1; i < highestAccessedSession; i++) {
@@ -54,6 +59,10 @@ define([
                     '<option value="' + i + '">' +
                         'Session ' + i +
                         '</option>');
+            }
+
+            if (savedVal >= 1) {
+                $alreadyCompletedDropdown.val(savedVal);
             }
 
             // Disable the "last completed activity" radio button if
@@ -126,13 +135,17 @@ define([
          * Refresh the state of the "already completed" dropdown.
          */
         _refreshDisabledState: function($el) {
+            var $select = $('#id_already_completed_session');
+            if ($el.length === 0) {
+                this._disableAlreadyCompletedDropdown($select);
+                return;
+            }
             // Only look at the radio buttons
             if ($el.prop('type') !== 'radio') {
                 return;
             }
             var $parent = $el.closest('.worth-participant-destination');
             if ($parent.length > 0) {
-                var $select = $parent.find('select.worth-already-completed');
                 if ($el.prop('value') === 'already_completed_session') {
                     this._enableAlreadyCompletedDropdown($select);
                 } else {
