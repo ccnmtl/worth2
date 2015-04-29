@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>E-WORTH {% block title %}{% endblock %}</title>
+	<title>E-WORTH | {% block title %}{% endblock %}</title>
 
     <meta name="description" content="worth2">
     <meta name="author" content="CCNMTL">
@@ -17,8 +17,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
     
-    <link href="//fonts.googleapis.com/css?family=Raleway:800,500"
-          rel="stylesheet">
+    <!--<link href="//fonts.googleapis.com/css?family=Raleway:800,500" rel="stylesheet">-->
 
     <link href="{% bootstrap_css_url %}" rel="stylesheet">
 
@@ -26,9 +25,9 @@
     <link href="{{STATIC_URL}}css/main.css" rel="stylesheet">
     {% endcompress %}
 
-	<link rel="shortcut icon" href="{{STATIC_URL}}img/favicon.ico"
-          type="image/x-icon" />
-
+	<link rel="shortcut icon" href="{{STATIC_URL}}img/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="{{STATIC_URL}}img/favicon.ico" type="image/x-icon">
+	
 	{% block css %}{% endblock %}
 
 	{% block feeds %}{% endblock %}

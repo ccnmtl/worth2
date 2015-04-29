@@ -173,7 +173,6 @@ class SignInParticipantTest(LoggedInFacilitatorTestMixin, TestCase):
 
     def test_get(self):
         response = self.client.get(reverse('sign-in-participant'))
-        self.assertContains(response, 'Sign In a Participant')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context['cohorts'], [])
 
@@ -194,7 +193,6 @@ class SignInParticipantTest(LoggedInFacilitatorTestMixin, TestCase):
         p1.save()
 
         response = self.client.get(reverse('sign-in-participant'))
-        self.assertContains(response, 'Sign In a Participant')
         self.assertEqual(response.status_code, 200)
 
         self.assertContains(
