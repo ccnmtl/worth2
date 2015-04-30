@@ -153,6 +153,7 @@ INSTALLED_APPS = [
     'worth2.ssnm',
     'worth2.goals',
     'worth2.selftalk',
+    'bdd_tests',
 ]
 
 REST_FRAMEWORK = {
