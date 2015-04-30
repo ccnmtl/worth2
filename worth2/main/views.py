@@ -99,6 +99,10 @@ class ParticipantJournalView(TemplateView):
         except:
             raise http.Http404
 
+        context['session_num'] = session_num
+        slug = 'session-%d' % session_num
+        context['section'] = get_object_or_404(Section, slug=slug)
+
         if session_num == 1:
             # Find the first 'services' type goal setter in Session 1
             goalsettingblock = get_first_block_in_module(

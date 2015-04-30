@@ -1,11 +1,7 @@
-{% extends 'base.html' %}
+{% extends 'main/journal_base.html' %}
 
 {% block content %}
-<h1>Journal for Session 3</h1>
-
-<div>
-    Participant: <strong>{{ participant.study_id }}</strong>
-</div>
+{{ block.super }}
 
 <h3>Social Support Network Map</h3>
 <div class="worth-journal-info-element">

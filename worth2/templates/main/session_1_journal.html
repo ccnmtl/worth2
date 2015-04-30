@@ -1,24 +1,41 @@
-{% extends 'base.html' %}
-{% load webdesign %}
+{% extends 'main/journal_base.html' %}
 
 {% block content %}
-<h1>Journal for Session 1</h1>
+{{ block.super }}
 
-<div>
-    Participant: <strong>{{ participant.study_id }}</strong>
-</div>
-
-<h3>General Info About WORTH</h3>
+<h3>Introduction to the journals</h3>
 <div class="worth-journal-info-element">
     <p>{% lorem %}</p>
 </div>
 
-<h3>General Info About HIV Testing</h3>
+<h3>Contract of Commitment</h3>
 <div class="worth-journal-info-element">
-    <p>{% lorem %}</p>
+    <p>
+        I agree to participate in Project E-WORTH with my group and
+        session facilitator.
+    </p>
+    <p>
+        By agreeing to attend, I am making a commitment to do the following:
+        <ul>
+            <li>Come to sessions on time.</li>
+            <li>Attend scheduled sessions.</li>
+            <li>Share my experiences.</li>
+            <li>Work on goals that I set.</li>
+        </ul>
+    </p>
+    <p>
+        I will hold in confidence the personal information discussed
+        by my fellow group members during sessions. I agree not to
+        view personal information on another participant tablet, and I
+        also agree not to reveal the identity of anyone in the study.
+    </p>
+    <p>
+        Confidentiality means that everything we discuss in sessions
+        is private and is not to be discussed outside of session.
+    </p>
 </div>
 
-<h3>Goals set for Services</h3>
+<h3>My Goals</h3>
 <div class="worth-journal-info-element">
     {% for r in goal_responses %}
     <div>Goal option: <strong>{{ r.option }}</strong></div>
@@ -31,17 +48,41 @@
     {% endfor %}
 </div>
 
-<h3>Services info selected to view (participant answers)</h3>
+<h3>My Issue</h3>
 <div class="worth-journal-info-element">
-    <strong>TODO: implement this once the services activity is in place:
-    https://worth2.ccnmtl.columbia.edu/pages/edit/session-1/services/</strong>
+    <div>
+        <strong>TODO:</strong>
+        This journal item depends on this activity:
+        <a href="/pages/edit/session-1/services/">/pages/edit/session-1/services/</a>
+    </div>
+
+    <div>
+        <strong>This issue was important to you this week:</strong>
+    </div>
+    <div>
+        <strong>
+            Here is a list of organizations you can call for help
+            with this issue:
+        </strong>
+    </div>
 </div>
 
+<h3>Homework</h3>
 <div class="worth-journal-info-element">
-    My issue (issue selected)
+    <p>
+        For your homework this week, focus on working towards
+        the general services goals you set.
+    </p>
 </div>
 
+<h3>Congratulations</h3>
 <div class="worth-journal-info-element">
-    List of organizations with name/address/contact info for above issue
+    <p>
+        Congratulations on completing the first session of E-WORTH,
+        on your road to health! We look forward to seeing you again
+        next week. We hope that you will find this experience rewarding
+        and that you will share the information you learn with family,
+        friends, and others in our community.
+    </p>
 </div>
 {% endblock %}
