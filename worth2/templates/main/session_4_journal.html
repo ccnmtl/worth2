@@ -1,9 +1,113 @@
-{% extends 'base.html' %}
+{% extends 'main/journal_base.html' %}
 
 {% block content %}
-<h1>Journal for Session 4</h1>
+{{ block.super }}
 
-<div>
-    Participant: <strong>{{ participant.study_id }}</strong>
+<div class="worth-journal-info-element">
+    <p>
+        This week you created a plan to keep yourself safe
+        during a violent incident and a plan in case you need
+        to escape a dangerous situation at home. Your safety
+        plan follows:
+    </p>
+    TODO
+</div>
+
+<h3>Social Support Network Map</h3>
+<div class="worth-journal-info-element">
+    {% include 'main/journal_ssnm_display.html' %}
+</div>
+
+<h3>Goals to increase social support</h3>
+<div class="worth-journal-info-element">
+    TODO
+</div>
+
+<h3>My Goals for Risk Reduction</h3>
+<div class="worth-journal-info-element">
+    TODO
+</div>
+
+<h3>My Issue</h3>
+<div class="worth-journal-info-element">
+    TODO
+</div>
+
+<h3>My Goals to Access Services</h3>
+<div class="worth-journal-info-element">
+    TODO
+</div>
+
+<h3>I am worth it</h3>
+<div class="worth-journal-info-element">
+    <p>
+        It is important to take a moment out of our busy
+        lives to remind ourselves why we are WORTH it. Here
+        are some words that describe why you are worth it:
+    </p>
+    TODO
+</div>
+
+<h3>Homework</h3>
+<div class="worth-journal-info-element">
+    <p>
+        For this week’s homework assignment, continue to focus
+        on the social support, risk reduction and general
+        services goals you set this week.
+    </p>
+</div>
+
+<h3>Tips for Influencing a Steady/Main Partner to use Protective Barriers</h3>
+<div class="worth-journal-info-element">
+    <h4>Do</h4>
+    <p>Start conversation on a positive note</p>
+    <p>Share with your partner how you feel and what you want</p>
+    <p>
+        Listen to your partner, repeat back their needs and what
+        they want from you
+    </p>
+    <p>Be open to discuss things your partner wants that you may not</p>
+    <p>Let them know when they do something that you like</p>
+    <p>Stop the moment the conversation turns negative</p>
+
+    <h4>Don't</h4>
+    <p>Put your partner down</p>
+    <p>Be under the influence of drugs or alcohol</p>
+    <p>Continue conversation if your partner puts you down</p>
+    <p>
+        If the situation becomes out of control, try to exit as
+        quickly as possible, and get help if needed!
+    </p>
+
+    <p>
+        <sup>Credit:
+            <a href="https://effectiveinterventions.cdc.gov/docs/default-source/tlc-docs/TLC_Implementation_Manual_-_Staying_Healthy.pdf"
+               >https://effectiveinterventions.cdc.gov/docs/default-source/tlc-docs/TLC_Implementation_Manual_-_Staying_Healthy.pdf</a>
+        </sup>
+    </p>
+</div>
+
+<h3>Tips for Influencing a New or Casual Partner to use Condoms</h3>
+<div class="worth-journal-info-element">
+    <p>Make a decision about when and where to discuss condom use</p>
+    <p>Try not to be under the influence of drugs or alcohol</p>
+    <p>Share how you feel about condom use</p>
+    <p>Ask for what you want from your partner</p>
+    <p>Be honest about your needs</p>
+    <p>Reflect on your partner's needs</p>
+    <p>Repeat what you want as often as needed</p>
+    <p>You have the right to refuse things you don't want</p>
+    <p>Stand up for what you need to be safe</p>
+    <p>
+        If there is something that makes you feel unsafe, exit
+        situation as quickly as possible and immediately go for
+        help if needed!
+    </p>
+    <p>
+        <sup>Credit:
+            <a href="https://effectiveinterventions.cdc.gov/docs/default-source/tlc-docs/TLC_Implementation_Manual_-_Staying_Healthy.pdf"
+               >https://effectiveinterventions.cdc.gov/docs/default-source/tlc-docs/TLC_Implementation_Manual_-_Staying_Healthy.pdf</a>
+        </sup>
+    </p>
 </div>
 {% endblock %}

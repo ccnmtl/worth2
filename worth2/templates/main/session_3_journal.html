@@ -1,15 +1,107 @@
-{% extends 'base.html' %}
+{% extends 'main/journal_base.html' %}
 
 {% block content %}
-<h1>Journal for Session 3</h1>
-
-<div>
-    Participant: <strong>{{ participant.study_id }}</strong>
-</div>
+{{ block.super }}
 
 <h3>Social Support Network Map</h3>
 <div class="worth-journal-info-element">
     {% include 'main/journal_ssnm_display.html' %}
 </div>
 
+<h3>Goals to increase social support</h3>
+<div class="worth-journal-info-element">
+    TODO
+</div>
+
+<h3>Problem Solving the POP Way</h3>
+<div class="worth-journal-info-element">
+    <p>
+        We're going to learn a problem solving technique called
+        POP.
+        POP stands for:
+
+        <dl>
+            <dt>P = PROBLEM</dt>
+            <dd>Define the problem and its consequences.</dd>
+
+            <dt>O = OPTIONS</dt>
+            <dd>Brainstorm the options (weigh pros/cons).</dd>
+
+            <dt>P = PLAN OF ACTION</dt>
+            <dd>
+                Come up with a plan to act on best option. Look
+                and see how the plan is working and revise plan if
+                needed. Reward yourself for any progress you make.
+            </dd>
+        </dl>
+    </p>
+</div>
+
+<h3>What is Self Talk?</h3>
+<div class="worth-journal-info-element">
+    <p>
+        Feelings are deep and often we can't necessarily understand
+        easily why things make us feel as they do. This is because
+        we just keep accumulating feelings throughout our lives. Even
+        as kids we might have an experience that triggers a feeling,
+        which can stay with us for life. Sometimes these feelings can
+        become triggers for unsafe behavior.
+    </p>
+    <p>
+        One way to counter feelings
+        that are triggers is to try to change the way you think about
+        something. The way to do this is through self-talk. What is
+        self-talk? It's your internal voice; the one that you keep a
+        running conversation with during the day as you go about your
+        business. This internal voice is a constant reflection of how
+        you are feeling. It tells you that you will be late if you
+        don't leave enough time to get somewhere. It tells you that
+        something you said was stupid, if you suddenly feel that you
+        said something stupid. Just as the voice tells you negative
+        things, you can train it to say positive things.
+    </p>
+</div>
+
+<h3>My Goals for Risk Reduction</h3>
+<div class="worth-journal-info-element">
+    TODO
+</div>
+
+<h3>My Issue</h3>
+<div class="worth-journal-info-element">
+    TODO
+</div>
+
+<h3>My Goals to Access Services</h3>
+<div class="worth-journal-info-element">
+    TODO
+</div>
+
+<h3>I am worth it</h3>
+<div class="worth-journal-info-element">
+    TODO
+    <p>
+        It is important to take a moment out of our busy lives
+        to remind ourselves why we are WORTH it. Here are some
+        words that describe why you are worth it:
+    </p>
+</div>
+
+<h3>Homework</h3>
+<div class="worth-journal-info-element">
+    <p>
+        For this week’s homework assignment, work towards the social
+        support, risk reduction and general services goals you set
+        this week.
+    </p>
+</div>
+
+<h3>Congratulations</h3>
+<div class="worth-journal-info-element">
+    <p>
+        Congratulations on completing another session of E-WORTH!
+        Thank you again for participating; we look forward to seeing
+        you next week!
+    </p>
+</div>
 {% endblock %}
