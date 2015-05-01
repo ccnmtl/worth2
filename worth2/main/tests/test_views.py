@@ -447,8 +447,7 @@ class ParticipantJournalsTest(LoggedInFacilitatorTestMixin, TestCase):
             text='test text')
 
         responses = ParticipantJournalView._get_goal_responses(
-            goalsettingblock,
-            self.participant.user)
+            self.participant.user, 'services', 1)
 
         self.assertEqual(responses.count(), 1)
 

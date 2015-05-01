@@ -1,7 +1,9 @@
 import re
 from django.contrib.contenttypes.models import ContentType
+from django.db.models import Q
 from django.utils.encoding import smart_str
 from pagetree.models import Section
+from quizblock.models import Answer
 
 
 def get_first_block_in_module(app_label, model, session_num, blocktest=None):
@@ -121,3 +123,17 @@ def get_verbose_section_name(section):
         return smart_str('%s [Session %d]' % (s, module_num))
     else:
         return s
+
+
+def get_answer_for_response(response):
+    """Return the Answer for a quizblock Response.
+
+    TODO: add this method to quizblock.models.Response
+
+    :type response: quizblock.models.Response
+
+    :rtype: quizblock.models.Answer
+    """
+    return Answer.objects.filter(
+        Q(question=response.question),
+        Q(value=response.value) | Q(label=response.value)).first()
