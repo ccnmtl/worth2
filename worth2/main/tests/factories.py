@@ -98,7 +98,8 @@ class WorthModuleFactory(object):
             'label': 'Welcome to Session 1',
             'slug': 'session-1',
             'children': [
-                {'label': 'Three', 'slug': 'introduction'}
+                {'label': 'Orientation Video',
+                 'slug': 'orientation'}
             ]})
         root.add_child_section_from_dict({
             'label': 'Welcome to Session 2',
