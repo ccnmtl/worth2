@@ -11,7 +11,7 @@
                         <label>
                             <input name="question{{question.id}}"
                                    value="{{answer.label}}" type="checkbox">
-                            {{answer.label}}
+                            {{answer.label|safe}}
                         </label>
                     </li>
                 {% else %}
@@ -25,7 +25,7 @@
                                 {% else %}{% endifanswerin %}
                             {% endif %} />
                             <span class="caseanswerlabel {% if response %}{% if answer.correct %}correctanswer{% else %}incorrectanswer{% endif %}{% endif %}">
-                                {{answer.label}}
+                                {{answer.label|safe}}
                             </span>
                             {% if response %}
                                 <span class="caseanswerresult">
