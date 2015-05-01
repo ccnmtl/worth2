@@ -22,6 +22,7 @@ body > .container {
 label {
     cursor: pointer;
 }
+
 .dashboard-widget {min-height: 200px; position: relative;}
 .dashboard-widget a {
     margin: 10px 10px 0 0;
@@ -248,6 +249,7 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px;}
     color: black;
     margin-bottom: 5px;
     font-size: 12px;
+    min-height: 75px;
 }
 
 .rate-my-risk.likert .answers-container .colored-box,
@@ -307,6 +309,8 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px;}
     font-size: 1.2em;
     margin-top: 10px;    
 }
+
+.myth-fact iframe {width: 100%;} /*video*/
 
 .avatar-block>img {
     max-width: 150px;
@@ -581,3 +585,4 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px;}
 .worth-facilitator-sign-in-participant label[for="id_already_completed_session"] {
     display: none;
 }
+
