@@ -1,12 +1,7 @@
-{% extends 'base.html' %}
-{% load webdesign %}
+{% extends 'main/journal_base.html' %}
 
 {% block content %}
-<h1>Journal for Session 2</h1>
-
-<div>
-    Participant: <strong>{{ participant.study_id }}</strong>
-</div>
+{{ block.super }}
 
 <h3>Introduction to Session 2 Road Map</h3>
 <div class="worth-journal-info-element">
@@ -14,7 +9,7 @@
         Here is your personal road map for this week. It lists information
         you learned this week, as well as your answers to some of the
         questions from the session, the goals you set, and services
-        organizations you can read out to for help meeting your goals.
+        organizations you can reach out to for help meeting your goals.
     </p>
 </div>
 
@@ -25,64 +20,26 @@
         remind ourselves why we are WORTH it. Here are some words
         that describe why you are worth it:
     </p>
+    TODO: from <a href="/pages/session-2/i-am-worth-it/">here</a>
 </div>
 
+<h3>Reflections on the women of E-WORTH</h3>
 <div class="worth-journal-info-element">
     <p>
-    I am worth it selected words (participant answers)
-    <strong>TODO: Implement this when activity here is filled in:
-        https://worth2.ccnmtl.columbia.edu/ ages/edit/session-2/i-am-worth-it/
-    </strong>
+        This week you met the women of E-WORTH and thought about
+        which of their issies are also issues for you. Here is what
+        you said:
     </p>
+    TODO
+    <p><strong>Big issues for you</strong></p>
+    <p><strong>Other issues for you</strong></p>
 </div>
 
+<h3>My Goals for Risk Reduction</h3>
 <div class="worth-journal-info-element">
-    <h3>Info from montage 2</h3>
-    <em>Karen/Blondell to write</em>
-</div>
-
-{# TODO #}
-<h3>Reflect on the characters answers (participant answers)</h3>
-<div class="worth-journal-info-element">
-    <p>
-        This week you learned about fix women and listened to them talk
-        about issues in their lives. Here are some of the issues they
-        raised and how important you think they are in your life:
-    </p>
-    <p>question text</p>
-    <p>participant answer</p>
-    <p>
-        example: "Sometimes it is just too hard to cope"
-        This is [a big issue] for me.
-    </p>
-</div>
-
-<h3>Myth/Fact Info</h3>
-<div class="worth-journal-info-element">
-    <p>{% lorem %}</p>
-</div>
-
-{# TODO #}
-<h3>Protective behaviors (participant answers)</h3>
-<div class="worth-journal-info-element">
-    <p>
-        This week you thought about activities you do and how risky they
-        are. Here is the list you wrote of things you do ranked by risk
-        level. List of behaviors participant does ranked/coded by risk
-        level
-    </p>
-    <p>Here is how you rated your own risk level:</p>
-    <p>participant's self risk rating</p>
-</div>
-
-{# TODO #}
-<h3>Goals set in session 2 (participant answers)</h3>
-<div class="worth-journal-info-element">
-    <p>
-        In this session you set goals to reduce your risk of
-        contracting HIV or other sexually transmitted infections
-        and goals to access a service.
-    </p>
+    TODO
+    <p><strong>I will:</strong></p>
+    <p><strong>My action plan:</strong></p>
 </div>
 
 {% comment %}
@@ -103,31 +60,277 @@
         info.append(self._render_goals(services_goalsettingblock, user))
 {% endcomment %}
 
-{# TODO #}
-<h3>Services info selected to view (participant answers)</h3>
+<h3>My Issue</h3>
 <div class="worth-journal-info-element">
-    <p>My issue (issue selected)</p>
+    <p><strong>This issue was important to you this week:</strong></p>
     <p>
-        List of organizations with name/address/contact info
-        for above issue.
-    </p>
-    <p>
-        example: "This week you looked for information on
-        [selected issue]. Here is a list of organizations you
-        can contact to help you with this issue."
+        <strong>
+            Here is a list of organizations you can call for help
+            with this issue:
+        </strong>
     </p>
 </div>
 
-{# TODO #}
-<h3>Wrap Up</h3>
+<h3>My Goals to Access Services</h3>
+<div class="worth-journal-info-element">
+    TODO
+</div>
+
+<h3>The Continuum of Risk</h3>
+<div class="worth-journal-info-element">
+    <div class="worth-risk-levels">
+        <h4>High risk</h4>
+        <ul class="worth-high-risk">
+            <li>10 - Sharing needles</li>
+            <li>8 - Unprotected anal intercourse</li>
+            <li>8 - Unprotected vaginal intercourse</li>
+            <li>8 - Sharing implements that draw blood (whips, knives)</li>
+            <li>8 - Unprotected oral sex on a menstruating woman</li>
+        </ul>
+
+        <h4>Medium risk</h4>
+        <ul class="worth-medium-risk">
+            <li>7 - Unprotected oral sex on a man (with ejaculation)</li>
+            <li>6 - Unprotected oral-anal contact</li>
+            <li>6 - Unprotected fisting or fingering</li>
+            <li>6 - Unprotected oral sex on a man (without ejaculation)</li>
+            <li>6 - Unprotected oral sex on a woman (non-menstruating)</li>
+            <li>6 - Sharing uncovered sex toys</li>
+        </ul>
+
+        <h4>Low risk</h4>
+        <ul class="worth-low-risk">
+            <li>5 - Anal sex with a condom</li>
+            <li>4 - Vaginal sex using a condom</li>
+            <li>3 - Oral sex on a man using a condom</li>
+            <li>2 - Oral sex on a woman using a latex barrier</li>
+            <li>1 - Oral-anal contact using a latex barrier (rimming)</li>
+            <li>0 - Petting, manual-genital contact</li>
+            <li>0 - Shower with a partner (with proper use of condom)</li>
+            <li>0 - Deep (French) kissing</li>
+            <li>0 - Spanking, whipping that does not break the skin</li>
+            <li>0 - Bondage and discipline play</li>
+            <li>0 - Masturbation (alone or with partner)</li>
+            <li>0 - Trace partner's body with tongue</li>
+            <li>0 - Hugging, Touching</li>
+            <li>0 - Massage</li>
+            <li>0 - Sex without penetration</li>
+            <li>0 - Abstinence</li>
+        </ul>
+    </div>
+</div>
+
+<h3>How I rated my behavior this week</h3>
+<div class="worth-journal-info-element">
+    TODO
+    <p>
+        Answer option from my rate my risk quiz in
+        protective behaviors sequence
+    </p>
+</div>
+
+<h3>Facts About HIV and STIs</h3>
+<div class="worth-journal-info-element">
+    <p>
+        Women suffer more frequent and severe symptoms of STIs
+        than men.
+    </p>
+    <p>
+        Some STIs are more likely to be asymptomatic in women than
+        men. STIs in women can be associated with pelvic inflammatory
+        disease, ectopic pregnancy, infertility, and cancer etc. You
+        cannot get an STI from a toilet seat. Most STIs are transmitted
+        by sexual contact only. HSV 1 and 2 can be transmitted through
+        skin to skin contact.
+    </p>
+    <p>
+        Viral STIs can be treated, but there are not cures for most
+        of them. Once your body is infected with a viral STI, your
+        body will always carry it. HPV (genital warts) causes
+        cervical cancer and affect reproductive health. You should
+        get screened for HPV (genital warts) annually. Women should
+        get an annual exam to receive a Pap test to screen for
+        evidence of HPV (genital warts) infection. HPV (genital warts)
+        is easily transmissible and the most prevalent STI,
+        particularly among young men and women. HPV (genital warts)
+        is VERY Common.
+    </p>
+    <p>
+        You may be infected and experience no symptoms. In fact, for
+        many STIs such as Chlamydia, most people transmit the infection
+        without experiencing any symptoms. Chlamydia has lasting effects.
+        Chlamydia can lead to pelvic inflammatory disease, ectopic
+        pregnancy, and infertility among women. A mother can pass
+        gonorrhea to her unborn child. Gonorrhea can be passed on to the
+        child during birth. It can cause blindness in the newborn.
+    </p>
+    <p>
+        You don't have to have an outbreak or other symptoms in order
+        to be infectious and pass HSV-2 (genital herpes) to a partner.
+        HSV-2 (genital herpes) shedding is responsible for genital herpes
+        transmission whether these episodes lead to recognized outbreaks
+        or are clinically asymptomatic. In fact, up to 70% of transmissions
+        can be attributed to asymptomatic shedding.
+    </p>
+    <p>
+        While there is no cure for HSV-2 (genital herpes) there is an
+        anti-viral treatment that can reduce viral shedding, which reduces
+        risk of transmission to other partners.
+    </p>
+    <p>
+        Syphilis can cause slow destruction of the heart, brain, nerves,
+        eyes, or joints in 1/3 of infected people. Without antibiotics,
+        death is likely.
+    </p>
+    <p>
+        Women account for half of the world's cases of HIV. You cannot get
+        HIV by kissing someone who has it. Saliva may contain HIV but not
+        in sufficient quantities to transmit the virus. Even during treatment
+        with the new medications HIV can still progress, and an infected
+        person can transmit the virus to others. Withdrawal, when a man pulls
+        his penis out of a woman before ejaculation, provides no protection
+        against STIs.
+    </p>
+</div>
+
+<h3>Steps for Using a Male Condom</h3>
+<div class="worth-journal-info-element">
+    <h4>Before Intercourse</h4>
+    <ol>
+        <li>
+            Ensure that the condom is made out of latex, polyurethane,
+            or other non-animal based material, and that it is not
+            expired.
+        </li>
+        <li>
+            Open the package, being careful not to tear the condom.
+        </li>
+        <li>
+            Proceed to place the condom on the penis, making sure to
+            leave room for the tip.
+        </li>
+        <li>
+            Slowly unroll the condom all the way down to the base of
+            the penis.
+        </li>
+        <li>
+            If necessary, use water-based lubricants only (e.g.,
+            KY Jelly or ID lube).
+        </li>
+    </ol>
+
+    <h4>Immediately After Ejaculation</h4>
+    <ol>
+        <li>
+            Hold the condom at the base of the penis and withdraw
+            before the penis becomes flaccid.
+        </li>
+        <li>
+            Roll the condom down and remove it from the penis, being
+            careful not to spill contents.
+        </li>
+        <li>
+            Dispose of the condom in a trashcan.
+        </li>
+    </ol>
+</div>
+
+<h3>Dental Dams</h3>
+<div class="worth-journal-info-element">
+    <p>
+        Dental dams are small, thin, square pieces of latex that
+        are used for oral-vaginal or oral-anal sex. Dental dams
+        help reduce the spread of STIs during oral sex by putting
+        a barrier between the mouth and any vaginal and anal fluids
+        that contain bacteria and viruses. They come in a variety of
+        sizes and flavors so you can find a dam that satisfies your
+        needs. Dental dams prevent many STIs, such as herpes, genital
+        warts and HIV, that can be transmitted through oral sex. Like
+        condoms, dental dams must be used correctly and consistently
+        in order to be effective.
+    </p>
+
+    <h4>How To Use a Dental Dam Properly</h4>
+    <ul>
+        <li>Use a new dental dam for each sexual activity.</li>
+        <li>
+            Make sure there are no holes or tears in the dental dam.
+            Check the dnetal dam by holding it up to light or check
+            to see if any water can go through it.
+        </li>
+        <li>
+            Do not use any oil based lubricants such as Vaseline,
+            petroleum jelly, baby oil, or lotions. Oil based lubricants
+            can break down the materical of the dental dam, causing it
+            to leak or tear.
+        </li>
+        <li>
+            Hold the dental dam over the vagina or anus during oral sex.
+            Make sure that the dental dam stays in place. Only use one
+            side of the dental dam and never share the same dental dam
+            with your partner.
+        </li>
+        <li>
+            Store the dental dam in a cool, dry place away from direct
+            sunlight. Heat and sunlight can breakdown latex which can
+            cause the dental dam to tear.
+        </li>
+    </ul>
+    <p>
+        <sup>
+            Reference:
+            <a href="http://www.gc.cuny.edu/CUNY_GC/media/CUNY-Graduate-Center/PDF/Health/What-are-Dental-Dams_1.pdf"
+               >http://www.gc.cuny.edu/CUNY_GC/media/CUNY-Graduate-Center/PDF/Health/What-are-Dental-Dams_1.pdf</a>
+        </sup>
+    </p>
+</div>
+
+<h3>Steps for using a Female Condom</h3>
+<div class="worth-journal-info-element">
+    <h4>Before Intercourse</h4>
+    <ol>
+        <li>Ensure that the condom has not expired</li>
+        <li>Squeeze package to ensure that there are no holes/tears</li>
+        <li>Open package, being careful not to tear the condom</li>
+        <li>
+            Place water-based lubricant on the outside of the condom to
+            ensure comfortable insertion
+        </li>
+        <li>Find a comfortable position to insert the condom</li>
+        <li>Squeeze the sides of the inner ring together</li>
+        <li>Insert the inner ring and condom into your vagina</li>
+        <li>
+            Push the inner ring into the vagina until it reaches
+            the cervix
+        </li>
+    </ol>
+
+    <h4>After Intercourse</h4>
+    <ol>
+        <li>Squeeze and twist the outer ring</li>
+        <li>Gently remove the condom from your vagina or anus</li>
+        <li>Throw the condom away in trashcan</li>
+    </ol>
+</div>
+
+<h3>My Homework</h3>
+<div class="worth-journal-info-element">
+    <p>
+        For your homework this week, continue to focus on working
+        towards the risk reduction and general services goals you
+        created.
+    </p>
+</li>
+
+<h3>Congratulations!</h3>
 <div class="worth-journal-info-element">
     <p>
         Congratulations on completing session two of E-WORTH!
-        Remember that your homework for the week is to work on
-        the goals you set today.
+        Please take a moment to reflect on this week's discussion
+        about how risks in our communities lead to increased risk
+        for sexual transmitted infections. Please also take time to
+        reflect on goals you created today as you continue your
+        journey on the road to health.
     </p>
-    <p>I am WORTH IT! And I will stay healthy.</p>
-    <p>I am WORTH IT! And I will protect myself.</p>
-    <p>I am WORTH IT! And I will find support for my health</p>
 </div>
 {% endblock %}

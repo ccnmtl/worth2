@@ -91,7 +91,7 @@ class UserPageVisitFactory(factory.django.DjangoModelFactory):
 class WorthModuleFactory(object):
     """A customized version of Pagetree's ModuleFactory."""
 
-    def __init__(self, hname, base_url):
+    def __init__(self, hname='main', base_url='/pages/'):
         hierarchy = HierarchyFactory(name=hname, base_url=base_url)
         root = hierarchy.get_root()
         root.add_child_section_from_dict({
