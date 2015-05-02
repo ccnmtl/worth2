@@ -3,7 +3,7 @@
 
 <div class="row">
     <div class="col-md-8">
-        {% if 'likert' in question.quiz.pageblock.css_extra %}
+        {% if 'likert' in question.quiz.pageblock.css_extra or 'likert' in question.css_extra %}
             {% include 'quizblock/likert.html' %}
         {% else %}
             <ol class="caseanswercontainer" type="A">
