@@ -10,7 +10,9 @@
 
 <h3>Goals to increase social support</h3>
 <div class="worth-journal-info-element">
-    TODO
+    {% with responses=goals_support_responses %}
+    {% include 'main/journal_goal_responses.html' %}
+    {% endwith %}
 </div>
 
 <h3>Problem Solving the POP Way</h3>
@@ -64,7 +66,9 @@
 
 <h3>My Goals for Risk Reduction</h3>
 <div class="worth-journal-info-element">
-    TODO
+    {% with responses=goals_risk_responses %}
+    {% include 'main/journal_goal_responses.html' %}
+    {% endwith %}
 </div>
 
 <h3>My Issue</h3>
@@ -74,7 +78,9 @@
 
 <h3>My Goals to Access Services</h3>
 <div class="worth-journal-info-element">
-    TODO
+    {% with responses=goals_services_responses %}
+    {% include 'main/journal_goal_responses.html' %}
+    {% endwith %}
 </div>
 
 {% include 'main/journal_i_am_worth_it.html' %}

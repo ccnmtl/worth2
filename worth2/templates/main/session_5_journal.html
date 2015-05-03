@@ -3,9 +3,11 @@
 {% block content %}
 {{ block.super }}
 
-<h3>Goal Setting</h3>
+<h3>My Goals for Risk Reduction</h3>
 <div class="worth-journal-info-element">
-    TODO
+    {% with responses=goals_risk_responses %}
+    {% include 'main/journal_goal_responses.html' %}
+    {% endwith %}
 </div>
 
 {% include 'main/journal_i_am_worth_it.html' %}

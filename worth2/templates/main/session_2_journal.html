@@ -48,28 +48,10 @@
 
 <h3>My Goals for Risk Reduction</h3>
 <div class="worth-journal-info-element">
-    TODO
-    <p><strong>I will:</strong></p>
-    <p><strong>My action plan:</strong></p>
+    {% with responses=goals_risk_responses %}
+    {% include 'main/journal_goal_responses.html' %}
+    {% endwith %}
 </div>
-
-{% comment %}
-        # Find the first 'risk reduction' goal setter in Session 2
-        risk_goalsettingblock = get_first_block_in_module(
-            'goals', 'goalsettingblock', 2,
-            lambda (b): b.block().goal_type == 'risk reduction')
-
-        info.append('<h3>My risk reduction goals</h3>')
-        info.append(self._render_goals(risk_goalsettingblock, user))
-
-        # Find the first 'services' goal setter in Session 2
-        services_goalsettingblock = get_first_block_in_module(
-            'goals', 'goalsettingblock', 2,
-            lambda (b): b.block().goal_type == 'services')
-
-        info.append('<h3>My services goals</h3>')
-        info.append(self._render_goals(services_goalsettingblock, user))
-{% endcomment %}
 
 <h3>My Issue</h3>
 <div class="worth-journal-info-element">
@@ -80,11 +62,14 @@
             with this issue:
         </strong>
     </p>
+    TODO
 </div>
 
 <h3>My Goals to Access Services</h3>
 <div class="worth-journal-info-element">
-    TODO
+    {% with responses=goals_services_responses %}
+    {% include 'main/journal_goal_responses.html' %}
+    {% endwith %}
 </div>
 
 <h3>The Continuum of Risk</h3>

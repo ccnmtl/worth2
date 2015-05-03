@@ -37,15 +37,9 @@
 
 <h3>My Goals</h3>
 <div class="worth-journal-info-element">
-    {% for r in goal_responses %}
-    <div>Goal option: <strong>{{ r.option }}</strong></div>
-
-    {% if r.other_text %}
-    <div>Other: <strong>{{ r.other_text }}</strong></div>
-    {% endif %}
-
-    <div>My plan: <strong>{{ r.text }}</strong></div>
-    {% endfor %}
+    {% with responses=goals_services_responses %}
+    {% include 'main/journal_goal_responses.html' %}
+    {% endwith %}
 </div>
 
 <h3>My Issue</h3>
