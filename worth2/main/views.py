@@ -105,7 +105,7 @@ class ParticipantJournalView(TemplateView):
             user=user)
 
     @staticmethod
-    def _get_quiz_responses_by_class_in_module(user, css_class, module):
+    def _get_quiz_responses_by_css_in_module(user, css_class, module):
         """Get quiz responses for a pageblock.
 
         :type user: User
@@ -126,7 +126,8 @@ class ParticipantJournalView(TemplateView):
         if target is None:
             return Response.objects.none()
         else:
-            return Response.objects.filter(question__quiz=target.block())
+            return Response.objects.filter(
+                submission__user=user, question__quiz=target.block())
 
     def get_context_data(self, **kwargs):
         context = super(ParticipantJournalView, self).get_context_data(
@@ -144,10 +145,11 @@ class ParticipantJournalView(TemplateView):
         slug = 'session-%d' % session_num
         context['section'] = get_object_or_404(Section, slug=slug)
 
-        context['i_am_worth_it_responses'] = \
-            map(get_answer_for_response,
-                self._get_quiz_responses_by_class_in_module(
-                    user, 'i-am-worth-it-quiz', session_num))
+        if session_num > 1:
+            context['i_am_worth_it_responses'] = \
+                map(get_answer_for_response,
+                    self._get_quiz_responses_by_css_in_module(
+                        user, 'i-am-worth-it-quiz', session_num))
 
         # Add module-specific context data to the response here.
         if session_num == 1:
@@ -155,7 +157,14 @@ class ParticipantJournalView(TemplateView):
             context['goal_responses'] = self._get_goal_responses(
                 user, 'services', 1)
         elif session_num == 2:
-            pass
+            reflection_responses = self._get_quiz_responses_by_css_in_module(
+                user, 'post-video-quiz', 2)
+            context['reflection_big_issues'] = filter(
+                lambda x: x.value == '1',
+                reflection_responses)
+            context['reflection_issues'] = filter(
+                lambda x: (x.value == '1' or x.value == '2'),
+                reflection_responses)
         elif session_num == 3:
             context['supporters'] = Supporter.objects.filter(user=user)
         elif session_num == 4:

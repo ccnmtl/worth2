@@ -19,12 +19,31 @@
 <div class="worth-journal-info-element">
     <p>
         This week you met the women of E-WORTH and thought about
-        which of their issies are also issues for you. Here is what
+        which of their issues are also issues for you. Here is what
         you said:
     </p>
-    TODO
-    <p><strong>Big issues for you</strong></p>
-    <p><strong>Other issues for you</strong></p>
+
+    {% if reflection_big_issues %}
+    <p>
+        <strong>Big issues for you:</strong>
+        <ul>
+            {% for r in reflection_big_issues %}
+            <li>{{ r.question }}</li>
+            {% endfor %}
+        </ul>
+    </p>
+    {% endif %}
+
+    {% if reflection_issues %}
+    <p>
+        <strong>Other issues for you:</strong>
+        <ul>
+            {% for r in reflection_issues %}
+            <li>{{ r.question }}</li>
+            {% endfor %}
+        </ul>
+    </p>
+    {% endif %}
 </div>
 
 <h3>My Goals for Risk Reduction</h3>
