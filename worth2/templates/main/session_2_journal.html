@@ -13,52 +13,45 @@
     </p>
 </div>
 
-<h3>I am WORTH it!</h3>
-<div class="worth-journal-info-element">
-    <p>
-        It is important to take a moment out of our busy lives to
-        remind ourselves why we are WORTH it. Here are some words
-        that describe why you are worth it:
-    </p>
-    TODO: from <a href="/pages/session-2/i-am-worth-it/">here</a>
-</div>
+{% include 'main/journal_i_am_worth_it.html' %}
 
 <h3>Reflections on the women of E-WORTH</h3>
 <div class="worth-journal-info-element">
     <p>
         This week you met the women of E-WORTH and thought about
-        which of their issies are also issues for you. Here is what
+        which of their issues are also issues for you. Here is what
         you said:
     </p>
-    TODO
-    <p><strong>Big issues for you</strong></p>
-    <p><strong>Other issues for you</strong></p>
+
+    {% if reflection_big_issues %}
+    <p>
+        <strong>Big issues for you:</strong>
+        <ul>
+            {% for r in reflection_big_issues %}
+            <li>{{ r.question }}</li>
+            {% endfor %}
+        </ul>
+    </p>
+    {% endif %}
+
+    {% if reflection_issues %}
+    <p>
+        <strong>Other issues for you:</strong>
+        <ul>
+            {% for r in reflection_issues %}
+            <li>{{ r.question }}</li>
+            {% endfor %}
+        </ul>
+    </p>
+    {% endif %}
 </div>
 
 <h3>My Goals for Risk Reduction</h3>
 <div class="worth-journal-info-element">
-    TODO
-    <p><strong>I will:</strong></p>
-    <p><strong>My action plan:</strong></p>
+    {% with responses=goals_risk_responses %}
+    {% include 'main/journal_goal_responses.html' %}
+    {% endwith %}
 </div>
-
-{% comment %}
-        # Find the first 'risk reduction' goal setter in Session 2
-        risk_goalsettingblock = get_first_block_in_module(
-            'goals', 'goalsettingblock', 2,
-            lambda (b): b.block().goal_type == 'risk reduction')
-
-        info.append('<h3>My risk reduction goals</h3>')
-        info.append(self._render_goals(risk_goalsettingblock, user))
-
-        # Find the first 'services' goal setter in Session 2
-        services_goalsettingblock = get_first_block_in_module(
-            'goals', 'goalsettingblock', 2,
-            lambda (b): b.block().goal_type == 'services')
-
-        info.append('<h3>My services goals</h3>')
-        info.append(self._render_goals(services_goalsettingblock, user))
-{% endcomment %}
 
 <h3>My Issue</h3>
 <div class="worth-journal-info-element">
@@ -69,11 +62,14 @@
             with this issue:
         </strong>
     </p>
+    TODO
 </div>
 
 <h3>My Goals to Access Services</h3>
 <div class="worth-journal-info-element">
-    TODO
+    {% with responses=goals_services_responses %}
+    {% include 'main/journal_goal_responses.html' %}
+    {% endwith %}
 </div>
 
 <h3>The Continuum of Risk</h3>

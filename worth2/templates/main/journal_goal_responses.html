@@ -1,0 +1,11 @@
+{% for r in responses %}
+<div class="worth-journal-goal">
+    <div>I will: <strong>{{ r.option }}</strong></div>
+
+    {% if r.other_text %}
+    <div>Other: <strong>{{ r.other_text }}</strong></div>
+    {% endif %}
+
+    <div>My action plan: <strong>{{ r.text }}</strong></div>
+</div>
+{% endfor %}
