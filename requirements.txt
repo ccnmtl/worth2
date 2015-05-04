@@ -1,7 +1,6 @@
 Django==1.8.1
 Markdown==2.6.1
 smartypants==1.8.6
-uuid==1.30
 psycopg2==2.6
 Pillow==2.8.1
 versiontools==1.9.1
