@@ -25,9 +25,11 @@ define([
                 var hasAnyCheckedCheckboxes = _.reduce(
                     $requiredCheckboxes,
                     function(memo, $el) {
-                        return memo || $($el).is(':checked');
+                        var grpName = $($el).attr('name');
+                        var grp = $('input:checkbox[name="' + grpName + '"]');
+                        return memo && $(grp).is(':checked');
                     },
-                    false);
+                    true);
 
                 if ($requiredCheckboxes.length > 0 &&
                     !hasAnyCheckedCheckboxes
@@ -48,9 +50,11 @@ define([
             var hasAnyCheckedRadioButtons = _.reduce(
                 $radioButtons,
                 function(memo, $el) {
-                    return memo || $($el).is(':checked');
+                    var grpName = $($el).attr('name');
+                    var grp = $('input:radio[name="' + grpName + '"]');
+                    return memo && $(grp).is(':checked');
                 },
-                false);
+                true);
 
             if ($radioButtons.length > 0 && !hasAnyCheckedRadioButtons) {
                 return false;
