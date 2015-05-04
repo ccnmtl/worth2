@@ -23,7 +23,7 @@ from worth2.main.models import Encounter, Participant, Location
 from worth2.main.reports import ParticipantReport
 from worth2.main.utils import (
     get_first_block_in_module, get_first_block_of_type,
-    get_module_number_from_section, get_answer_for_response
+    get_module_number_from_section
 )
 from worth2.protectivebehaviors.utils import remove_empty_submission
 from worth2.selftalk.mixins import (
@@ -150,7 +150,7 @@ class ParticipantJournalView(TemplateView):
 
         if session_num > 1:
             context['i_am_worth_it_responses'] = \
-                map(get_answer_for_response,
+                map(lambda x: x.answer(),
                     self._get_quiz_responses_by_css_in_module(
                         user, 'i-am-worth-it-quiz', session_num))
 
@@ -169,6 +169,10 @@ class ParticipantJournalView(TemplateView):
                 'reflection_issues': filter(
                     lambda x: (x.value == '1' or x.value == '2'),
                     reflection_responses),
+
+                'rate_my_risk_response':
+                    self._get_quiz_responses_by_css_in_module(
+                        user, 'rate-my-risk', 2).first(),
 
                 'goals_risk_responses': self._get_goal_responses(
                     user, 'risk reduction', session_num),
