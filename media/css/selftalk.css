@@ -9,3 +9,10 @@
 .worth-selftalk-flex-container .worth-self-talk-road {
     width: 50%;
 }
+
+.worth-selftalk-flex-container .statement-form,
+.worth-selftalk-flex-container .refutation-form {
+padding-right: 10px;
+}
+
+
