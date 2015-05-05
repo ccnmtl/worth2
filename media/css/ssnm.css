@@ -12,6 +12,7 @@
 }
 
 .worth-ssnm-container .worth-ssnm-box .ssnm-title {
+    display: none;
     float: left;
     font-weight: bold;
     color: white;
@@ -26,19 +27,19 @@
     text-align: right;
     font-weight: bold;
     margin: 6px;
-    color: black;
+    color: white;
 }
 
 .worth-ssnm-container .worth-ssnm-box-very-close {
-    background-color: #eee5f2;
+    background-color: #c993a7;
 }
 
 .worth-ssnm-container .worth-ssnm-box-close {
-    background-color: #decce6;
+    background-color: #ae5d7b;
 }
 
 .worth-ssnm-container .worth-ssnm-box-not-close {
-    background-color: #cdb2d9;
+    background-color: #93274f;
 }
 
 .worth-ssnm-my-avatar-box {

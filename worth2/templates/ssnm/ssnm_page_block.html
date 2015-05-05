@@ -79,7 +79,7 @@ HTML template - there's probably a way of avoiding that step.
     <div class="worth-ssnm-container">
         <div class="worth-ssnm-box worth-ssnm-box-very-close">
             <div class="ssnm-title">My Social Support Network</div>
-            <div class="ssnm-box-title">Very Close</div>
+            <div class="ssnm-box-title">Very Close to Me</div>
             <div class="worth-ssnm-my-avatar-box">
                 <div class="avatar-block">
                     {% endverbatim %}
@@ -100,7 +100,7 @@ HTML template - there's probably a way of avoiding that step.
         </div>
 
         <div class="worth-ssnm-box worth-ssnm-box-close">
-            <div class="ssnm-box-title">Close</div>
+            <div class="ssnm-box-title">Close to Me</div>
             {{#each supporter in controller.closeSupporters}}
                 {{supporter-box supporter=supporter
                 clickedSupporter="editSupporter"}}
@@ -108,7 +108,7 @@ HTML template - there's probably a way of avoiding that step.
         </div>
 
         <div class="worth-ssnm-box worth-ssnm-box-not-close">
-            <div class="ssnm-box-title">Not Close</div>
+            <div class="ssnm-box-title">Not Close to Me</div>
             {{#each supporter in controller.notCloseSupporters}}
                 {{supporter-box supporter=supporter
                 clickedSupporter="editSupporter"}}
