@@ -157,12 +157,16 @@ class ParticipantJournalView(TemplateView):
         # Add module-specific context data to the response here.
         if session_num == 1:
             # Find the first 'services' type goal setter in Session 1
-            context['goals_services_responses'] = self._get_goal_responses(
-                user, 'services', session_num)
+            context.update({
+                'session_title': 'Let\'s Talk: Sister to Sister',
+                'goals_services_responses': self._get_goal_responses(
+                    user, 'services', session_num),
+            })
         elif session_num == 2:
             reflection_responses = self._get_quiz_responses_by_css_in_module(
                 user, 'post-video-quiz', 2)
             context.update({
+                'session_title': 'What\'s the 411?',
                 'reflection_big_issues': filter(
                     lambda x: x.value == '1',
                     reflection_responses),
@@ -181,6 +185,7 @@ class ParticipantJournalView(TemplateView):
             })
         elif session_num == 3:
             context.update({
+                'session_title': 'Protecting Myself. Protecting my community.',
                 'supporters': Supporter.objects.filter(user=user),
                 'goals_support_responses': self._get_goal_responses(
                     user, 'social support', session_num),
@@ -191,6 +196,7 @@ class ParticipantJournalView(TemplateView):
             })
         elif session_num == 4:
             context.update({
+                'session_title': 'Staying Safe and Strong',
                 'goals_support_responses': self._get_goal_responses(
                     user, 'social support', session_num),
                 'goals_risk_responses': self._get_goal_responses(
@@ -200,6 +206,7 @@ class ParticipantJournalView(TemplateView):
             })
         elif session_num == 5:
             context.update({
+                'session_title': 'Because I am WORTH it!',
                 'goals_risk_responses': self._get_goal_responses(
                     user, 'risk reduction', session_num)
             })
