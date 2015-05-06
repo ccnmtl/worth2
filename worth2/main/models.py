@@ -247,17 +247,6 @@ class Participant(InactiveUserProfile):
         else:
             return -1
 
-    def last_module_accessed(self):
-        """Get which module this participant is in.
-
-        :rtype: int
-        """
-        last_section = self.last_location()
-        if last_section:
-            return get_module_number_from_section(last_section.get_module())
-        else:
-            return -1
-
     def next_module(self):
         """Get the next module that the participant needs to complete.
 

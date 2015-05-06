@@ -114,7 +114,7 @@
                     >Participant {{participant.study_id}}'s progress</h4>
             </div>
             <div class="modal-body" style="text-align: center;">
-                {% with last_module=participant.last_module_accessed %}
+                {% with last_module=participant.highest_module_accessed %}
                 <div class="table-container center-block">
                     <table class="table table-condensed col-sm-2">
                         <tbody>

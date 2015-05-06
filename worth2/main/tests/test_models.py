@@ -119,28 +119,6 @@ class ParticipantTest(TestCase):
         self.assertEqual(
             self.participant.highest_module_accessed(), 2)
 
-    def test_last_module_accessed(self):
-        self.assertEqual(
-            self.participant.last_module_accessed(), -1)
-
-        section1 = Section.objects.get(slug='session-1')
-        upv1 = UserPageVisitFactory(
-            user=self.participant.user, section=section1)
-        self.assertEqual(
-            self.participant.last_module_accessed(), 1)
-
-        section2 = Section.objects.get(slug='session-2')
-        goalsection = Section.objects.get(slug='goal-setting')
-        UserPageVisitFactory(user=self.participant.user, section=section2)
-        UserPageVisitFactory(user=self.participant.user, section=goalsection)
-        self.assertEqual(
-            self.participant.last_module_accessed(), 2)
-
-        upv1.last_visit = datetime.now()
-        upv1.save()
-        self.assertEqual(
-            self.participant.last_module_accessed(), 1)
-
     def test_next_module(self):
         self.assertEqual(
             self.participant.next_module(), 1,
