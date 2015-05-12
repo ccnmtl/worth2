@@ -20,6 +20,9 @@ define([
                     this.unlock();
                 }
             } else {
+                // For the runthrough, always unlock video pages immediately.
+                this.unlock();
+
                 // There's a video on the page, so find out if the user
                 // has already watched it.
                 var me = this;
