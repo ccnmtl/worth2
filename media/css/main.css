@@ -19,6 +19,8 @@ body > .container {
 
 .navbar-right {padding-top: 8px;}
 
+li#avatar img {background-color: #000;}
+
 label {
     cursor: pointer;
 }
@@ -511,9 +513,9 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 
 .i-am-worth-it-quiz .caseanswercontainer {
     list-style: none;
-    -webkit-column-count: 4; /* Chrome, Safari, Opera */
-    -moz-column-count: 4; /* Firefox */
-    column-count: 4;
+    -webkit-column-count: 3; /* Chrome, Safari, Opera */
+    -moz-column-count: 3; /* Firefox */
+    column-count: 3;
 }
 
 .quiz-game .casetitle,
@@ -611,7 +613,8 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 }
 
 .worth-journal-info-element {
-    margin-bottom: 20px;
+    border-top: 1px solid black;
+    padding: 10px 0px 40px 0px;
 }
 
 .worth-facilitator-sign-in-participant .radio.disabled {

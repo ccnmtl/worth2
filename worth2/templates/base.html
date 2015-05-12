@@ -7,10 +7,10 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>E-WORTH | {% block title %}{% endblock %}</title>
+	<title>{% block title %}{% endblock %} | E-WORTH</title>
 
-    <meta name="description" content="worth2">
-    <meta name="author" content="CCNMTL">
+    <meta name="description" content="E-WORTH">
+    <meta name="author" content="CCNMTL, CUSSW">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -27,7 +27,8 @@
 
 	<link rel="shortcut icon" href="{{STATIC_URL}}img/favicon.ico" type="image/x-icon" />
     <link rel="icon" href="{{STATIC_URL}}img/favicon.ico" type="image/x-icon">
-	
+    <link rel="apple-touch-icon" href="{{STATIC_URL}}img/apple-touch-icon.png" />
+
 	{% block css %}{% endblock %}
 
 	{% block feeds %}{% endblock %}
@@ -67,8 +68,8 @@
     </ul>
 
     <ul class="nav navbar-nav navbar-right">
-        <li>
-            <img class="worth-avatar" src="{% avatar_url user %}">
+        <li id="avatar">
+            <img class="worth-avatar" src="{% avatar_url user %}" />
         </li>
 
         {% if user.profile.is_participant %}
@@ -95,8 +96,8 @@
         </li>
         <li><a href="/accounts/logout/?next=/">Sign Out</a></li>
         {% endif %}
-        <li><a href="/about/">About E-WORTH</a></li>
-        <li><a href="/contact/">Contact Us</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a href="/contact/">Contact</a></li>
         {% if user.is_superuser %}
         <li><a href="/admin/">Administer</a></li>
         <li><a href="/pages/edit/">Pagetree</a></li>
@@ -106,6 +107,7 @@
 
         {% block topnavbarrightitems %}{% endblock %}
     </ul>
+    
   </div>
   </div>
 </nav>
