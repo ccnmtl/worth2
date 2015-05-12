@@ -68,8 +68,8 @@
     </ul>
 
     <ul class="nav navbar-nav navbar-right">
-        <li>
-            <img class="worth-avatar" src="{% avatar_url user %}">
+        <li id="avatar">
+            <img class="worth-avatar" src="{% avatar_url user %}" />
         </li>
 
         {% if user.profile.is_participant %}
@@ -107,6 +107,7 @@
 
         {% block topnavbarrightitems %}{% endblock %}
     </ul>
+    
   </div>
   </div>
 </nav>

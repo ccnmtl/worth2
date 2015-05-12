@@ -19,6 +19,8 @@ body > .container {
 
 .navbar-right {padding-top: 8px;}
 
+li#avatar img {background-color: #000;}
+
 label {
     cursor: pointer;
 }
