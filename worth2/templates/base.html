@@ -7,9 +7,9 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>E-WORTH | {% block title %}{% endblock %}</title>
+	<title>{% block title %}{% endblock %} | E-WORTH</title>
 
-    <meta name="description" content="worth2">
+    <meta name="description" content="E-WORTH">
     <meta name="author" content="CCNMTL">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,7 +27,8 @@
 
 	<link rel="shortcut icon" href="{{STATIC_URL}}img/favicon.ico" type="image/x-icon" />
     <link rel="icon" href="{{STATIC_URL}}img/favicon.ico" type="image/x-icon">
-	
+    <link rel="apple-touch-icon" href="{{STATIC_URL}}img/apple-touch-icon.png" />
+
 	{% block css %}{% endblock %}
 
 	{% block feeds %}{% endblock %}
