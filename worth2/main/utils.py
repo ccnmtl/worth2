@@ -1,7 +1,8 @@
 import re
 from django.contrib.contenttypes.models import ContentType
 from django.utils.encoding import smart_str
-from pagetree.models import Section
+from pagetree.models import PageBlock, Section
+from quizblock.models import Response
 
 
 def get_first_block_in_module(app_label, model, session_num, blocktest=None):
@@ -121,3 +122,28 @@ def get_verbose_section_name(section):
         return smart_str('%s [Session %d]' % (s, module_num))
     else:
         return s
+
+
+def get_quiz_responses_by_css_in_module(user, css_class, module):
+    """Get quiz responses for a pageblock.
+
+    :type user: User
+    :type css_class: string
+    :type module: int
+
+    :rtype: queryset
+    """
+    quizblocks = PageBlock.objects.filter(css_extra__contains=css_class)
+
+    # Find the first of these quizblocks that's in the queried module.
+    target = None
+    for quizblock in quizblocks:
+        if get_module_number_from_section(quizblock.section) == module:
+            target = quizblock
+            break
+
+    if target is None:
+        return Response.objects.none()
+    else:
+        return Response.objects.filter(
+            submission__user=user, question__quiz=target.block())
