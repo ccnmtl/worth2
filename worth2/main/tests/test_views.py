@@ -60,7 +60,6 @@ class AvatarSelectorBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.assertEqual(participant.avatar, self.avatar1)
 
         r = self.client.get(self.url)
-        self.assertContains(r, 'Here\'s the avatar you selected')
         self.assertContains(r, participant.avatar.image.url)
 
 
