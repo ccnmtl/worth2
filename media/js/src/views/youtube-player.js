@@ -1,7 +1,8 @@
 define([
     'jquery',
-    'models/watched-video'
-], function($, WatchedVideo) {
+    'models/watched-video',
+    'utils'
+], function($, WatchedVideo, utils) {
     var youtubePlayer = {
         loadYouTubeAPI: function(container, videoId) {
             if (typeof YT === 'undefined' ||
@@ -23,13 +24,14 @@ define([
                 width: 640,
                 height: 390,
                 playerVars: {
-                    autoplay: 1,
-                    controls: 0,
-                    modestbranding: 1,
-                    rel: 0,
-                    showinfo: 0
+                    'autoplay': 1,
+                    'controls': 0,
+                    'modestbranding': 1,
+                    'rel': 0,
+                    'showinfo': 0
                 },
                 events: {
+                    'onReady': onPlayerReady,
                     'onStateChange': onPlayerStateChange
                 }
             });
@@ -56,6 +58,16 @@ define([
         if (event.data === YT.PlayerState.ENDED) {
             // The video ended, so unlock the 'next' button.
             recordWatchedVideo(lockedVideoId);
+        }
+    };
+
+    window.onPlayerReady = function(event) {
+        var player = event.target;
+        var seconds = player.getDuration();
+        var videoDuration = utils.secondsToHms(seconds);
+        if (videoDuration.length > 0) {
+            $('#worth-youtube-video-duration').html(
+                'Video Duration: <time>' + videoDuration + '</time>');
         }
     };
 
