@@ -2,13 +2,16 @@
 
 from django.test import TestCase, TransactionTestCase
 from pagetree.helpers import get_hierarchy
-from worth2.goals.models import GoalSettingColumn, GoalCheckInColumn
+from worth2.goals.models import (
+    GoalSettingColumn, GoalSettingResponse, GoalCheckInColumn
+)
 from worth2.goals.tests.factories import (
     GoalSettingBlockFactory, GoalOptionFactory, GoalSettingResponseFactory,
     GoalCheckInBlockFactory, GoalCheckInOptionFactory,
     GoalCheckInResponseFactory
 )
-from worth2.main.tests.factories import (ParticipantFactory)
+from worth2.main.tests.factories import ParticipantFactory
+from worth2.main.utils import get_first_block_in_module
 
 
 class GoalSettingBlockTest(TestCase):
@@ -48,6 +51,36 @@ class GoalSettingResponseTest(TestCase):
         o = GoalOptionFactory(text=text)
         resp = GoalSettingResponseFactory(option=o)
         self.assertTrue(text in unicode(resp))
+
+    def test_find_by_module(self):
+        h = get_hierarchy('main', '/pages/')
+        root = h.get_root()
+        for i in range(1, 6):
+            root.add_child_section_from_dict({
+                'label': 'Session %d' % i,
+                'slug': 'session-%d' % i,
+                'pageblocks': [{
+                    'block_type': 'Goal Setting Block',
+                }],
+                'children': [],
+            })
+
+        goalsettingblock = get_first_block_in_module(
+            'goals', 'goalsettingblock', 1)
+
+        option = GoalOptionFactory(text='test option')
+        participant = ParticipantFactory()
+        GoalSettingResponseFactory(
+            goal_setting_block=goalsettingblock.block(),
+            user=participant.user,
+            option=option,
+            other_text='test other',
+            text='test text')
+
+        responses = GoalSettingResponse.objects.find_by_module(
+            participant.user, 'services', 1)
+
+        self.assertEqual(responses.count(), 1)
 
 
 class GoalCheckInBlockTest(TestCase):
