@@ -66,15 +66,7 @@
 
 {% if needs_submit and not request.user.is_anonymous %}
 <div class="clearfix"></div>
-<div class="alert alert-danger worth-form-validation-error"
-     role="alert"
-     {% if not is_submission_empty %}
-     style="display: none;"
-     {% endif %}
-     >
-    <h4>Oops!</h4>
-    <p>Please fill out all required questions.</p>
-</div>
+
 
 {% if is_submitted %}
 {% if is_submission_empty %}

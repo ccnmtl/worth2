@@ -10,11 +10,7 @@
                 <form class="form-horizontal" method="post">
                     {% csrf_token %}
                     {{ setting_formset.management_form }}
-                    {% if messages %}
-                    {% for message in messages %}
-                    <div class="alert alert-success">{{ message }}</div>
-                    {% endfor %}
-                    {% endif %}
+                    
                     {% for form in setting_formset %}
                     {% if forloop.first %}
                    <div class="well">
@@ -56,6 +52,12 @@
                     <div class="form-group">
                         <div class="col-sm-4">
                             <button type="submit" class="btn btn-primary">Submit</button>
+
+                            {% if messages %}
+                                {% for message in messages %}
+                                <div class="alert alert-success">{{ message }}</div>
+                                {% endfor %}
+                            {% endif %}
                         </div>
                     </div>
                 </form><!-- end .form-horizontal -->
