@@ -169,8 +169,9 @@ class Location(models.Model):
 # ID spec is here:
 # http://wiki.ccnmtl.columbia.edu/index.php/WORTH_2_User_Stories#Participant_ID_number_scheme
 study_id_validator = RegexValidator(
-    regex=r'^\d{12}$',
-    message='That study ID isn\'t valid. (It needs to be 12 digits)')
+    regex=r'^\d\d[0-1]\d[0-3]\d\d\d[0-2]\d[0-5]\d$',
+    message='That study ID isn\'t valid. ' +
+    'The format is: YYMMDDLLHHMM (where LL is the two-digit location code).')
 
 # For now, accept any 3-digit number as the cohort ID.
 cohort_id_validator = RegexValidator(
