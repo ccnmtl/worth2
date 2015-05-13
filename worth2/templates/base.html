@@ -13,8 +13,10 @@
     <meta name="author" content="CCNMTL, CUSSW">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    -->
     <meta name="format-detection" content="telephone=no">
     
     <!--<link href="//fonts.googleapis.com/css?family=Raleway:800,500" rel="stylesheet">-->
@@ -75,9 +77,9 @@
         {% if user.profile.is_participant %}
         {# Participant nav bar #}
         <li class="last-child">
-            <button type="button" class="btn btn-success navbar-btn"
-                    data-toggle="modal" data-target="#worth-break-modal"
-                    >I Need a Break.</button>
+            <button type="button" class="btn btn-link navbar-btn"
+                    data-toggle="modal" data-target="#worth-signout-modal"
+                    >Facilitator</button>
         </li>
         {% else %}
 
