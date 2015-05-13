@@ -1,2 +1,11 @@
-.video-block {
+.video-block .worth-video-instructions {
+    float: left;
+}
+
+.video-block #worth-youtube-video-duration {
+     float: right;
+}
+
+.video-block #worth-youtube-video-duration time {
+    font-weight: bold;
 }
