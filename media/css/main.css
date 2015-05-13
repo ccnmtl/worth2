@@ -245,22 +245,17 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 }
 
 .likert .answers-container .colored-box {
-    padding: 20px 10px 12px 10px;
+    padding: 10px 10px 12px 10px;
     text-align: center;
     text-transform: uppercase;
     color: black;
-    margin-bottom: 5px;
     font-size: 12px;
-    min-height: 75px;
+    min-height: 120px;
 }
 
 .rate-my-risk.likert .answers-container .colored-box,
 .protective-behaviors.likert .answers-container .colored-box {
     text-transform: none;
-}
-
-.likert .answers-container .clear-box {
-    text-align: center;
 }
 
 .likert .not-an-issue .colored-box {
@@ -278,6 +273,8 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 .likert .a-big-issue .colored-box {
     background-color: #ead4dc;
 }
+
+input[type=radio] {padding: 12px; border: 3px solid black !important; display: inline-block; }
 
 .post-video-quiz .casetitle,
 .post-video-quiz .casesanswerdisplay,
@@ -302,6 +299,20 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 
 .myth-fact .casequestiontext {
     font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.4;
+
+}
+
+.myth-fact .caseanswerlabel {
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 1.4;
+
 }
 
 .myth-fact ol.caseanswercontainer {
@@ -661,4 +672,12 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 
 .worth-journal-goal {
     margin-bottom: 10px;
+}
+
+/*print journal logo*/
+@media screen {
+    #print-logo {display: none;}
+}
+@media print {
+    #print-logo {display: block; width: 20em;}
 }
