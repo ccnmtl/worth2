@@ -655,3 +655,8 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 .worth-journal-goal {
     margin-bottom: 10px;
 }
+
+#print-logo {display: none;}
+@media print {
+    #print-logo {display: block; width: 20em;}
+}
