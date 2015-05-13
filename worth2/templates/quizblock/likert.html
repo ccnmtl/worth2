@@ -4,19 +4,17 @@
     {% for answer in question.answer_set.all %}
     <div class="answer {{answer.css_extra}}">
         <div class="colored-box">
-            <label for="pageblock-{{block.pageblock.id}}-question{{question.id}}-{{answer.value}}">
-                {{answer.label}}
-            </label>
-        </div>
-
-        <div class="clear-box">
             <input name="pageblock-{{block.pageblock.id}}-question{{question.id}}"
                    id="pageblock-{{block.pageblock.id}}-question{{question.id}}-{{answer.value}}"
                    value="{{answer.value}}" type="radio"
                    {% if response %}disabled="disabled"
                        {% ifequal response.value answer.value %}checked="checked"{% endifequal %}
                    {% endif %}>
-        </div>
+             <div></div>
+            <label for="pageblock-{{block.pageblock.id}}-question{{question.id}}-{{answer.value}}">
+                {{answer.label}}
+            </label>
+       </div>
     </div>
 
     {% endfor %}
