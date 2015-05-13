@@ -133,17 +133,32 @@ def get_quiz_responses_by_css_in_module(user, css_class, module):
 
     :rtype: queryset
     """
-    quizblocks = PageBlock.objects.filter(css_extra__contains=css_class)
+    pageblocks = PageBlock.objects.filter(css_extra__contains=css_class)
 
-    # Find the first of these quizblocks that's in the queried module.
-    target = None
+    # Filter non-QuizBlocks out of pageblocks.
+    quiztype = ContentType.objects.get(app_label='quizblock',
+                                       model='quiz')
+    blocks = map(lambda x: x.block(), pageblocks)
+    mapping = ContentType.objects.get_for_models(*blocks)
+    quizblocks = []
+    for k, v in mapping.iteritems():
+        if v == quiztype:
+            quizblocks.append(k)
+
+    # Find all quizblocks in the queried module.
+    quizblocks_in_module = []
     for quizblock in quizblocks:
-        if get_module_number_from_section(quizblock.section) == module:
-            target = quizblock
-            break
+        if get_module_number_from_section(
+                quizblock.pageblock().section) == module:
+            quizblocks_in_module.append(quizblock)
 
-    if target is None:
+    if len(quizblocks_in_module) == 0:
         return Response.objects.none()
     else:
+        # TODO, these need to be ordered by
+        # question__quiz__pageblock__section__path, but there's
+        # not a straightforward way to do that because of quiz's
+        # reverse relation to pageblock.
         return Response.objects.filter(
-            submission__user=user, question__quiz=target.block())
+            submission__user=user,
+            question__quiz__in=quizblocks_in_module)
