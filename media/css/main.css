@@ -274,7 +274,7 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     background-color: #ead4dc;
 }
 
-.likert input[type=radio] {padding: 12px; border: 5px solid black !important; display: inline-block; margin-bottom: 15px;}
+input[type=radio] {padding: 12px; border: 3px solid black !important; display: inline-block; }
 
 .post-video-quiz .casetitle,
 .post-video-quiz .casesanswerdisplay,
@@ -299,6 +299,20 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 
 .myth-fact .casequestiontext {
     font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.4;
+
+}
+
+.myth-fact .caseanswerlabel {
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 1.4;
+
 }
 
 .myth-fact ol.caseanswercontainer {
