@@ -139,9 +139,8 @@ class ManageParticipantsAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
         response = self.client.get(reverse('manage-participants'))
         self.assertContains(response, 'Manage Participants')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context['active_participants'], [])
-        self.assertEqual(response.context['archived_participants'], [])
-        self.assertEqual(response.context['cohorts'], [])
+        self.assertEqual(len(response.context['active_participants']), 0)
+        self.assertEqual(len(response.context['cohorts']), 0)
 
 
 class ManageParticipantsUnAuthedTest(TestCase):
