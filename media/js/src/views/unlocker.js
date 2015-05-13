@@ -15,10 +15,9 @@ define([
                 return;
             }
 
+            this.unlock();
+
             if ($('#youtube-player').length === 0) {
-                if (isSectionUnlocked === 1) {
-                    this.unlock();
-                }
             } else {
                 // For the runthrough, always unlock video pages immediately.
                 this.unlock();
