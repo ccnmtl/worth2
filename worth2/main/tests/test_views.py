@@ -4,7 +4,6 @@ from django.test import TestCase
 from pagetree.helpers import get_hierarchy
 from pagetree.models import Hierarchy, Section, UserPageVisit
 
-from worth2.goals.models import GoalOption, GoalSettingResponse
 from worth2.main.auth import generate_password
 from worth2.main.tests.factories import (
     AvatarFactory, LocationFactory, ParticipantFactory, WorthModuleFactory
@@ -14,8 +13,6 @@ from worth2.main.tests.mixins import (
     LoggedInSuperuserTestMixin
 )
 from worth2.main.models import Encounter, Participant
-from worth2.main.utils import get_first_block_in_module
-from worth2.main.views import ParticipantJournalView
 
 
 class AvatarSelectorBlockTest(LoggedInParticipantTestMixin, TestCase):
@@ -142,9 +139,8 @@ class ManageParticipantsAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
         response = self.client.get(reverse('manage-participants'))
         self.assertContains(response, 'Manage Participants')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context['active_participants'], [])
-        self.assertEqual(response.context['archived_participants'], [])
-        self.assertEqual(response.context['cohorts'], [])
+        self.assertEqual(len(response.context['active_participants']), 0)
+        self.assertEqual(len(response.context['cohorts']), 0)
 
 
 class ManageParticipantsUnAuthedTest(TestCase):
@@ -432,23 +428,6 @@ class ParticipantJournalsTest(LoggedInFacilitatorTestMixin, TestCase):
                 }],
                 'children': [],
             })
-
-    def test_get_goal_responses(self):
-        goalsettingblock = get_first_block_in_module(
-            'goals', 'goalsettingblock', 1)
-
-        option = GoalOption.objects.create(text='test option')
-        GoalSettingResponse.objects.create(
-            goal_setting_block=goalsettingblock.block(),
-            user=self.participant.user,
-            option=option,
-            other_text='test other',
-            text='test text')
-
-        responses = ParticipantJournalView._get_goal_responses(
-            self.participant.user, 'services', 1)
-
-        self.assertEqual(responses.count(), 1)
 
     def test_get_session_1(self):
         session_num = 1

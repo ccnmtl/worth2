@@ -38,13 +38,6 @@
     {% empty %}
     <em>None</em>
     {% endfor %}
-
-    <h2>Archived Participants</h2>
-    {% for participant in archived_participants %}
-    {% include 'main/participant_edit_row.html' %}
-    {% empty %}
-    <em>None</em>
-    {% endfor %}
 </div>
 
 <div class="modal"

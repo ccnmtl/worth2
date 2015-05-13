@@ -12,7 +12,7 @@ from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 from pagetree.generic.views import PageView
 from pagetree.models import PageBlock, Hierarchy, Section
-from quizblock.models import Quiz, Response
+from quizblock.models import Quiz
 import unicodecsv
 
 from worth2.goals.mixins import GoalCheckInViewMixin, GoalSettingViewMixin
@@ -22,8 +22,7 @@ from worth2.main.forms import SignInParticipantForm
 from worth2.main.models import Encounter, Participant, Location
 from worth2.main.reports import ParticipantReport
 from worth2.main.utils import (
-    get_first_block_in_module, get_first_block_of_type,
-    get_module_number_from_section
+    get_first_block_of_type, get_quiz_responses_by_css_in_module
 )
 from worth2.protectivebehaviors.utils import remove_empty_submission
 from worth2.selftalk.mixins import (
@@ -68,69 +67,18 @@ class ManageParticipants(ListView):
     model = Participant
 
     def get_queryset(self):
-        return Participant.objects.order_by('study_id')
+        return Participant.objects.filter(
+            is_archived=False).order_by('study_id')
 
     def get_context_data(self, **kwargs):
         ctx = super(ManageParticipants, self).get_context_data(**kwargs)
-        ctx['active_participants'] = [p for p in ctx['object_list']
-                                      if not p.is_archived]
-        ctx['archived_participants'] = [p for p in ctx['object_list']
-                                        if p.is_archived]
+        ctx['active_participants'] = ctx['object_list']
         ctx['cohorts'] = Participant.objects.cohort_ids()
         return ctx
 
 
 class ParticipantJournalView(TemplateView):
     model = Participant
-
-    @staticmethod
-    def _get_goal_responses(user, goaltype, module):
-        """Get a queryset of goal responses.
-
-        :param goaltype: See worth2.goals.models.GOAL_TYPES
-
-        :type user: User
-        :type goaltype: string
-        :type module: int
-
-        :rtype: queryset
-        """
-        goalsettingblock = get_first_block_in_module(
-            'goals',
-            'goalsettingblock',
-            module,
-            lambda (b): b.block().goal_type == goaltype)
-        if goalsettingblock:
-            return GoalSettingResponse.objects.filter(
-                goal_setting_block=goalsettingblock.block(),
-                user=user)
-        else:
-            GoalSettingResponse.objects.none()
-
-    @staticmethod
-    def _get_quiz_responses_by_css_in_module(user, css_class, module):
-        """Get quiz responses for a pageblock.
-
-        :type user: User
-        :type css_class: string
-        :type module: int
-
-        :rtype: queryset
-        """
-        quizblocks = PageBlock.objects.filter(css_extra__contains=css_class)
-
-        # Find the first of these quizblocks that's in the queried module.
-        target = None
-        for quizblock in quizblocks:
-            if get_module_number_from_section(quizblock.section) == module:
-                target = quizblock
-                break
-
-        if target is None:
-            return Response.objects.none()
-        else:
-            return Response.objects.filter(
-                submission__user=user, question__quiz=target.block())
 
     def get_context_data(self, **kwargs):
         context = super(ParticipantJournalView, self).get_context_data(
@@ -151,7 +99,7 @@ class ParticipantJournalView(TemplateView):
         if session_num > 1:
             context['i_am_worth_it_responses'] = \
                 map(lambda x: x.answer(),
-                    self._get_quiz_responses_by_css_in_module(
+                    get_quiz_responses_by_css_in_module(
                         user, 'i-am-worth-it-quiz', session_num))
 
         # Add module-specific context data to the response here.
@@ -159,11 +107,12 @@ class ParticipantJournalView(TemplateView):
             # Find the first 'services' type goal setter in Session 1
             context.update({
                 'session_title': 'Let\'s Talk: Sister to Sister',
-                'goals_services_responses': self._get_goal_responses(
-                    user, 'services', session_num),
+                'goals_services_responses':
+                    GoalSettingResponse.objects.find_by_module(
+                        user, 'services', session_num),
             })
         elif session_num == 2:
-            reflection_responses = self._get_quiz_responses_by_css_in_module(
+            reflection_responses = get_quiz_responses_by_css_in_module(
                 user, 'post-video-quiz', 2)
             context.update({
                 'session_title': 'What\'s the 411?',
@@ -173,42 +122,61 @@ class ParticipantJournalView(TemplateView):
                 'reflection_issues': filter(
                     lambda x: (x.value == '1' or x.value == '2'),
                     reflection_responses),
-
+                'i_am_worth_it_responses':
+                    get_quiz_responses_by_css_in_module(
+                        user, 'i-am-worth-it-quiz', 2),
                 'rate_my_risk_response':
-                    self._get_quiz_responses_by_css_in_module(
+                    get_quiz_responses_by_css_in_module(
                         user, 'rate-my-risk', 2).first(),
-
-                'goals_risk_responses': self._get_goal_responses(
-                    user, 'risk reduction', session_num),
-                'goals_services_responses': self._get_goal_responses(
-                    user, 'services', session_num),
+                'goals_risk_responses':
+                    GoalSettingResponse.objects.find_by_module(
+                        user, 'risk reduction', session_num),
+                'goals_services_responses':
+                    GoalSettingResponse.objects.find_by_module(
+                        user, 'services', session_num),
             })
         elif session_num == 3:
             context.update({
                 'session_title': 'Protecting Myself. Protecting my community.',
                 'supporters': Supporter.objects.filter(user=user),
-                'goals_support_responses': self._get_goal_responses(
-                    user, 'social support', session_num),
-                'goals_risk_responses': self._get_goal_responses(
-                    user, 'risk reduction', session_num),
-                'goals_services_responses': self._get_goal_responses(
-                    user, 'services', session_num),
+                'goals_support_responses':
+                    GoalSettingResponse.objects.find_by_module(
+                        user, 'social support', session_num),
+                'goals_risk_responses':
+                    GoalSettingResponse.objects.find_by_module(
+                        user, 'risk reduction', session_num),
+                'goals_services_responses':
+                    GoalSettingResponse.objects.find_by_module(
+                        user, 'services', session_num),
+                'i_am_worth_it_responses':
+                    get_quiz_responses_by_css_in_module(
+                        user, 'i-am-worth-it-quiz', 3),
             })
         elif session_num == 4:
             context.update({
                 'session_title': 'Staying Safe and Strong',
-                'goals_support_responses': self._get_goal_responses(
-                    user, 'social support', session_num),
-                'goals_risk_responses': self._get_goal_responses(
-                    user, 'risk reduction', session_num),
-                'goals_services_responses': self._get_goal_responses(
-                    user, 'services', session_num),
+                'goals_support_responses':
+                    GoalSettingResponse.objects.find_by_module(
+                        user, 'social support', session_num),
+                'goals_risk_responses':
+                    GoalSettingResponse.objects.find_by_module(
+                        user, 'risk reduction', session_num),
+                'goals_services_responses':
+                    GoalSettingResponse.objects.find_by_module(
+                        user, 'services', session_num),
+                'i_am_worth_it_responses':
+                    get_quiz_responses_by_css_in_module(
+                        user, 'i-am-worth-it-quiz', 4),
             })
         elif session_num == 5:
             context.update({
                 'session_title': 'Because I am WORTH it!',
-                'goals_risk_responses': self._get_goal_responses(
-                    user, 'risk reduction', session_num)
+                'goals_risk_responses':
+                    GoalSettingResponse.objects.find_by_module(
+                        user, 'risk reduction', session_num),
+                'i_am_worth_it_responses':
+                    get_quiz_responses_by_css_in_module(
+                        user, 'i-am-worth-it-quiz', 5),
             })
         else:
             raise http.Http404

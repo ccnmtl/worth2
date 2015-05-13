@@ -7,7 +7,7 @@ from ordered_model.models import OrderedModel
 from pagetree.generic.models import BasePageBlock
 from pagetree.reports import ReportColumnInterface, ReportableInterface
 
-from worth2.main.utils import get_module_number
+from worth2.main.utils import get_first_block_in_module, get_module_number
 
 
 GOAL_TYPES = (
@@ -138,6 +138,31 @@ class GoalOption(OrderedModel):
         return unicode(self.text)
 
 
+class GoalSettingResponseManager(models.Manager):
+    def find_by_module(self, user, goaltype, module):
+        """Get a queryset of goal responses.
+
+        :param goaltype: See worth2.goals.models.GOAL_TYPES
+
+        :type user: User
+        :type goaltype: string
+        :type module: int
+
+        :rtype: queryset
+        """
+        goalsettingblock = get_first_block_in_module(
+            'goals',
+            'goalsettingblock',
+            module,
+            lambda (b): b.block().goal_type == goaltype)
+        if goalsettingblock:
+            return self.filter(
+                goal_setting_block=goalsettingblock.block(),
+                user=user)
+        else:
+            self.none()
+
+
 class GoalSettingResponse(models.Model):
     """Participant responses to 'main' and 'extra' goals."""
 
@@ -155,6 +180,8 @@ class GoalSettingResponse(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    objects = GoalSettingResponseManager()
 
     class Meta:
         unique_together = (('goal_setting_block', 'user', 'form_id'),)
