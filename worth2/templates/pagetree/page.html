@@ -67,12 +67,10 @@
 {% if needs_submit and not request.user.is_anonymous %}
 <div class="clearfix"></div>
 
-
 {% if is_submitted %}
 {% if is_submission_empty %}
 {% include 'pagetree/pagetree_submit_button.html' %}
 {% else %}
-
 {% if allow_redo or user.is_superuser %}
 <div class="clearfix"></div>
 <form class="pagetree-form-submit-area"
@@ -82,17 +80,11 @@
 </form>
 {% endif %}{# End allow_redo or user.is_superuser #}
 {% endif %}{# End is_submission_empty #}
-{% else %}
+{% else %}{# End is_submitted #}
 
 <div class="clearfix"></div>
 
-{% comment %}
-The avatar selector block needs to hide the submit button, since
-each avatar has its own submit button.
-{% endcomment %}
-{% if not avatarselectorblock %}
 {% include 'pagetree/pagetree_submit_button.html' %}
-{% endif %}
 
 </form>
 {% endif %}

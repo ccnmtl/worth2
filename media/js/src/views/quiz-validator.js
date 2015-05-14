@@ -104,6 +104,11 @@ define([
             }
 
             var $form = $('form[method="post"]');
+            if ($form.find('input[name="action"]').val() === 'reset') {
+                // This is the "I want to change my answers" form, so don't
+                // validate it.
+                return;
+            }
             var $submit = $form.find('input[type="submit"]');
 
             var me = this;

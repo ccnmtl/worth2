@@ -94,10 +94,14 @@ class AvatarSelectorBlock(BasePageBlock):
     def needs_submit(self):
         return True
 
-    def unlocked(self, user):
-        # Avatar selection is optional. Participants start
-        # out with a default avatar.
+    def allow_redo(self):
         return True
+
+    def unlocked(self, user):
+        if user_is_participant(user):
+            return user.profile.participant.avatar is not None
+        else:
+            return True
 
     def submit(self, user, request_data):
         if user_is_participant(user):
@@ -113,7 +117,6 @@ class AvatarSelectorBlock(BasePageBlock):
 
     def avatars(self):
         """Returns a queryset of all the available avatars in WORTH."""
-
         return Avatar.objects.all()
 
     @staticmethod

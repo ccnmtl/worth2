@@ -1,33 +1,37 @@
 {% load avatar %}
 
 <div class="worth-avatars">
-    
+
     {% if user.is_active or user.profile.participant.avatar %}
-    
+
     <h2>This is Me!</h2>
 
     <p>Here is the avatar that you selected!</p>
-    
+
     <div class="worth-avatar">
     <img class="thumbnail" src="{% avatar_url user %}">
     </div>
-    
+
     {% else %}
-    
+
     <h2>Get Personal!</h2>
 
     <p>Which avatar would you like to use througout your E-WORTH journey?</p>
 
-    <form action="." method="post">
-    {% csrf_token %}
     {% for avatar in block.avatars %}
-    <span class="worth-avatar">
-    <img class="media" src="{{ avatar.image.url }}">
-    </span>
-    <button class="btn btn-default" type="submit" name="pageblock-{{block.pageblock.pk}}-avatar-id" value="{{ avatar.pk }}">This is Me!</button>
+    <label>
+        <div class="worth-avatar">
+            <img class="media" src="{{ avatar.image.url }}">
+        </div>
+
+        <div class="avatar-input-label">
+            <input type="radio"
+                   name="pageblock-{{block.pageblock.pk}}-avatar-id"
+                   value="{{ avatar.pk}}">
+            This is Me!
+        </div>
+    </label>
     {% endfor %}
-    </form>
-    
+
     {% endif %}
-    
 </div>

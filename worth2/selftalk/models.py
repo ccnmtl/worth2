@@ -73,11 +73,9 @@ class StatementBlock(BasePageBlock):
         help_text='(optional) The name of the video subject for this ' +
         'block, e.g. "Jane"')
 
-    @property
     def allow_redo(self):
         return True
 
-    @property
     def css_class(self):
         s = 'internal' if self.is_internal else 'external'
         return 'selftalk-statement-%s' % s
@@ -175,11 +173,9 @@ class RefutationBlock(BasePageBlock):
 
     statement_block = models.ForeignKey(StatementBlock)
 
-    @property
     def allow_redo(self):
         return True
 
-    @property
     def css_class(self):
         s = 'internal' if self.is_internal else 'external'
         return 'selftalk-refutation-%s' % s

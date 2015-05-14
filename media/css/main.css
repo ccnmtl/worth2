@@ -231,6 +231,10 @@ footer.footer {
     max-height: 100%;
 }
 
+.worth-avatars .avatar-input-label {
+    text-align: center;
+}
+
 ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-radius: 3px;}
 
 .likert .answers-container {
