@@ -153,6 +153,8 @@ class ParticipantJournalView(TemplateView):
                         user, 'i-am-worth-it-quiz', 3),
             })
         elif session_num == 4:
+            safety_plan_quiz_responses = get_quiz_responses_by_css_in_module(
+                user, 'safety-plan-quiz', 4)
             context.update({
                 'session_title': 'Staying Safe and Strong',
                 'goals_support_responses':
@@ -167,6 +169,8 @@ class ParticipantJournalView(TemplateView):
                 'i_am_worth_it_responses':
                     get_quiz_responses_by_css_in_module(
                         user, 'i-am-worth-it-quiz', 4),
+                'mylength': len(safety_plan_quiz_responses),
+                'safety_plan_quiz_responses': safety_plan_quiz_responses,
             })
         elif session_num == 5:
             context.update({
