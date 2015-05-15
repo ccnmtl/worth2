@@ -374,10 +374,15 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     margin-right: 16px;
 }
 
+.pageblock .form-horizontal .form-group.goal-submit-button {
+    margin-bottom: 0px;
+}
+
 .goal-setting .goal-other-container {
     display: none;
 }
 
+.goal-check-in .alert-success,
 .goal-setting .alert-success {
     margin: 10px 0 10px 10px;
     margin-bottom: 10px;
