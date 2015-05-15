@@ -69,11 +69,12 @@
                         <label>
                             <input type="radio" name="participant_destination"
                                    value="next_new_session"
-                                   {% if form.cleaned_data.participant_destination == 'next_new_session' %}
+                                   {% if form.cleaned_data.participant_destination == 'next_new_session' or form.cleaned_data == None %}
                                    checked
                                    {% endif %}
                                    >
-                            the next, <b>new</b> session. &rarr; <span class="worth-participant-next-location"></span>
+                            the next, <strong>new</strong> session.
+                            &rarr; <span class="worth-participant-next-location"></span>
                         </label>
                         <div>
                             
@@ -88,7 +89,8 @@
                                    checked
                                    {% endif %}
                                    >
-                            the last <b>completed</b> activity. &rarr; <span class="worth-participant-last-location"></span>
+                            the last <strong>completed</strong> activity.
+                            &rarr; <span class="worth-participant-last-location"></span>
                         </label>
                         <div>
                             
