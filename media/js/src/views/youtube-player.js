@@ -65,8 +65,19 @@ define([
         var player = event.target;
         var seconds = player.getDuration();
         var videoDuration = utils.secondsToHms(seconds);
+
         if (videoDuration.length > 0) {
-            $('#worth-youtube-video-duration').html(
+            var $videoDuration = $('#worth-youtube-video-duration');
+            // If there's no video duration element present (like on
+            // a myth/fact video), then create it.
+            if ($videoDuration.length === 0) {
+                // Need to get out of the iframe, find the closest
+                // parent <div>
+                $('#youtube-player').closest('div')
+                    .append('<div id="worth-youtube-video-duration"></div>');
+                $videoDuration = $('#worth-youtube-video-duration');
+            }
+            $videoDuration.html(
                 'Video Duration: <time>' + videoDuration + '</time>');
         }
     };
