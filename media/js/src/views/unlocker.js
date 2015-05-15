@@ -15,13 +15,11 @@ define([
                 return;
             }
 
-            this.unlock();
-
             if ($('#youtube-player').length === 0) {
+                if (isSectionUnlocked === 1) {
+                    this.unlock();
+                }
             } else {
-                // For the runthrough, always unlock video pages immediately.
-                this.unlock();
-
                 // There's a video on the page, so find out if the user
                 // has already watched it.
                 var me = this;
