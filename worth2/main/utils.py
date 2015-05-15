@@ -135,7 +135,8 @@ def get_quiz_responses_by_css_in_module(user, css_class, module):
     """
     pageblocks = PageBlock.objects.filter(css_extra__contains=css_class)
 
-    # Filter non-QuizBlocks out of pageblocks.
+    # Filter non-QuizBlocks out of pageblocks, and store them in
+    # the "quizblocks" list.
     quiztype = ContentType.objects.get(app_label='quizblock',
                                        model='quiz')
     blocks = map(lambda x: x.block(), pageblocks)
@@ -145,7 +146,7 @@ def get_quiz_responses_by_css_in_module(user, css_class, module):
         if v == quiztype:
             quizblocks.append(k)
 
-    # Find all quizblocks in the queried module.
+    # Filter out the quizblocks that aren't in the queried module.
     quizblocks_in_module = []
     for quizblock in quizblocks:
         if get_module_number_from_section(
@@ -155,10 +156,7 @@ def get_quiz_responses_by_css_in_module(user, css_class, module):
     if len(quizblocks_in_module) == 0:
         return Response.objects.none()
     else:
-        # TODO, these need to be ordered by
-        # question__quiz__pageblock__section__path, but there's
-        # not a straightforward way to do that because of quiz's
-        # reverse relation to pageblock.
         return Response.objects.filter(
             submission__user=user,
-            question__quiz__in=quizblocks_in_module)
+            question__quiz__in=quizblocks_in_module
+        ).order_by('question__quiz__pageblocks__section__path')
