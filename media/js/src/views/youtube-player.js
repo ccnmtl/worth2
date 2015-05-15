@@ -25,7 +25,7 @@ define([
                 height: 390,
                 playerVars: {
                     'autoplay': 1,
-                    'controls': 0,
+                    'controls': 1,
                     'modestbranding': 1,
                     'rel': 0,
                     'showinfo': 0
