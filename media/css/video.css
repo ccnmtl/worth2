@@ -6,6 +6,7 @@
      float: right;
 }
 
-.video-block #worth-youtube-video-duration time {
+/* This doesn't occur in the .video-block on myth/fact */
+#worth-youtube-video-duration time {
     font-weight: bold;
 }
