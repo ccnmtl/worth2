@@ -1,3 +1,4 @@
+import re
 from django import forms
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -171,10 +172,24 @@ class Location(models.Model):
 
 # ID spec is here:
 # http://wiki.ccnmtl.columbia.edu/index.php/WORTH_2_User_Stories#Participant_ID_number_scheme
-study_id_validator = RegexValidator(
-    regex=r'^\d\d[0-1]\d[0-3]\d\d\d[0-2]\d[0-5]\d$',
+study_id_regex_validator = RegexValidator(
+    regex=r'^[1-2]\d[0-1]\d[0-3]\d\d\d[0-2]\d[0-5]\d$',
     message='That study ID isn\'t valid. ' +
     'The format is: YYMMDDLLHHMM (where LL is the two-digit location code).')
+
+
+def study_id_validator(value):
+    """Validate study ID for anything the regex can't capture."""
+    year = None
+    try:
+        year = re.match(r'^(\d\d)\d+$', value).groups()[0]
+        year = int(year)
+    except:
+        raise ValidationError('Couldn\'t find year in study ID.')
+
+    if year < 15 or year > 25:
+        raise ValidationError('%d is not >= 15 and <= 25.' % year)
+
 
 # For now, accept any 3-digit number as the cohort ID.
 cohort_id_validator = RegexValidator(
@@ -215,7 +230,8 @@ class Participant(InactiveUserProfile):
     study_id = models.CharField(max_length=255,
                                 unique=True,
                                 db_index=True,
-                                validators=[study_id_validator])
+                                validators=[study_id_regex_validator,
+                                            study_id_validator])
 
     # The cohort ID is assigned when the participant begins the second
     # session. It represents the group of all the participants present
