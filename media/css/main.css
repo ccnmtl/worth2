@@ -218,7 +218,7 @@ footer.footer {
 .worth-facilitator-manage-participants .row .worth-cohort-id,
 .worth-facilitator-manage-participants .row .worth-study-id {
     font-weight: bold;
-    line-height: 34px;
+    line-height: 44px;
 }
 
 .worth-avatars .worth-avatar {
@@ -231,11 +231,32 @@ footer.footer {
     max-height: 100%;
 }
 
+.worth-avatars .avatar-input-label {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 1.4;
+    margin-left: 3px;    
+}
+
 ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-radius: 3px;}
 
+.worth-avatars input[type=radio],
+.casequestion input[type=radio] {
+    padding: 12px;
+    border: 1px solid black !important;
+    display: inline-block;
+}
 
-.likert input[type=radio], .myth-fact input[type=radio] {padding: 12px; border: 3px solid black !important; display: inline-block; }
-
+.worth-avatars p,
+.casequestiontext {
+    margin-bottom: 20px;
+    font-size: 21px;
+    font-weight: 300;
+    line-height: 1.4;
+}
 
 .likert .answers-container {
     display: -webkit-flex;
@@ -257,11 +278,6 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     min-height: 120px;
 }
 
-.rate-my-risk.likert .answers-container .colored-box,
-.protective-behaviors.likert .answers-container .colored-box {
-    text-transform: none;
-}
-
 .likert .not-an-issue .colored-box {
     background-color: #ab5b78;
 }
@@ -278,8 +294,11 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     background-color: #ead4dc;
 }
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> master
 .post-video-quiz .casetitle,
 .post-video-quiz .casesanswerdisplay,
 .post-video-quiz .caseanswercorrect,
@@ -288,12 +307,18 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     display: none;
 }
 
-.post-video-quiz .casequestiontext {
-  margin-bottom: 20px;
-  font-size: 16px;
-  font-weight: 300;
-  line-height: 1.4;
+.negative-self-talk .casetitle,
+.negative-self-talk .casesanswerdisplay,
+.negative-self-talk .caseanswercorrect,
+.negative-self-talk .avatar-block {
+    display: none;
 }
+
+.negative-self-talk ol.caseanswercontainer {
+    list-style: none;
+}
+
+ 
 
 .myth-fact .avatar-block,
 .myth-fact .casetitle,
@@ -301,22 +326,14 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     display: none;
 }
 
-.myth-fact .casequestiontext {
-    font-weight: bold;
-    margin-bottom: 20px;
-    font-size: 16px;
-    font-weight: 300;
-    line-height: 1.4;
-
-}
-
+.protective-behaviors .caseanswerlabel,
 .myth-fact .caseanswerlabel {
     font-weight: bold;
     margin-bottom: 20px;
     font-size: 24px;
     font-weight: 300;
     line-height: 1.4;
-
+    margin-left: 3px;
 }
 
 .myth-fact ol.caseanswercontainer {
@@ -327,6 +344,7 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     float: left;
     margin-right: 20px;
     font-weight: normal;
+    margin-bottom: 20px;
 }
 
 .myth-fact .casequestionresult {
@@ -362,6 +380,13 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 
 .goal-setting .goal-other-container {
     display: none;
+}
+
+.goal-setting .alert-success {
+    margin: 10px 0 10px 10px;
+    margin-bottom: 10px;
+    display: inline-block;
+    padding: 10px;
 }
 
 .pageblock.rate-my-risk,
@@ -430,6 +455,18 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 .protective-behaviors .casequestionresult,
 .protective-behaviors .casetitle {
     display: none;
+}
+
+.rate-my-risk.likert .avatar-block {
+    display: none;
+}
+
+.rate-my-risk.likert .casequestionexplanation {
+    margin-top: 20px;
+}
+
+.rate-my-risk.likert .col-md-8 {
+    width: 100%;
 }
 
 .caseanswercontainer label {
@@ -556,6 +593,24 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     padding-left: 10px;
 }
 
+.quiz-game .casequestiontext {
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 1.4;
+    margin-left: -15px;
+}
+
+.quiz-game .caseanswerlabel {
+    font-weight: bold;
+    margin-bottom: 20px;
+    margin-left: 3px;   
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 1.4;
+}
+
 .negotiation-quiz .casetitle,
 .negotiation-quiz .avatar-block,
 .negotiation-quiz .caseanswerexplanation,
@@ -597,6 +652,8 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     min-height: 20px;
 }
 
+.negative-self-talk .caseanswerexplanation,
+.rate-my-risk.likert .casequestionexplanation,
 .quiz-game .casequestionexplanation,
 .safer-sex-quiz .casequestionexplanation,  
 .feelings-scale .casequestionexplanation,
@@ -623,10 +680,10 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 }
 
 .worth-form-validation-error {
-    margin-top: 10px;
+    margin: 10px 0 10px 10px;
     margin-bottom: 10px;
-    width: 400px;
-    text-align: center;
+    display: inline-block;
+    padding: 10px;
 }
 
 .worth-participant-last-location,
@@ -648,6 +705,9 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 
 .worth-facilitator-sign-in-participant label[for="id_already_completed_session"] {
     display: none;
+}
+.worth-facilitator-sign-in-participant #id_already_completed_session {
+    margin-top: 10px;
 }
 
 .worth-high-risk {

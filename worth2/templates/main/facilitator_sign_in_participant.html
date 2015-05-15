@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 
-{% load bootstrap %}
 {% load bootstrap3 %}
 {% load participanttags %}
+
+{% block title %}Intervene{% endblock %}
 
 {% block content %}
 <div class="worth-facilitator-sign-in-participant">
@@ -17,7 +18,7 @@
 
         {% csrf_token %}
 
-        {{ form.filter_by_cohort|bootstrap_horizontal:'col-sm-3' }}
+        {% bootstrap_field form.filter_by_cohort layout='horizontal' %}
 
         <div class="form-group {% if form.participant_id.errors %}has-error{% endif %}" >
             <label class="control-label col-sm-3" for="{{form.participant_id.id_for_label}}">
@@ -52,7 +53,7 @@
         
         <h2 class="lead">Step 2. Where are we?</h2>
 
-        {{ form.participant_location|bootstrap_horizontal:'col-sm-3' }}
+        {% bootstrap_field form.participant_location layout='horizontal' %}
 
         </div>
         
@@ -67,11 +68,12 @@
                         <label>
                             <input type="radio" name="participant_destination"
                                    value="next_new_session"
-                                   {% if form.cleaned_data.participant_destination == 'next_new_session' %}
+                                   {% if form.cleaned_data.participant_destination == 'next_new_session' or form.cleaned_data == None %}
                                    checked
                                    {% endif %}
                                    >
-                            the next, <b>new</b> session. &rarr; <span class="worth-participant-next-location"></span>
+                            the next, <strong>new</strong> session.
+                            &rarr; <span class="worth-participant-next-location"></span>
                         </label>
                         <div>
                             
@@ -86,7 +88,8 @@
                                    checked
                                    {% endif %}
                                    >
-                            the last <b>completed</b> activity. &rarr; <span class="worth-participant-last-location"></span>
+                            the last <strong>completed</strong> activity.
+                            &rarr; <span class="worth-participant-last-location"></span>
                         </label>
                         <div>
                             
@@ -104,7 +107,7 @@
                             An already completed session for review.
                         </label>
     
-                        {% bootstrap_field form.already_completed_session %}
+                        {% bootstrap_field form.already_completed_session layout='horizontal' %}
                     </div>
                 </div>
             </div>
@@ -113,7 +116,7 @@
          
         <div class="well">
         <h2 class="lead">Step 4. What kind of session is this?</h2>
-        {{ form.session_type|bootstrap_horizontal:'col-sm-3' }}
+        {% bootstrap_field form.session_type layout='horizontal' %}
         </div>
         <div class="form-group">
             <div class="col-sm-4">

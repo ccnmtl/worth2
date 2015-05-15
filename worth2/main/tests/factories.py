@@ -51,7 +51,7 @@ class ParticipantFactory(factory.django.DjangoModelFactory):
     user = factory.SubFactory(InactiveUserFactory)
     first_location = factory.SubFactory(LocationFactory)
     location = factory.SubFactory(LocationFactory)
-    study_id = FuzzyText(length=12, chars='1234567890')
+    study_id = factory.Sequence(lambda n: '15040%03d1245' % n)
 
 
 class EncounterFactory(factory.django.DjangoModelFactory):

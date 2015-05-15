@@ -1,4 +1,4 @@
-{% load bootstrap %}
+{% load bootstrap3 %}
 {% load avatar %}
 
 <div class="goal-setting" id="goal-setting-block">
@@ -10,21 +10,18 @@
                 <form class="form-horizontal" method="post">
                     {% csrf_token %}
                     {{ setting_formset.management_form }}
-                    {% if messages %}
-                    {% for message in messages %}
-                    <div class="alert alert-success">{{ message }}</div>
-                    {% endfor %}
-                    {% endif %}
+                    
                     {% for form in setting_formset %}
                     {% if forloop.first %}
-                   <div class="well">
-                       <span class="goal-form">
-                            {{ form.option|bootstrap_horizontal }}
+                    <div class="well">
+                        <span class="goal-form">
+                            {% bootstrap_field form.option layout='horizontal' %}
+
                             <div class="goal-other-container">
-                                {{ form.other_text|bootstrap_horizontal }}
+                                {% bootstrap_field form.other_text layout='horizontal' %}
                             </div>
                             <div class="clearfix"></div>
-                            {{ form.text|bootstrap_horizontal }}
+                            {% bootstrap_field form.text layout='horizontal' %}
                         </span>
                         <div class="clearfix"></div>
                     </div>
@@ -35,18 +32,18 @@
                    <div class="well">
                     <span class="goal-form">
                         <div class="form-group">
-                            <label class="control-label col-sm-2 col-lg-2">
+                            <label class="control-label col-md-3">
                                 Extra {{block.goal_type}} goal
                             </label>
-                            <div class="col-sm-10 col-lg-10">
+                            <div class="col-md-9">
                                 {{ form.option }}
                             </div>
                         </div>
                         <div class="clearfix"></div>
                         <div class="goal-other-container">
-                            {{ form.other_text|bootstrap_horizontal }}
+                            {% bootstrap_field form.other_text layout='horizontal' %}
                         </div>
-                        {{ form.text|bootstrap_horizontal }}
+                        {% bootstrap_field form.text layout='horizontal' %}
                     </span>
                     <div class="clearfix"></div>
                     </div>
@@ -54,26 +51,19 @@
                     {% endfor %}
                     <div class="clearfix"></div>
                     <div class="form-group">
-                        <div class="col-sm-4">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+
+                        {% if messages %}
+                            {% for message in messages %}
+                            <div class="alert alert-success">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
                     </div>
                 </form><!-- end .form-horizontal -->
             </div>
 
             <div class="col-sm-4 avatar-block text-center">
                 <img src="{% avatar_url user %}">
-                
-<!--
-<div class="panel panel-default text-left">
-  <div class="panel-heading">
-    <h3 class="panel-title">Tip</h3>
-  </div>
-  <div class="panel-body">
-    Panel content
-  </div>
-</div>   
--->
             </div>
 
         </div>

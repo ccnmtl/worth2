@@ -1,3 +1,10 @@
 <div class="pagetree-form-submit-area">
     <input type="submit" value="Submit" class="btn btn-primary" />
+    
+    <div class="alert alert-danger worth-form-validation-error" role="alert"
+     {% if not is_submission_empty %}
+     style="display: none;"
+     {% endif %}>
+        <strong>Oops!</strong> Please fill out all required questions.
+    </div>
 </div>

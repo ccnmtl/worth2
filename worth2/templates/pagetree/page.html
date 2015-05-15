@@ -33,8 +33,8 @@
 {% endblock %}
 
 {% block navrightextra %}
-{% if not request.user.is_anonymous %}
-<li><a href="{{section.get_edit_url}}" class="btn btn-success">edit page</a></li>
+{% if request.user.is_superuser %}
+<a href="{{section.get_edit_url}}" class="btn btn-success">edit page</a>
 {% endif %}
 {% endblock %}
 
@@ -66,21 +66,11 @@
 
 {% if needs_submit and not request.user.is_anonymous %}
 <div class="clearfix"></div>
-<div class="alert alert-danger worth-form-validation-error"
-     role="alert"
-     {% if not is_submission_empty %}
-     style="display: none;"
-     {% endif %}
-     >
-    <h4>Oops!</h4>
-    <p>Please fill out all required questions.</p>
-</div>
 
 {% if is_submitted %}
 {% if is_submission_empty %}
 {% include 'pagetree/pagetree_submit_button.html' %}
 {% else %}
-
 {% if allow_redo or user.is_superuser %}
 <div class="clearfix"></div>
 <form class="pagetree-form-submit-area"
@@ -90,17 +80,11 @@
 </form>
 {% endif %}{# End allow_redo or user.is_superuser #}
 {% endif %}{# End is_submission_empty #}
-{% else %}
+{% else %}{# End is_submitted #}
 
 <div class="clearfix"></div>
 
-{% comment %}
-The avatar selector block needs to hide the submit button, since
-each avatar has its own submit button.
-{% endcomment %}
-{% if not avatarselectorblock %}
 {% include 'pagetree/pagetree_submit_button.html' %}
-{% endif %}
 
 </form>
 {% endif %}
