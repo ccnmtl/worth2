@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 
-{% load bootstrap %}
 {% load bootstrap3 %}
 {% load participanttags %}
 
@@ -19,7 +18,7 @@
 
         {% csrf_token %}
 
-        {{ form.filter_by_cohort|bootstrap_horizontal:'col-sm-3' }}
+        {% bootstrap_field form.filter_by_cohort layout='horizontal' %}
 
         <div class="form-group {% if form.participant_id.errors %}has-error{% endif %}" >
             <label class="control-label col-sm-3" for="{{form.participant_id.id_for_label}}">
@@ -54,7 +53,7 @@
         
         <h2 class="lead">Step 2. Where are we?</h2>
 
-        {{ form.participant_location|bootstrap_horizontal:'col-sm-3' }}
+        {% bootstrap_field form.participant_location layout='horizontal' %}
 
         </div>
         
@@ -108,7 +107,7 @@
                             An already completed session for review.
                         </label>
     
-                        {% bootstrap_field form.already_completed_session %}
+                        {% bootstrap_field form.already_completed_session layout='horizontal' %}
                     </div>
                 </div>
             </div>
@@ -117,7 +116,7 @@
          
         <div class="well">
         <h2 class="lead">Step 4. What kind of session is this?</h2>
-        {{ form.session_type|bootstrap_horizontal:'col-sm-3' }}
+        {% bootstrap_field form.session_type layout='horizontal' %}
         </div>
         <div class="form-group">
             <div class="col-sm-4">
