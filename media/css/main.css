@@ -233,9 +233,31 @@ footer.footer {
 
 .worth-avatars .avatar-input-label {
     text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 1.4;
+    margin-left: 3px;    
 }
 
 ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-radius: 3px;}
+
+.worth-avatars input[type=radio],
+.casequestion input[type=radio] {
+    padding: 12px;
+    border: 1px solid black !important;
+    display: inline-block;
+}
+
+.worth-avatars p,
+.casequestiontext {
+    margin-bottom: 20px;
+    font-size: 21px;
+    font-weight: 300;
+    line-height: 1.4;
+}
+
 
 .likert .answers-container {
     display: -webkit-flex;
@@ -257,11 +279,6 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     min-height: 120px;
 }
 
-.rate-my-risk.likert .answers-container .colored-box,
-.protective-behaviors.likert .answers-container .colored-box {
-    text-transform: none;
-}
-
 .likert .not-an-issue .colored-box {
     background-color: #ab5b78;
 }
@@ -278,8 +295,6 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     background-color: #ead4dc;
 }
 
-input[type=radio] {padding: 12px; border: 3px solid black !important; display: inline-block; }
-
 .post-video-quiz .casetitle,
 .post-video-quiz .casesanswerdisplay,
 .post-video-quiz .caseanswercorrect,
@@ -288,35 +303,20 @@ input[type=radio] {padding: 12px; border: 3px solid black !important; display: i
     display: none;
 }
 
-.post-video-quiz .casequestiontext {
-  margin-bottom: 20px;
-  font-size: 16px;
-  font-weight: 300;
-  line-height: 1.4;
-}
-
 .myth-fact .avatar-block,
 .myth-fact .casetitle,
 .myth-fact .caseanswerexplanation {
     display: none;
 }
 
-.myth-fact .casequestiontext {
-    font-weight: bold;
-    margin-bottom: 20px;
-    font-size: 16px;
-    font-weight: 300;
-    line-height: 1.4;
-
-}
-
+.protective-behaviors .caseanswerlabel,
 .myth-fact .caseanswerlabel {
     font-weight: bold;
     margin-bottom: 20px;
     font-size: 24px;
     font-weight: 300;
     line-height: 1.4;
-
+    margin-left: 3px;
 }
 
 .myth-fact ol.caseanswercontainer {
@@ -327,6 +327,7 @@ input[type=radio] {padding: 12px; border: 3px solid black !important; display: i
     float: left;
     margin-right: 20px;
     font-weight: normal;
+    margin-bottom: 20px;
 }
 
 .myth-fact .casequestionresult {
@@ -437,6 +438,18 @@ input[type=radio] {padding: 12px; border: 3px solid black !important; display: i
 .protective-behaviors .casequestionresult,
 .protective-behaviors .casetitle {
     display: none;
+}
+
+.rate-my-risk.likert .avatar-block {
+    display: none;
+}
+
+.rate-my-risk.likert .casequestionexplanation {
+    margin-top: 20px;
+}
+
+.rate-my-risk.likert .col-md-8 {
+    width: 100%;
 }
 
 .caseanswercontainer label {
@@ -563,6 +576,24 @@ input[type=radio] {padding: 12px; border: 3px solid black !important; display: i
     padding-left: 10px;
 }
 
+.quiz-game .casequestiontext {
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 1.4;
+    margin-left: -15px;
+}
+
+.quiz-game .caseanswerlabel {
+    font-weight: bold;
+    margin-bottom: 20px;
+    margin-left: 3px;   
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 1.4;
+}
+
 .negotiation-quiz .casetitle,
 .negotiation-quiz .avatar-block,
 .negotiation-quiz .caseanswerexplanation,
@@ -604,6 +635,7 @@ input[type=radio] {padding: 12px; border: 3px solid black !important; display: i
     min-height: 20px;
 }
 
+.rate-my-risk.likert .casequestionexplanation,
 .quiz-game .casequestionexplanation,
 .safer-sex-quiz .casequestionexplanation,  
 .feelings-scale .casequestionexplanation,
