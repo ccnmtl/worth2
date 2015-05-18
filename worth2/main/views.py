@@ -3,12 +3,13 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
+from django.core.urlresolvers import reverse_lazy
 from django.http.response import StreamingHttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template import TemplateDoesNotExist
 from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateView
-from django.views.generic.edit import FormView
+from django.views.generic.edit import DeleteView, FormView
 from django.views.generic.list import ListView
 from pagetree.generic.views import PageView
 from pagetree.models import PageBlock, Hierarchy, Section
@@ -412,3 +413,22 @@ class ParticipantReportView(LoggedInMixinStaff, TemplateView):
             (writer.writerow(row) for row in rows), content_type="text/csv")
         response['Content-Disposition'] = 'attachment; filename="' + fnm + '"'
         return response
+
+
+class ParticipantArchiveView(DeleteView):
+    model = Participant
+    success_url = reverse_lazy('manage-participants')
+
+    def delete(self, request, *args, **kwargs):
+        """
+        This overrides DeletionMixin's delete method.
+
+        To the user, this should feel like we're deleting the
+        participant. Really, we just archive the participant,
+        which is kept in our database.
+        """
+        self.object = self.get_object()
+        success_url = self.get_success_url()
+        self.object.is_archived = True
+        self.object.save()
+        return http.HttpResponseRedirect(success_url)
