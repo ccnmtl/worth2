@@ -41,6 +41,12 @@ li.disabled>a:before {
 }
 
 
+.btn-primary {
+  color: #fff !important;
+  background-color: rgb(147, 39, 79) !important;
+  border-color: rgb(147, 39, 79) !important;
+}
+
 #content {
     min-height: 100%;
 }
