@@ -21,7 +21,7 @@
         {% bootstrap_field form.filter_by_cohort layout='horizontal' %}
 
         <div class="form-group {% if form.participant_id.errors %}has-error{% endif %}" >
-            <label class="control-label col-sm-3" for="{{form.participant_id.id_for_label}}">
+            <label class="control-label col-sm-2" for="{{form.participant_id.id_for_label}}">
                 {{ form.participant_id.field.label }}</label>
             <div class="col-sm-9">
                 <select class="form-control" id="id_participant_id"
@@ -62,7 +62,7 @@
 
             <div class="form-group worth-participant-destination">
                 <label for="participant_destination"
-                       class="control-label col-sm-3">Take participant to:</label>
+                       class="control-label col-sm-2">Take participant to:</label>
                 <div class="col-sm-6">
                     <div class="radio form-group">
                         <label>
