@@ -17,13 +17,6 @@ define([
                 study_id: this.$el.find('input[name="study_id"]').val(),
                 cohort_id: this.$el.find('input[name="cohort_id"]').val()
             });
-            this.$el.find('button[name="is_archived"]')
-                .on('click', function(e) {
-                    me.updateModel({
-                        study_id: me.model.get('study_id'),
-                        is_archived: true
-                    }, $(e.target));
-                });
         },
         submit: function(e) {
             this.id = this.$el.closest('.modal').data('id');

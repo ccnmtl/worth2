@@ -468,3 +468,22 @@ class ParticipantJournalsTest(LoggedInFacilitatorTestMixin, TestCase):
                     args=(self.participant.pk, session_num)))
 
         self.assertEqual(response.status_code, 200)
+
+
+class ArchiveParticipantTest(LoggedInFacilitatorTestMixin, TestCase):
+    def setUp(self):
+        super(ArchiveParticipantTest, self).setUp()
+        self.participant = ParticipantFactory()
+
+    def test_get(self):
+        response = self.client.get(
+            reverse('archive-participant', args=(self.participant.pk,)))
+        self.assertEqual(response.status_code, 200)
+
+    def test_post(self):
+        self.assertFalse(self.participant.is_archived)
+        response = self.client.post(
+            reverse('archive-participant', args=(self.participant.pk,)))
+        self.participant.refresh_from_db()
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(self.participant.is_archived)

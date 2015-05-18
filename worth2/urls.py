@@ -83,6 +83,12 @@ urlpatterns = patterns(
         user_passes_test(lambda u: auth.user_is_facilitator(u))(
             views.ManageParticipants.as_view()),
         name='manage-participants'),
+
+    url(r'^participant/(?P<pk>\d+)/archive/$',
+        user_passes_test(lambda u: auth.user_is_facilitator(u))(
+            views.ParticipantArchiveView.as_view()),
+        name='archive-participant'),
+
     url(r'^participant-journal/(?P<pk>\d+)/(?P<session_num>\d+)/$',
         user_passes_test(lambda u: auth.user_is_facilitator(u))(
             views.ParticipantJournalView.as_view()),
