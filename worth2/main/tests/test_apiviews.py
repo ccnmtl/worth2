@@ -192,3 +192,18 @@ class WatchedVideoViewSetTest(
         r = self.client.get('/api/watched_videos/')
         self.assertEqual(r.status_code, 200)
         self.assertEqual(len(r.data), 3)
+
+    def test_create_duplicate(self):
+        video_id = 'test_video_id'
+        r = self.client.post('/api/watched_videos/', {'video_id': video_id})
+        self.assertEqual(r.status_code, status.HTTP_201_CREATED)
+
+        objs = WatchedVideo.objects.filter(user=self.u)
+        self.assertEqual(objs.count(), 1)
+        self.assertEqual(objs.first().video_id, video_id)
+
+        # re-run it
+        r = self.client.post('/api/watched_videos/', {'video_id': video_id})
+        # TODO: this ought to be a 304 Not Modified, not a 201
+        # but at the very least, it shouldn't be a 500
+        self.assertNotEqual(r.status_code, 500)

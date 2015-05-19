@@ -94,6 +94,7 @@ define([
                 alpha: true,
                 antialias: true
             });
+            renderer.setClearColor(0x87cefa, 1);
 
             // For retina compatibility
             renderer.setPixelRatio(

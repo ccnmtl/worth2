@@ -10,3 +10,5 @@ install:
 script:
   - make travis
   - make behave
+notifications:
+  slack: ccnmtl:GizSNscLWJLldjQrffB8mwgm
