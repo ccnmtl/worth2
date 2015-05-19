@@ -76,7 +76,7 @@
 <form class="pagetree-form-submit-area"
       action="." method="post">{% csrf_token %}
     <input type="hidden" name="action" value="reset" />
-    <input type="submit" value="I want to change my answers." class="btn" />
+    <input type="submit" value="I want to change my answers." class="btn btn-primary" />
 </form>
 {% endif %}{# End allow_redo or user.is_superuser #}
 {% endif %}{# End is_submission_empty #}
