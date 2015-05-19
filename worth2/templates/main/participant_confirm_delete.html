@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% block title %}Archive Participant{% endblock %}
+
 {% block content %}
 <form action="" method="post">{% csrf_token %}
     <p>Are you sure you want to archive participant <strong>{{ object }}</strong>?</p>
