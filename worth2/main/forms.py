@@ -24,21 +24,13 @@ class SignInParticipantForm(forms.Form):
         label='Take participant to:',
         widget=forms.RadioSelect,
         choices=(
-            ('last_completed_activity', 'The last completed activity.'),
-            ('next_new_session', 'The next, new session.'),
-            ('already_completed_session',
-             'An already completed session for review.')),
-        initial='next_new_session',
+            (1, 'Session 1'),
+            (2, 'Session 2'),
+            (3, 'Session 3'),
+            (4, 'Session 4'),
+            (5, 'Session 5'),
+        )
     )
-
-    already_completed_session = forms.ChoiceField(
-        choices=(
-            ('1', 'Session 1'),
-            ('2', 'Session 2'),
-            ('3', 'Session 3'),
-            ('4', 'Session 4'),
-            ('5', 'Session 5')),
-        required=False)
 
     session_type = forms.ChoiceField(
         label='Session Type',

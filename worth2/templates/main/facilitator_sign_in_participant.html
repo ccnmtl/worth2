@@ -29,11 +29,19 @@
                     <option>Choose a Participant</option>
                     {% for p in form.participant_id.field.choices %}
                     {% get_participant p.0 as participant %}
+
+                    {% comment %}
+                    For some reason, you can't have numbers in data
+                    attribute keys. So I'm referring to modules 1-5
+                    here as a, b, c, d, e.
+                    {% endcomment %}
                     <option value="{{p.0}}"
                             data-cohort-id="{{participant.cohort_id|default:''}}"
-                            data-last-location="{{participant.last_location_verbose}}"
-                            data-next-location="{{participant.next_module_verbose}}"
-                            data-highest-accessed="{{participant.highest_module_accessed}}"
+                            data-module-a-complete="{{participant.module_1_completed_percentage}}"
+                            data-module-b-complete="{{participant.module_2_completed_percentage}}"
+                            data-module-c-complete="{{participant.module_3_completed_percentage}}"
+                            data-module-d-complete="{{participant.module_4_completed_percentage}}"
+                            data-module-e-complete="{{participant.module_5_completed_percentage}}"
                             {% if form.cleaned_data.participant_id.pk == p.0 %}
                             selected="selected"
                             {% endif %}
@@ -58,61 +66,9 @@
         </div>
         
         <div class="well">
-        <h2 class="lead">Step 3. Where do we want to go?</h2>
-
-            <div class="form-group worth-participant-destination">
-                <label for="participant_destination"
-                       class="control-label col-md-3">Take participant to:</label>
-                <div class="col-md-9">
-                    <div class="radio form-group">
-                        <label>
-                            <input type="radio" name="participant_destination"
-                                   value="next_new_session"
-                                   {% if form.cleaned_data.participant_destination == 'next_new_session' or form.cleaned_data == None %}
-                                   checked
-                                   {% endif %}
-                                   >
-                            the next, <strong>new</strong> session.
-                            &rarr; <span class="worth-participant-next-location"></span>
-                        </label>
-                        <div>
-                            
-                        </div>
-                    </div>
-                    <div class="radio form-group">
-                        <label>
-                            <input type="radio"
-                                   name="participant_destination"
-                                   value="last_completed_activity"
-                                   {% if form.cleaned_data.participant_destination == 'last_completed_activity' %}
-                                   checked
-                                   {% endif %}
-                                   >
-                            the last <strong>completed</strong> activity.
-                            &rarr; <span class="worth-participant-last-location"></span>
-                        </label>
-                        <div>
-                            
-                        </div>
-                    </div>
-                    <div class="radio form-group">
-                        <label>
-                            <input type="radio" name="participant_destination"
-                                   value="already_completed_session"
-                                   disabled="disabled"
-                                   {% if form.cleaned_data.participant_destination == 'already_completed_session' %}
-                                   checked
-                                   {% endif %}
-                                   >
-                            An already completed session for review.
-                        </label>
-    
-                        {% bootstrap_field form.already_completed_session layout='horizontal' %}
-                    </div>
-                </div>
-            </div>
-        
-         </div>
+            <h2 class="lead">Step 3. Where do we want to go?</h2>
+            {% bootstrap_field form.participant_destination layout='horizontal' %}
+        </div>
          
         <div class="well">
         <h2 class="lead">Step 4. What kind of session is this?</h2>

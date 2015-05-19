@@ -224,19 +224,14 @@ class SignInParticipant(FormView):
         if user is not None:
             login(self.request, user)
 
-            dest = form.cleaned_data.get('participant_destination')
-
-            # Go to the first session in pagetree by default.
-            section = get_object_or_404(Section, slug='session-1')
-
-            if dest == 'last_completed_activity':
-                section = participant.last_location()
-            elif dest == 'next_new_session':
-                section = participant.next_module_section()
-            elif dest == 'already_completed_session':
-                session_num = form.cleaned_data.get(
-                    'already_completed_session')
-                slug = 'session-%s' % session_num
+            module_num = int(form.cleaned_data.get('participant_destination'))
+            upv = participant.last_access_in_module(module_num)
+            if upv:
+                section = upv.section
+            else:
+                # If there's no UserPageVisit found, then take the
+                # user to the first section in this module.
+                slug = 'session-{:d}'.format(module_num)
                 section = get_object_or_404(Section, slug=slug)
 
             Encounter.objects.create(
