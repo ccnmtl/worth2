@@ -419,10 +419,12 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     text-align: center;
 }
 
+/*
 .protective-behaviors ol,
 .protective-behaviors-results ul {
     padding-left: 0;
 }
+*/
 
 .protective-behaviors ol li {
     float: left;
@@ -528,7 +530,7 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 
 .services-quiz .caseanswercontainer {
     list-style: none;
-    padding-left: 10px;
+    padding-left: 50px;
 }
 
 
