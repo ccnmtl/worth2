@@ -422,12 +422,11 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     text-align: center;
 }
 
-/*
+
 .protective-behaviors ol,
 .protective-behaviors-results ul {
     padding-left: 0;
 }
-*/
 
 .protective-behaviors ol li {
     float: left;
@@ -460,6 +459,8 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 .protective-behaviors-results .pb-result-level-3 {
    background-color: rgb(236, 221, 221);
 } 
+
+.protective-behaviors .col-md-8, .protective-behaviors-results .col-md-8 {padding-left: 0 !important;}
 
 .rate-my-risk .casequestionresult,
 .rate-my-risk .casetitle,
