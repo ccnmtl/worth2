@@ -188,7 +188,10 @@ def study_id_validator(value):
         raise ValidationError('Couldn\'t find year in study ID.')
 
     if year < 15 or year > 25:
-        raise ValidationError('%d is not >= 15 and <= 25.' % year)
+        raise ValidationError(
+            'The first two digits of the study ID ' +
+            ('(%d), which represent the year, need ' % year) +
+            'to be between 15 and 25.')
 
 
 # For now, accept any 3-digit number as the cohort ID.
