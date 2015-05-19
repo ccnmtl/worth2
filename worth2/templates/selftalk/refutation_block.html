@@ -2,7 +2,7 @@
 
 <div class="selftalk-refutation {{ block.css_class }}"
      id="selftalk-refutation-block">
-    <p>
+    <p class="lead">
         {% if block.statement_block.is_internal %}
         Now, get back on the road by replacing that negative
         self talk with positive statements.
@@ -14,12 +14,6 @@
     </p>
 
     {{ refutation_form.media }}
-
-    {% if messages %}
-    {% for message in messages %}
-    <div class="alert alert-success">{{ message }}</div>
-    {% endfor %}
-    {% endif %}
 
     {% bootstrap_form_errors refutation_form %}
 

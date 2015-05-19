@@ -7,4 +7,15 @@
      {% endif %}>
         <strong>Oops!</strong> Please fill out all required questions.
     </div>
+    {% if messages %}
+        {% for message in messages %}
+            <div
+                 {% if message.tags %}
+                 class="alert alert-{{message.tags}} worth-form-validation-error"
+                 {% else %}
+                 class="alert alert-info worth-form-validation-error"
+                 {% endif %}
+                 >{{ message }}</div>
+        {% endfor %}
+    {% endif %}
 </div>

@@ -77,6 +77,17 @@
       action="." method="post">{% csrf_token %}
     <input type="hidden" name="action" value="reset" />
     <input type="submit" value="I want to change my answers." class="btn btn-primary" />
+    {% if messages %}
+        {% for message in messages %}
+            <div
+                 {% if message.tags %}
+                 class="alert alert-{{message.tags}} worth-form-validation-error"
+                 {% else %}
+                 class="alert alert-info worth-form-validation-error"
+                 {% endif %}
+                 >{{ message }}</div>
+        {% endfor %}
+    {% endif %}
 </form>
 {% endif %}{# End allow_redo or user.is_superuser #}
 {% endif %}{# End is_submission_empty #}

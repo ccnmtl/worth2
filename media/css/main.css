@@ -257,11 +257,16 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 }
 
 .worth-avatars p,
+.caseintrotext,
 .casequestiontext {
     margin-bottom: 20px;
     font-size: 21px;
     font-weight: 300;
     line-height: 1.4;
+}
+
+.casetitle {
+    display: none;
 }
 
 .likert .answers-container {
@@ -300,7 +305,6 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     background-color: #ead4dc;
 }
 
-.post-video-quiz .casetitle,
 .post-video-quiz .casesanswerdisplay,
 .post-video-quiz .caseanswercorrect,
 .post-video-quiz .avatar-block,
@@ -309,7 +313,6 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 }
 .post-video-quiz .col-md-8 {padding-left: 0 !important;}
 
-.negative-self-talk .casetitle,
 .negative-self-talk .casesanswerdisplay,
 .negative-self-talk .caseanswercorrect,
 .negative-self-talk .avatar-block {
@@ -323,15 +326,14 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
  
 
 .myth-fact .avatar-block,
-.myth-fact .casetitle,
 .myth-fact .caseanswerexplanation {
     display: none;
 }
 .myth-fact .col-md-8 {padding-left: 0 !important;} 
 
+.assessing-relationships .caseanswerlabel,
 .protective-behaviors .caseanswerlabel,
 .myth-fact .caseanswerlabel {
-    font-weight: bold;
     margin-bottom: 20px;
     font-size: 24px;
     font-weight: 300;
@@ -462,9 +464,7 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 } 
 
 .rate-my-risk .casequestionresult,
-.rate-my-risk .casetitle,
-.protective-behaviors .casequestionresult,
-.protective-behaviors .casetitle {
+.protective-behaviors .casequestionresult {
     display: none;
 }
 
@@ -496,7 +496,6 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 
 .safer-sex-quiz {text-align: center; background-color: #fff; margin-top: 10px; padding: 10px; font-family: times, serif; border: 6px double black;}
 .safer-sex-quiz h3, .safer-sex-quiz p {font-weight: bold;}
-.safer-sex-quiz .casetitle,
 .safer-sex-quiz .avatar-block, 
 .safer-sex-quiz .caseanswerresult {
     display: none;
@@ -519,7 +518,6 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 
 .safer-sex-quiz .casequestionexplanation {background-color: #963263 !important; color: #fff; padding-top: 30px !important;}
 
-.services-quiz .casetitle,
 .services-quiz .avatar-block,
 .services-quiz .casequestionresult {
     display: none;
@@ -532,7 +530,6 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 }
 
 
-.safety-plan-quiz .casetitle,
 .services-quiz .avatar-block {
     display: none;
 }
@@ -540,7 +537,7 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 .safety-plan-quiz textarea {margin-left: -20px;}
 
 .safety-plan-quiz .caseintrotext {
-    width: 50em;
+    width: 45em;
 }
 
 .safety-plan-quiz textarea {
@@ -549,7 +546,6 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     resize: none;
 }
 
-.assessing-relationships .casetitle, 
 .assessing-relationships .avatar-block,
 .assessing-relationships .casequestionresult,
 .assessing-relationships .caseanswerexplanation,
@@ -564,7 +560,6 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 .assessing-relationships .col-md-8 {padding-left: 0 !important;}
 
 
-.feelings-scale .casetitle,
 .feelings-scale .avatar-block,
 .feelings-scale .casequestionresult,
 .feelings-scale .caseanswerexplanation {
@@ -580,7 +575,6 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     margin-top: 30px;
 }
 
-.i-am-worth-it-quiz .casetitle,
 .i-am-worth-it-quiz .casequestionresult,
 .i-am-worth-it-quiz .caseanswerresult,
 .i-am-worth-it-quiz .casequestionexplanation,
@@ -597,7 +591,6 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 }
 .i-am-worth-it-quiz .col-md-8 {padding-left: 0 !important;}
 
-.quiz-game .casetitle,
 .quiz-game .avatar-block,
 .quiz-game .caseanswerexplanation {
     display: none;
@@ -632,7 +625,6 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     line-height: 1.4;
 }
 
-.negotiation-quiz .casetitle,
 .negotiation-quiz .avatar-block,
 .negotiation-quiz .caseanswerexplanation,
 .negotiation-quiz .caseanswerresult {
@@ -650,7 +642,6 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 }
 .negotiation-quiz .col-md-8 {padding-left: 0 !important;}
 
-.evaluation-quiz .casetitle,
 .evaluation-quiz .casesanswerdisplay,
 .evaluation-quiz .caseanswerresult,
 .evaluation-quiz .caseanswercorrect,
