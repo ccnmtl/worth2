@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 from rest_framework import viewsets, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -61,4 +62,9 @@ class WatchedVideoViewSet(viewsets.ModelViewSet):
         return self.request.user.watched_videos.all()
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        try:
+            serializer.save(user=self.request.user)
+        except IntegrityError:
+            # TODO: is there something we can raise here
+            # to get DRF to return a 304 in this case?
+            pass
