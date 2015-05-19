@@ -495,7 +495,7 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     width: 50%;
 }
 
-.safer-sex-quiz {text-align: center; background-color: #fff; margin-top: 10px; padding: 10px; font-family: times, serif; border: 6px double black;}
+.safer-sex-quiz {font-size: 1.25em; text-align: center; background-color: #fff; margin-top: 10px; padding: 10px; font-family: times, serif; border: 6px double black;}
 .safer-sex-quiz h3, .safer-sex-quiz p {font-weight: bold;}
 .safer-sex-quiz .avatar-block, 
 .safer-sex-quiz .caseanswerresult {
@@ -512,10 +512,10 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 	padding: 0px;
 }
 
-.safer-sex-quiz.appetizers ol {width: 475px; }
-.safer-sex-quiz.intermezzo ol {width: 375px;}
-.safer-sex-quiz.entree ol {width: 375px; }
-.safer-sex-quiz.dessert ol {width: 640px; }
+.safer-sex-quiz.appetizers ol {width: 600px; }
+.safer-sex-quiz.intermezzo ol {width: 500px;}
+.safer-sex-quiz.entree ol {width: 500px; }
+.safer-sex-quiz.dessert ol {width: 800px; }
 
 .safer-sex-quiz .casequestionexplanation {background-color: #963263 !important; color: #fff; padding-top: 30px !important;}
 
