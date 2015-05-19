@@ -658,7 +658,11 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 .evaluation-quiz .caseanswerexplanation {
     display: none;
 }
-.evaluation-quiz .col-md-8 {padding-left: 0 !important;}
+
+.evaluation-quiz .col-md-8 {
+    padding-left: 40px !important;
+    width: 100%;
+}
 
 .evaluation-quiz .caseanswercontainer {
     list-style: none;
@@ -673,6 +677,15 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     padding: 0;
     height: 20px;
     min-height: 20px;
+    text-transform: none;
+}
+
+.evaluation-quiz .likert .answers-container .colored-box label {
+    font-weight: normal;
+}
+
+.evaluation-quiz .casequestion textarea {
+    margin: 0 0 20px 25px;
 }
 
 .negative-self-talk .caseanswerexplanation,
