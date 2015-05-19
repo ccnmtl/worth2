@@ -21,9 +21,9 @@
         {% bootstrap_field form.filter_by_cohort layout='horizontal' %}
 
         <div class="form-group {% if form.participant_id.errors %}has-error{% endif %}" >
-            <label class="control-label col-sm-2" for="{{form.participant_id.id_for_label}}">
+            <label class="control-label col-md-3" for="{{form.participant_id.id_for_label}}">
                 {{ form.participant_id.field.label }}</label>
-            <div class="col-sm-9">
+            <div class="col-md-9">
                 <select class="form-control" id="id_participant_id"
                         name="participant_id">
                     <option>Choose a Participant</option>
