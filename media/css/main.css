@@ -475,6 +475,12 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     width: 100%;
 }
 
+/*start - left-alignment tweaks for quiz elements*/
+.casecontent .col-md-8 {padding-left: 0px !important;}
+.casecontent  ol.caseanswercontainer {margin-left: -40px;}
+/*start - left-alignment tweaks for quiz elements*/
+
+
 .caseanswercontainer label {
     font-weight: normal;
 }
