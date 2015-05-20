@@ -13,9 +13,7 @@ from pagetree.generic.models import BasePageBlock
 
 from worth2.main.auth import user_is_participant
 from worth2.main.generic.models import BaseUserProfile
-from worth2.main.utils import (
-    get_module_number_from_section, get_verbose_section_name
-)
+from worth2.main.utils import get_module_number_from_section
 
 
 class InactiveUserProfile(BaseUserProfile):
@@ -295,9 +293,6 @@ class Participant(InactiveUserProfile):
         module_num = self.next_module()
         slug = 'session-%d' % module_num
         return Section.objects.get(slug=slug)
-
-    def next_module_verbose(self):
-        return get_verbose_section_name(self.next_module_section())
 
     def module_1_completed_percentage(self):
         return self.percent_complete_module(1)

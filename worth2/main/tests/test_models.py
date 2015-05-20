@@ -10,7 +10,6 @@ from worth2.main.tests.factories import (
     VideoBlockFactory, WatchedVideoFactory, UserPageVisitFactory,
     WorthModuleFactory
 )
-from worth2.main.utils import get_verbose_section_name
 
 
 class AvatarTest(TestCase):
@@ -138,18 +137,6 @@ class ParticipantTest(TestCase):
         upv1.last_visit = datetime.now()
         upv1.save()
         self.assertEqual(self.participant.next_module(), 3)
-
-    def test_verbose_section_name_none(self):
-        s = get_verbose_section_name(None)
-        self.assertEqual(s, 'None')
-
-    def test_last_location_verbose(self):
-        s = self.participant.last_location_verbose()
-        self.assertEqual(s, 'None')
-
-    def test_next_location_verbose(self):
-        s = self.participant.next_location_verbose()
-        self.assertEqual(s, None)
 
     def test_percent_complete_module_empty(self):
         for i in range(5):
