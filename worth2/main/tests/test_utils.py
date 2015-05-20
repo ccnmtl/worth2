@@ -3,7 +3,7 @@ from pagetree.helpers import get_hierarchy
 
 from worth2.main.utils import (
     get_first_block_in_module, get_module_number,
-    get_module_number_from_section, get_verbose_section_name
+    get_module_number_from_section
 )
 
 
@@ -68,16 +68,3 @@ class UtilsTest(TestCase):
             'goals', 'goalsettingblock', 2)
         self.assertEqual(get_module_number_from_section(
             goalsettingblock.section), 2)
-
-    def test_get_verbose_section_name(self):
-        avatarblock = get_first_block_in_module(
-            'main', 'avatarselectorblock', 1)
-        self.assertEqual(
-            get_verbose_section_name(avatarblock.section).lower(),
-            'Session 1 [Session 1]'.lower())
-
-        goalsettingblock = get_first_block_in_module(
-            'goals', 'goalsettingblock', 2)
-        self.assertEqual(
-            get_verbose_section_name(goalsettingblock.section).lower(),
-            'Goal Setting Block page [Session 2]'.lower())

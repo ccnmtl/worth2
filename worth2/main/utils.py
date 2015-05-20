@@ -1,6 +1,5 @@
 import re
 from django.contrib.contenttypes.models import ContentType
-from django.utils.encoding import smart_str
 from pagetree.models import PageBlock, Section
 from quizblock.models import Response
 
@@ -107,21 +106,6 @@ def get_module_number(pageblock):
         return -1
 
     return get_module_number_from_section(pageblock.section.get_module())
-
-
-def get_verbose_section_name(section):
-    """Returns a string."""
-
-    s = smart_str(section)
-    module_num = -1
-    if section is not None:
-        module_num = get_module_number_from_section(section.get_module())
-
-    # Only append the module number if it's valid.
-    if module_num > -1:
-        return smart_str('%s [Session %d]' % (s, module_num))
-    else:
-        return s
 
 
 def get_quiz_responses_by_css_in_module(user, css_class, module):

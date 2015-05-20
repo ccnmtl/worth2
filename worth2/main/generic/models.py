@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
 from pagetree.models import Hierarchy, UserPageVisit
-from worth2.main.utils import get_verbose_section_name
 
 
 class BaseUserProfile(models.Model):
@@ -64,23 +63,6 @@ class BaseUserProfile(models.Model):
             return reverse('root')
         else:
             return self.last_access_hierarchy().section.get_absolute_url()
-
-    def last_location_verbose(self):
-        """
-        :rtype: str
-        """
-        upv = self.last_access_hierarchy()
-        if upv:
-            return get_verbose_section_name(upv.section)
-        else:
-            return 'None'
-
-    def next_location_verbose(self):
-        last_location = self.last_access_hierarchy()
-        if last_location:
-            return get_verbose_section_name(last_location.section.get_next())
-        else:
-            return None
 
     def percent_complete(self):
         return self.percent_complete_hierarchy()
