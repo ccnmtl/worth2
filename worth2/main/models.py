@@ -299,6 +299,21 @@ class Participant(InactiveUserProfile):
     def next_module_verbose(self):
         return get_verbose_section_name(self.next_module_section())
 
+    def module_1_completed_percentage(self):
+        return self.percent_complete_module(1)
+
+    def module_2_completed_percentage(self):
+        return self.percent_complete_module(2)
+
+    def module_3_completed_percentage(self):
+        return self.percent_complete_module(3)
+
+    def module_4_completed_percentage(self):
+        return self.percent_complete_module(4)
+
+    def module_5_completed_percentage(self):
+        return self.percent_complete_module(5)
+
 
 class Encounter(models.Model):
     """An Encounter represents a participant getting signed in to WORTH.

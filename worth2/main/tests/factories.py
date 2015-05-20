@@ -103,7 +103,23 @@ class WorthModuleFactory(object):
             ]})
         root.add_child_section_from_dict({
             'label': 'Welcome to Session 2',
-            'slug': 'session-2'
+            'slug': 'session-2',
+            'children': [
+                {
+                    'label': 'Goal Setting Section',
+                    'slug': 'goal-setting-section',
+                    'pageblocks': [{
+                        'block_type': 'Goal Setting Block',
+                    }],
+                },
+                {
+                    'label': 'Goal Check In Section',
+                    'slug': 'goal-check-in-section',
+                    'pageblocks': [{
+                        'block_type': 'Goal Check In Block',
+                    }],
+                },
+            ]
         })
         root.add_child_section_from_dict({
             'label': 'Welcome to Session 3',

@@ -217,7 +217,7 @@ class SignInParticipantTest(LoggedInFacilitatorTestMixin, TestCase):
             reverse('sign-in-participant'), {
                 'participant_id': participant.pk,
                 'participant_location': self.location.pk,
-                'participant_destination': 'next_new_session',
+                'participant_destination': 1,
                 'session_type': 'regular',
             }
         )
@@ -247,6 +247,10 @@ class SignInParticipantTest(LoggedInFacilitatorTestMixin, TestCase):
             user=participant.user,
             section=self.module1,
             status='complete')
+        UserPageVisit.objects.create(
+            user=participant.user,
+            section=self.module2,
+            status='complete')
 
         password = generate_password(participant.user.username)
         participant.user.set_password(password)
@@ -255,7 +259,7 @@ class SignInParticipantTest(LoggedInFacilitatorTestMixin, TestCase):
             reverse('sign-in-participant'), {
                 'participant_id': participant.pk,
                 'participant_location': self.location.pk,
-                'participant_destination': 'next_new_session',
+                'participant_destination': 2,
                 'session_type': 'regular',
             }
         )
@@ -268,7 +272,8 @@ class SignInParticipantTest(LoggedInFacilitatorTestMixin, TestCase):
         self.assertEqual(encounter.location, self.location)
         self.assertEqual(encounter.session_type, 'regular')
         self.assertEqual(encounter.section, self.module2)
-        self.assertEqual(encounter.section, participant.next_module_section())
+        self.assertEqual(encounter.section,
+                         participant.last_access_hierarchy().section)
 
         self.assertTrue(response.url.endswith('/pages/session-2/'))
         response = self.client.get(response.url)
@@ -286,57 +291,10 @@ class SignInParticipantTest(LoggedInFacilitatorTestMixin, TestCase):
             user=participant.user,
             section=self.module1,
             status='complete')
-
-        password = generate_password(participant.user.username)
-        participant.user.set_password(password)
-        participant.user.save()
-        response = self.client.post(
-            reverse('sign-in-participant'), {
-                'participant_id': participant.pk,
-                'participant_location': self.location.pk,
-                'participant_destination': 'last_completed_activity',
-                'session_type': 'regular',
-            }
-        )
-
-        self.assertEqual(response.status_code, 302)
-
-        encounter = Encounter.objects.first()
-        self.assertEqual(encounter.facilitator, self.u)
-        self.assertEqual(encounter.participant, participant)
-        self.assertEqual(encounter.location, self.location)
-        self.assertEqual(encounter.session_type, 'regular')
-        self.assertEqual(encounter.section, self.module1)
-        self.assertEqual(encounter.section, participant.last_location())
-
-        self.assertTrue(response.url.endswith('/pages/session-1/'))
-        response = self.client.get(response.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context['user'], participant.user)
-        self.assertContains(response, 'Welcome to Session 1')
-
-    def test_valid_form_submit_already_completed_session(self):
-        """
-        Test that the facilitator can sign in the participant to an
-        already completed session.
-        """
-        participant = ParticipantFactory()
-        UserPageVisit.objects.create(
-            user=participant.user,
-            section=self.module1,
-            status='complete')
         UserPageVisit.objects.create(
             user=participant.user,
             section=self.module2,
             status='complete')
-        UserPageVisit.objects.create(
-            user=participant.user,
-            section=self.module3,
-            status='complete')
-        UserPageVisit.objects.create(
-            user=participant.user,
-            section=self.module4,
-            status='complete')
 
         password = generate_password(participant.user.username)
         participant.user.set_password(password)
@@ -345,8 +303,7 @@ class SignInParticipantTest(LoggedInFacilitatorTestMixin, TestCase):
             reverse('sign-in-participant'), {
                 'participant_id': participant.pk,
                 'participant_location': self.location.pk,
-                'participant_destination': 'already_completed_session',
-                'already_completed_session': 3,
+                'participant_destination': 2,
                 'session_type': 'regular',
             }
         )
@@ -358,20 +315,22 @@ class SignInParticipantTest(LoggedInFacilitatorTestMixin, TestCase):
         self.assertEqual(encounter.participant, participant)
         self.assertEqual(encounter.location, self.location)
         self.assertEqual(encounter.session_type, 'regular')
-        self.assertEqual(encounter.section, self.module3)
+        self.assertEqual(encounter.section, self.module2)
+        self.assertEqual(encounter.section,
+                         participant.last_access_hierarchy().section)
 
-        self.assertTrue(response.url.endswith('/pages/session-3/'))
+        self.assertTrue(response.url.endswith('/pages/session-2/'))
         response = self.client.get(response.url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context['user'], participant.user)
-        self.assertContains(response, 'Welcome to Session 3')
+        self.assertContains(response, 'Welcome to Session 2')
 
     def test_invalid_form_submit(self):
         response = self.client.post(
             reverse('sign-in-participant'), {
                 'participant_id': None,
                 'participant_location': None,
-                'participant_destination': 'last_completed_activity',
+                'participant_destination': 1,
                 'session_type': 'regular',
             }
         )
@@ -396,7 +355,7 @@ class SignInParticipantTest(LoggedInFacilitatorTestMixin, TestCase):
             reverse('sign-in-participant'), {
                 'participant_id': participant.pk,
                 'participant_location': location.pk,
-                'participant_destination': 'last_completed_activity',
+                'participant_destination': 2,
             }
         )
 

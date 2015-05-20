@@ -121,25 +121,36 @@
                 <div class="table-container center-block">
                     <table class="table table-condensed col-sm-2">
                         <tbody>
-                            {% with module=1 %}
-                            {% include 'main/participant_progress_row.html' %}
-                            {% endwith %}
-
-                            {% with module=2 %}
-                            {% include 'main/participant_progress_row.html' %}
-                            {% endwith %}
-
-                            {% with module=3 %}
-                            {% include 'main/participant_progress_row.html' %}
-                            {% endwith %}
-
-                            {% with module=4 %}
-                            {% include 'main/participant_progress_row.html' %}
-                            {% endwith %}
-
-                            {% with module=5 %}
-                            {% include 'main/participant_progress_row.html' %}
-                            {% endwith %}
+                            <tr>
+                                <td>Session 1</td>
+                                <td><strong>
+                                    {{ participant.module_1_completed_percentage }}%
+                                </strong></td>
+                            </tr>
+                            <tr>
+                                <td>Session 2</td>
+                                <td><strong>
+                                    {{ participant.module_2_completed_percentage }}%
+                                </strong></td>
+                            </tr>
+                            <tr>
+                                <td>Session 3</td>
+                                <td><strong>
+                                    {{ participant.module_3_completed_percentage }}%
+                                </strong></td>
+                            </tr>
+                            <tr>
+                                <td>Session 4</td>
+                                <td><strong>
+                                    {{ participant.module_4_completed_percentage }}%
+                                </strong></td>
+                            </tr>
+                            <tr>
+                                <td>Session 5</td>
+                                <td><strong>
+                                    {{ participant.module_5_completed_percentage }}%
+                                </strong></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
