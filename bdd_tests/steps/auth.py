@@ -1,17 +1,20 @@
 from behave import given
 from django.conf import settings
 from django.contrib.auth import BACKEND_SESSION_KEY, SESSION_KEY
+from django.contrib.auth.models import User
 from django.utils.module_loading import import_module
 from splinter.request_handler.status_code import HttpResponseError
 
-from worth2.main.tests.factories import UserFactory, ParticipantFactory
+from worth2.main.models import Participant
 
 
 def create_pre_authenticated_session(user_type):
     if user_type == 'participant':
-        user = ParticipantFactory()
+        # TODO: why this work on participants?
+        participant = Participant.objects.first()
+        user = participant.user
     else:
-        user = UserFactory()
+        user = User.objects.first()
     engine = import_module(settings.SESSION_ENGINE)
     session = engine.SessionStore()
     session[SESSION_KEY] = user.pk
@@ -23,8 +26,8 @@ def create_pre_authenticated_session(user_type):
 @given(u'I am signed in as a {user_type}')
 def i_am_signed_in_as_a(context, user_type):
     if hasattr(context, 'user') and context.user is not None:
-        # already logged in
-        return
+        # Already logged in, so clear the existing session.
+        context.request.session.flush()
     b = context.browser
 
     # We need to visit a page on this domain in order

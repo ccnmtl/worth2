@@ -1,9 +1,7 @@
 from behave import when, then
 
-from worth2.main.tests.factories import (
-    ParticipantFactory,
-    LocationFactory, UserFactory, WorthModuleFactory
-)
+from worth2.main.models import Location, Participant
+from worth2.main.tests.factories import UserFactory
 
 
 @when(u'I sign in as a facilitator')
@@ -23,15 +21,14 @@ def i_sign_in_as_a_facilitator(context):
 def i_sign_in_as_a_participant(context):
     i_sign_in_as_a_facilitator(context)
 
-    location = LocationFactory()
-    participant = ParticipantFactory()
-    WorthModuleFactory()
+    participant = Participant.objects.first()
+    location = Location.objects.first()
 
     b = context.browser
     b.visit(context.browser_url('/sign-in-participant/'))
     b.select('participant_id', participant.pk)
     b.select('participant_location', location.pk)
-    b.choose('participant_destination', 'next_new_session')
+    b.choose('participant_destination', '1')
     b.choose('session_type', 'regular')
     b.find_by_css(
         '.worth-facilitator-sign-in-participant button[type="submit"]'
@@ -46,6 +43,12 @@ def i_access_the_url(context, url):
 @when(u'I click the next button')
 def i_click_the_next_button(context):
     context.browser.find_by_css('li.next>a').first.click()
+
+
+@when(u'I click the submit button')
+def i_click_the_submit_button(context):
+    context.browser.find_by_css(
+        '.pagetree-form-submit-area input[type="submit"]').first.click()
 
 
 @then(u'I see the text "{text}"')
