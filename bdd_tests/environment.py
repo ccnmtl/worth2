@@ -3,7 +3,7 @@ from splinter import Browser
 
 from worth2.main.auth import generate_password
 from worth2.main.tests.factories import (
-    LocationFactory, ParticipantFactory, WorthModuleFactory
+    ParticipantFactory, WorthModuleFactory
 )
 
 
@@ -17,7 +17,6 @@ def before_all(context):
 
     # Set up mock worth data
     WorthModuleFactory()
-    LocationFactory()
 
     participant = ParticipantFactory()
 

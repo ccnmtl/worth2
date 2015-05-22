@@ -44,3 +44,27 @@ Feature: Participant Intervention
     When I select the first quiz option
     When I click the submit button
     Then I am at the url "/pages/session-2/ground-rules/"
+
+    When I click the next button
+    Then I am at the url "/pages/session-2/goal-setting-section/"
+
+    When I click the goal submit button
+    Then I see the text "Oops!"
+
+    When I fill in a goal option
+    When I click the goal submit button
+    Then I see the text "1 goal saved"
+
+    When I click the next button
+    Then I am at the url "/pages/session-2/goal-check-in-section/"
+    Then I see the text "Goal Check In Section"
+
+  Scenario: Session 3
+    When I access the url "/pages/session-3/"
+    When I click the next button
+    Then I am at the url "/pages/session-3/welcome-to-session-3/"
+    Then I see the text "Welcome to Session 3"
+
+    When I click the next button
+    Then I am at the url "/pages/session-3/risk-goal-review/"
+    Then I see the text "Risk Reduction Goal Review"
