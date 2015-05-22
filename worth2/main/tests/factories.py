@@ -5,6 +5,7 @@ from factory.fuzzy import FuzzyText
 from pagetree.tests.factories import HierarchyFactory, RootSectionFactory
 from pagetree.models import UserPageVisit
 
+from worth2.goals.models import GoalOption, GoalSettingBlock
 from worth2.main.auth import generate_password
 from worth2.main.models import (
     Avatar, Encounter, Location, Participant, VideoBlock, WatchedVideo
@@ -396,6 +397,10 @@ class WorthModuleFactory(object):
     def __init__(self, hname='main', base_url='/pages/'):
         AvatarFactory()
         AvatarFactory()
+        LocationFactory()
+        GoalOption.objects.create(text='Goal Option 1')
+        GoalOption.objects.create(text='Goal Option 2')
+        GoalOption.objects.create(text='Goal Option 3')
 
         hierarchy = HierarchyFactory(name=hname, base_url=base_url)
         root = hierarchy.get_root()
@@ -482,6 +487,8 @@ class WorthModuleFactory(object):
                     'slug': 'goal-check-in-section',
                     'pageblocks': [{
                         'block_type': 'Goal Check In Block',
+                        'goal_setting_block':
+                            GoalSettingBlock.objects.first()
                     }],
                 },
             ]
@@ -489,7 +496,25 @@ class WorthModuleFactory(object):
 
         root.add_child_section_from_dict({
             'label': 'Welcome to Session 3',
-            'slug': 'session-3'
+            'slug': 'session-3',
+            'children': [
+                {
+                    'label': 'Welcome to Session 3',
+                    'slug': 'welcome-to-session-3',
+                    'pageblocks': [{
+                        'block_type': 'Text Block',
+                    }],
+                },
+                {
+                    'label': 'Risk Reduction Goal Review',
+                    'slug': 'risk-goal-review',
+                    'pageblocks': [{
+                        'block_type': 'Goal Check In Block',
+                        'goal_setting_block':
+                            GoalSettingBlock.objects.first()
+                    }],
+                },
+            ],
         })
 
         root.add_child_section_from_dict({
