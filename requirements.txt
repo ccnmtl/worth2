@@ -4,7 +4,7 @@ smartypants==1.8.6
 psycopg2==2.6
 Pillow==2.8.1
 versiontools==1.9.1
-statsd==3.0.1
+statsd==3.1
 pep8==1.5.7
 pyflakes==0.8.1
 mccabe==0.3
