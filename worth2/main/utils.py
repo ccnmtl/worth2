@@ -119,7 +119,7 @@ def get_quiz_responses_by_css_in_module(user, css_class, module):
     """
     pageblocks = PageBlock.objects.filter(css_extra__contains=css_class)
 
-    # Filter non-QuizBlocks out of pageblocks, and store them in
+    # Filter non-QuizBlocks out of the queryset, and store them in
     # the "quizblocks" list.
     quiztype = ContentType.objects.get(app_label='quizblock',
                                        model='quiz')
