@@ -1,19 +1,19 @@
 <h3>My Issue</h3>
 <div class="worth-journal-info-element">
-    <div>
-        <strong>TODO:</strong>
-        This journal item depends on this activity:
+    {% if my_services_issue %}
+    <div>This issue was important to you this week:</div>
+    <ul><li><strong>{{ my_services_issue.answer }}</strong></li></ul>
+
+    <p>
+        Here is a list of organizations you can call for help
+        with this issue:
+    </p>
+    {% else %}
+    <p>
+        To see this part of the journal, you need to fill out the services
+        activity here:
         <a href="/pages/session-{{session_num}}/services/"
            >/pages/session-{{session_num}}/services/</a>
-    </div>
-
-    <div>
-        <strong>This issue was important to you this week:</strong>
-    </div>
-    <div>
-        <strong>
-            Here is a list of organizations you can call for help
-            with this issue:
-        </strong>
-    </div>
+    </p>
+    {% endif %}
 </div>
