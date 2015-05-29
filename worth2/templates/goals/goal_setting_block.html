@@ -10,42 +10,42 @@
                 <form class="form-horizontal" method="post">
                     {% csrf_token %}
                     {{ setting_formset.management_form }}
-                    
+
                     {% for form in setting_formset %}
                     {% if forloop.first %}
                     <div class="well">
-                        <span class="goal-form">
+                        <div class="goal-form">
                             {% bootstrap_field form.option layout='horizontal' %}
-
+                            <div class="clearfix"></div>
                             <div class="goal-other-container">
                                 {% bootstrap_field form.other_text layout='horizontal' %}
                             </div>
                             <div class="clearfix"></div>
                             {% bootstrap_field form.text layout='horizontal' %}
-                        </span>
+                        </div>
                         <div class="clearfix"></div>
                     </div>
                     <div class="clearfix"></div>
                     {% else %}
                     {# Manually render the extra goal forms so we can give them #}
                     {# the 'Extra' label instead of 'Main'. #}
-                   <div class="well">
-                    <span class="goal-form">
-                        <div class="form-group">
-                            <label class="control-label col-md-3">
-                                Extra {{block.goal_type}} goal
-                            </label>
-                            <div class="col-md-9">
-                                {{ form.option }}
+                    <div class="well">
+                        <div class="goal-form">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">
+                                    Extra {{block.goal_type}} goal
+                                </label>
+                                <div class="col-md-9">
+                                    {{ form.option }}
+                                </div>
                             </div>
+                            <div class="clearfix"></div>
+                            <div class="goal-other-container">
+                                {% bootstrap_field form.other_text layout='horizontal' %}
+                            </div>
+                            {% bootstrap_field form.text layout='horizontal' %}
                         </div>
                         <div class="clearfix"></div>
-                        <div class="goal-other-container">
-                            {% bootstrap_field form.other_text layout='horizontal' %}
-                        </div>
-                        {% bootstrap_field form.text layout='horizontal' %}
-                    </span>
-                    <div class="clearfix"></div>
                     </div>
                     {% endif %}
                     {% endfor %}
@@ -54,9 +54,9 @@
                         <button type="submit" class="btn btn-primary">Submit</button>
 
                         {% if messages %}
-                            {% for message in messages %}
-                            <div class="alert alert-success">{{ message }}</div>
-                            {% endfor %}
+                        {% for message in messages %}
+                        <div class="alert alert-success">{{ message }}</div>
+                        {% endfor %}
                         {% endif %}
                     </div>
                 </form><!-- end .form-horizontal -->

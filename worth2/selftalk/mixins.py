@@ -117,7 +117,8 @@ class SelfTalkRefutationViewMixin(object):
                         widget=forms.TextInput(
                             attrs={
                                 'class': 'refutation-other',
-                                'placeholder': 'Other',
+                                'placeholder':
+                                    'Type how you would turn this around',
                             }),
                         label='',
                         required=False)

@@ -21,7 +21,9 @@ class GoalCheckInForm(forms.Form):
 
     other = forms.CharField(
         required=False,
-        widget=forms.TextInput(attrs={'class': 'goal-checkin-other'}),
+        widget=forms.TextInput(
+            attrs={'class': 'goal-checkin-other',
+                   'placeholder': 'Please type your response here'}),
     )
 
     def clean(self):
@@ -48,7 +50,9 @@ class GoalSettingForm(forms.Form):
     other_text = forms.CharField(
         label='Other',
         required=False,
-        widget=forms.TextInput(attrs={'class': 'other-text'}),
+        widget=forms.TextInput(
+            attrs={'class': 'other-text',
+                   'placeholder': 'Please type your response here'}),
     )
 
     text = forms.CharField(
