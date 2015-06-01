@@ -27,7 +27,7 @@ sqlparse==0.1.14
 python-dateutil==2.4.0
 
 boto==2.38.0
-django-storages-redux==1.2.2
+django-storages-redux==1.2.3
 
 djangowind==0.13.3
 sorl==3.1
