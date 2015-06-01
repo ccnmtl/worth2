@@ -29,7 +29,7 @@ python-dateutil==2.4.0
 boto==2.38.0
 django-storages-redux==1.2.2
 
-djangowind==0.13.2
+djangowind==0.13.3
 sorl==3.1
 typogrify==2.0.7
 django-indexer==0.3.0
