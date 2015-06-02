@@ -451,7 +451,6 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
             user=self.u,
         )
         self.assertEqual(r.status_code, 200)
-        self.assertContains(r, '3 goals saved.')
         self.assertEqual(responses.count(), 3)
         self.assertEqual(responses.first().text, 'test explanation')
         self.assertEqual(responses.all()[1].text, 'test explanation 2')
@@ -481,7 +480,6 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
         )
         self.assertEqual(r.status_code, 200)
         self.assertEqual(responses.count(), 1)
-        self.assertContains(r, '1 goal saved.')
         self.assertEqual(responses.first().option, option)
         self.assertEqual(responses.first().text, 'test explanation')
 
@@ -533,7 +531,6 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
         })
 
         self.assertEqual(r.status_code, 200)
-        self.assertContains(r, '1 goal saved.')
         self.assertEqual(
             GoalSettingResponse.objects.filter(
                 goal_setting_block=pageblock.block(),
@@ -567,7 +564,6 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
         })
 
         self.assertEqual(r.status_code, 200)
-        self.assertNotContains(r, '1 goal saved.')
         self.assertEqual(GoalSettingResponse.objects.count(), 0)
         self.assertFormsetError(
             r, 'setting_formset', 0, 'option',
@@ -597,7 +593,6 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.assertEqual(r.status_code, 200)
         self.assertNotContains(r, 'This field is required.')
         self.assertEqual(GoalSettingResponse.objects.count(), 1)
-        self.assertContains(r, '1 goal saved.')
 
     def test_post_other_option_makes_other_text_required(self):
         pageblock = self.root.get_first_child().pageblock_set.first()
@@ -618,7 +613,6 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
 
         self.assertEqual(r.status_code, 200)
         self.assertContains(r, 'This field is required.')
-        self.assertNotContains(r, '1 goal saved.')
         self.assertEqual(GoalSettingResponse.objects.count(), 0)
         self.assertFormsetError(
             r, 'setting_formset', 0, 'other_text', 'This field is required.')
@@ -642,7 +636,6 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
 
         self.assertEqual(r.status_code, 200)
         self.assertNotContains(r, 'This field is required.')
-        self.assertContains(r, '1 goal saved.')
         self.assertEqual(GoalSettingResponse.objects.count(), 1)
         response = GoalSettingResponse.objects.first()
         self.assertEqual(response.other_text, 'Some other goal')
