@@ -5,7 +5,9 @@ from factory.fuzzy import FuzzyText
 from pagetree.tests.factories import HierarchyFactory, RootSectionFactory
 from pagetree.models import UserPageVisit
 
-from worth2.goals.models import GoalOption, GoalSettingBlock
+from worth2.goals.models import (
+    GoalCheckInPageBlock, GoalOption, GoalSettingBlock
+)
 from worth2.main.auth import generate_password
 from worth2.main.models import (
     Avatar, Encounter, Location, Participant, VideoBlock, WatchedVideo
@@ -487,12 +489,14 @@ class WorthModuleFactory(object):
                     'slug': 'goal-check-in-section',
                     'pageblocks': [{
                         'block_type': 'Goal Check In Block',
-                        'goal_setting_block':
-                            GoalSettingBlock.objects.first()
                     }],
                 },
             ]
         })
+        b = GoalCheckInPageBlock.objects.first()
+        b.goal_setting_block = GoalSettingBlock.objects.first()
+        b.save()
+        assert(b.goal_setting_block is not None)
 
         root.add_child_section_from_dict({
             'label': 'Welcome to Session 3',
@@ -510,12 +514,14 @@ class WorthModuleFactory(object):
                     'slug': 'risk-goal-review',
                     'pageblocks': [{
                         'block_type': 'Goal Check In Block',
-                        'goal_setting_block':
-                            GoalSettingBlock.objects.first()
                     }],
                 },
             ],
         })
+        b = GoalCheckInPageBlock.objects.all()[1]
+        b.goal_setting_block = GoalSettingBlock.objects.first()
+        b.save()
+        assert(b.goal_setting_block is not None)
 
         root.add_child_section_from_dict({
             'label': 'Welcome to Session 4',
