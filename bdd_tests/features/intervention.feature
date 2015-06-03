@@ -49,7 +49,7 @@ Feature: Participant Intervention
     Then I am at the url "/pages/session-2/goal-setting-section/"
 
     When I click the goal submit button
-    Then I see the text "Oops!"
+    Then I don't see the text "1 goal saved"
 
     When I fill in a goal option
     When I click the goal submit button

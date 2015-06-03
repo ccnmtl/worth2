@@ -1,7 +1,8 @@
 from behave import when, then
 
-from worth2.main.models import Location, Participant
-from worth2.main.tests.factories import UserFactory
+from worth2.main.auth import generate_password
+from worth2.main.models import Location
+from worth2.main.tests.factories import UserFactory, ParticipantFactory
 
 
 @when(u'I sign in as a facilitator')
@@ -21,7 +22,11 @@ def i_sign_in_as_a_facilitator(context):
 def i_sign_in_as_a_participant(context):
     i_sign_in_as_a_facilitator(context)
 
-    participant = Participant.objects.first()
+    participant = ParticipantFactory()
+    password = generate_password(participant.user.username)
+    participant.user.set_password(password)
+    participant.user.save()
+
     location = Location.objects.first()
 
     b = context.browser
@@ -53,7 +58,12 @@ def i_click_the_submit_button(context):
 
 @then(u'I see the text "{text}"')
 def i_see_the_text(context, text):
-    context.browser.is_text_present(text)
+    assert context.browser.is_text_present(text)
+
+
+@then(u'I don\'t see the text "{text}"')
+def i_dont_see_the_text(context, text):
+    assert context.browser.is_text_not_present(text)
 
 
 @then(u'I get a {status_code}')

@@ -42,3 +42,12 @@ def i_am_signed_in_as_a(context, user_type):
     user, s = create_pre_authenticated_session(user_type)
     b.cookies.add({'name': settings.SESSION_COOKIE_NAME, 'value': s})
     context.user = user
+
+
+@given(u'I am not logged in')
+def i_am_not_logged_in(context):
+    context.browser.cookies.delete()
+    try:
+        context.user = None
+    except:
+        pass
