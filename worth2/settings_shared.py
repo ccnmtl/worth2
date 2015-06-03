@@ -235,12 +235,6 @@ ACCOUNT_ACTIVATION_DAYS = 7
 # change on production / staging
 PARTICIPANT_SECRET = 'something secret'
 
-REGISTRATION_APPLICATION_MODEL = 'registration.Application'
-
-MIGRATION_MODULES = {
-    'registration': 'worth2.migrations.registration',
-}
-
 MESSAGE_TAGS = {
     messages.ERROR: 'danger'
 }
