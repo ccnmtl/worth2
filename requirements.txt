@@ -53,7 +53,7 @@ django-smoketest==0.3.0
 django-extensions==1.4.9
 django-stagingcontext==0.1.0
 django-impersonate==0.9
-django-registration-redux==1.1
+django-registration-redux==1.2
 django-treebeard==3.0
 django-pagetree==1.1.5
 django-pageblocks==1.0.2
