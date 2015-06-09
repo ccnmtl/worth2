@@ -16,7 +16,7 @@ sure==1.2.9
 ipython==3.1.0
 ipdb==0.8
 rdflib==4.1.2
-selenium==2.45.0
+selenium==2.46.0
 coverage==3.7.1
 logilab-common==0.63.2
 logilab-astng==0.24.3
