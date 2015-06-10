@@ -18,7 +18,7 @@ class InactiveUserFactory(factory.DjangoModelFactory):
     class Meta:
         model = User
 
-    username = FuzzyText()
+    username = FuzzyText(prefix='inactive_')
     password = factory.LazyAttribute(lambda u: generate_password(u.username))
     is_active = False
 
@@ -27,7 +27,7 @@ class UserFactory(factory.DjangoModelFactory):
     class Meta:
         model = User
 
-    username = FuzzyText()
+    username = FuzzyText(prefix='facilitator_')
     password = factory.PostGenerationMethodCall('set_password', 'test')
 
 
@@ -42,7 +42,7 @@ class LocationFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Location
 
-    name = FuzzyText()
+    name = FuzzyText(prefix='location_')
 
 
 class ParticipantFactory(factory.django.DjangoModelFactory):

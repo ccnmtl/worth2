@@ -29,7 +29,16 @@ Feature: Participant Intervention
     When I click the submit button
     Then I see the text "Here is the avatar that you selected"
 
+    # Facilitator after session 1
+    When I sign in as the facilitator from a session
+    When I click the link "Manage Participant IDs"
+    When I click the first participant journal button
+    When I click the link "Session 1"
+    Then I see the text "My Personal Roadmap"
+    Then I see the text "Let's Talk: Sister to Sister"
+
     # Session 2
+    When I sign in as a participant
     When I access the url "/pages/session-2/"
     When I click the next button
     Then I am at the url "/pages/session-2/welcome-to-session-2/"
@@ -60,7 +69,15 @@ Feature: Participant Intervention
     Then I am at the url "/pages/session-2/goal-check-in-section/"
     Then I see the text "Goal Check In Section"
 
+    # Facilitator after session 2
+    When I sign in as the facilitator from a session
+    When I click the link "Manage Participant IDs"
+    When I click the first participant journal button
+    When I click the link "Session 2"
+    Then I see the text "My Personal Roadmap"
+
     # Session 3
+    When I sign in as a participant
     When I access the url "/pages/session-3/"
     When I click the next button
     Then I am at the url "/pages/session-3/welcome-to-session-3/"
@@ -69,3 +86,10 @@ Feature: Participant Intervention
     When I click the next button
     Then I am at the url "/pages/session-3/risk-goal-review/"
     Then I see the text "Risk Reduction Goal Review"
+
+    # Facilitator after session 3
+    When I sign in as the facilitator from a session
+    When I click the link "Manage Participant IDs"
+    When I click the first participant journal button
+    When I click the link "Session 3"
+    Then I see the text "My Personal Roadmap"

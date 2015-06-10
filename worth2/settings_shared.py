@@ -238,3 +238,5 @@ PARTICIPANT_SECRET = 'something secret'
 MESSAGE_TAGS = {
     messages.ERROR: 'danger'
 }
+
+BEHAVE_DEBUG_ON_ERROR = False
