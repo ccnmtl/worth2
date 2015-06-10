@@ -1,20 +1,18 @@
-import urlparse
 from splinter import Browser
-
+from behave_django import environment
+from django.conf import settings
 from worth2.main.auth import generate_password
 from worth2.main.tests.factories import (
-    ParticipantFactory, WorthModuleFactory
+    ParticipantFactory, UserFactory, WorthModuleFactory
 )
 
 
-BEHAVE_DEBUG_ON_ERROR = False
-
-
 def before_all(context):
-    host = context.host = 'localhost'
-    port = context.port = 8081
     context.browser = Browser('firefox')
 
+
+def before_scenario(context, scenario):
+    environment.before_scenario(context, scenario)
     # Set up mock worth data
     WorthModuleFactory()
 
@@ -27,10 +25,12 @@ def before_all(context):
     participant.user.set_password(password)
     participant.user.save()
 
-    def browser_url(url):
-        return urlparse.urljoin('http://%s:%d/' % (host, port), url)
+    # Make a facilitator
+    UserFactory()
 
-    context.browser_url = browser_url
+
+def after_scenario(context, scenario):
+    environment.after_scenario(context, scenario)
 
 
 def after_all(context):
@@ -39,6 +39,6 @@ def after_all(context):
 
 
 def after_step(context, step):
-    if BEHAVE_DEBUG_ON_ERROR and step.status == "failed":
+    if settings.BEHAVE_DEBUG_ON_ERROR and step.status == "failed":
         import ipdb
         ipdb.post_mortem(step.exc_traceback)
