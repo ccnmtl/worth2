@@ -152,7 +152,7 @@ INSTALLED_APPS = [
     'worth2.ssnm',
     'worth2.goals',
     'worth2.selftalk',
-    'bdd_tests',
+    'behave_django',
 ]
 
 REST_FRAMEWORK = {

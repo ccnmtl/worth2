@@ -1,3 +1,4 @@
+import urlparse
 from behave import when, then
 
 from worth2.main.auth import generate_password
@@ -12,7 +13,7 @@ def i_sign_in_as_a_facilitator(context):
     facilitator.save()
 
     b = context.browser
-    b.visit(context.browser_url('/accounts/login/'))
+    b.visit(urlparse.urljoin(context.base_url, '/accounts/login/'))
     b.fill('username', facilitator.username)
     b.fill('password', 'test_pass')
     b.find_by_css('.form-signin button[type="submit"]').first.click()
@@ -30,7 +31,7 @@ def i_sign_in_as_a_participant(context):
     location = Location.objects.first()
 
     b = context.browser
-    b.visit(context.browser_url('/sign-in-participant/'))
+    b.visit(urlparse.urljoin(context.base_url, '/sign-in-participant/'))
     b.select('participant_id', participant.pk)
     b.select('participant_location', location.pk)
     b.choose('participant_destination', '1')
@@ -42,7 +43,7 @@ def i_sign_in_as_a_participant(context):
 
 @when(u'I access the url "{url}"')
 def i_access_the_url(context, url):
-    context.browser.visit(context.browser_url(url))
+    context.browser.visit(urlparse.urljoin(context.base_url, url))
 
 
 @when(u'I click the next button')
@@ -73,4 +74,4 @@ def i_get_a(context, status_code):
 
 @then(u'I am at the url "{url}"')
 def i_am_at_the_url(context, url):
-    assert context.browser.url == context.browser_url(url)
+    assert context.browser.url.endswith(url)
