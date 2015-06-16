@@ -9,16 +9,98 @@
 {% endblock %}
 
 {% block content %}
-<div class="worth-facilitator-login col-sm-offset-3 col-sm-6">
 
-    <div class="jumbotron login-jumbotron">
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron jumbotron-splash text-center">
+        <div class="container-fluid">
+            
+            <div style="display: inline-block; text-align: center; margin: 30px 0px 30px 0px;">
+            <img class="img-responsive" src="{{STATIC_URL}}img/eworth-logo-white-withtag.png" />
+            </div>
+            
+            <p>
+                This is a pithy statement that will articulate the spirit of the entire project. Two sentences may be enough. No more than three. Also, a textile pattern will go behind this copy.
+            </p>
+            
+        </div>
+    </div>
 
-        <img class="img-responsive center-block" src="{{STATIC_URL}}img/logo-black.png" />
+    <div class="container">
+    
+    <!-- Example row of columns -->
+    
+            <div class="row text-center">
+            <h2>
+                Five for the Road
+            </h2>
+    
+                <p class="lead">
+                Don't hit the road alone. Take your five E-WORTH friends with you along your journey.
+                </p>
+                
+        </div>
+        
+        <div class="row">
+            <div class="col-md-offset-1 col-md-2 text-center">
+                <img class="img-responsive img-circle" src="{{STATIC_URL}}img/amanda.png" />
+                <h3>
+                    Amanda
+                </h3>
+            </div>		
+            <div class="col-md-2 text-center">
+                <img class="img-responsive img-circle" src="{{STATIC_URL}}img/charlene.png" />
+                <h3>
+                    Charlene
+                </h3>
+            </div>		
+            <div class="col-md-2 text-center">
+                <img class="img-responsive img-circle" src="{{STATIC_URL}}img/joy.png" />
+                <h3>
+                    Joy
+                </h3>
+            </div>		
+            <div class="col-md-2 text-center">
+                <img class="img-responsive img-circle" src="{{STATIC_URL}}img/mia.png" />
+                <h3>
+                    Mia
+                </h3>
+            </div>		
+            <div class="col-md-2 text-center">
+                <img class="img-responsive img-circle" src="{{STATIC_URL}}img/rasheeda.png" />
+                <h3>
+                    Rasheeda
+                </h3>
+            </div>		
+        </div>
+    </div>
+    <!-- /container -->
+    
+
+    <hr />
+    
+    <div class="container">
+    
+    <!-- Example row of columns -->
+        <div class="row well">
+            <div class="col-md-8">
+                <h2>
+                Let's Get Started!
+                </h2>
+                <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nisi dui, mattis ut tortor nec, euismod sodales velit. Nullam ultricies, ligula sit amet suscipit porttitor, diam nisl blandit neque, ac ultricies nisl lacus ut lacus. In porttitor est nec tincidunt ullamcorper. Nam vel sapien vitae orci tincidunt faucibus at at nibh. Vestibulum imperdiet arcu eget risus lobortis mattis tempus quis lorem. 
+                </p>
+                <p>
+                <a class="btn btn-default" href="/about/" role="button">Learn More</a>
+                </p>
+            </div>
+            <div class="col-md-4 well">
 
         <form class="form-signin" role="form" method="post" action="/accounts/login/">
         {% csrf_token %}
 
-        <h3 class="form-signin-heading"></h3>
+        <h3 class="form-signin-heading">Facilitator Information</h3>
+
+                <div class="form-group">
 
         <label for="facilitator_id"
                class="control-label sr-only"
@@ -29,6 +111,9 @@
                name="username"
                placeholder="Enter your username"
                required autofocus>
+</div>
+
+                <div class="form-group">
 
         <label for="facilitator_password"
                class="control-label sr-only"
@@ -39,10 +124,11 @@
                name="password"
                placeholder="Enter your password"
                required>
+</div>
 
         <div class="form-group">
             <button type="submit"
-                    class="btn btn-lg btn-default btn-block"
+                    class="btn btn-md btn-primary btn-block"
                     >Sign In</button>
         </div>
     </form>
@@ -55,15 +141,28 @@
 
             <input type="hidden" name="destination" value="https://{{ request.get_host }}/accounts/caslogin/?next={{ next|urlencode }}" />
 
-            <button type="submit" class="btn btn-lg btn-default btn-block">Sign In with UNI</button>
+            <button type="submit" class="btn btn-md btn-default btn-block">Sign In with UNI</button>
 
         </form>
 
         {% endif %}
 
-        <a class="btn btn-lg btn-link btn-block" href="https://cuit.columbia.edu/cuit/manage-my-uni" title="Learn more about UNI" target="_blank">What is a UNI?</a>
+        <a class="btn btn-md btn-link btn-block" href="https://cuit.columbia.edu/cuit/manage-my-uni" title="Learn more about UNI" target="_blank">What is a UNI?</a>
+            
+            
+            
+    
+            </div>
+        </div>
+    
 
     </div>
+    <!-- /container -->
 
-</div>
+
+
+
+
+
+
 {% endblock %}

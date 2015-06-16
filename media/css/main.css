@@ -55,26 +55,20 @@ li.disabled>a:before {
 
 .splash-photo {
 	/*
-	background:url(/media/img/cover.png) center center;	
-		*/
-
-	width:100%;
 	height:100%;
 	min-height:100%;
+	max-height:100%;
+	*/
+	height: 500px;
+	max-height: 500px;
+	background:url(/media/img/textile-splash-jumbotron.png) center center;	
+	width:100%;
 	background-size:cover;	
 	position:absolute;
 	background-color: rgb(147, 39, 79)
 }
 
-.login-jumbotron {
-	/*
-	background:url(/media/img/fotolia_comp_72108181.jpg) center center;
-	background-position: 100px 200px;
-    */
-    background-color: #f5eaf0;
-}
-
-.jumbotron-special {background-color: rgb(147, 39, 79); color: #fff;}
+.jumbotron-splash {background-color: transparent; color: #fff;}
 
 .login-description {
     margin: 30px 30px 15px 30px;
@@ -424,12 +418,11 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     text-align: center;
 }
 
-/*
+
 .protective-behaviors ol,
 .protective-behaviors-results ul {
     padding-left: 0;
 }
-*/
 
 .protective-behaviors ol li {
     float: left;
@@ -463,6 +456,8 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
    background-color: rgb(236, 221, 221);
 } 
 
+.protective-behaviors .col-md-8, .protective-behaviors-results .col-md-8 {padding-left: 0 !important;}
+
 .rate-my-risk .casequestionresult,
 .protective-behaviors .casequestionresult {
     display: none;
@@ -494,7 +489,7 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     width: 50%;
 }
 
-.safer-sex-quiz {text-align: center; background-color: #fff; margin-top: 10px; padding: 10px; font-family: times, serif; border: 6px double black;}
+.safer-sex-quiz {font-size: 1.25em; text-align: center; background-color: #fff; margin-top: 10px; padding: 10px; font-family: times, serif; border: 6px double black;}
 .safer-sex-quiz h3, .safer-sex-quiz p {font-weight: bold;}
 .safer-sex-quiz .avatar-block, 
 .safer-sex-quiz .caseanswerresult {
@@ -511,10 +506,10 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 	padding: 0px;
 }
 
-.safer-sex-quiz.appetizers ol {width: 475px; }
-.safer-sex-quiz.intermezzo ol {width: 375px;}
-.safer-sex-quiz.entree ol {width: 375px; }
-.safer-sex-quiz.dessert ol {width: 640px; }
+.safer-sex-quiz.appetizers ol {width: 600px; }
+.safer-sex-quiz.intermezzo ol {width: 500px;}
+.safer-sex-quiz.entree ol {width: 500px; }
+.safer-sex-quiz.dessert ol {width: 800px; }
 
 .safer-sex-quiz .casequestionexplanation {background-color: #963263 !important; color: #fff; padding-top: 30px !important;}
 
