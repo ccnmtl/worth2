@@ -2,8 +2,9 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'models/participant'
-], function($, _, Backbone, Participant) {
+    'models/participant',
+    'utils'
+], function($, _, Backbone, Participant, utils) {
     var CreateParticipantView = Backbone.View.extend({
         el: '#worth-create-participant',
         events: {
@@ -33,12 +34,11 @@ define([
 
                     // Find validation errors in participant response object
                     if (xhr.responseJSON) {
-                        for (var key in xhr.responseJSON) {
-                            msg += '<div>' + xhr.responseJSON[key] + '</div>';
-                        }
+                        msg = utils.formatDrfJsonErrorsToHtml(xhr.responseJSON);
                     } else {
                         msg = error;
                     }
+
                     $target.find('.worth-success').hide();
                     $target.find('.worth-errors').show().html(msg);
                 }

@@ -2,15 +2,14 @@ from datetime import datetime
 
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from pagetree.tests.factories import ModuleFactory
 from pagetree.models import Hierarchy, Section
 
 from worth2.main.models import Participant
 from worth2.main.tests.factories import (
     AvatarFactory, EncounterFactory, LocationFactory, ParticipantFactory,
-    VideoBlockFactory, WatchedVideoFactory, UserPageVisitFactory
+    VideoBlockFactory, WatchedVideoFactory, UserPageVisitFactory,
+    WorthModuleFactory
 )
-from worth2.main.utils import get_verbose_section_name
 
 
 class AvatarTest(TestCase):
@@ -41,7 +40,7 @@ class LocationTest(TestCase):
 class ParticipantTest(TestCase):
     def setUp(self):
         self.participant = ParticipantFactory()
-        ModuleFactory('main', 'main')
+        WorthModuleFactory()
         self.hierarchy = Hierarchy.objects.get(name='main')
         root = self.hierarchy.get_root()
         root.add_child_section_from_dict({
@@ -139,17 +138,38 @@ class ParticipantTest(TestCase):
         upv1.save()
         self.assertEqual(self.participant.next_module(), 3)
 
-    def test_verbose_section_name(self):
-        s = get_verbose_section_name(self.participant.last_location())
-        self.assertEqual(s, 'None')
+    def test_percent_complete_module_empty(self):
+        for i in range(5):
+            self.assertEqual(
+                self.participant.percent_complete_module(i), 0)
 
-    def test_last_location_verbose(self):
-        s = self.participant.last_location_verbose()
-        self.assertEqual(s, 'None')
+    def test_percent_complete_module(self):
+        section1 = Section.objects.get(slug='session-1')
+        UserPageVisitFactory(
+            user=self.participant.user, section=section1)
+        module1_pages = section1.get_descendants()
+        for page in module1_pages:
+            UserPageVisitFactory(
+                user=self.participant.user, section=page)
 
-    def test_next_location_verbose(self):
-        s = self.participant.next_location_verbose()
-        self.assertEqual(s, None)
+        section2 = Section.objects.get(slug='session-2')
+        module2_pages = section2.get_descendants()
+        UserPageVisitFactory(
+            user=self.participant.user, section=section2)
+        for page in module2_pages:
+            UserPageVisitFactory(
+                user=self.participant.user, section=page)
+
+        self.assertEqual(
+            self.participant.percent_complete_module(1), 100)
+        self.assertEqual(
+            self.participant.percent_complete_module(2), 100)
+        self.assertEqual(
+            self.participant.percent_complete_module(3), 0)
+        self.assertEqual(
+            self.participant.percent_complete_module(4), 0)
+        self.assertEqual(
+            self.participant.percent_complete_module(5), 0)
 
 
 class ParticipantManagerTest(TestCase):

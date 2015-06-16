@@ -724,6 +724,10 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     padding: 10px 0px 40px 0px;
 }
 
+.worth-facilitator-sign-in-participant .lead {
+    margin-top: 0;
+}
+
 .worth-facilitator-sign-in-participant .radio.disabled {
     color: #888;
 }
@@ -765,4 +769,10 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 }
 @media print {
     #print-logo {display: block; width: 20em;}
+}
+
+.completed-percentage {
+    font-weight: bold;
+    font-style: italic;
+    margin-left: 10px;
 }

@@ -152,7 +152,7 @@ INSTALLED_APPS = [
     'worth2.ssnm',
     'worth2.goals',
     'worth2.selftalk',
-    'bdd_tests',
+    'behave_django',
 ]
 
 REST_FRAMEWORK = {
@@ -235,12 +235,8 @@ ACCOUNT_ACTIVATION_DAYS = 7
 # change on production / staging
 PARTICIPANT_SECRET = 'something secret'
 
-REGISTRATION_APPLICATION_MODEL = 'registration.Application'
-
-MIGRATION_MODULES = {
-    'registration': 'worth2.migrations.registration',
-}
-
 MESSAGE_TAGS = {
     messages.ERROR: 'danger'
 }
+
+BEHAVE_DEBUG_ON_ERROR = False

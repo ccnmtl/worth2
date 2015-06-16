@@ -1,8 +1,9 @@
 define([
     'jquery',
     'underscore',
-    'backbone'
-], function($, _, Backbone) {
+    'backbone',
+    'utils'
+], function($, _, Backbone, utils) {
     var SignOutParticipantView = Backbone.View.extend({
         el: 'form.worth-sign-out-participant',
         events: {
@@ -33,10 +34,8 @@ define([
                         if (xhr.responseJSON.login_check === false) {
                             msg = '<div>Incorrect password</div>';
                         } else {
-                            for (var key in xhr.responseJSON) {
-                                msg += '<div>' + xhr.responseJSON[key] +
-                                    '</div>';
-                            }
+                            msg = utils.formatDrfJsonErrorsToHtml(
+                                xhr.responseJSON);
                         }
                     } else {
                         msg = error;

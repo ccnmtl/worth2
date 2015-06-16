@@ -97,6 +97,9 @@ class ParticipantJournalView(TemplateView):
         slug = 'session-%d' % session_num
         context['section'] = get_object_or_404(Section, slug=slug)
 
+        context['my_services_issue'] = get_quiz_responses_by_css_in_module(
+            user, 'services-quiz', session_num).first()
+
         if session_num > 1:
             context['i_am_worth_it_responses'] = \
                 map(lambda x: x.answer(),
@@ -125,10 +128,10 @@ class ParticipantJournalView(TemplateView):
                     reflection_responses),
                 'i_am_worth_it_responses':
                     get_quiz_responses_by_css_in_module(
-                        user, 'i-am-worth-it-quiz', 2),
+                        user, 'i-am-worth-it-quiz', session_num),
                 'rate_my_risk_response':
                     get_quiz_responses_by_css_in_module(
-                        user, 'rate-my-risk', 2).first(),
+                        user, 'rate-my-risk', session_num).first(),
                 'goals_risk_responses':
                     GoalSettingResponse.objects.find_by_module(
                         user, 'risk reduction', session_num),
@@ -151,11 +154,11 @@ class ParticipantJournalView(TemplateView):
                         user, 'services', session_num),
                 'i_am_worth_it_responses':
                     get_quiz_responses_by_css_in_module(
-                        user, 'i-am-worth-it-quiz', 3),
+                        user, 'i-am-worth-it-quiz', session_num),
             })
         elif session_num == 4:
             safety_plan_quiz_responses = get_quiz_responses_by_css_in_module(
-                user, 'safety-plan-quiz', 4)
+                user, 'safety-plan-quiz', session_num)
             context.update({
                 'session_title': 'Staying Safe and Strong',
                 'goals_support_responses':
@@ -169,8 +172,7 @@ class ParticipantJournalView(TemplateView):
                         user, 'services', session_num),
                 'i_am_worth_it_responses':
                     get_quiz_responses_by_css_in_module(
-                        user, 'i-am-worth-it-quiz', 4),
-                'mylength': len(safety_plan_quiz_responses),
+                        user, 'i-am-worth-it-quiz', session_num),
                 'safety_plan_quiz_responses': safety_plan_quiz_responses,
             })
         elif session_num == 5:
@@ -181,7 +183,7 @@ class ParticipantJournalView(TemplateView):
                         user, 'risk reduction', session_num),
                 'i_am_worth_it_responses':
                     get_quiz_responses_by_css_in_module(
-                        user, 'i-am-worth-it-quiz', 5),
+                        user, 'i-am-worth-it-quiz', session_num),
             })
         else:
             raise http.Http404
@@ -224,19 +226,14 @@ class SignInParticipant(FormView):
         if user is not None:
             login(self.request, user)
 
-            dest = form.cleaned_data.get('participant_destination')
-
-            # Go to the first session in pagetree by default.
-            section = get_object_or_404(Section, slug='session-1')
-
-            if dest == 'last_completed_activity':
-                section = participant.last_location()
-            elif dest == 'next_new_session':
-                section = participant.next_module_section()
-            elif dest == 'already_completed_session':
-                session_num = form.cleaned_data.get(
-                    'already_completed_session')
-                slug = 'session-%s' % session_num
+            module_num = int(form.cleaned_data.get('participant_destination'))
+            upv = participant.last_access_in_module(module_num)
+            if upv:
+                section = upv.section
+            else:
+                # If there's no UserPageVisit found, then take the
+                # user to the first section in this module.
+                slug = 'session-{:d}'.format(module_num)
                 section = get_object_or_404(Section, slug=slug)
 
             Encounter.objects.create(
