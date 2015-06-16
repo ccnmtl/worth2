@@ -55,26 +55,19 @@ li.disabled>a:before {
 
 .splash-photo {
 	/*
-	background:url(/media/img/cover.png) center center;	
-		*/
-
-	width:100%;
 	height:100%;
 	min-height:100%;
+	*/
+	height: 500px;
+	max-height: 500px;
+	background:url(/media/img/textile-splash-jumbotron.png) center center;	
+	width:100%;
 	background-size:cover;	
 	position:absolute;
 	background-color: rgb(147, 39, 79)
 }
 
-.login-jumbotron {
-	/*
-	background:url(/media/img/fotolia_comp_72108181.jpg) center center;
-	background-position: 100px 200px;
-    */
-    background-color: #f5eaf0;
-}
-
-.jumbotron-special {background-color: rgb(147, 39, 79); color: #fff;}
+.jumbotron-splash {background-color: transparent; color: #fff;}
 
 .login-description {
     margin: 30px 30px 15px 30px;
