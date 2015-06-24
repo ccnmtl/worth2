@@ -5,4 +5,4 @@ Feature: Index Page
 
   Scenario: Facilitator Sign In
     When I sign in as a facilitator
-    Then I see the text "View Intervention as Facilitator"
+    Then I see the text "View as Facilitator"

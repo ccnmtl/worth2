@@ -1,5 +1,19 @@
 <div class="worth-facilitator-dashboard">
-    <a href="/pages/">View Intervention as Facilitator</a>
+    <div class="dropdown">
+        <button class="btn btn-default dropdown-toggle" type="button"
+                id="sessionDropdownMenu1" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="true">
+            View as Facilitator
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="sessionDropdownMenu1">
+            <li><a href="/pages/session-1/">Session 1</a></li>
+            <li><a href="/pages/session-2/">Session 2</a></li>
+            <li><a href="/pages/session-3/">Session 3</a></li>
+            <li><a href="/pages/session-4/">Session 4</a></li>
+            <li><a href="/pages/session-5/">Session 5</a></li>
+        </ul>
+    </div>
 
     <h1>
         {% if request.user.first_name %}
