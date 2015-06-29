@@ -2,6 +2,7 @@ import datetime
 
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
+from django.test import TestCase
 from django.test.testcases import TransactionTestCase
 from pagetree.helpers import get_hierarchy
 from pagetree.models import Hierarchy, Section, UserPageVisit
@@ -11,6 +12,30 @@ from worth2.main.reports import ParticipantReport
 from worth2.main.tests.factories import (
     EncounterFactory, ParticipantFactory, UserFactory, LocationFactory
 )
+
+
+class ParticipantReportNoHierarchiesTest(TestCase):
+    def setUp(self):
+        super(ParticipantReportNoHierarchiesTest, self).setUp()
+        self.location = LocationFactory(name='Butler')
+        self.staff = UserFactory(is_staff=True, username='f1',
+                                 first_name='Facilitator', last_name='One')
+        p = ParticipantFactory(first_location=self.location,
+                               location=self.location,
+                               created_by=self.staff)
+        self.participant = p.user
+
+    def test_post_keys(self):
+        self.client.login(username=self.staff.username, password="test")
+        data = {'report-type': 'keys'}
+        response = self.client.post(reverse('participant-report'), data)
+        self.assertEquals(response.status_code, 200)
+
+    def test_post_values(self):
+        self.client.login(username=self.staff.username, password="test")
+        data = {'report-type': 'values'}
+        response = self.client.post(reverse('participant-report'), data)
+        self.assertEquals(response.status_code, 200)
 
 
 class ParticipantReportTest(TransactionTestCase):

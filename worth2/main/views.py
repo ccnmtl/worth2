@@ -391,7 +391,7 @@ class ParticipantReportView(LoggedInMixinStaff, TemplateView):
         hierarchies = Hierarchy.objects.filter(name="main")
 
         report_type = request.POST.get('report-type', 'keys')
-        report = ParticipantReport(hierarchies[0])
+        report = ParticipantReport(hierarchies.first())
 
         if report_type == 'facilitators':
             rows = self.facilitators()
