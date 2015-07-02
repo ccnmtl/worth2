@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.utils.encoding import smart_str
@@ -255,9 +256,8 @@ class GoalCheckInResponse(models.Model):
     This is only used on sessions 2 through 5.
     """
 
-    goal_setting_response = models.ForeignKey(
+    goal_setting_response = models.OneToOneField(
         GoalSettingResponse,
-        unique=True,
         related_name='goal_checkin_response'
     )
 
@@ -309,7 +309,13 @@ class GoalCheckInPageBlock(BasePageBlock):
             return True
 
         for setting_response in setting_responses:
-            if setting_response.goal_checkin_response.count() > 0:
+            checkin_response = None
+            try:
+                checkin_response = setting_response.goal_checkin_response
+            except ObjectDoesNotExist:
+                continue
+
+            if checkin_response is not None:
                 return True
 
         return False
