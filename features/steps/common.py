@@ -1,3 +1,4 @@
+import time
 import urlparse
 from behave import when, then
 
@@ -27,6 +28,7 @@ def i_click_the_first_participant_journal_button(context):
 
 @when(u'I click the link "{text}"')
 def i_click_the_link(context, text):
+    time.sleep(1)
     context.browser.find_link_by_partial_text(text).first.click()
 
 
