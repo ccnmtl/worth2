@@ -298,6 +298,8 @@ class GoalCheckInPageBlock(BasePageBlock):
         return True
 
     def goal_setting_responses(self, user):
+        if self.goal_setting_block is None:
+            return GoalSettingResponse.objects.none()
         return self.goal_setting_block.goal_setting_responses.filter(user=user)
 
     def unlocked(self, user):

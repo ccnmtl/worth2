@@ -145,8 +145,10 @@ class WorthModuleFactory(object):
     }
 
     i_am_worth_it_quizblock = {
-        'show_submit_state': False,
+        'block_type': 'Quiz',
         'css_extra': 'i-am-worth-it-quiz quizblock-required',
+        'rhetorical': False,
+        'show_submit_state': False,
         'allow_redo': False,
         'description': '',
         'label': '',
@@ -391,9 +393,7 @@ class WorthModuleFactory(object):
                     }
                 ]
             }
-        ],
-        'block_type': 'Quiz',
-        'rhetorical': False
+        ]
     }
 
     def __init__(self, hname='main', base_url='/pages/'):
@@ -524,19 +524,67 @@ class WorthModuleFactory(object):
         assert(b.goal_setting_block is not None)
 
         root.add_child_section_from_dict({
-            'label': 'Welcome to Session 4',
+            'label': 'Welcome to Your Fourth Session!',
             'slug': 'session-4',
-            'pageblocks': [{
-                'label': 'Welcome to E-WORTH',
-                'css_extra': '',
-                'block_type': 'Test Block',
-                'body': 'You should now use the edit link to add content'
-            }]
+            'children': [
+                {
+                    'label': 'Risk Reduction Goal Review',
+                    'slug': 'risk-goal-review',
+                    'pageblocks': [{
+                        'block_type': 'Goal Check In Block',
+                    }],
+                },
+                {
+                    'label': 'Assessing relationships',
+                    'slug': 'assessing-relationships-q1',
+                    'pageblocks': [{
+                        'block_type': 'Quiz',
+                        'css_extra': 'assessing-relationships',
+                        'show_submit_state': False,
+                        'allow_redo': False,
+                        'rhetorical': False,
+                        'description': '',
+                        'label': '',
+                        'questions': [{
+                            'css_extra': '',
+                            'question_type': 'single choice',
+                            'text': 'Test question',
+                            'intro_text': '',
+                            'explanation': '',
+                            'answers': [
+                                {
+                                    'explanation': '',
+                                    'css_extra': '',
+                                    'correct': False,
+                                    'value': '1',
+                                    'label': 'yes'
+                                },
+                                {
+                                    'explanation': '',
+                                    'css_extra': '',
+                                    'correct': False,
+                                    'value': '0',
+                                    'label': 'no'
+                                },
+                            ]
+                        }]
+                    }]
+                }
+            ]
         })
 
         root.add_child_section_from_dict({
-            'label': 'Welcome to Session 5',
-            'slug': 'session-5'
+            'label': 'Welcome to your Final Session!',
+            'slug': 'session-5',
+            'children': [
+                {
+                    'label': 'Risk Reduction Goal Review',
+                    'slug': 'risk-goal-review',
+                    'pageblocks': [{
+                        'block_type': 'Goal Check In Block',
+                    }],
+                },
+            ]
         })
 
         self.root = root
