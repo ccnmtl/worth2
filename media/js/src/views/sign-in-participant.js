@@ -7,8 +7,9 @@ define([
         el: '.worth-facilitator-sign-in-participant form',
 
         initialize: function() {
-            this._updateParticipantDestinations(
-                this.$el.find('#id_participant_id'));
+            var $target = this.$el.find('#id_participant_id');
+            var $participant = $target.find('option:checked');
+            this._updateParticipantDestinations($target, $participant);
         },
 
         events: {
@@ -19,10 +20,8 @@ define([
          * This function updates the text for participants' destinations
          * on the participant sign-in form.
          */
-        _updateParticipantDestinations: function($target) {
+        _updateParticipantDestinations: function($target, $participant) {
             $('.completed-percentage').remove();
-
-            var $participant = $target.find('option:checked');
             if (typeof $participant.attr('value') === 'undefined') {
                 return;
             }
@@ -44,6 +43,15 @@ define([
             }
         },
 
+        _updateParticipantSignedInAlert: function($target, $participant) {
+            var isLoggedIn = $participant.data('is-recently-logged-in');
+            if (isLoggedIn === 'True') {
+                $('.participant-signin-warning').show();
+            } else {
+                $('.participant-signin-warning').hide();
+            }
+        },
+
         /**
          * This event executes whenever the target changes:
          *   '.worth-facilitator-sign-in-participant form'
@@ -52,7 +60,9 @@ define([
             var $target = $(e.target);
 
             if ($target.attr('name') === 'participant_id') {
-                this._updateParticipantDestinations($target);
+                var $participant = $target.find('option:checked');
+                this._updateParticipantDestinations($target, $participant);
+                this._updateParticipantSignedInAlert($target, $participant);
             }
         }
     });
