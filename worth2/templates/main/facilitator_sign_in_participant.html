@@ -37,6 +37,7 @@
                     {% endcomment %}
                     <option value="{{p.0}}"
                             data-cohort-id="{{participant.cohort_id|default:''}}"
+                            data-is-recently-logged-in="{{participant.user.last_login|is_recent}}"
                             data-module-a-complete="{{participant.module_1_completed_percentage}}"
                             data-module-b-complete="{{participant.module_2_completed_percentage}}"
                             data-module-c-complete="{{participant.module_3_completed_percentage}}"
@@ -52,6 +53,11 @@
                 {% for error in form.participant_id.errors %}
                 <span class="help-block">{{ error }}</span>
                 {% endfor %}
+                <br>
+                <div class="participant-signin-warning alert alert-warning" style="display: none;">
+                    Warning: This participant has been signed in within
+                    the last five minutes.
+                </div>
             </div>
         </div>
 
