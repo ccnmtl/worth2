@@ -1,5 +1,5 @@
 Django==1.8.2
-Markdown==2.6.1
+Markdown==2.6.2
 smartypants==1.8.6
 psycopg2==2.6
 Pillow==2.8.1
