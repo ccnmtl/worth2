@@ -15,7 +15,7 @@
 (-webkit-min-device-pixel-ratio: 2),
 (min-resolution: 192dpi) {
     /* Retina-specific stuff here */
-    iframe#youtube-player {
+    #youtube-player {
         width: 200%;
         height: 200%;
         -webkit-transform-origin: left top;
