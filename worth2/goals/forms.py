@@ -3,6 +3,9 @@ from django.forms.formsets import formset_factory
 from worth2.goals.models import GoalCheckInOption, GoalCheckInPageBlock
 
 
+NOT_APPLICABLE = 'I don\'t want to set this kind of goal right now'
+
+
 class GoalCheckInForm(forms.Form):
     goal_setting_response_id = forms.IntegerField(widget=forms.HiddenInput())
 
@@ -67,7 +70,7 @@ class GoalSettingForm(forms.Form):
         other_text = cleaned_data.get('other_text')
         text = cleaned_data.get('text')
 
-        if hasattr(option, 'text') and option.text.lower() == 'n/a':
+        if hasattr(option, 'text') and option.text == NOT_APPLICABLE:
             pass
         elif not text:
             self.add_error('text', u'This field is required.')

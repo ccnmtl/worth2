@@ -5,6 +5,7 @@ from worth2.goals.tests.factories import (
     GoalCheckInOptionFactory, GoalCheckInResponseFactory,
     GoalOptionFactory, GoalSettingResponseFactory
 )
+from worth2.goals.forms import NOT_APPLICABLE
 from worth2.goals.models import (
     GoalCheckInPageBlock, GoalCheckInResponse,
     GoalSettingBlock, GoalSettingResponse
@@ -57,7 +58,7 @@ class GoalCheckInPageBlockTest(LoggedInParticipantTestMixin, TestCase):
         opt3 = GoalOptionFactory()
 
         # This option will be hidden from the check-in formset
-        opt4_na = GoalOptionFactory(text='n/a')
+        opt4_na = GoalOptionFactory(text=NOT_APPLICABLE)
         self.assertEqual(GoalSettingBlock.objects.count(), 1)
 
         self.setting_resp1 = GoalSettingResponseFactory(
@@ -576,7 +577,7 @@ class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
     def test_post_na_option_makes_text_not_required(self):
         pageblock = self.root.get_first_child().pageblock_set.first()
         GoalOptionFactory()
-        na_option = GoalOptionFactory(text='n/a')
+        na_option = GoalOptionFactory(text=NOT_APPLICABLE)
         p = 'pageblock-%s' % pageblock.pk
         r = self.client.post(self.url, {
             # Formset Management form params
