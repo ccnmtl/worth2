@@ -47,7 +47,7 @@ class GoalSettingBlock(BasePageBlock):
         help_text='The number of goals on this block, including the main one.')
 
     def has_na_option(self):
-        """Returns True if this block has a n/a option."""
+        """Returns True if this block has a NOT_APPLICABLE option."""
 
         return self.goal_type == 'services' or \
             self.goal_type == 'social support'
