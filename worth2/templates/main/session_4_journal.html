@@ -6,40 +6,170 @@
 <h3>Safety Plan</h3>
 <div class="worth-journal-info-element">
     <p>
-        This week you created a plan to keep yourself safe
-        during a violent incident and a plan in case you need
-        to escape a dangerous situation at home. This roadmap
-        contains a copy of your plan. Be sure to review at as
-        often as you can so that you can commit it to memory.
-        Be sure to practice it with others like your children
-        and others who provide safety support. Also be sure to
-        store it in the safest place possible, which may not
-        be at your home. Your safety plan follows:
+        If you or a family member or friend is experiencing
+        relationship conflict or abuse by a partner, there are steps
+        you can take to reduce conflict and to help prevent being hurt
+        by a partner. Having a safety plan can reduce your risk for
+        being hurt by your partner. Today you created this safety
+        plan:
     </p>
     <h4>Safety During a Violent Incident</h4>
 
     {% for response in safety_plan_quiz_responses %}
-    <p class="journal-safety-plan-response">
-        <span class="journal-question">{{ response.question }}</span>
+    <div class="journal-safety-plan-response">
+        {% if forloop.counter == 1 %}
+        <p class="journal-question">
+            I will practice how to get out of my apartment safely
+            and practice this plan with my children. Here is how I
+            will safely leave my apartment if I need to:
+            <strong>{{ response.value }}</strong>
+        </p>
+        {% elif forloop.counter == 2 %}
+        <p class="journal-question">
+            I can tell a person whom I trust about the violence and
+            request they call the police if they hear suspicious
+            noises coming from my house or apartment. Here are some
+            people I can tell.
+            <strong>{{ response.value }}</strong>
+        </p>
+        {% elif forloop.counter == 3 %}
+        <p class="journal-question">
+            I can keep a list of other people I can call if there is
+            an emergency. I can keep a paper copy of this list and
+            keep the names in my phone. The people on the list don't
+            need to live close to me. These are people I can trust to
+            call the police or help in other ways if I contact them
+            or have someone else contact them. I can also teach my
+            children or someone else in the house how to use the
+            telephone and dial 911 to contact the police and the fire
+            department.
+        </p>
+        <p class="journal-question">
+            I can use a code word with children or friends to call for
+            help. CODE WORDS should not raise suspicion from partner,
+            but should not also be "every day" language that might confuse
+            people. Some examples of code words are "Aunt ____ has not
+            returned my phone call today". Code words for children need
+            to be appropriate for their age. For example, a code word
+            for a 13 year old girl may be "Your cousin ____ called you
+            today and wants you to call her back today". For a younger
+            child "Your grandmother called today and wanted to talk with
+            you about something." (Most children under the age of 5 will
+            be too young to understand how to operate under code
+            language). My code word will be:
+            <strong>{{ response.value }}</strong>
+        </p>
+        {% elif forloop.counter == 4 %}
+        <p class="journal-question">
+            I need to have a place to go if I have to leave my apartment.
+            Here are places I can go if I need to leave:
+            <strong>{{ response.value }}</strong>
+        </p>
+        {% elif forloop.counter == 5 %}
+        <p class="journal-question">
+            When I expect I am going to have an argument with my partner,
+            I will move to a space that is lowest risk. I will try to
+            avoid arguments in the bathroom, kitchens, near weapons, or
+            in rooms without access to an outside door. Here are spaces
+            in my apartment that are the lowest risk:
+            <strong>{{ response.value }}</strong>
+        </p>
+        <p class="journal-question">
+            I will use my judgment and intuition. If the situation is
+            very serious, I may need to give my partner what he or she
+            wants to calm him or her down. I will protect myself until
+            I am out of danger. If my partner is under the influence of
+            drugs or alcohol, and I am worried that he or she may hurt
+            me sexually or physically, I will try to leave the
+            situation until my partner calms down.
+        </p>
+        {% elif forloop.counter == 6 %}
+        <h5>Safety when planning to leave</h5>
+        <p class="journal-question">
+            There are things I can do to keep safe if I am preparing to
+            leave my partner. To be able to leave quickly, I will leave
+            an extra set of keys, money, and other emergency items like
+            clothes with someone.  Here is who I can leave these things
+            with:
+            <strong>{{ response.value }}</strong>
+        </p>
+        {% elif forloop.counter == 7 %}
+        <p class="journal-question">
+            I will keep copies of important documents (social security
+            cards, birth certificates, immunization records) somewhere
+            outside my home. Here is where I can leave important
+            documents:
+            <strong>{{ response.value }}</strong>
+        </p>
+        {% elif forloop.counter == 8 %}
+        <p class="journal-question">
+            It's important to become financially independent. I will
+            open a savings account by this date:
+            <strong>{{ response.value }}</strong>
+        </p>
+        {% elif forloop.counter == 9 %}
+        <p class="journal-question">
+            Here are other things I can do to become more independent:
+            <strong>{{ response.value }}</strong>
+        </p>
+        {% else %}
+        <p class="journal-question">
+            <strong>{{ response.question }}</strong>
+        </p>
         <strong>{{ response.value }}</strong>
-    </p>
+        {% endif %}
+    </div>
     {% endfor %}
 
+    <h4>More information about Safety when leaving</h4>
     <p>
-        I will rehearse my escape plan and, as appropriate, practice it
-        with my children.
+        If you need counseling, legal assistance in obtaining a
+        restraining order, or emergency housing Call 311 and ask for
+        the NYC Domestic Violence Hotline. The numbers for the hotline
+        will be printed for you in your plan. If you are feeling
+        threatened by your partner or in more immediate danger, call
+        911 for the police.
     </p>
     <p>
-        I will see if my phone company can block my abuser’s phone number
-        from calling my phone.
+        Keep a calling card on you at all times. If you use your cell
+        phone, the following month the telephone bill will tell your
+        partner those numbers that you called after you left. To keep
+        your calls confidential, you must use a calling card for a
+        limited time when you first leave.
     </p>
     <p>
-        I will change my usernames, email addresses, passwords,
-        and/or cell phone number.
+        If you have any social media accounts (e.g., Facebook,
+        Google+, Twitter, Linked In, etc.) and are either "friends"
+        with your partner or "friends" with anyone in your partner's
+        social media network, it is important to block your partner
+        and/or his/her friends so they cannot access you via these
+        avenues.
     </p>
     <p>
-        I will save and keep track of any abusive, threatening or
-        harassing comments, posts, or texts.
+        It's important to review your safety plan occasionally. How
+        often will you sit down and review your safety plan?
+    </p>
+    <p>
+        Rehearse your escape plan and, as appropriate, practice it
+        with your children.
+    </p>
+    <p>
+        See if your phone company can block your abuser's phone number
+        from calling your phone.
+    </p>
+    <p>
+        Change your usernames, email addresses, passwords, and/or cell
+        phone number.
+    </p>
+    <p>
+        Save and keep track of any abusive, threatening or harassing
+        comments, posts, or texts.
+    </p>
+    <p>
+        Now that you have a copy of this plan, do you have a safe
+        place to keep it at home or with a friend? Plan where to keep
+        this list. Try to find a safe place to keep the 24-hour
+        hotline number and other important numbers.
     </p>
 </div>
 

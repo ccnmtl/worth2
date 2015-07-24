@@ -93,3 +93,42 @@ Feature: Participant Intervention
     When I click the first participant journal button
     When I click the link "Session 3"
     Then I see the text "My Personal Roadmap"
+
+    # Session 4
+    When I sign in as a participant
+    When I access the url "/pages/session-4/"
+    Then I see the text "Welcome to Your Fourth Session!"
+
+    When I click the next button
+    Then I am at the url "/pages/session-4/risk-goal-review/"
+    Then I see the text "Risk Reduction Goal Review"
+
+    When I click the next button
+    Then I am at the url "/pages/session-4/assessing-relationships-q1/"
+    Then I see the text "Assessing relationships"
+    Then I see the text "Test question"
+    When I click the submit button
+    Then I see the text "Oops!"
+
+    # Facilitator after session 4
+    When I sign in as the facilitator from a session
+    When I click the link "Manage Participant IDs"
+    When I click the first participant journal button
+    When I click the link "Session 4"
+    Then I see the text "My Personal Roadmap"
+
+    # Session 5
+    When I sign in as a participant
+    When I access the url "/pages/session-5/"
+    Then I see the text "Welcome to your Final Session!"
+
+    When I click the next button
+    Then I am at the url "/pages/session-5/risk-goal-review/"
+    Then I see the text "Risk Reduction Goal Review"
+
+    # Facilitator after session 5
+    When I sign in as the facilitator from a session
+    When I click the link "Manage Participant IDs"
+    When I click the first participant journal button
+    When I click the link "Session 5"
+    Then I see the text "My Personal Roadmap"

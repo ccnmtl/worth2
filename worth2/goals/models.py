@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.utils.encoding import smart_str
@@ -46,7 +47,7 @@ class GoalSettingBlock(BasePageBlock):
         help_text='The number of goals on this block, including the main one.')
 
     def has_na_option(self):
-        """Returns True if this block has a n/a option."""
+        """Returns True if this block has a NOT_APPLICABLE option."""
 
         return self.goal_type == 'services' or \
             self.goal_type == 'social support'
@@ -255,9 +256,8 @@ class GoalCheckInResponse(models.Model):
     This is only used on sessions 2 through 5.
     """
 
-    goal_setting_response = models.ForeignKey(
+    goal_setting_response = models.OneToOneField(
         GoalSettingResponse,
-        unique=True,
         related_name='goal_checkin_response'
     )
 
@@ -298,6 +298,8 @@ class GoalCheckInPageBlock(BasePageBlock):
         return True
 
     def goal_setting_responses(self, user):
+        if self.goal_setting_block is None:
+            return GoalSettingResponse.objects.none()
         return self.goal_setting_block.goal_setting_responses.filter(user=user)
 
     def unlocked(self, user):
@@ -309,7 +311,13 @@ class GoalCheckInPageBlock(BasePageBlock):
             return True
 
         for setting_response in setting_responses:
-            if setting_response.goal_checkin_response.count() > 0:
+            checkin_response = None
+            try:
+                checkin_response = setting_response.goal_checkin_response
+            except ObjectDoesNotExist:
+                continue
+
+            if checkin_response is not None:
                 return True
 
         return False

@@ -10,3 +10,15 @@
 #worth-youtube-video-duration time {
     font-weight: bold;
 }
+
+@media
+(-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
+    /* Retina-specific stuff here */
+    #youtube-player {
+        width: 200%;
+        height: 200%;
+        -webkit-transform-origin: left top;
+        -webkit-transform: scale(.5);
+    }
+}

@@ -6,7 +6,7 @@ from django.forms.formsets import formset_factory
 from django.shortcuts import get_object_or_404, render
 from django.template.defaultfilters import pluralize
 
-from worth2.goals.forms import GoalCheckInForm, GoalSettingForm
+from worth2.goals.forms import GoalCheckInForm, GoalSettingForm, NOT_APPLICABLE
 from worth2.goals.models import (
     GoalCheckInResponse, GoalOption, GoalSettingResponse
 )
@@ -26,7 +26,7 @@ class GoalCheckInViewMixin(object):
         self.goal_setting_responses = GoalSettingResponse.objects.filter(
             user=request.user,
             goal_setting_block=goalsettingblock,
-        ).filter(~Q(option__text__iexact='n/a')).order_by('form_id')
+        ).filter(~Q(option__text__exact=NOT_APPLICABLE)).order_by('form_id')
 
         self.GoalCheckInFormSet = formset_factory(
             GoalCheckInForm,
