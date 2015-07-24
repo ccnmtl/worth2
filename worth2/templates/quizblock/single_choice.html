@@ -6,6 +6,7 @@
         {% if 'likert' in question.quiz.pageblock.css_extra or 'likert' in question.css_extra %}
             {% include 'quizblock/likert.html' %}
         {% else %}
+            {% spaceless %}
             <ol class="caseanswercontainer" type="A">
                 {% for answer in question.answer_set.all %}
                     {% if block.rhetorical %}
@@ -13,11 +14,11 @@
                             <label>
                                 <input name="question{{question.id}}" value="{{answer.label}}"
                                        type="radio">
-                                {{answer.label}}
+                                {{answer.label|safe}}
                             </label>
                         </li>
                     {% else %}
-                        <li class="{{answer.css_extra}}">
+                        <li class="{{answer.css_extra}} {% if response %}{% ifequal response.value answer.value %}checked{% else %}unchecked{% endifequal %}{% endif %}">
                             <label>
                                 <input name="pageblock-{{block.pageblock.id}}-question{{question.id}}"
                                     value="{{answer.value}}" type="radio"
@@ -26,13 +27,14 @@
                                        {% endif %}> 
                                  
                                 <span class="caseanswerlabel {% if response %}{% if answer.correct %}correctanswer{% else %}incorrectanswer{% endif %}{% endif %}">
-                                    {{answer.label}}
+                                    {{answer.label|safe}}
                                 </span>      
                             </label>
                         </li>
                     {% endif %}
                 {% endfor %}
             </ol>
+            {% endspaceless %}
             <div class="clearfix"></div>
         {% endif %}
         
@@ -45,7 +47,6 @@
                 {% endfor %}
             </div>
         {% endif %}
-
     </div>
     <div class="col-md-4">
         <div class="avatar-block"">
