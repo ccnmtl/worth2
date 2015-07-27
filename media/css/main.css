@@ -280,21 +280,37 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     min-height: 120px;
 }
 
-.likert .not-an-issue .colored-box {
-    background-color: #ab5b78;
+.likert .not-an-issue .colored-box
+{
+	background-color: #EAD4DC;
+	background-image: url(/media/img/likert01.png);
+	background-position: center 70px;
+	background-repeat: no-repeat;
 }
 
 .likert .somewhat-an-issue .colored-box {
-    background-color: #bd7f95;
+    background-color: #d4acba;
+	background-image: url(/media/img/likert02.png);
+	background-position: center 70px;
+	background-repeat: no-repeat;
 }
+
 
 .likert .an-issue .colored-box {
-    background-color: #d4acba;
+    background-color: #bd7f95;
+	background-image: url(/media/img/likert03.png);
+	background-position: center 70px;
+	background-repeat: no-repeat;
 }
 
+
 .likert .a-big-issue .colored-box {
-    background-color: #ead4dc;
+    background-color: #ab5b78;
+	background-image: url(/media/img/likert04.png);
+	background-position: center 70px;
+	background-repeat: no-repeat;
 }
+
 
 .post-video-quiz .casesanswerdisplay,
 .post-video-quiz .caseanswercorrect,
