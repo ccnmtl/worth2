@@ -508,7 +508,11 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 .safer-sex-quiz.entree ol {width: 500px; }
 .safer-sex-quiz.dessert ol {width: 800px; }
 
-.safer-sex-quiz .casequestionexplanation {background-color: #963263 !important; color: #fff; padding-top: 30px !important;}
+.safer-sex-quiz .casequestionexplanation {
+    background-color: #963263 !important;
+    color: #fff;
+    padding-top: 30px !important;
+}
 
 .services-quiz .avatar-block,
 .services-quiz .casequestionresult {
@@ -519,8 +523,32 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 .services-quiz .caseanswercontainer {
     list-style: none;
     padding-left: 0px;
+    list-style: none;
+    -webkit-column-count: 2; /* Chrome, Safari, Opera */
+    -moz-column-count: 2; /* Firefox */
+    column-count: 2;
+    padding-left: 5px;
 }
 
+.services-quiz .caseanswercontainer li.unchecked {
+    display: none !important;
+}
+
+.services-quiz .caseanswercontainer li {
+    padding: 5px 0 7px 0;
+}
+
+.services-quiz .caseanswercontainer li input {
+    margin-right: 7px;
+}
+
+.services-quiz .caseanswercontainer li .fa {
+    padding-right: 5px;
+    font-size: 1.6em;
+    vertical-align: -17%;
+    width: 40px;
+    text-align: center;
+}
 
 .services-quiz .avatar-block {
     display: none;
