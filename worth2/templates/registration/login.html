@@ -26,8 +26,9 @@
                 <p class="lead">
                 Enter your user name and password to use the E-WORTH prototype. If you have a Columbia University UNI, please use that instead.
                 </p>
+                <a class="btn btn-md btn-primary" href="/about/">Learn More</a>
             </div>
-            <div class="col-md-6 well">
+            <div class="col-md-6 well" style="background-color: #fff;">
 
         <form class="form-signin" role="form" method="post" action="/accounts/login/">
         {% csrf_token %}
@@ -64,6 +65,7 @@
                     >Sign In</button>
         </div>
     </form>
+        <hr />
 
         {% if CAS_BASE %}
 
@@ -79,6 +81,7 @@
 
         {% endif %}
 
+        
         <a class="btn btn-md btn-link btn-block" href="https://cuit.columbia.edu/cuit/manage-my-uni" title="Learn more about UNI" target="_blank">What is a UNI?</a>
             
             
