@@ -13,10 +13,51 @@
     <div class="container">
     <div class="text-center">
             
-            <div class="row" style="display: inline-block; margin: 30px 0px 30px 0px;">
+            <div class="row col-md-8 col-md-offset-2" style="margin-bottom: 20px;">
             <img class="img-responsive" src="{{STATIC_URL}}img/eworth-logo-white-withtag.png" />
             </div>
+
+
             
+            <div class="row col-md-10 col-md-offset-1" style="color: #fff;">
+                <div class="col-md-2 text-center col-md-offset-1 ">
+                    <img class="img-responsive img-circle" src="{{STATIC_URL}}img/charlene.png" />
+                    <!--<img class="img-responsive img-circle" src="{{STATIC_URL}}img/textile-splash-jumbotron-shim.png" />-->
+                    <p>
+                        Charlene
+                    </p>
+                </div>		
+                <div class="col-md-2 text-center">
+                    <img class="img-responsive img-circle" src="{{STATIC_URL}}img/joy.png" />
+                    <!--<img class="img-responsive img-circle" src="{{STATIC_URL}}img/textile-splash-jumbotron-shim.png" />-->
+                    <p>
+                        Joy
+                    </p>
+                </div>		
+                <div class="col-md-2 text-center">
+                   <img class="img-responsive img-circle" src="{{STATIC_URL}}img/mia.png" />
+                    <!--<img class="img-responsive img-circle" src="{{STATIC_URL}}img/textile-splash-jumbotron-shim.png" />-->
+                    <p>
+                        Mia
+                    </p>
+                </div>		
+                <div class="col-md-2 text-center">
+                    <img class="img-responsive img-circle" src="{{STATIC_URL}}img/rasheeda.png" />
+                    <!--<img class="img-responsive img-circle" src="{{STATIC_URL}}img/textile-splash-jumbotron-shim.png" />-->
+                    <p>
+                        Rasheeda
+                    </p>
+                </div>		
+                <div class="col-md-2 text-center">
+                    <img class="img-responsive img-circle" src="{{STATIC_URL}}img/amanda.png" />
+                    <!--<img class="img-responsive img-circle" src="{{STATIC_URL}}img/textile-splash-jumbotron-shim.png" />-->
+                    <p>
+                        Amanda
+                    </p>
+                </div>		
+            </div>
+
+
             <div class="well well-lg col-md-8 col-md-offset-2">
             <div class="row">
             <div class="col-md-6 text-left">
@@ -26,8 +67,9 @@
                 <p class="lead">
                 Enter your user name and password to use the E-WORTH prototype. If you have a Columbia University UNI, please use that instead.
                 </p>
+                <a class="btn btn-md btn-primary" href="/about/">Learn More</a>
             </div>
-            <div class="col-md-6 well">
+            <div class="col-md-6 well" style="background-color: #fff;">
 
         <form class="form-signin" role="form" method="post" action="/accounts/login/">
         {% csrf_token %}
@@ -64,6 +106,7 @@
                     >Sign In</button>
         </div>
     </form>
+        <hr />
 
         {% if CAS_BASE %}
 
@@ -79,52 +122,11 @@
 
         {% endif %}
 
+        
         <a class="btn btn-md btn-link btn-block" href="https://cuit.columbia.edu/cuit/manage-my-uni" title="Learn more about UNI" target="_blank">What is a UNI?</a>
             
-            
-            
-    
             </div>
             </div>
-            </div>
-            
-            <div class="row col-md-10 col-md-offset-1" style="color: #fff;">
-                <div class="col-md-2 text-center col-md-offset-1 ">
-                    <img class="img-responsive img-circle" src="{{STATIC_URL}}img/charlene.png" />
-                    <!--<img class="img-responsive img-circle" src="{{STATIC_URL}}img/textile-splash-jumbotron-shim.png" />-->
-                    <h3>
-                        Charlene
-                    </h3>
-                </div>		
-                <div class="col-md-2 text-center">
-                    <img class="img-responsive img-circle" src="{{STATIC_URL}}img/joy.png" />
-                    <!--<img class="img-responsive img-circle" src="{{STATIC_URL}}img/textile-splash-jumbotron-shim.png" />-->
-                    <h3>
-                        Joy
-                    </h3>
-                </div>		
-                <div class="col-md-2 text-center">
-                   <img class="img-responsive img-circle" src="{{STATIC_URL}}img/mia.png" />
-                    <!--<img class="img-responsive img-circle" src="{{STATIC_URL}}img/textile-splash-jumbotron-shim.png" />-->
-                    <h3>
-                        Mia
-                    </h3>
-                </div>		
-                <div class="col-md-2 text-center">
-                    <img class="img-responsive img-circle" src="{{STATIC_URL}}img/rasheeda.png" />
-                    <!--<img class="img-responsive img-circle" src="{{STATIC_URL}}img/textile-splash-jumbotron-shim.png" />-->
-                    <h3>
-                        Rasheeda
-                    </h3>
-                </div>		
-                <div class="col-md-2 text-center">
-                    <img class="img-responsive img-circle" src="{{STATIC_URL}}img/amanda.png" />
-                    <!--<img class="img-responsive img-circle" src="{{STATIC_URL}}img/textile-splash-jumbotron-shim.png" />-->
-                    
-                    <h3>
-                        Amanda
-                    </h3>
-                </div>		
             </div>
             
     </div>
