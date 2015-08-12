@@ -395,6 +395,7 @@ class ParticipantJournalsTest(LoggedInFacilitatorTestMixin, TestCase):
                     args=(self.participant.pk, session_num)))
 
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.participant.study_id)
 
     def test_get_session_2(self):
         session_num = 2
@@ -403,6 +404,7 @@ class ParticipantJournalsTest(LoggedInFacilitatorTestMixin, TestCase):
                     args=(self.participant.pk, session_num)))
 
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.participant.study_id)
 
     def test_get_session_3(self):
         session_num = 3
@@ -411,6 +413,7 @@ class ParticipantJournalsTest(LoggedInFacilitatorTestMixin, TestCase):
                     args=(self.participant.pk, session_num)))
 
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.participant.study_id)
 
     def test_get_session_4(self):
         session_num = 4
@@ -419,6 +422,7 @@ class ParticipantJournalsTest(LoggedInFacilitatorTestMixin, TestCase):
                     args=(self.participant.pk, session_num)))
 
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.participant.study_id)
 
     def test_get_session_5(self):
         session_num = 5
@@ -427,6 +431,7 @@ class ParticipantJournalsTest(LoggedInFacilitatorTestMixin, TestCase):
                     args=(self.participant.pk, session_num)))
 
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.participant.study_id)
 
 
 class ArchiveParticipantTest(LoggedInFacilitatorTestMixin, TestCase):
