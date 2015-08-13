@@ -3,7 +3,7 @@ define([
 ], function(_) {
     var utils = {
         /**
-         * Convert number of seconds to a an H:M:S string.
+         * Convert number of seconds to an H:M:S string.
          *
          * http://stackoverflow.com/a/5539081/173630
          */
@@ -40,7 +40,6 @@ define([
 
         /**
          * Format a django-rest-framework JSON error to HTML.
-         *
          *
          * @return string - A string of HTML.
          */
