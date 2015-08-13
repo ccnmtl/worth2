@@ -2,7 +2,7 @@
 <div class="worth-journal-info-element">
     {% if my_services_issue %}
     <div>This issue was important to you this week:</div>
-    <ul><li><strong>{{ my_services_issue.answer }}</strong></li></ul>
+    <ul><li><strong>{{ my_services_issue.answer|safe }}</strong></li></ul>
 
     <p>
         Here is a list of organizations you can call for help
