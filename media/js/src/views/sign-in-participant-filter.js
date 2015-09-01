@@ -14,21 +14,28 @@ define([
          * dropdown based on the input number "val".
          */
         _updateDisplayedParticipants: function(filterVal) {
-            this.$options.each(function(k, v) {
+            var me = this;
+            this.$targetInput.empty();
+
+            this.$allOptions.each(function(k, v) {
                 var $v = $(v);
 
-                // Ignore the "Choose a Participant" option
-                if ($v.index() === 0) {
-                    return;
-                }
-
+                // Always append the top "Choose a Participant" option
+                var text = $.trim($v.text()).toLowerCase();
                 var cohortId = String($v.data('cohort-id'));
-                if ('all' === filterVal || cohortId === filterVal) {
-                    $v.show();
+                if (
+                    text === 'choose a participant' ||
+                        'all' === filterVal ||
+                        cohortId === filterVal
+                   ) {
+                    me.$targetInput.append($v.clone(true));
                 } else {
-                    $v.hide();
+                    var val = $v.val();
+                    me.$targetInput.find(
+                        'option [value="' + val + '"]').remove();
                 }
             });
+            this.$options = this.$targetInput.find('option');
         },
 
         initialize: function() {
@@ -43,6 +50,10 @@ define([
             // Make an array containing a jQuery object for each
             // cohort ID.
             this.$options = this.$targetInput.find('option');
+
+            // $allOptions is a read-only array of option elements
+            // that always contains all the options.
+            this.$allOptions = this.$options.clone(true);
 
             var filterVal = this.$el.val();
             this._updateDisplayedParticipants(filterVal);

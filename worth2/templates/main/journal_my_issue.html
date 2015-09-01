@@ -2,12 +2,18 @@
 <div class="worth-journal-info-element">
     {% if my_services_issue %}
     <div>This issue was important to you this week:</div>
-    <ul><li><strong>{{ my_services_issue.answer }}</strong></li></ul>
+    <ul><li><strong>{{ my_services_issue.answer|safe }}</strong></li></ul>
 
+    {% if my_services_issue.answer.explanation %}
     <p>
         Here is a list of organizations you can call for help
         with this issue:
     </p>
+    <blockquote>
+        {{ my_services_issue.answer.explanation|safe }}
+    </blockquote>
+    {% endif %}
+
     {% else %}
     <p>
         To see this part of the journal, you need to fill out the services
