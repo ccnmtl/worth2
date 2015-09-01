@@ -3,7 +3,7 @@ html {
 
 body {
 	/*font-family: 'Raleway', sans-serif !important;*/
-	background-color: rgb(147, 39, 79)
+	background-color: rgb(245, 234, 240)
 }
 
 body > .container {
@@ -56,16 +56,81 @@ li.disabled>a:before {
 /* LOGIN PAGE */
 
 .splash-photo {
-	height:100%;
-	min-height:100%;
-	max-width:100%;
 	background:url(/media/img/textile-splash-jumbotron.png) center center;	
 	height:100%;
 	width:100%;
+	min-height:100%;
+	max-width:100%;
 	background-size:cover;	
 	position:absolute;
 	background-color: rgb(147, 39, 79)
 }
+
+/*ipad horizontal*/
+@media (max-width: 991px) {
+
+    .splash-photo {
+        height:150%;
+        width:100%;
+        min-height:150%;
+        max-width:100%;
+    }
+    
+    .persona img {width: 35%; margin: 30px; 0px; 30px; 0px;}
+    
+    .persona p {float: right; font-size: 200%; margin-top: -30%; display: inline-block; width: 50%; text-align: left;}
+
+}
+
+/*ipad vertical*/
+@media (max-width: 768px) {
+
+    .splash-photo {
+        height:250%;
+        width:100%;
+        min-height:250%;
+        max-width:100%;
+    }
+    
+    .persona img {width: 35%; margin: 30px; 0px; 30px; 0px;}
+    
+    .persona p {float: right; font-size: 300%; margin-top: -30%; display: inline-block; width: 50%; text-align: left;}
+
+}
+
+/*iphone horizontal*/
+@media (max-width: 667px) {
+
+    .splash-photo {
+        height:640%;
+        width:100%;
+        min-height:640%;
+        max-width:100%;
+    }
+    
+    .persona img {width: 35%; margin: 30px; 0px; 30px; 0px;}
+    
+    .persona p {float: right; font-size: 200%; margin-top: -30%; display: inline-block; width: 50%; text-align: left;}
+
+}
+
+/*iphone vertical*/
+@media (max-width: 375px) {
+
+    .splash-photo {
+        height:380%;
+        width:100%;
+        min-height:380%;
+        max-width:100%;
+    }
+    
+    .persona img {width: 35%; margin: 30px; 0px; 30px; 0px;}
+    
+    .persona p {float: right; font-size: 200%; margin-top: -30%; display: inline-block; width: 50%; text-align: left;}
+
+}
+
+
 
 .login-description {
     margin: 30px 30px 15px 30px;
@@ -558,7 +623,6 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     margin-right: 7px;
 }
 
-.worth-journal-info-element .fa,
 .services-quiz .caseanswercontainer li .fa {
     padding-right: 5px;
     font-size: 1.6em;
@@ -812,3 +876,5 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     font-style: italic;
     margin-left: 10px;
 }
+
+
