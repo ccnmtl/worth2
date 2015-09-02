@@ -14,10 +14,9 @@ body > .container {
 	background-image: url(/media/img/fotolia_comp_64154101.jpg);
 	background-position: 0px 100px;
 	background-color: #000;
-	min-height: 60px;
+	/*min-height: 60px;*/
 }
-
-.navbar-right {padding-top: 8px;}
+/*.navbar-right {padding-top: 8px;}*/
 
 li#avatar img {background-color: #000;}
 
