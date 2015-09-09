@@ -4,8 +4,6 @@
 
     {% if user.is_active or user.profile.participant.avatar %}
 
-    <h2>This is Me!</h2>
-
     <p>Here is the avatar that you selected!</p>
 
     <div class="worth-avatar">
@@ -26,7 +24,6 @@
             <input type="radio"
                    name="pageblock-{{block.pageblock.pk}}-avatar-id"
                    value="{{ avatar.pk}}">
-            This is Me!
         </div>
     </label>
     {% endfor %}
