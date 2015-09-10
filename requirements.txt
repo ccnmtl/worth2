@@ -20,7 +20,7 @@ selenium==2.47.1
 coverage==3.7.1
 logilab-common==0.63.2
 logilab-astng==0.24.3
-pylint==1.4.1
+pylint==1.4.4
 six==1.9.0
 factory_boy==2.5.2
 sqlparse==0.1.14
