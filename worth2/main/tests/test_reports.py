@@ -64,8 +64,15 @@ class ParticipantReportTest(TransactionTestCase):
         self.report_url = reverse('participant-report')
 
     def test_get_users(self):
+        # archived participant
+        archived = ParticipantFactory(first_location=self.location,
+                                      location=self.location, is_archived=True,
+                                      created_by=self.staff)
         section_one = Section.objects.get(slug='one')
         UserPageVisit.objects.create(user=self.participant,
+                                     section=section_one,
+                                     status="complete")
+        UserPageVisit.objects.create(user=archived.user,
                                      section=section_one,
                                      status="complete")
         self.assertEquals(ParticipantReport(self.hierarchy).users().count(), 1)
