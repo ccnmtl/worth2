@@ -41,8 +41,8 @@ def get_quiz_blocks(css_class):
 
 def has_responses(section):
     quizzes = [p.block() for p in section.pageblock_set.all()
-               if hasattr(p.block(), 'needs_submit')
-               and p.block().needs_submit()]
+               if hasattr(p.block(), 'needs_submit') and
+               p.block().needs_submit()]
     return quizzes != []
 
 
