@@ -1,7 +1,5 @@
-import time
 import urlparse
 from behave import when, then
-from splinter.exceptions import ElementDoesNotExist
 
 
 @when(u'I access the url "{url}"')
@@ -29,11 +27,10 @@ def i_click_the_first_participant_journal_button(context):
 
 @when(u'I click the link "{text}"')
 def i_click_the_link(context, text):
-    try:
-        context.browser.find_link_by_partial_text(text).first.click()
-    except ElementDoesNotExist:
-        time.sleep(1)
-        context.browser.find_link_by_partial_text(text).first.click()
+    # Wait up to 10 seconds for elements to appear.
+    # http://selenium-python.readthedocs.org/en/latest/waits.html#implicit-waits
+    context.browser.driver.implicitly_wait(10)
+    context.browser.find_link_by_partial_text(text).first.click()
 
 
 @when(u'I click the button "{text}"')
