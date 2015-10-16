@@ -230,9 +230,7 @@ class Participant(InactiveUserProfile):
     # into our system.
     study_id = models.CharField(max_length=255,
                                 unique=True,
-                                db_index=True,
-                                validators=[study_id_regex_validator,
-                                            study_id_validator])
+                                db_index=True)
 
     # The cohort ID is assigned when the participant begins the second
     # session. It represents the group of all the participants present
