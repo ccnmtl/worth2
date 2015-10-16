@@ -5,6 +5,9 @@ define([
 ], function($, _, Backbone) {
     /**
      * This view unlocks the page's "Next" button.
+     *
+     * It also displays a message when the user clicks on the
+     * "Next" button when it's locked.
      */
     var Unlocker = Backbone.View.extend({
         unlock: function() {
@@ -32,6 +35,13 @@ define([
                     }
                 });
             }
+
+            $('.next.disabled').on('click', function(e) {
+                e.preventDefault();
+                window.alert(
+                    'Please finish everything on this screen ' +
+                        'before moving forward.');
+            });
         }
     });
 
