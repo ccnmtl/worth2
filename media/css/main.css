@@ -31,7 +31,6 @@ label {
 
 /* Deactivate any link that's in a disabled list-item. */
 li.disabled>a {
-    pointer-events: none;
     cursor: default;
 }
 
