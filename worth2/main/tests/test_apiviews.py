@@ -70,16 +70,19 @@ class ParticipantViewSetTest(
         participant = Participant.objects.get(study_id=study_id)
         self.assertEqual(participant.study_id, study_id)
 
-    def test_update_study_id_accepts_invalid(self):
+    def test_update_study_id_invalid(self):
         study_id = '160022672101'
         p = ParticipantFactory(study_id=study_id)
         response = self.client.put(
             '/api/participants/' + unicode(p.pk) + '/',
             {'study_id': '15042672101'}
         )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('That study ID isn\'t valid.',
+                      response.data['study_id'][0])
 
-        Participant.objects.get(study_id='15042672101')
+        with self.assertRaises(Participant.DoesNotExist):
+            Participant.objects.get(study_id='15042672101')
 
     def test_update_cohort_id(self):
         study_id = '160022672101'
