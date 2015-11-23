@@ -9,6 +9,9 @@ from worth2.main.tests.factories import (
 
 def before_all(context):
     context.browser = Browser('firefox')
+    # Wait up to 2 seconds for elements to appear.
+    # http://selenium-python.readthedocs.org/en/latest/waits.html#implicit-waits
+    context.browser.driver.implicitly_wait(2)
 
 
 def before_scenario(context, scenario):
