@@ -31,7 +31,7 @@ node_modules/.bin/r.js:
 
 test: ./ve/bin/python
 	npm install
-	$(MANAGE) jenkins --pep8-exclude=migrations
+	$(MANAGE) jenkins --pep8-exclude=migrations --enable-coverage --coverage-rcfile=.coveragerc
 
 flake8: ./ve/bin/python
 	$(FLAKE8) $(APP) features --max-complexity=10 --exclude=migrations
