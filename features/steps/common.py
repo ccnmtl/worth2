@@ -1,3 +1,4 @@
+import time
 import urlparse
 from behave import when, then
 
@@ -20,6 +21,7 @@ def i_click_the_submit_button(context):
 
 @when(u'I click the first participant journal button')
 def i_click_the_first_participant_journal_button(context):
+    time.sleep(2)
     context.browser.find_by_css(
         'button[data-target^="#view-participant-journal-modal-"]'
     ).first.click()
@@ -27,9 +29,7 @@ def i_click_the_first_participant_journal_button(context):
 
 @when(u'I click the link "{text}"')
 def i_click_the_link(context, text):
-    # Wait up to 10 seconds for elements to appear.
-    # http://selenium-python.readthedocs.org/en/latest/waits.html#implicit-waits
-    context.browser.driver.implicitly_wait(10)
+    time.sleep(5)
     context.browser.find_link_by_partial_text(text).first.click()
 
 
