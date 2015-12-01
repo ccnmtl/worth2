@@ -1,0 +1,24 @@
+{
+    "white": true,
+    "trailing": true,
+    "undef": true,
+    "browser": true,
+    "eqeqeq": true,
+    "curly": true,
+    "predef": [
+        "$",
+        "confirm",
+        "define",
+        "DS",
+        "Em",
+        "isSectionUnlocked",
+        "jQuery",
+        "lockedVideoId",
+        "onPlayerReady",
+        "onPlayerStateChange",
+        "require",
+        "Ssnm",
+        "STATIC_URL",
+        "YT"
+    ]
+}
