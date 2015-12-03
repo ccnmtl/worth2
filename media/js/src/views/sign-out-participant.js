@@ -25,7 +25,7 @@ define([
                 },
                 success: function(data) {
                     $target.find('.worth-errors').hide();
-                    location = '/';
+                    window.location = '/';
                 },
                 error: function(xhr, status, error) {
                     var msg = '';
