@@ -167,7 +167,7 @@ class Location(models.Model):
 #
 # Some of these types of users have special data associated with them.
 
-# ID spec is the 12-digit string: RRHHMMDDMMYBS
+# ID spec is the 13-digit string: RRHHMMDDMMYBS
 # where the letters correspond to the following:
 # RR Research Assistant
 # HH hour (24-hour)
