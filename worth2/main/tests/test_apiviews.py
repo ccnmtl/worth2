@@ -46,7 +46,7 @@ class LoginCheckTest(LoggedInParticipantTestMixin, APITestCase):
 class ParticipantViewSetTest(
         LoggedInFacilitatorTestMixin, APITestCase):
     def test_create(self):
-        study_id = '150426781012'
+        study_id = '0122371304632'
         response = self.client.post(
             '/api/participants/', {'study_id': study_id}
         )
@@ -58,8 +58,8 @@ class ParticipantViewSetTest(
         self.assertEqual(participant.created_by, self.u)
 
     def test_update_study_id(self):
-        p = ParticipantFactory(study_id='150426781012')
-        study_id = '160022672101'
+        p = ParticipantFactory(study_id='0122371304632')
+        study_id = '0122371304631'
         response = self.client.put(
             '/api/participants/' + unicode(p.pk) + '/',
             {'study_id': study_id}
@@ -71,21 +71,22 @@ class ParticipantViewSetTest(
         self.assertEqual(participant.study_id, study_id)
 
     def test_update_study_id_invalid(self):
-        study_id = '160022672101'
+        study_id = '0122251304634'
+        bad_study_id = '0122371304639'
         p = ParticipantFactory(study_id=study_id)
         response = self.client.put(
             '/api/participants/' + unicode(p.pk) + '/',
-            {'study_id': '15042672101'}
+            {'study_id': bad_study_id}
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('That study ID isn\'t valid.',
                       response.data['study_id'][0])
 
         with self.assertRaises(Participant.DoesNotExist):
-            Participant.objects.get(study_id='15042672101')
+            Participant.objects.get(study_id=bad_study_id)
 
     def test_update_cohort_id(self):
-        study_id = '160022672101'
+        study_id = '0122251304631'
         p = ParticipantFactory(study_id=study_id, cohort_id='111')
         response = self.client.put(
             '/api/participants/' + unicode(p.pk) + '/', {
@@ -100,7 +101,7 @@ class ParticipantViewSetTest(
         self.assertEqual(participant.cohort_id, '787')
 
     def test_update_cohort_id_invalid(self):
-        study_id = '160022672101'
+        study_id = '0122251304634'
         p = ParticipantFactory(study_id=study_id, cohort_id='111')
         response = self.client.put(
             '/api/participants/' + unicode(p.pk) + '/', {
@@ -117,10 +118,11 @@ class ParticipantViewSetTest(
             Participant.objects.get(cohort_id='j87878')
 
     def test_update_archive(self):
-        p = ParticipantFactory(is_archived=False)
+        study_id = '0122371304632'
+        p = ParticipantFactory(study_id=study_id, is_archived=False)
         response = self.client.put(
             '/api/participants/' + unicode(p.pk) + '/',
-            {'study_id': p.study_id, 'is_archived': True}
+            {'study_id': study_id, 'is_archived': True}
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -130,7 +132,7 @@ class ParticipantViewSetTest(
 
 class ParticipantViewSetUnAuthedTest(APITestCase):
     def test_create(self):
-        study_id = '160022672101'
+        study_id = '0122251304631'
         response = self.client.post(
             '/api/participants/', {'study_id': study_id}
         )
@@ -140,16 +142,17 @@ class ParticipantViewSetUnAuthedTest(APITestCase):
             Participant.objects.get(study_id=study_id)
 
     def test_update_study_id(self):
-        study_id = '160022672101'
+        study_id = '0122251304631'
+        good_study_id = '0122251304632'
         p = ParticipantFactory(study_id=study_id)
         response = self.client.put(
             '/api/participants/' + unicode(p.pk) + '/',
-            {'study_id': '150426781012'}
+            {'study_id': good_study_id}
         )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         with self.assertRaises(Participant.DoesNotExist):
-            Participant.objects.get(study_id='150426781012')
+            Participant.objects.get(study_id=good_study_id)
 
 
 class WatchedVideoViewSetUnAuthedTest(APITestCase):
