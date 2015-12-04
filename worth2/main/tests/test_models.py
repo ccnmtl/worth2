@@ -72,6 +72,10 @@ class ParticipantTest(TestCase):
         with self.assertRaises(ValidationError):
             p.full_clean()
 
+        p = ParticipantFactory(study_id='12345678901')
+        with self.assertRaises(ValidationError):
+            p.full_clean()
+
     def test_that_participant_can_have_an_image(self):
         self.participant.avatar = AvatarFactory()
 

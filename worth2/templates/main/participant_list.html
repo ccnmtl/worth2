@@ -58,20 +58,24 @@
                     <span class="sr-only">Close</span>
                 </button>
                 <h4 class="modal-title">Add Participant ID</h4>
+
             </div>
             <form id="worth-create-participant"
                   class="form-inline" role="form">
-                <div class="modal-body"
-                     style="text-align: center;">
-                    <div class="alert alert-danger worth-errors"
-                         style="display: none;"></div>
-                    <div class="alert alert-success worth-success"
-                         style="display: none;">Participant created.</div>
-                    <div class="form-group">
-                        <label>
-                            Study ID # <input type="text" class="form-control"
-                                              name="study_id" />
-                        </label>
+                <div class="modal-body">
+                    {% include 'main/participant_id_instructions.html' %}
+
+                    <div style="text-align: center;">
+                        <div class="alert alert-danger worth-errors"
+                             style="display: none;"></div>
+                        <div class="alert alert-success worth-success"
+                             style="display: none;">Participant created.</div>
+                        <div class="form-group">
+                            <label>
+                                Study ID # <input type="text" class="form-control"
+                                                  name="study_id" />
+                            </label>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

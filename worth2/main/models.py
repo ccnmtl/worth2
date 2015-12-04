@@ -1,4 +1,3 @@
-import re
 from django import forms
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -168,28 +167,25 @@ class Location(models.Model):
 #
 # Some of these types of users have special data associated with them.
 
-# ID spec is here:
-# http://wiki.ccnmtl.columbia.edu/index.php/WORTH_2_User_Stories#Participant_ID_number_scheme
+# ID spec is the 12-digit string: RRHHMMDDMMYBS
+# where the letters correspond to the following:
+# RR Research Assistant
+# HH hour (24-hour)
+# MM minute
+# DD day
+# MM month
+# Y last digit of year (5, 6 or 7)
+# B borough (Bronx=1, Brooklyn=2, Manhattan=3, Queens=4, Staten Island=5)
+# S (Fortune site: 1=LIC; 2=Harlem)
 study_id_regex_validator = RegexValidator(
-    regex=r'^[1-2]\d[0-1]\d[0-3]\d\d\d[0-2]\d[0-5]\d$',
+    regex=r'^\d\d[0-2]\d[0-5]\d[0-3]\d[0-1]\d[5-7][1-5][1-2]$',
     message='That study ID isn\'t valid. ' +
-    'The format is: YYMMDDLLHHMM (where LL is the two-digit location code).')
+    'The format is: RRHHMMDDMMYBS')
 
 
 def study_id_validator(value):
     """Validate study ID for anything the regex can't capture."""
-    year = None
-    try:
-        year = re.match(r'^(\d\d)\d+$', value).groups()[0]
-        year = int(year)
-    except:
-        raise ValidationError('Couldn\'t find year in study ID.')
-
-    if year < 15 or year > 25:
-        raise ValidationError(
-            'The first two digits of the study ID ' +
-            ('(%d), which represent the year, need ' % year) +
-            'to be between 15 and 25.')
+    pass
 
 
 # For now, accept any 3-digit number as the cohort ID.
@@ -231,8 +227,7 @@ class Participant(InactiveUserProfile):
     study_id = models.CharField(max_length=255,
                                 unique=True,
                                 db_index=True,
-                                validators=[study_id_regex_validator,
-                                            study_id_validator])
+                                validators=[study_id_regex_validator])
 
     # The cohort ID is assigned when the participant begins the second
     # session. It represents the group of all the participants present
