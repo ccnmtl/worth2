@@ -9,7 +9,7 @@ project = 'worth2'
 base = os.path.dirname(__file__)
 locals().update(common(project=project, base=base))
 
-if 'test' in sys.argv or 'jenkins' in sys.argv:
+if 'test' in sys.argv or 'jenkins' in sys.argv or 'behave' in sys.argv:
     MEDIA_ROOT = '/tmp/'
 
 CACHES = {
