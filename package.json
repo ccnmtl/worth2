@@ -12,9 +12,16 @@
     "url": "https://github.com/ccnmtl/worth2.git"
   },
   "author": "Nik Nyby",
-  "license": "GPL-3.0+",
+  "license": "BSD-2-Clause",
   "bugs": {
     "url": "https://github.com/ccnmtl/worth2/issues"
   },
-  "homepage": "https://github.com/ccnmtl/worth2"
+  "homepage": "https://github.com/ccnmtl/worth2",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "jshint": "~2.9.1-rc1",
+    "jscs": "~1.13.1"
+  }
 }
