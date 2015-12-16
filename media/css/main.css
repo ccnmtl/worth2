@@ -621,7 +621,8 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     margin-right: 7px;
 }
 
-.services-quiz .caseanswercontainer li .fa {
+.services-quiz .caseanswercontainer li .fa,
+.worth-journal-info-element li .fa {
     padding-right: 5px;
     font-size: 1.6em;
     vertical-align: -17%;
