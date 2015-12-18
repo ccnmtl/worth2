@@ -36,7 +36,7 @@ def i_am_signed_in_as_a(context, user_type):
     # to create a cookie for it.
     try:
         # 404 pages raise an exception in splinter
-        b.visit('/some_404_page/')
+        b.driver.get('/some_404_page/')
     except HttpResponseError:
         pass
 
@@ -53,10 +53,18 @@ def i_sign_in_as_a_facilitator(context):
     facilitator.save()
 
     b = context.browser
-    b.visit(urlparse.urljoin(context.base_url, '/accounts/login/'))
+    b.driver.get(urlparse.urljoin(context.base_url, '/accounts/login/'))
     b.fill('username', facilitator.username)
     b.fill('password', 'test_pass')
-    b.find_by_css('.form-signin button[type="submit"]').first.click()
+
+    old_url = context.browser.url
+    link = b.driver.find_element_by_css_selector(
+        '.form-signin button[type="submit"]')
+
+    link.click()
+    # If the url didn't change, it might need another click
+    if old_url == context.browser.url:
+        link.click()
 
 
 @when(u'I sign in as a participant')
@@ -71,7 +79,7 @@ def i_sign_in_as_a_participant(context):
     location = Location.objects.first()
 
     b = context.browser
-    b.visit(urlparse.urljoin(context.base_url, '/sign-in-participant/'))
+    b.driver.get(urlparse.urljoin(context.base_url, '/sign-in-participant/'))
     b.select('participant_id', participant.pk)
     b.select('participant_location', location.pk)
     b.choose('participant_destination', '1')

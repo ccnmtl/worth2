@@ -17,5 +17,5 @@ def i_fill_in_a_goal_option(context):
 
 @when(u'I click the goal submit button')
 def i_click_the_goal_submit_button(context):
-    context.browser.find_by_css(
-        '.goal-submit-button button[type="submit"]').first.click()
+    context.browser.driver.find_element_by_css_selector(
+        '.goal-submit-button button[type="submit"]').click()
