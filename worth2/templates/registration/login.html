@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load bootstrap3 %}
 
 {% block loginphoto %}
     splash-photo
@@ -11,90 +12,59 @@
 {% block content %}
 
     <div class="container">
-    
+
         <div class="row">
-            
+
             <div class="col-md-6  text-center">
-                
+
                     <img class="img-responsive" src="{{STATIC_URL}}img/eworth-logo-white-withtag.png" />
-                    
+
                     <hr />
-                    
+
                     <p class="lead" style="color: #fff; font-size: 18px;">
                     Designed for African-American women, by African-American women, E-WORTH is a 5-week group that promotes the health and wellness of African-American women involved in the justice system. Each week, participants learn brand new tips and techniques that will empower them to make their health, the health of their families, and the health of their communities a priority.
                     </p>
-                    
+
                     <a class="btn btn-lg btn-default" style="margin-bottom: 40px;" href="/about/">Learn More</a>
-                    
+
               </div>
-              
+
             <div class="col-md-6  text-center">
-                       
-                    <div class="well"> 
-                
+
+                    <div class="well">
+
                     <h1>Get Started</h1>
-                    
+
                     <p>Enter your user name and password to use the E-WORTH prototype. If you have a Columbia University UNI, please use that instead.</p>
-                    
+
                      <form class="form-signin" role="form" method="post" action="/accounts/login/">
-                    {% csrf_token %}
-                    
-                    <div class="form-group">
-                    
-                    <label for="facilitator_id"
-                    class="control-label sr-only"
-                    >Facilitator ID</label>
-                    <input type="text"
-                    class="form-control {% if form.username.errors %}has-error{% endif %}"
-                    id="facilitator_id"
-                    name="username"
-                    placeholder="User Name"
-                    required autofocus>
-                    </div>
-                    
-                    <div class="form-group">
-                    
-                    <label for="facilitator_password"
-                    class="control-label sr-only"
-                    >Facilitator Password</label>
-                    <input type="password"
-                    class="form-control {% if form.password.errors %}has-error{% endif %}"
-                    id="facilitator_password"
-                    name="password"
-                    placeholder="Password"
-                    required>
-                    </div>
-                    
-                    <div class="form-group">
-                    <button type="submit"
-                    class="btn btn-md btn-primary btn-block"
-                    >Sign In</button>
-                    </div>
+                         {% csrf_token %}
+                         {% bootstrap_form form layout='inline' %}
+                         <div class="form-group">
+                             <button type="submit"
+                                     id="main-signin-submit"
+                                     class="btn btn-md btn-primary btn-block"
+                             >Sign In</button>
+                         </div>
+                     </form>
+                     <hr />
+
+                     {% if CAS_BASE %}
+                     <form method="get" action="{{ CAS_BASE }}cas/login">
+                         {% csrf_token %}
+                         <input type="hidden" name="destination" value="https://{{ request.get_host }}/accounts/caslogin/?next={{ next|urlencode }}" />
+                         <button type="submit" class="btn btn-md btn-default btn-block">Sign In with UNI</button>
                     </form>
-                    <hr />
-                    
-                    {% if CAS_BASE %}
-                    
-                    <form method="get" action="{{ CAS_BASE }}cas/login">
-                    
-                    {% csrf_token %}
-                    
-                    <input type="hidden" name="destination" value="https://{{ request.get_host }}/accounts/caslogin/?next={{ next|urlencode }}" />
-                    
-                    <button type="submit" class="btn btn-md btn-default btn-block">Sign In with UNI</button>
-                    
-                    </form>
-                    
                     {% endif %}
-                    
+
                     <a class="btn btn-md btn-link btn-block" href="https://cuit.columbia.edu/cuit/manage-my-uni" title="Learn more about UNI" target="_blank">What is a UNI?</a>
-                    
+
                     </div>
-                    
+
             </div>
-                    
+
         </div>
-        
+
         <div class="persona row" style="color: #fff;">
                     <div class="col-md-2 text-center col-md-offset-1 ">
                     <img class="img-responsive img-circle" src="{{STATIC_URL}}img/charlene.png" />
@@ -102,36 +72,36 @@
                     <p>
                     Charlene
                     </p>
-                    </div>		
+                    </div>
                     <div class="col-md-2 text-center">
                     <img class="img-responsive img-circle" src="{{STATIC_URL}}img/joy.png" />
                     <!--<img class="img-responsive img-circle" src="{{STATIC_URL}}img/textile-splash-jumbotron-shim.png" />-->
                     <p>
                     Joy
                     </p>
-                    </div>		
+                    </div>
                     <div class="col-md-2 text-center">
                     <img class="img-responsive img-circle" src="{{STATIC_URL}}img/mia.png" />
                     <!--<img class="img-responsive img-circle" src="{{STATIC_URL}}img/textile-splash-jumbotron-shim.png" />-->
                     <p>
                     Mia
                     </p>
-                    </div>		
+                    </div>
                     <div class="col-md-2 text-center">
                     <img class="persona img-responsive img-circle" src="{{STATIC_URL}}img/rasheeda.png" />
                     <!--<img class="img-responsive img-circle" src="{{STATIC_URL}}img/textile-splash-jumbotron-shim.png" />-->
                     <p>
                     Rasheeda
                     </p>
-                    </div>		
+                    </div>
                     <div class="col-md-2 text-center">
                     <img class="persona img-responsive img-circle" src="{{STATIC_URL}}img/amanda.png" />
                     <!--<img class="img-responsive img-circle" src="{{STATIC_URL}}img/textile-splash-jumbotron-shim.png" />-->
                     <p>
                     Amanda
                     </p>
-                    </div>		
-                    </div> 
+                    </div>
+                    </div>
 
     </div>
 
