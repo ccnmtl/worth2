@@ -1,5 +1,4 @@
 import urlparse
-import time
 from behave import when, then
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
@@ -15,7 +14,6 @@ def i_access_the_url(context, url):
 
     if old_url == context.driver.current_url:
         # Try again
-        time.sleep(1)
         context.driver.get(new_url)
 
 
@@ -33,16 +31,13 @@ def i_click_the_submit_button(context):
     except NoSuchElementException:
         context.driver.find_element_by_css_selector(
             '.pagetree-form-submit-area input[type="submit"]').click()
-        time.sleep(2)
 
 
 @when(u'I click the first participant journal button')
 def i_click_the_first_participant_journal_button(context):
-    time.sleep(1)
     try:
         context.driver.find_element_by_link_text(
             'Manage Participant IDs').click()
-        time.sleep(1)
     except NoSuchElementException:
         pass
 
@@ -51,7 +46,6 @@ def i_click_the_first_participant_journal_button(context):
               context.driver.current_url)
         url = urlparse.urljoin(context.base_url, '/manage-participants/')
         context.driver.get(url)
-        time.sleep(10)
 
     assert context.driver.current_url.endswith('/manage-participants/'), \
         'The Manage Participants page hasn\'t loaded yet! url is: %s' % \
@@ -66,17 +60,14 @@ def i_click_the_first_participant_journal_button(context):
 
 @when(u'I click the link "{text}"')
 def i_click_the_link(context, text):
-    time.sleep(1)
     wait = WebDriverWait(context.driver, 10)
     element = wait.until(
         expected_conditions.element_to_be_clickable(
             (By.LINK_TEXT, text)))
     element.click()
-    time.sleep(1)
 
     try:
         context.driver.find_element_by_link_text(text).click()
-        time.sleep(1)
     except NoSuchElementException:
         pass
 
@@ -104,10 +95,8 @@ def i_get_a(context, status_code):
 
 @then(u'I am at the url "{url}"')
 def i_am_at_the_url(context, url):
-    time.sleep(2)
     if not context.driver.current_url.endswith(url):
         new_url = urlparse.urljoin(context.base_url, url)
         context.driver.get(new_url)
-        time.sleep(2)
 
     assert context.driver.current_url.endswith(url)
