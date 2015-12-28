@@ -48,7 +48,7 @@ django-paging==0.2.5
 django-annoying==0.8.4
 django-appconf==1.0.1
 
-lxml==3.4.4
+lxml==3.5.0
 django-compressor==1.6
 
 lazy-object-proxy==1.2.1
