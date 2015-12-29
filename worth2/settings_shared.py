@@ -30,6 +30,7 @@ MIDDLEWARE_CLASSES += [  # noqa
 ]
 
 INSTALLED_APPS += [  # noqa
+    'django.contrib.messages',
     'sorl.thumbnail',
     'django.contrib.webdesign',
     'ordered_model',
