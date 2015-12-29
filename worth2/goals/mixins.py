@@ -100,8 +100,8 @@ class GoalCheckInViewMixin(object):
                 checkins_saved = len([f for f in formset.cleaned_data
                                       if f != {}])
                 messages.success(
-                    request, str(checkins_saved) + ' goal check-in' +
-                    pluralize(checkins_saved) + ' saved.')
+                    request, '{} goal check-in{} saved.'.format(
+                        checkins_saved, pluralize(checkins_saved)))
 
         return render(request, self.template_name, ctx)
 
@@ -239,7 +239,7 @@ class GoalSettingViewMixin(object):
                 goals_saved = len([f for f in formset.cleaned_data
                                    if f != {}])
                 messages.success(
-                    request, str(goals_saved) + ' goal' +
-                    pluralize(goals_saved) + ' saved.')
+                    request, '{} goal{} saved.'.format(
+                        goals_saved, pluralize(goals_saved)))
 
         return render(request, self.template_name, ctx)
