@@ -4,10 +4,13 @@ from django.conf import settings
 from django.contrib.auth import BACKEND_SESSION_KEY, SESSION_KEY
 from django.contrib.auth.models import User
 from django.utils.module_loading import import_module
-from splinter.request_handler.status_code import HttpResponseError
+from selenium.common.exceptions import ElementNotVisibleException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.select import Select
 from worth2.main.auth import generate_password
 from worth2.main.models import Location, Participant
-from worth2.main.tests.factories import UserFactory
 
 
 def create_pre_authenticated_session(user_type):
@@ -30,33 +33,31 @@ def i_am_signed_in_as_a(context, user_type):
     if hasattr(context, 'user') and context.user is not None:
         # Already logged in, so clear the existing session.
         context.request.session.flush()
-    b = context.browser
+    d = context.driver
 
     # We need to visit a page on this domain in order
     # to create a cookie for it.
-    try:
-        # 404 pages raise an exception in splinter
-        b.visit('/some_404_page/')
-    except HttpResponseError:
-        pass
 
-    b.find_by_xpath('//body')
+    d.get('/some_404_page/')
+
+    d.find_element_by_xpath('//body')
     user, s = create_pre_authenticated_session(user_type)
-    b.cookies.add({'name': settings.SESSION_COOKIE_NAME, 'value': s})
+    d.add_cookie({'name': settings.SESSION_COOKIE_NAME, 'value': s})
     context.user = user
 
 
 @when(u'I sign in as a facilitator')
 def i_sign_in_as_a_facilitator(context):
-    facilitator = UserFactory()
-    facilitator.set_password('test_pass')
-    facilitator.save()
+    facilitator = User.objects.filter(is_active=True).first()
 
-    b = context.browser
-    b.visit(urlparse.urljoin(context.base_url, '/accounts/login/'))
-    b.fill('username', facilitator.username)
-    b.fill('password', 'test_pass')
-    b.find_by_css('.form-signin button[type="submit"]').first.click()
+    d = context.driver
+    d.get(urlparse.urljoin(context.base_url, '/accounts/login/'))
+    username = d.find_element_by_name('username')
+    password = d.find_element_by_name('password')
+    username.send_keys(facilitator.username)
+    password.send_keys('facilitator_pass')
+
+    d.find_element_by_class_name('form-signin').submit()
 
 
 @when(u'I sign in as a participant')
@@ -70,23 +71,54 @@ def i_sign_in_as_a_participant(context):
 
     location = Location.objects.first()
 
-    b = context.browser
-    b.visit(urlparse.urljoin(context.base_url, '/sign-in-participant/'))
-    b.select('participant_id', participant.pk)
-    b.select('participant_location', location.pk)
-    b.choose('participant_destination', '1')
-    b.choose('session_type', 'regular')
-    b.find_by_css(
+    d = context.driver
+    d.get(urlparse.urljoin(context.base_url, '/sign-in-participant/'))
+    Select(d.find_element_by_name(
+        'participant_id')).select_by_value(unicode(participant.pk))
+    Select(d.find_element_by_name(
+        'participant_location')).select_by_value(unicode(location.pk))
+    d.find_elements_by_css_selector(
+        'input[type="radio"][name="participant_destination"]')[0].click()
+    d.find_elements_by_css_selector(
+        'input[type="radio"][name="session_type"]')[0].click()
+    d.find_element_by_css_selector(
         '.worth-facilitator-sign-in-participant button[type="submit"]'
-    ).first.click()
+    ).click()
 
 
 @when(u'I sign in as the facilitator from a session')
 def i_sign_in_as_the_facilitator_from_a_session(context):
-    b = context.browser
-    b.find_by_text('Facilitator').first.click()
+    d = context.driver
     facilitator = User.objects.filter(is_active=True).first()
-    b.fill('facilitator_username', facilitator.username)
-    b.fill('facilitator_password', 'test')
-    b.find_by_css(
-        '.worth-sign-out-participant button[type="submit"]').first.click()
+
+    try:
+        # If the window is narrow, we need to click the collapse
+        # button first.
+        element = d.find_element_by_id('worth-collapse-button')
+        element.click()
+    except ElementNotVisibleException:
+        pass
+
+    wait = WebDriverWait(d, 10)
+    element = wait.until(
+        expected_conditions.element_to_be_clickable(
+            (By.ID, 'worth-facilitator-button')))
+    element.click()
+
+    wait = WebDriverWait(d, 10)
+    element = wait.until(
+        expected_conditions.visibility_of_element_located(
+            (By.NAME, 'facilitator_username')))
+    element.send_keys(facilitator.username)
+
+    wait = WebDriverWait(d, 10)
+    element = wait.until(
+        expected_conditions.visibility_of_element_located(
+            (By.NAME, 'facilitator_password')))
+    element.send_keys('facilitator_pass')
+
+    wait = WebDriverWait(d, 10)
+    element = wait.until(
+        expected_conditions.element_to_be_clickable(
+            (By.ID, 'worth-sign-out-participant-submit')))
+    element.click()
