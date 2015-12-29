@@ -29,7 +29,7 @@ MIDDLEWARE_CLASSES += [  # noqa
     'django.middleware.csrf.CsrfViewMiddleware',
 ]
 
-TEMPLATE_CONTEXT_PROCESSORS += [
+TEMPLATE_CONTEXT_PROCESSORS += [  # noqa
     'django.contrib.messages.context_processors.messages',
 ]
 
