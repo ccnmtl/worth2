@@ -29,9 +29,13 @@ MIDDLEWARE_CLASSES += [  # noqa
     'django.middleware.csrf.CsrfViewMiddleware',
 ]
 
+TEMPLATE_CONTEXT_PROCESSORS += [
+    'django.contrib.messages.context_processors.messages',
+]
+
 INSTALLED_APPS += [  # noqa
-    'django.contrib.messages',
     'sorl.thumbnail',
+    'django.contrib.messages',
     'django.contrib.webdesign',
     'ordered_model',
     'typogrify',
