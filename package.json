@@ -21,7 +21,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
+    "jscs": "~1.13.1",
     "jshint": "~2.9.1-rc1",
-    "jscs": "~1.13.1"
+    "requirejs": "^2.1.22"
   }
 }
