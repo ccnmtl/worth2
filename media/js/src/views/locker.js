@@ -4,25 +4,21 @@ define([
     'backbone'
 ], function($, _, Backbone) {
     /**
-     * This view unlocks the page's "Next" button.
+     * This view locks the page's "Next" button.
      *
      * It also displays a message when the user clicks on the
      * "Next" button when it's locked.
      */
-    var Unlocker = Backbone.View.extend({
-        unlock: function() {
-            $('li.next').removeClass('disabled');
+    var Locker = Backbone.View.extend({
+        lock: function() {
+            $('li.next').addClass('disabled');
         },
         initialize: function() {
-            if (typeof isSectionUnlocked === 'undefined') {
-                return;
+            if (isSectionUnlocked === 0) {
+                this.lock();
             }
 
-            if ($('#youtube-player').length === 0) {
-                if (isSectionUnlocked === 1) {
-                    this.unlock();
-                }
-            } else {
+            if ($('#youtube-player').length > 0) {
                 // There's a video on the page, so find out if the user
                 // has already watched it.
                 var me = this;
@@ -30,16 +26,13 @@ define([
                     var match = _.find(data, function(e) {
                         return e.video_id === lockedVideoId;
                     });
-                    if (typeof match !== 'undefined') {
-                        me.unlock();
+                    if (typeof match === 'undefined') {
+                        me.lock();
                     }
                 });
             }
 
-            $('.next.disabled').on('click', function(e) {
-                // Even though this event is bound only to disabled buttons,
-                // we need to check to make sure the element still has the
-                // disabled class, in case it's been changed.
+            $('.next').on('click', function(e) {
                 if ($(this).hasClass('disabled')) {
                     e.preventDefault();
                     window.alert(
@@ -50,5 +43,5 @@ define([
         }
     });
 
-    return Unlocker;
+    return Locker;
 });

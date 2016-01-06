@@ -127,12 +127,10 @@
 {% comment %}Do not allow users to next into the next module{% endcomment %}
 {% if next_section and next_section.depth > 2 %}
     {% comment %}
-      The "next" link gets rendered as disabled by default. unlocker.js
-      immediately enables this link if there's no video player on the page.
-    
-      Otherwise, this link is enabled when the video finishes playing.
+      The "next" link gets rendered as enabled by default. locker.js
+      disables this link if certain conditions are met.
     {% endcomment %}
-    <li class="next disabled">
+    <li class="next">
         <a href="{{next_section.get_absolute_url}}"
            >{{next_section.label}} &rarr;</a>
     </li>
