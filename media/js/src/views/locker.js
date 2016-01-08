@@ -14,7 +14,9 @@ define([
             $('li.next').addClass('disabled');
         },
         initialize: function() {
-            if (isSectionUnlocked === 0) {
+            if (typeof isSectionUnlocked !== 'undefined' &&
+                isSectionUnlocked === 0
+               ) {
                 this.lock();
             }
 
