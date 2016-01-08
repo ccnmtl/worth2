@@ -10,13 +10,11 @@
 
     <h1>Sign In My Participant</h1>
 
-        <form class="form-horizontal" role="form" method="post" action=""">
+    <form class="form-horizontal" role="form" method="post">{% csrf_token %}
 
         <div class="well">
 
         <h2 class="lead">Step 1. Who is my participant?</h2>
-
-        {% csrf_token %}
 
         {% bootstrap_field form.filter_by_cohort layout='horizontal' %}
 
