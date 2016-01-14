@@ -10,5 +10,5 @@ include *.mk
 behave: check
 	$(MANAGE) behave
 
-media/main-built.js: $(JS_SENTINAL) build.js media/js/src
+media/main-built.js: $(JS_SENTINAL) build.js media/js
 	$(REQUIREJS) -o build.js
