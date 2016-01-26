@@ -49,23 +49,34 @@ class ParticipantReport(PagetreeReport):
                                     userpagevisit__isnull=False).distinct()
         return users.order_by('id')
 
+    def get_encounters(self, participant, module):
+        section_ids = self.get_descendant_ids(module) + [module.id]
+        return Encounter.objects.filter(participant=participant,
+                                        section__id__in=section_ids)
+
     def encounter_id(self, participant, module_idx, module, encounter_idx):
-        section_ids = self.get_descendant_ids(module)
-        section_ids.append(module.id)
-        encounters = Encounter.objects.filter(participant=participant,
-                                              section__id__in=section_ids)
+        encounters = self.get_encounters(participant, module)
+
         if encounters.count() <= encounter_idx:
             return None
         else:
             encounter = encounters.order_by('created_at')[encounter_idx]
             return "%s-%d-%05d-%s-%d-%02d" % (
                 participant.cohort_id,  # Cohort ID #: 3 digits
-                module_idx + 1,  # Module #, 1 digit
+                module_idx,  # Module #, 1 digit
                 encounter.facilitator.id,  # Facilitator (5 digits)
-                encounter.created_at.strftime("%y%m%d%I%M"),  # YYMMDDHHMM
+                encounter.created_at.strftime("%y%m%d%H%M"),  # YYMMDDHHMM
                 encounter_idx,
                 encounter.location.id  # Location (2 digits)
             )
+
+    def encounter_date(self, participant, module, encounter_idx):
+        encounters = self.get_encounters(participant, module)
+        if encounters.count() <= encounter_idx:
+            return None
+        else:
+            encounter = encounters.order_by('created_at')[encounter_idx]
+            return encounter.created_at.strftime("%y%m%d")  # YYMMDD
 
     def percent_complete(self, user, section):
         section_ids = self.get_descendant_ids(section)
@@ -125,15 +136,30 @@ class ParticipantReport(PagetreeReport):
                 lambda x: self.encounter_id(x.profile.participant, module_idx,
                                             module, 0)),
             StandaloneReportColumn(
+                '%s_encounter_date' % module_idx, 'profile', 'string',
+                '%s Encounter Date' % module.label,
+                lambda x: self.encounter_date(
+                    x.profile.participant, module, 0)),
+            StandaloneReportColumn(
                 '%s_first_makeup_id' % module_idx, 'profile', 'string',
                 '%s First Makeup Id' % module.label,
                 lambda x: self.encounter_id(x.profile.participant, module_idx,
                                             module, 1)),
             StandaloneReportColumn(
+                '%s_first_makeup_date' % module_idx, 'profile', 'string',
+                '%s First Makeup Date' % module.label,
+                lambda x: self.encounter_date(
+                    x.profile.participant, module, 1)),
+            StandaloneReportColumn(
                 '%s_second_makeup_id' % module_idx, 'profile', 'string',
                 '%s Second Makeup Id' % module.label,
                 lambda x: self.encounter_id(x.profile.participant, module_idx,
-                                            module, 2))
+                                            module, 2)),
+            StandaloneReportColumn(
+                '%s_second_makeup_date' % module_idx, 'profile', 'string',
+                '%s Second Makeup Date' % module.label,
+                lambda x: self.encounter_date(
+                    x.profile.participant, module, 2))
         ]
 
     def standalone_columns(self):
