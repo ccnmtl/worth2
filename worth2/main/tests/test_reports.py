@@ -77,7 +77,7 @@ class ParticipantReportTest(TransactionTestCase):
                                      status="complete")
         self.assertEquals(ParticipantReport(self.hierarchy).users().count(), 1)
 
-    def test_encounter_id(self):
+    def test_encounter_id_and_date(self):
         report = ParticipantReport(self.hierarchy)
         the_participant = self.participant.profile.participant
         the_participant.cohort_id = '333'
@@ -97,24 +97,31 @@ class ParticipantReportTest(TransactionTestCase):
         e2 = EncounterFactory(participant=the_participant,
                               section=child, session_type='makeup')
 
-        eid = report.encounter_id(the_participant, 0, module, 0)
+        eid = report.encounter_id(the_participant, 1, module, 0)
         self.assertEquals(eid[0:4], '333-')
         self.assertEquals(eid[4:6], '1-')  # module index
         self.assertEquals(int(eid[6:11]), e1.facilitator.id)
-        self.assertEquals(eid[12:22], e1.created_at.strftime("%y%m%d%I%M"))
+        self.assertEquals(eid[12:22], e1.created_at.strftime("%y%m%d%H%M"))
         self.assertEquals(eid[22:25], '-0-')
         self.assertEquals(int(eid[25:27]), e1.location.id)
 
         # makeup encounter
-        eid = report.encounter_id(the_participant, 0, module, 1)
+        eid = report.encounter_id(the_participant, 1, module, 1)
         self.assertEquals(eid[0:4], '333-')
         self.assertEquals(eid[4:6], '1-')  # module index
         self.assertEquals(int(eid[6:11]), e2.facilitator.id)
-        self.assertEquals(eid[12:22], e2.created_at.strftime("%y%m%d%I%M"))
+        self.assertEquals(eid[12:22], e2.created_at.strftime("%y%m%d%H%M"))
         self.assertEquals(eid[22:25], '-1-')
         self.assertEquals(int(eid[25:27]), e2.location.id)
 
         self.assertIsNone(report.encounter_id(the_participant, 0, module, 2))
+
+        edt = report.encounter_date(the_participant, module, 0)
+        self.assertEquals(edt, e1.created_at.strftime("%y%m%d"))
+        edt = report.encounter_date(the_participant, module, 1)
+        self.assertEquals(edt, e2.created_at.strftime("%y%m%d"))
+        edt = report.encounter_date(the_participant, module, 2)
+        self.assertIsNone(edt)
 
     def test_percent_complete(self):
         report = ParticipantReport(self.hierarchy)
@@ -203,7 +210,7 @@ class ParticipantReportTest(TransactionTestCase):
     def test_standalone_columns(self):
         report = ParticipantReport(self.hierarchy)
         columns = report.standalone_columns()
-        self.assertEquals(len(columns), 15)
+        self.assertEquals(len(columns), 24)
 
     def test_metadata(self):
         rows = [
@@ -215,22 +222,40 @@ class ParticipantReportTest(TransactionTestCase):
             ['', 'modules_completed', 'profile', 'count', 'modules completed'],
             ['', '1_time_spent', 'profile', 'string', 'One Time Spent'],
             ['', '1_encounter_id', 'profile', 'string', 'One Encounter Id'],
+            ['', '1_encounter_date', 'profile', 'string',
+             'One Encounter Date'],
             ['', '1_first_makeup_id', 'profile', 'string',
              'One First Makeup Id'],
+            ['', '1_first_makeup_date', 'profile', 'string',
+             'One First Makeup Date'],
             ['', '1_second_makeup_id', 'profile', 'string',
              'One Second Makeup Id'],
+            ['', '1_second_makeup_date', 'profile', 'string',
+             'One Second Makeup Date'],
             ['', '2_time_spent', 'profile', 'string', 'Two Time Spent'],
             ['', '2_encounter_id', 'profile', 'string', 'Two Encounter Id'],
+            ['', '2_encounter_date', 'profile', 'string',
+             'Two Encounter Date'],
             ['', '2_first_makeup_id', 'profile', 'string',
              'Two First Makeup Id'],
+            ['', '2_first_makeup_date', 'profile', 'string',
+             'Two First Makeup Date'],
             ['', '2_second_makeup_id', 'profile', 'string',
              'Two Second Makeup Id'],
+            ['', '2_second_makeup_date', 'profile', 'string',
+             'Two Second Makeup Date'],
             ['', '3_time_spent', 'profile', 'string', 'Four Time Spent'],
             ['', '3_encounter_id', 'profile', 'string', 'Four Encounter Id'],
+            ['', '3_encounter_date', 'profile', 'string',
+             'Four Encounter Date'],
             ['', '3_first_makeup_id', 'profile', 'string',
              'Four First Makeup Id'],
+            ['', '3_first_makeup_date', 'profile', 'string',
+             'Four First Makeup Date'],
             ['', '3_second_makeup_id', 'profile', 'string',
              'Four Second Makeup Id'],
+            ['', '3_second_makeup_date', 'profile', 'string',
+             'Four Second Makeup Date'],
             ['', 'supporter_count', 'Social Support Network', 'count',
              'Supporter Count'],
             ['', 'supporter_1_closeness', 'Social Support Network Map',
@@ -273,10 +298,16 @@ class ParticipantReportTest(TransactionTestCase):
     def test_values(self):
         rows = [
             ['study_id', 'cohort_id', 'modules_completed', '1_time_spent',
-             '1_encounter_id', '1_first_makeup_id', '1_second_makeup_id',
-             '2_time_spent', '2_encounter_id', '2_first_makeup_id',
-             '2_second_makeup_id', '3_time_spent', '3_encounter_id',
-             '3_first_makeup_id', '3_second_makeup_id', 'supporter_count',
+             '1_encounter_id', '1_encounter_date',
+             '1_first_makeup_id', '1_first_makeup_date',
+             '1_second_makeup_id', '1_second_makeup_date',
+             '2_time_spent', '2_encounter_id', '2_encounter_date',
+             '2_first_makeup_id', '2_first_makeup_date',
+             '2_second_makeup_id', '2_second_makeup_date',
+             '3_time_spent', '3_encounter_id', '3_encounter_date',
+             '3_first_makeup_id', '3_first_makeup_date',
+             '3_second_makeup_id', '3_second_makeup_date',
+             'supporter_count',
              'supporter_1_closeness', 'supporter_1_influence',
              'supporter_1_provides_emotional_support',
              'supporter_1_provides_practical_support', 'supporter_2_closeness',
