@@ -29,7 +29,7 @@ selenium==2.48.0
 coverage==4.0.3
 logilab-common==0.63.2
 logilab-astng==0.24.3
-pylint==1.4.4
+pylint==1.5.4
 six==1.10.0
 fake-factory==0.5.3
 factory_boy==2.6.0
