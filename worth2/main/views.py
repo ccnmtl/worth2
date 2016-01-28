@@ -157,30 +157,33 @@ class ParticipantJournalView(TemplateView):
                         user, 'i-am-worth-it-quiz', session_num),
             })
         elif session_num == 4:
-            safety_plan_quiz_responses = get_quiz_responses_by_css_in_module(
-                user, 'safety-plan-quiz', session_num)
-            context.update({
-                'session_title': 'Staying Safe and Strong',
-                'goals_support_responses':
-                    GoalSettingResponse.objects.find_by_module(
-                        user, 'social support', session_num),
-                'goals_risk_responses':
-                    GoalSettingResponse.objects.find_by_module(
-                        user, 'risk reduction', session_num),
-                'goals_services_responses':
-                    GoalSettingResponse.objects.find_by_module(
-                        user, 'services', session_num),
-                'i_am_worth_it_responses':
-                    get_quiz_responses_by_css_in_module(
-                        user, 'i-am-worth-it-quiz', session_num),
-                'safety_plan_quiz_responses': safety_plan_quiz_responses,
-            })
+            context.update(self.session_4_context(user, session_num))
         elif session_num == 5:
             context.update(self.session_5_context(user, session_num))
         else:
             raise http.Http404
 
         return context
+
+    def session_4_context(self, user, session_num):
+        safety_plan_quiz_responses = get_quiz_responses_by_css_in_module(
+            user, 'safety-plan-quiz', session_num)
+        return {
+            'session_title': 'Staying Safe and Strong',
+            'goals_support_responses':
+            GoalSettingResponse.objects.find_by_module(
+                user, 'social support', session_num),
+            'goals_risk_responses':
+            GoalSettingResponse.objects.find_by_module(
+                user, 'risk reduction', session_num),
+            'goals_services_responses':
+            GoalSettingResponse.objects.find_by_module(
+                user, 'services', session_num),
+            'i_am_worth_it_responses':
+            get_quiz_responses_by_css_in_module(
+                user, 'i-am-worth-it-quiz', session_num),
+            'safety_plan_quiz_responses': safety_plan_quiz_responses,
+        }
 
     def session_5_context(self, user, session_num):
         return {
