@@ -176,19 +176,22 @@ class ParticipantJournalView(TemplateView):
                 'safety_plan_quiz_responses': safety_plan_quiz_responses,
             })
         elif session_num == 5:
-            context.update({
-                'session_title': 'Because I am WORTH it!',
-                'goals_risk_responses':
-                    GoalSettingResponse.objects.find_by_module(
-                        user, 'risk reduction', session_num),
-                'i_am_worth_it_responses':
-                    get_quiz_responses_by_css_in_module(
-                        user, 'i-am-worth-it-quiz', session_num),
-            })
+            context.update(self.session_5_context(user, session_num))
         else:
             raise http.Http404
 
         return context
+
+    def session_5_context(self, user, session_num):
+        return {
+            'session_title': 'Because I am WORTH it!',
+            'goals_risk_responses':
+                GoalSettingResponse.objects.find_by_module(
+                    user, 'risk reduction', session_num),
+            'i_am_worth_it_responses':
+                get_quiz_responses_by_css_in_module(
+                    user, 'i-am-worth-it-quiz', session_num),
+        }
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
