@@ -107,18 +107,17 @@ class ParticipantJournalView(TemplateView):
                         user, 'i-am-worth-it-quiz', session_num))
 
         # Add module-specific context data to the response here.
-        if session_num == 1:
-            context.update(session_1_context(user, session_num))
-        elif session_num == 2:
-            context.update(session_2_context(user, session_num))
-        elif session_num == 3:
-            context.update(session_3_context(user, session_num))
-        elif session_num == 4:
-            context.update(session_4_context(user, session_num))
-        elif session_num == 5:
-            context.update(session_5_context(user, session_num))
-        else:
+        dispatch = {
+            1: session_1_context,
+            2: session_2_context,
+            3: session_3_context,
+            4: session_4_context,
+            5: session_5_context,
+        }
+        if session_num not in dispatch:
             raise http.Http404
+
+        context.update(dispatch[session_num](user, session_num))
 
         return context
 
