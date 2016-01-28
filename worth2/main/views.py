@@ -108,13 +108,7 @@ class ParticipantJournalView(TemplateView):
 
         # Add module-specific context data to the response here.
         if session_num == 1:
-            # Find the first 'services' type goal setter in Session 1
-            context.update({
-                'session_title': 'Let\'s Talk: Sister to Sister',
-                'goals_services_responses':
-                    GoalSettingResponse.objects.find_by_module(
-                        user, 'services', session_num),
-            })
+            context.update(self.session_1_context(user, session_num))
         elif session_num == 2:
             context.update(self.session_2_context(user, session_num))
         elif session_num == 3:
@@ -127,6 +121,15 @@ class ParticipantJournalView(TemplateView):
             raise http.Http404
 
         return context
+
+    def session_1_context(self, user, session_num):
+        # Find the first 'services' type goal setter in Session 1
+        return {
+            'session_title': 'Let\'s Talk: Sister to Sister',
+            'goals_services_responses':
+            GoalSettingResponse.objects.find_by_module(
+                user, 'services', session_num),
+        }
 
     def session_2_context(self, user, session_num):
         reflection_responses = get_quiz_responses_by_css_in_module(
