@@ -116,29 +116,7 @@ class ParticipantJournalView(TemplateView):
                         user, 'services', session_num),
             })
         elif session_num == 2:
-            reflection_responses = get_quiz_responses_by_css_in_module(
-                user, 'post-video-quiz', 2)
-            context.update({
-                'session_title': 'What\'s the 411?',
-                'reflection_big_issues': filter(
-                    lambda x: x.value == '1',
-                    reflection_responses),
-                'reflection_issues': filter(
-                    lambda x: (x.value == '1' or x.value == '2'),
-                    reflection_responses),
-                'i_am_worth_it_responses':
-                    get_quiz_responses_by_css_in_module(
-                        user, 'i-am-worth-it-quiz', session_num),
-                'rate_my_risk_response':
-                    get_quiz_responses_by_css_in_module(
-                        user, 'rate-my-risk', session_num).first(),
-                'goals_risk_responses':
-                    GoalSettingResponse.objects.find_by_module(
-                        user, 'risk reduction', session_num),
-                'goals_services_responses':
-                    GoalSettingResponse.objects.find_by_module(
-                        user, 'services', session_num),
-            })
+            context.update(self.session_2_context(user, session_num))
         elif session_num == 3:
             context.update(self.session_3_context(user, session_num))
         elif session_num == 4:
@@ -149,6 +127,31 @@ class ParticipantJournalView(TemplateView):
             raise http.Http404
 
         return context
+
+    def session_2_context(self, user, session_num):
+        reflection_responses = get_quiz_responses_by_css_in_module(
+            user, 'post-video-quiz', 2)
+        return {
+            'session_title': 'What\'s the 411?',
+            'reflection_big_issues': filter(
+                lambda x: x.value == '1',
+                reflection_responses),
+            'reflection_issues': filter(
+                lambda x: (x.value == '1' or x.value == '2'),
+                reflection_responses),
+            'i_am_worth_it_responses':
+                get_quiz_responses_by_css_in_module(
+                    user, 'i-am-worth-it-quiz', session_num),
+            'rate_my_risk_response':
+                get_quiz_responses_by_css_in_module(
+                    user, 'rate-my-risk', session_num).first(),
+            'goals_risk_responses':
+                GoalSettingResponse.objects.find_by_module(
+                    user, 'risk reduction', session_num),
+            'goals_services_responses':
+                GoalSettingResponse.objects.find_by_module(
+                    user, 'services', session_num),
+        }
 
     def session_3_context(self, user, session_num):
         return {
