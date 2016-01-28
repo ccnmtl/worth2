@@ -140,22 +140,7 @@ class ParticipantJournalView(TemplateView):
                         user, 'services', session_num),
             })
         elif session_num == 3:
-            context.update({
-                'session_title': 'Protecting Myself. Protecting my community.',
-                'supporters': Supporter.objects.filter(user=user),
-                'goals_support_responses':
-                    GoalSettingResponse.objects.find_by_module(
-                        user, 'social support', session_num),
-                'goals_risk_responses':
-                    GoalSettingResponse.objects.find_by_module(
-                        user, 'risk reduction', session_num),
-                'goals_services_responses':
-                    GoalSettingResponse.objects.find_by_module(
-                        user, 'services', session_num),
-                'i_am_worth_it_responses':
-                    get_quiz_responses_by_css_in_module(
-                        user, 'i-am-worth-it-quiz', session_num),
-            })
+            context.update(self.session_3_context(user, session_num))
         elif session_num == 4:
             context.update(self.session_4_context(user, session_num))
         elif session_num == 5:
@@ -164,6 +149,24 @@ class ParticipantJournalView(TemplateView):
             raise http.Http404
 
         return context
+
+    def session_3_context(self, user, session_num):
+        return {
+            'session_title': 'Protecting Myself. Protecting my community.',
+            'supporters': Supporter.objects.filter(user=user),
+            'goals_support_responses':
+            GoalSettingResponse.objects.find_by_module(
+                user, 'social support', session_num),
+            'goals_risk_responses':
+            GoalSettingResponse.objects.find_by_module(
+                user, 'risk reduction', session_num),
+            'goals_services_responses':
+            GoalSettingResponse.objects.find_by_module(
+                user, 'services', session_num),
+            'i_am_worth_it_responses':
+            get_quiz_responses_by_css_in_module(
+                user, 'i-am-worth-it-quiz', session_num),
+        }
 
     def session_4_context(self, user, session_num):
         safety_plan_quiz_responses = get_quiz_responses_by_css_in_module(
