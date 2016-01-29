@@ -107,86 +107,17 @@ class ParticipantJournalView(TemplateView):
                         user, 'i-am-worth-it-quiz', session_num))
 
         # Add module-specific context data to the response here.
-        if session_num == 1:
-            # Find the first 'services' type goal setter in Session 1
-            context.update({
-                'session_title': 'Let\'s Talk: Sister to Sister',
-                'goals_services_responses':
-                    GoalSettingResponse.objects.find_by_module(
-                        user, 'services', session_num),
-            })
-        elif session_num == 2:
-            reflection_responses = get_quiz_responses_by_css_in_module(
-                user, 'post-video-quiz', 2)
-            context.update({
-                'session_title': 'What\'s the 411?',
-                'reflection_big_issues': filter(
-                    lambda x: x.value == '1',
-                    reflection_responses),
-                'reflection_issues': filter(
-                    lambda x: (x.value == '1' or x.value == '2'),
-                    reflection_responses),
-                'i_am_worth_it_responses':
-                    get_quiz_responses_by_css_in_module(
-                        user, 'i-am-worth-it-quiz', session_num),
-                'rate_my_risk_response':
-                    get_quiz_responses_by_css_in_module(
-                        user, 'rate-my-risk', session_num).first(),
-                'goals_risk_responses':
-                    GoalSettingResponse.objects.find_by_module(
-                        user, 'risk reduction', session_num),
-                'goals_services_responses':
-                    GoalSettingResponse.objects.find_by_module(
-                        user, 'services', session_num),
-            })
-        elif session_num == 3:
-            context.update({
-                'session_title': 'Protecting Myself. Protecting my community.',
-                'supporters': Supporter.objects.filter(user=user),
-                'goals_support_responses':
-                    GoalSettingResponse.objects.find_by_module(
-                        user, 'social support', session_num),
-                'goals_risk_responses':
-                    GoalSettingResponse.objects.find_by_module(
-                        user, 'risk reduction', session_num),
-                'goals_services_responses':
-                    GoalSettingResponse.objects.find_by_module(
-                        user, 'services', session_num),
-                'i_am_worth_it_responses':
-                    get_quiz_responses_by_css_in_module(
-                        user, 'i-am-worth-it-quiz', session_num),
-            })
-        elif session_num == 4:
-            safety_plan_quiz_responses = get_quiz_responses_by_css_in_module(
-                user, 'safety-plan-quiz', session_num)
-            context.update({
-                'session_title': 'Staying Safe and Strong',
-                'goals_support_responses':
-                    GoalSettingResponse.objects.find_by_module(
-                        user, 'social support', session_num),
-                'goals_risk_responses':
-                    GoalSettingResponse.objects.find_by_module(
-                        user, 'risk reduction', session_num),
-                'goals_services_responses':
-                    GoalSettingResponse.objects.find_by_module(
-                        user, 'services', session_num),
-                'i_am_worth_it_responses':
-                    get_quiz_responses_by_css_in_module(
-                        user, 'i-am-worth-it-quiz', session_num),
-                'safety_plan_quiz_responses': safety_plan_quiz_responses,
-            })
-        elif session_num == 5:
-            context.update({
-                'session_title': 'Because I am WORTH it!',
-                'goals_risk_responses':
-                    GoalSettingResponse.objects.find_by_module(
-                        user, 'risk reduction', session_num),
-                'i_am_worth_it_responses':
-                    get_quiz_responses_by_css_in_module(
-                        user, 'i-am-worth-it-quiz', session_num),
-            })
-        else:
+        dispatch = {
+            1: session_1_context,
+            2: session_2_context,
+            3: session_3_context,
+            4: session_4_context,
+            5: session_5_context,
+        }
+        if session_num not in dispatch:
             raise http.Http404
+
+        context.update(dispatch[session_num](user, session_num))
 
         return context
 
@@ -204,6 +135,94 @@ class ParticipantJournalView(TemplateView):
                           context)
         except TemplateDoesNotExist:
             raise http.Http404
+
+
+def session_1_context(user, session_num):
+    # Find the first 'services' type goal setter in Session 1
+    return {
+        'session_title': 'Let\'s Talk: Sister to Sister',
+        'goals_services_responses':
+        GoalSettingResponse.objects.find_by_module(
+            user, 'services', session_num),
+    }
+
+
+def session_2_context(user, session_num):
+    reflection_responses = get_quiz_responses_by_css_in_module(
+        user, 'post-video-quiz', 2)
+    return {
+        'session_title': 'What\'s the 411?',
+        'reflection_big_issues': filter(
+            lambda x: x.value == '1',
+            reflection_responses),
+        'reflection_issues': filter(
+            lambda x: (x.value == '1' or x.value == '2'),
+            reflection_responses),
+        'i_am_worth_it_responses':
+            get_quiz_responses_by_css_in_module(
+                user, 'i-am-worth-it-quiz', session_num),
+        'rate_my_risk_response':
+            get_quiz_responses_by_css_in_module(
+                user, 'rate-my-risk', session_num).first(),
+        'goals_risk_responses':
+            GoalSettingResponse.objects.find_by_module(
+                user, 'risk reduction', session_num),
+        'goals_services_responses':
+            GoalSettingResponse.objects.find_by_module(
+                user, 'services', session_num),
+    }
+
+
+def session_3_context(user, session_num):
+    return {
+        'session_title': 'Protecting Myself. Protecting my community.',
+        'supporters': Supporter.objects.filter(user=user),
+        'goals_support_responses':
+        GoalSettingResponse.objects.find_by_module(
+            user, 'social support', session_num),
+        'goals_risk_responses':
+        GoalSettingResponse.objects.find_by_module(
+            user, 'risk reduction', session_num),
+        'goals_services_responses':
+        GoalSettingResponse.objects.find_by_module(
+            user, 'services', session_num),
+        'i_am_worth_it_responses':
+        get_quiz_responses_by_css_in_module(
+            user, 'i-am-worth-it-quiz', session_num),
+    }
+
+
+def session_4_context(user, session_num):
+    safety_plan_quiz_responses = get_quiz_responses_by_css_in_module(
+        user, 'safety-plan-quiz', session_num)
+    return {
+        'session_title': 'Staying Safe and Strong',
+        'goals_support_responses':
+        GoalSettingResponse.objects.find_by_module(
+            user, 'social support', session_num),
+        'goals_risk_responses':
+        GoalSettingResponse.objects.find_by_module(
+            user, 'risk reduction', session_num),
+        'goals_services_responses':
+        GoalSettingResponse.objects.find_by_module(
+            user, 'services', session_num),
+        'i_am_worth_it_responses':
+        get_quiz_responses_by_css_in_module(
+            user, 'i-am-worth-it-quiz', session_num),
+        'safety_plan_quiz_responses': safety_plan_quiz_responses,
+    }
+
+
+def session_5_context(user, session_num):
+    return {
+        'session_title': 'Because I am WORTH it!',
+        'goals_risk_responses':
+            GoalSettingResponse.objects.find_by_module(
+                user, 'risk reduction', session_num),
+        'i_am_worth_it_responses':
+            get_quiz_responses_by_css_in_module(
+                user, 'i-am-worth-it-quiz', session_num),
+    }
 
 
 class SignInParticipant(FormView):
