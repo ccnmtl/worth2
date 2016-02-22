@@ -49,7 +49,7 @@ django-annoying==0.8.7
 django-appconf==1.0.1
 
 lxml==3.5.0
-django-compressor==1.6
+django-compressor==2.0
 
 lazy-object-proxy==1.2.1
 wrapt==1.10.6
