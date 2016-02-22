@@ -49,6 +49,8 @@ django-annoying==0.8.7
 django-appconf==1.0.1
 
 lxml==3.5.0
+rcssmin==1.0.6  # django-compressor
+rjsmin==1.0.12  # django-compressor
 django-compressor==2.0
 
 lazy-object-proxy==1.2.1
