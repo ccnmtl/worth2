@@ -35,7 +35,6 @@ TEMPLATE_CONTEXT_PROCESSORS += [  # noqa
 
 INSTALLED_APPS += [  # noqa
     'sorl.thumbnail',
-    'django.contrib.messages',
     'django.contrib.webdesign',
     'ordered_model',
     'typogrify',
