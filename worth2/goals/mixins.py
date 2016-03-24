@@ -181,50 +181,52 @@ class GoalSettingViewMixin(object):
 
         if formset.is_valid():
             for i, formdata in enumerate(formset.cleaned_data):
-                # Formsets with multiple forms put an empty dictionary in
-                # the cleaned data for unpopulated forms. We don't want
-                # to attempt to make a GoalSettingResponse for these
-                # optional, empty forms.
-                if formdata == {}:
-                    continue
-
-                updated_values = formdata.copy()
-                try:
-                    obj, created = GoalSettingResponse.objects \
-                        .update_or_create(
-                            form_id=i,
-                            user=request.user,
-                            goal_setting_block=block,
-                            defaults=updated_values)
-
-                    if not created:
-                        # If the goal setting response was updated, that
-                        # means the user went back and updated it. It may
-                        # have an existing checkin response associated with
-                        # it, which should be cleared since it wouldn't
-                        # make sense to have attached on the new goal.
-                        checkin_response = GoalCheckInResponse.objects.get(
-                            goal_setting_response=obj)
-                        if checkin_response:
-                            checkin_response.delete()
-                except:
-                    # In case there's a unique_together exception, or something
-                    # similar, (which is unlikely, but possible if you have
-                    # stale data), we can handle it by refreshing the data.
-                    GoalSettingResponse.objects.filter(
-                        form_id=i,
-                        user=request.user,
-                        goal_setting_block=block,
-                    ).delete()
-
-                    updated_values.update({
-                        'form_id': i,
-                        'user': request.user,
-                        'goal_setting_block': block,
-                    })
-                    GoalSettingResponse.objects.create(**updated_values)
-
+                self.submit_single_form(i, formdata, request, block)
         return formset
+
+    def submit_single_form(self, i, formdata, request, block):
+        # Formsets with multiple forms put an empty dictionary in
+        # the cleaned data for unpopulated forms. We don't want
+        # to attempt to make a GoalSettingResponse for these
+        # optional, empty forms.
+        if formdata == {}:
+            return
+
+        updated_values = formdata.copy()
+        try:
+            obj, created = GoalSettingResponse.objects \
+                .update_or_create(
+                    form_id=i,
+                    user=request.user,
+                    goal_setting_block=block,
+                    defaults=updated_values)
+
+            if not created:
+                # If the goal setting response was updated, that
+                # means the user went back and updated it. It may
+                # have an existing checkin response associated with
+                # it, which should be cleared since it wouldn't
+                # make sense to have attached on the new goal.
+                checkin_response = GoalCheckInResponse.objects.get(
+                    goal_setting_response=obj)
+                if checkin_response:
+                    checkin_response.delete()
+        except:
+            # In case there's a unique_together exception, or something
+            # similar, (which is unlikely, but possible if you have
+            # stale data), we can handle it by refreshing the data.
+            GoalSettingResponse.objects.filter(
+                form_id=i,
+                user=request.user,
+                goal_setting_block=block,
+            ).delete()
+
+            updated_values.update({
+                'form_id': i,
+                'user': request.user,
+                'goal_setting_block': block,
+            })
+            GoalSettingResponse.objects.create(**updated_values)
 
     def goal_setting_post(self, request, goalsettingblock):
         """This is meant to be called from a django view's post() method."""
