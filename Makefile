@@ -2,7 +2,7 @@ APP=worth2
 JS_FILES=media/js/src/
 REQUIREJS=$(NODE_MODULES)/.bin/r.js
 PY_DIRS=$(APP) features
-MAX_COMPLEXITY=8
+MAX_COMPLEXITY=7
 
 all: jenkins
 
