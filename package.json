@@ -4,7 +4,7 @@
   "description": "WORTH 2",
   "main": "media/js/src/main.js",
   "dependencies": {
-    "jscs": "^1.11.3",
+    "jscs": "^2.11.0",
     "jshint": "^2.9.1"
   },
   "repository": {
@@ -21,7 +21,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-    "jscs": "~1.13.1",
+    "jscs": "~2.11.0",
     "jshint": "~2.9.1",
     "requirejs": "^2.1.22"
   }
