@@ -6,9 +6,6 @@ require.config({
         jquery: {
             exports: '$'
         },
-        'jquery-cookie': {
-            deps: ['jquery']
-        },
         backbone: {
             deps: ['underscore', 'jquery'],
             exports: 'Backbone'
@@ -25,7 +22,7 @@ require.config({
     },
     paths: {
         jquery: '../lib/jquery',
-        'jquery-cookie': '../lib/jquery.cookie',
+        'js-cookie': '../lib/js.cookie',
         underscore: '../lib/underscore',
         backbone: '../lib/backbone',
         threejs: '../lib/three.min',
