@@ -12,16 +12,17 @@ define([
     'views/self-talk-road',
     'views/locker',
     'views/quiz-validator',
-    'jquery-cookie'
+    'js-cookie'
 ], function(
     $,
     CreateParticipantView, EditParticipantView, SignInParticipantView,
     SignOutParticipantView,
     ManageParticipantFilter, SignInParticipantFilter, GoalSettingFormView,
-    GoalCheckinFormView, LockedVideo, SelfTalkRoad, Locker, QuizValidator
+    GoalCheckinFormView, LockedVideo, SelfTalkRoad, Locker, QuizValidator,
+    Cookies
 ) {
     $(function() {
-        var csrftoken = $.cookie('csrftoken');
+        var csrftoken = Cookies.get('csrftoken');
         function csrfSafeMethod(method) {
             // these HTTP methods do not require CSRF protection
             return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
