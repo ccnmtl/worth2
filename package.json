@@ -23,6 +23,6 @@
   "devDependencies": {
     "jscs": "~2.11.0",
     "jshint": "~2.9.1",
-    "requirejs": "^2.1.22"
+    "requirejs": "^2.2.0"
   }
 }
