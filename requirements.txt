@@ -27,7 +27,7 @@ backports.shutil_get_terminal_size==1.0.0
 ipython==4.2.0
 rdflib==4.2.1
 selenium==2.48.0
-coverage==4.0.3
+coverage==4.1
 logilab-common==1.2.0
 logilab-astng==0.24.3
 pylint==1.5.5
