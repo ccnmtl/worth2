@@ -6,4 +6,5 @@ Feature: Index Page
 
   Scenario: Facilitator Sign In
     When I sign in as a facilitator
-    Then I see the text "View as Facilitator"
+    Then I don't see the text "Demonstration View"
+    Then I see the text "Intervene"
