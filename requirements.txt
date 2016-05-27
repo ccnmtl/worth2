@@ -13,7 +13,7 @@ flake8==2.5.4
 tornado==4.3
 BeautifulSoup==3.2.1
 fuzzywuzzy==0.10.0
-sure==1.2.24
+sure==1.2.25
 ipdb==0.10.0
 traitlets==4.2.1
 ipython_genutils==0.1.0
