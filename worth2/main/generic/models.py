@@ -83,8 +83,7 @@ class BaseUserProfile(models.Model):
         """
         Return the percentage of the given module that has been completed
         by this participant. Sections are considered "completed" if they
-        have been accessed, (i.e., if there is a UserPageVisit) and the
-        status is "complete" -- quizzes and other activities are done
+        have been accessed, (i.e., if there is a UserPageVisit)
 
         :rtype: int
         """
