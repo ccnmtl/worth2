@@ -78,28 +78,14 @@ class ParticipantReport(PagetreeReport):
             encounter = encounters.order_by('created_at')[encounter_idx]
             return encounter.created_at.strftime("%y%m%d")  # YYMMDD
 
-    def percent_complete(self, user, section):
-        section_ids = self.get_descendant_ids(section)
-        if not section.is_root():
-            section_ids.insert(0, section.id)
-
-        count = len(section_ids)
-        if count == 0:
-            return 0
-        else:
-            visits = UserPageVisit.objects.filter(user=user,
-                                                  status='complete',
-                                                  section__in=section_ids)
-            return len(visits) / float(count) * 100
-
     def modules_completed(self, user):
         complete = 0
 
         for module in self.hierarchy.get_root().get_children():
-            if self.percent_complete(user, module) == 100:
+            pages = module.get_descendants()
+            if user.profile.percent_complete_by_pages(pages) == 100:
                 complete += 1
-            else:
-                break
+
         return complete
 
     def time_spent(self, user, section):

@@ -154,15 +154,15 @@ class ParticipantTest(TestCase):
         module1_pages = section1.get_descendants()
         for page in module1_pages:
             UserPageVisitFactory(
-                user=self.participant.user, section=page)
+                user=self.participant.user, section=page, status='complete')
 
         section2 = Section.objects.get(slug='session-2')
         module2_pages = section2.get_descendants()
         UserPageVisitFactory(
-            user=self.participant.user, section=section2)
+            user=self.participant.user, section=section2, status='complete')
         for page in module2_pages:
             UserPageVisitFactory(
-                user=self.participant.user, section=page)
+                user=self.participant.user, section=page, status='complete')
 
         self.assertEqual(
             self.participant.percent_complete_module(1), 100)

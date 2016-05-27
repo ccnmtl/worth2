@@ -124,10 +124,10 @@ class ParticipantReportTest(TransactionTestCase):
         self.assertIsNone(edt)
 
     def test_percent_complete(self):
-        report = ParticipantReport(self.hierarchy)
         root = self.hierarchy.get_root()
+        pages = root.get_descendants()
 
-        pct = report.percent_complete(self.participant, root)
+        pct = self.participant.profile.percent_complete_by_pages(pages)
         self.assertEquals(pct, 0)
 
         # visit section one & child one
@@ -137,16 +137,18 @@ class ParticipantReportTest(TransactionTestCase):
             user=self.participant, section=section_one, status="complete")
         UserPageVisit.objects.create(
             user=self.participant, section=child_one, status="complete")
-        pct = report.percent_complete(self.participant, root)
+        pct = self.participant.profile.percent_complete_by_pages(pages)
         self.assertAlmostEquals(pct, 50.0)
 
         # corner case, no descendants
         hierarchy = get_hierarchy('foo')
-        pct = report.percent_complete(self.participant, hierarchy.get_root())
+        pages = hierarchy.get_root().get_descendants()
+        pct = self.participant.profile.percent_complete_by_pages(pages)
         self.assertAlmostEquals(pct, 0)
 
     def test_modules_completed(self):
         report = ParticipantReport(self.hierarchy)
+
         section_one = Section.objects.get(slug='one')
         child_one = Section.objects.get(slug='introduction')
 
@@ -161,15 +163,21 @@ class ParticipantReportTest(TransactionTestCase):
         self.assertEquals(count, 1)
 
         section_two = Section.objects.get(slug='two')
+        section_two.add_child_section_from_dict(
+            {'label': "Two Child", 'slug': "two-child"})
+        child_two = Section.objects.get(slug='two-child')
         UserPageVisit.objects.create(
-            user=self.participant, section=section_two,
+            user=self.participant, section=child_two,
             status="complete")
         count = report.modules_completed(self.participant)
         self.assertEquals(count, 2)
 
         section_four = Section.objects.get(slug='four')
+        section_four.add_child_section_from_dict(
+            {'label': "Four Child", 'slug': "four-child"})
+        child_four = Section.objects.get(slug='four-child')
         UserPageVisit.objects.create(
-            user=self.participant, section=section_four,
+            user=self.participant, section=child_four,
             status="complete")
         count = report.modules_completed(self.participant)
         self.assertEquals(count, 3)
