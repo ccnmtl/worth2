@@ -69,7 +69,7 @@ class BaseUserProfile(models.Model):
 
         if page_count > 0:
             visits = UserPageVisit.objects.filter(
-                user=self.user, section__in=pages, status='complete').count()
+                user=self.user, section__in=pages).count()
             return int(visits / page_count * 100)
         else:
             return 0
