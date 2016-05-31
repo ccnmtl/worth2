@@ -65,7 +65,7 @@ class BaseUserProfile(models.Model):
             return self.last_access_hierarchy().section.get_absolute_url()
 
     def percent_complete_by_pages(self, pages):
-        page_count = pages.count()
+        page_count = float(pages.count())
 
         if page_count > 0:
             visits = UserPageVisit.objects.filter(

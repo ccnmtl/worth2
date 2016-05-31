@@ -175,6 +175,16 @@ class ParticipantTest(TestCase):
         self.assertEqual(
             self.participant.percent_complete_module(5), 0)
 
+    def test_percent_complete_by_pages(self):
+        pages = self.hierarchy.get_root().get_descendants()
+
+        section1 = Section.objects.get(slug='session-1')
+        UserPageVisitFactory(
+            user=self.participant.user, section=section1)
+
+        pct = self.participant.percent_complete_by_pages(pages)
+        self.assertEquals(pct, 4)
+
 
 class ParticipantManagerTest(TestCase):
     def test_cohort_ids_empty(self):
