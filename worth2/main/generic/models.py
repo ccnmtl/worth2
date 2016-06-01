@@ -59,29 +59,31 @@ class BaseUserProfile(models.Model):
             '-last_visit').first()
 
     def last_location_url(self):
-        if self.percent_complete() == 0:
+        if self.percent_complete_hierarchy() == 0:
             return reverse('root')
         else:
             return self.last_access_hierarchy().section.get_absolute_url()
 
-    def percent_complete(self):
-        return self.percent_complete_hierarchy()
+    def percent_complete_by_pages(self, pages):
+        page_count = float(pages.count())
+
+        if page_count > 0:
+            visits = UserPageVisit.objects.filter(
+                user=self.user, section__in=pages).count()
+            return int(visits / page_count * 100)
+        else:
+            return 0
 
     def percent_complete_hierarchy(self):
         hierarchy = Hierarchy.get_hierarchy('main')
-        pages = hierarchy.get_root().get_descendants().count()
-
-        if pages > 0:
-            visits = UserPageVisit.objects.filter(user=self.user).count()
-            return int(visits / pages * 100)
-        else:
-            return 0
+        pages = hierarchy.get_root().get_descendants()
+        return self.percent_complete_by_pages(pages)
 
     def percent_complete_module(self, module_num):
         """
         Return the percentage of the given module that has been completed
         by this participant. Sections are considered "completed" if they
-        have been accessed, (i.e., if there is a UserPageVisit).
+        have been accessed, (i.e., if there is a UserPageVisit)
 
         :rtype: int
         """
@@ -92,13 +94,4 @@ class BaseUserProfile(models.Model):
             return 0
 
         pages = module_section.get_descendants()
-        page_count = pages.count()
-
-        if page_count > 0:
-            visits = UserPageVisit.objects.filter(
-                user=self.user,
-                section__in=pages,
-            ).count()
-            return int(visits / page_count * 100)
-        else:
-            return 0
+        return self.percent_complete_by_pages(pages)
