@@ -78,7 +78,7 @@ django-markwhat==1.5
 gunicorn==19.6.0
 django-infranil==1.0.0
 django-flatblocks==0.9.2
-django-ordered-model==1.1.0
+django-ordered-model==1.2.1
 djangorestframework==3.2.4
 django-cacheds3storage==0.1.2
 
