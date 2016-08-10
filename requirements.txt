@@ -55,7 +55,7 @@ django-appconf==1.0.2
 lxml==3.6.1
 rcssmin==1.0.6  # django-compressor
 rjsmin==1.0.12  # django-compressor
-django-compressor==2.0
+django-compressor==2.1
 
 lazy-object-proxy==1.2.2
 wrapt==1.10.8
