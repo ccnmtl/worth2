@@ -1,5 +1,4 @@
 from selenium import webdriver
-from behave_django import environment
 from django.conf import settings
 from worth2.main.auth import generate_password
 from worth2.main.tests.factories import (
@@ -16,7 +15,6 @@ def before_all(context):
 
 
 def before_scenario(context, scenario):
-    environment.before_scenario(context, scenario)
     # Set up mock worth data
     WorthModuleFactory()
 
@@ -32,10 +30,6 @@ def before_scenario(context, scenario):
     password = generate_password(participant.user.username)
     participant.user.set_password(password)
     participant.user.save()
-
-
-def after_scenario(context, scenario):
-    environment.after_scenario(context, scenario)
 
 
 def after_all(context):
