@@ -61,7 +61,7 @@ lazy-object-proxy==1.2.2
 wrapt==1.10.8
 astroid==1.4.8
 django-statsd-mozilla==0.3.16
-raven==5.26.0
+raven==5.27.0
 django-bootstrap3==7.0.1
 django-bootstrap-form==3.2.1
 django-debug-toolbar==1.5
