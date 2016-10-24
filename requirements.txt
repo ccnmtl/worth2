@@ -38,7 +38,7 @@ six==1.10.0
 ipaddress==1.0.17
 fake-factory==0.7.2
 factory_boy==2.7.0
-sqlparse==0.2.1
+sqlparse==0.2.2
 python-dateutil==2.5.3
 contextlib2==0.5.4
 boto==2.43.0
