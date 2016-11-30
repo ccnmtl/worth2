@@ -12,7 +12,7 @@ mccabe==0.5.2
 pycodestyle==2.1.0
 enum34==1.1.6
 configparser==3.5.0
-flake8==3.0.4
+flake8==3.2.1
 tornado==4.4.2
 BeautifulSoup==3.2.1
 fuzzywuzzy==0.14.0

@@ -421,5 +421,6 @@ class GoalCheckInColumn(ReportColumnInterface):
         else:
             return response.other or ''
 
+
 ReportableInterface.register(GoalSettingBlock)
 ReportableInterface.register(GoalCheckInPageBlock)
