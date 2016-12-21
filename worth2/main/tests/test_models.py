@@ -22,6 +22,18 @@ class AvatarTest(TestCase):
     def test_unicode(self):
         self.assertEqual(str(self.avatar), self.avatar.image.url)
 
+    def test_clean_not_default(self):
+        a = AvatarFactory(is_default=False)
+        # shouldn't actually do anything...
+        a.clean()
+
+    def test_clean_is_default(self):
+        a = AvatarFactory(is_default=True)
+        a.clean()
+        b = AvatarFactory(is_default=True)
+        with self.assertRaises(ValidationError):
+            b.clean()
+
 
 class EncounterTest(TestCase):
     def setUp(self):
