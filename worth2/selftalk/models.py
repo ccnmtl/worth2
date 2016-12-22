@@ -93,13 +93,13 @@ class StatementBlock(BasePageBlock):
     def submit(self, user, request_data):
         for k, v in request_data.iteritems():
             statement = Statement.objects.get(pk=int(k))
-            if v is True:
+            if v:
                 StatementResponse.objects.update_or_create(
                     statement=statement,
                     statement_block=self,
                     user=user,
                 )
-            elif v is False:
+            else:
                 try:
                     to_delete = StatementResponse.objects.get(
                         statement=statement,
