@@ -21,6 +21,10 @@ CACHES = {
 
 PROJECT_APPS = [
     'worth2.main',
+    'worth2.goals',
+    'worth2.protectivebehaviors',
+    'worth2.selftalk',
+    'worth2.ssnm',
 ]
 
 USE_TZ = True
