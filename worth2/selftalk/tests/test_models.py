@@ -1,5 +1,6 @@
 from django.test import TestCase
 
+from worth2.main.tests.factories import UserFactory
 from worth2.selftalk.tests.factories import (
     StatementFactory, RefutationFactory,
     ExternalStatementBlockFactory, InternalStatementBlockFactory,
@@ -37,6 +38,21 @@ class ExternalStatementBlockTest(TestCase):
     def test_is_valid_from_factory(self):
         self.o.full_clean()
 
+    def test_clear_user_submissions(self):
+        self.o.clear_user_submissions(UserFactory())
+
+    def test_unicode(self):
+        self.assertEqual(
+            str(self.o),
+            "Jane's Statement Block [Session -1] id: %d" % self.o.id)
+        self.o.subject_name = ""
+        self.assertEqual(
+            str(self.o),
+            "External Statement Block [Session -1] id: %d" % self.o.id)
+
+    def test_edit_form(self):
+        self.assertIsNotNone(self.o.edit_form())
+
 
 class InternalStatementBlockTest(TestCase):
     def setUp(self):
@@ -52,6 +68,19 @@ class ExternalRefutationBlockTest(TestCase):
 
     def test_is_valid_from_factory(self):
         self.o.full_clean()
+        self.assertEqual(self.o.subject_name,
+                         self.o.statement_block.subject_name)
+
+    def test_clear_user_submissions(self):
+        self.o.clear_user_submissions(UserFactory())
+
+    def test_unicode(self):
+        self.assertEqual(
+            str(self.o),
+            "Self-Talk Refutation Block [-1] id: %d" % self.o.id)
+
+    def test_edit_form(self):
+        self.assertIsNotNone(self.o.edit_form())
 
 
 class InternalRefutationBlockTest(TestCase):
@@ -71,6 +100,8 @@ class StatementResponseTest(TestCase):
 
     def test_unicode(self):
         self.assertEqual(unicode(self.o), unicode(self.o.statement))
+        self.o.other_text = "something else"
+        self.assertEqual(str(self.o), "something else")
 
 
 class RefutationResponseTest(TestCase):
@@ -82,3 +113,5 @@ class RefutationResponseTest(TestCase):
 
     def test_unicode(self):
         self.assertEqual(unicode(self.o), unicode(self.o.refutation))
+        self.o.other_text = "something else"
+        self.assertEqual(str(self.o), "something else")
