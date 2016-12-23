@@ -12,3 +12,4 @@ media/js/lib/ember.debug.js
 .project
 .settings
 *.log
+wheelhouse
