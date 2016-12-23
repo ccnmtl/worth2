@@ -37,7 +37,6 @@ INSTALLED_APPS += [  # noqa
     'sorl.thumbnail',
     'django.contrib.webdesign',
     'ordered_model',
-    'typogrify',
     'bootstrap3',
     'bootstrapform',
     'infranil',
