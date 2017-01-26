@@ -70,17 +70,9 @@ class GoalCheckInViewMixin(object):
                 resp_id = formdata.pop('goal_setting_response_id')
                 resp = get_object_or_404(GoalSettingResponse, pk=resp_id)
                 updated_values = formdata.copy()
-                try:
-                    GoalCheckInResponse.objects.create_or_update(
-                        goal_setting_response=resp,
-                        defaults=updated_values)
-                except:
-                    GoalCheckInResponse.objects.filter(
-                        goal_setting_response=resp,
-                    ).delete()
-
-                    updated_values.update({'goal_setting_response': resp})
-                    GoalCheckInResponse.objects.create(**updated_values)
+                GoalCheckInResponse.objects.update_or_create(
+                    goal_setting_response=resp,
+                    defaults=updated_values)
 
         return formset
 
