@@ -26,7 +26,7 @@ require.config({
         underscore: '../lib/underscore',
         backbone: '../lib/backbone',
         threejs: '../lib/three.min',
-        tweenjs: '../lib/tween.min'
+        tweenjs: '../lib/Tween'
     },
     urlArgs: 'bust=' + (new Date()).getTime()
 });
