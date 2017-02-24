@@ -1,6 +1,8 @@
 import os.path
+import django.contrib.auth.views
+import djangowind.views
 
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth.decorators import user_passes_test
 from django.conf import settings
@@ -18,16 +20,16 @@ from worth2.ssnm import apiviews as ssnm_apiviews
 site_media_root = os.path.join(os.path.dirname(__file__), "../media")
 
 redirect_after_logout = getattr(settings, 'LOGOUT_REDIRECT_URL', None)
-auth_urls = (r'^accounts/', include('django.contrib.auth.urls'))
-logout_page = (
+auth_urls = url(r'^accounts/', include('django.contrib.auth.urls'))
+logout_page = url(
     r'^accounts/logout/$',
-    'django.contrib.auth.views.logout',
+    django.contrib.auth.views.logout,
     {'next_page': redirect_after_logout})
 if hasattr(settings, 'CAS_BASE'):
-    auth_urls = (r'^accounts/', include('djangowind.urls'))
-    logout_page = (
+    auth_urls = url(r'^accounts/', include('djangowind.urls'))
+    logout_page = url(
         r'^accounts/logout/$',
-        'djangowind.views.logout',
+        djangowind.views.logout,
         {'next_page': redirect_after_logout})
 
 rest_router = routers.DefaultRouter()
@@ -39,8 +41,7 @@ ssnm_rest_router = routers.DefaultRouter(trailing_slash=False)
 ssnm_rest_router.register(r'supporters', ssnm_apiviews.SupporterViewSet,
                           base_name='supporter')
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     auth_urls,
     logout_page,
     url(r'^api/', include(rest_router.urls)),
@@ -48,21 +49,21 @@ urlpatterns = patterns(
         name='api-login-check'),
     url(r'^api-auth/', include('rest_framework.urls',
                                namespace='rest_framework')),
-    (r'^registration/', include('registration.backends.default.urls')),
+    url(r'^registration/', include('registration.backends.default.urls')),
     url(r'^$',
         user_passes_test(lambda u: u.is_authenticated())(
             views.IndexView.as_view()),
         name='root'),
-    (r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', include(admin.site.urls)),
     url(r'^_impersonate/', include('impersonate.urls')),
-    (r'^stats/$', TemplateView.as_view(template_name="stats.html")),
-    (r'smoketest/', include('smoketest.urls')),
-    (r'infranil/', include('infranil.urls')),
-    (r'^uploads/(?P<path>.*)$',
-     'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+    url(r'^stats/$', TemplateView.as_view(template_name="stats.html")),
+    url(r'smoketest/', include('smoketest.urls')),
+    url(r'infranil/', include('infranil.urls')),
+    url(r'^uploads/(?P<path>.*)$',
+        'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 
-    (r'^pagetree/', include('pagetree.urls')),
-    (r'^quizblock/', include('quizblock.urls')),
+    url(r'^pagetree/', include('pagetree.urls')),
+    url(r'^quizblock/', include('quizblock.urls')),
     url(r'^pages/edit/(?P<path>.*)$',
         user_passes_test(lambda u: u.is_superuser)(
             EditView.as_view(
@@ -106,11 +107,10 @@ urlpatterns = patterns(
 
     url('^epub/$', user_passes_test(lambda u: u.is_superuser)(
         EpubExporterView.as_view()), name='epub-export'),
-)
+]
 
 if settings.DEBUG:
     import debug_toolbar
-    urlpatterns += patterns(
-        '',
+    urlpatterns += [
         url(r'^__debug__/', include(debug_toolbar.urls)),
-    )
+    ]
