@@ -5,7 +5,10 @@ from django.contrib import admin
 from django.contrib.auth.decorators import user_passes_test
 from django.conf import settings
 from django.views.generic import TemplateView
+
 from pagetree.generic.views import EditView, InstructorView
+from pagetreeepub.views import EpubExporterView
+
 from rest_framework import routers
 
 from worth2.main import apiviews, auth, views
@@ -100,6 +103,9 @@ urlpatterns = patterns(
 
     # Social Support Network Map activity
     url(r'^ssnm/api/', include(ssnm_rest_router.urls)),
+
+    url('^epub/$', user_passes_test(lambda u: u.is_superuser)(
+        EpubExporterView.as_view()), name='epub-export'),
 )
 
 if settings.DEBUG:
