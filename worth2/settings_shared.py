@@ -52,6 +52,7 @@ INSTALLED_APPS += [  # noqa
     'worth2.goals',
     'worth2.selftalk',
     'behave_django',
+    'pagetreeepub',
 ]
 
 REST_FRAMEWORK = {
@@ -92,3 +93,12 @@ MESSAGE_TAGS = {
 }
 
 BEHAVE_DEBUG_ON_ERROR = False
+
+# epub settings
+EPUB_ALLOWED_BLOCKS = [
+    'Text Block', 'HTML Block', 'Pull Quote'
+]
+EPUB_TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), "templates/epub")
+EPUB_TITLE = "WORTH epub"
+EPUB_CREATOR = "CTL"
+EPUB_PUBLICATION = "2017"
