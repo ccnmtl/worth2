@@ -1,6 +1,8 @@
 E-WORTH
 =======
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/ccnmtl/worth2.svg)](https://greenkeeper.io/)
+
 [![Build Status](https://travis-ci.org/ccnmtl/worth2.svg?branch=master)](https://travis-ci.org/ccnmtl/worth2)
 
 
