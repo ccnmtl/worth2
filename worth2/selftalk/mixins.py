@@ -140,7 +140,7 @@ class SelfTalkRefutationViewMixin(object):
             otherkey = '{:s}-other-{:d}'.format(p, statement_pk)
             try:
                 bound_data[rkey] = r.refutation.pk
-            except:
+            except AttributeError:
                 # If r.refutation is None, this is an 'Other' answer, so give
                 # it pk=0.
                 bound_data[rkey] = 0

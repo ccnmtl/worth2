@@ -106,7 +106,7 @@ class StatementBlock(BasePageBlock):
                         statement_block=self,
                         user=user)
                     to_delete.delete()
-                except:
+                except StatementResponse.DoesNotExist:
                     pass
 
     def clear_user_submissions(self, user):
