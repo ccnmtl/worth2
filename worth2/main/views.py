@@ -90,7 +90,7 @@ class ParticipantJournalView(TemplateView):
         user = context['participant'].user
         try:
             session_num = int(kwargs.get('session_num'))
-        except:
+        except TypeError:
             raise http.Http404
 
         context['session_num'] = session_num
@@ -126,7 +126,7 @@ class ParticipantJournalView(TemplateView):
 
         try:
             session_num = int(kwargs.get('session_num'))
-        except:
+        except TypeError:
             raise http.Http404
 
         try:

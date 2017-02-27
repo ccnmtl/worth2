@@ -1,6 +1,7 @@
 from collections import OrderedDict
 from django import forms
 from django.contrib import messages
+from django.db import IntegrityError
 from django.db.models import Q
 from django.forms.formsets import formset_factory
 from django.shortcuts import get_object_or_404, render
@@ -203,7 +204,7 @@ class GoalSettingViewMixin(object):
                     goal_setting_response=obj)
                 if checkin_response:
                     checkin_response.delete()
-        except:
+        except (GoalCheckInResponse.DoesNotExist, IntegrityError):
             # In case there's a unique_together exception, or something
             # similar, (which is unlikely, but possible if you have
             # stale data), we can handle it by refreshing the data.
