@@ -183,11 +183,6 @@ study_id_regex_validator = RegexValidator(
     'The format is: RRHHMMDDMMYBS')
 
 
-def study_id_validator(value):
-    """Validate study ID for anything the regex can't capture."""
-    pass
-
-
 # For now, accept any 3-digit number as the cohort ID.
 cohort_id_validator = RegexValidator(
     regex=r'^\d{3}$',
