@@ -13,3 +13,8 @@ behave: check
 
 media/main-built.js: $(JS_SENTINAL) build.js media/js
 	$(REQUIREJS) -o build.js
+
+eslint: $(JS_SENTINAL)
+	$(NODE_MODULES)/.bin/eslint $(JS_FILES)
+
+.PHONY: eslint
