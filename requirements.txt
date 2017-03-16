@@ -72,7 +72,7 @@ rjsmin==1.0.12  # django-compressor
 django-compressor==2.1.1
 
 lazy-object-proxy==1.2.2
-wrapt==1.10.8
+wrapt==1.10.10
 astroid==1.4.9
 django-statsd-mozilla==0.3.16
 raven==6.0.0
