@@ -56,7 +56,7 @@ HTML template - there's probably a way of avoiding that step.
         </div>
         <div class="pull-right text-right">
             <h3>{{supporter.name}}</h3>
-            <div {{bind-attr class=(influenceColorClass supporter.influence)}}>
+            <div class={{influenceColorClass supporter.influence}}>
                 {{{supporter.influenceGlyphicon}}}
                 {{supporter.displayInfluence}}
             </div>
@@ -93,7 +93,7 @@ HTML template - there's probably a way of avoiding that step.
                 </button>
             </div>
 
-            {{#each supporter in controller.veryCloseSupporters}}
+            {{#each controller.veryCloseSupporters as |supporter|}}
                 {{supporter-box supporter=supporter
                 clickedSupporter="editSupporter"}}
             {{/each}}
@@ -101,7 +101,7 @@ HTML template - there's probably a way of avoiding that step.
 
         <div class="worth-ssnm-box worth-ssnm-box-close">
             <div class="ssnm-box-title">Close to Me</div>
-            {{#each supporter in controller.closeSupporters}}
+            {{#each controller.closeSupporters as |supporter|}}
                 {{supporter-box supporter=supporter
                 clickedSupporter="editSupporter"}}
             {{/each}}
@@ -109,7 +109,7 @@ HTML template - there's probably a way of avoiding that step.
 
         <div class="worth-ssnm-box worth-ssnm-box-not-close">
             <div class="ssnm-box-title">Not Close to Me</div>
-            {{#each supporter in controller.notCloseSupporters}}
+            {{#each controller.notCloseSupporters as |supporter|}}
                 {{supporter-box supporter=supporter
                 clickedSupporter="editSupporter"}}
             {{/each}}
@@ -168,7 +168,7 @@ HTML template - there's probably a way of avoiding that step.
             Cancel
         </button>
         <button {{action 'openModal' 'edit-supporter-modal-2'}}
-                {{bind-attr disabled=hasBlankName}}
+                disabled={{hasBlankName}}
                 class="btn btn-primary">
             Next
         </button>
@@ -214,7 +214,7 @@ HTML template - there's probably a way of avoiding that step.
             Cancel
         </button>
         <button {{action 'openModal' 'edit-supporter-modal-3'}}
-                {{bind-attr disabled=hasBlankCloseness}}
+                disabled={{hasBlankCloseness}}
                 class="btn btn-primary">
             Next
         </button>
@@ -266,7 +266,7 @@ HTML template - there's probably a way of avoiding that step.
             Cancel
         </button>
         <button {{action 'openModal' 'edit-supporter-modal-4'}}
-                {{bind-attr disabled=hasBlankInfluence}}
+                disabled={{hasBlankInfluence}}
                 class="btn btn-primary">
             Next
         </button>
