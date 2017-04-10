@@ -59,7 +59,7 @@ contextlib2==0.5.4
 boto==2.46.1
 django-storages==1.5.2
 
-djangowind==0.16.1
+djangowind==1.0.0
 sorl==3.1
 django-indexer==0.3.0
 django-templatetag-sugar==1.0
