@@ -1,9 +1,9 @@
-from rest_framework import serializers
+from rest_framework_json_api import serializers
 
 from worth2.ssnm.models import Supporter
 
 
-class SupporterSerializer(serializers.HyperlinkedModelSerializer):
+class SupporterSerializer(serializers.ModelSerializer):
     influence_display = serializers.SerializerMethodField()
 
     class Meta:

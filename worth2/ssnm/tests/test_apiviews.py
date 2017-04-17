@@ -1,3 +1,5 @@
+import json
+
 from django.core.urlresolvers import reverse
 from rest_framework.test import APITestCase
 
@@ -33,15 +35,19 @@ class SupporterViewSetTest(LoggedInParticipantTestMixin, APITestCase):
 
     def test_create(self):
         r = self.client.post(
-            reverse('supporter-list'),
-            {
-                'closeness': 'NC',
-                'influence': 'N',
-                'name': 'Supporter name',
-                'provides_emotional_support': True,
-                'provides_practical_support': False,
-            }
-        )
+            reverse('supporter-list'), json.dumps({
+                'data': {
+                    'attributes': {
+                        'closeness': 'NC',
+                        'influence': 'N',
+                        'name': 'Supporter name',
+                        'provides_emotional_support': True,
+                        'provides_practical_support': False,
+                    },
+                    'type': 'supporters',
+                }
+            }),
+            content_type='application/vnd.api+json')
 
         self.assertEqual(r.status_code, 201)
 
@@ -71,15 +77,19 @@ class SupporterViewSetUnAuthedTest(APITestCase):
 
     def test_create(self):
         r = self.client.post(
-            reverse('supporter-list'),
-            {
-                'closeness': 'NC',
-                'influence': 'N',
-                'name': 'Supporter name',
-                'provides_emotional_support': True,
-                'provides_practical_support': False,
-            }
-        )
+            reverse('supporter-list'), json.dumps({
+                'data': {
+                    'attributes': {
+                        'closeness': 'NC',
+                        'influence': 'N',
+                        'name': 'Supporter name',
+                        'provides_emotional_support': True,
+                        'provides_practical_support': False,
+                    },
+                    'type': 'supporters',
+                }
+            }),
+            content_type='application/vnd.api+json')
 
         self.assertEqual(r.status_code, 403)
         self.assertEqual(Supporter.objects.count(), 0)
