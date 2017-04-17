@@ -57,10 +57,9 @@ INSTALLED_APPS += [  # noqa
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'worth2.main.auth.IsActivePermission',
-    )
+    ),
 }
-REST_EMBER_FORMAT_KEYS = True
-REST_EMBER_PLURALIZE_KEYS = True
+JSON_API_PLURALIZE_TYPES = True
 
 PAGEBLOCKS = [
     'pageblocks.TextBlock',

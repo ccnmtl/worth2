@@ -1,5 +1,5 @@
 from rest_framework import viewsets, permissions
-from rest_framework import parsers, renderers
+from rest_framework_json_api import parsers, renderers
 
 from worth2.main.auth import AnySessionAuthentication
 from worth2.ssnm.serializers import SupporterSerializer
@@ -11,6 +11,8 @@ class SupporterViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticated,)
     parser_classes = (parsers.JSONParser,)
     renderer_classes = (renderers.JSONRenderer,)
+
+    resource_name = 'supporters'
 
     def get_queryset(self):
         return self.request.user.supporters.all()

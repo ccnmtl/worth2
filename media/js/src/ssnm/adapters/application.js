@@ -18,8 +18,8 @@
         return cookieValue;
     }
 
-    Ssnm.ApplicationAdapter = DS.ActiveModelAdapter.extend({
-        host: '/ssnm/api',
+    Ssnm.ApplicationAdapter = DS.JSONAPIAdapter.extend({
+        namespace: 'ssnm/api',
         headers: {
             'X-CSRFToken': getCookie('csrftoken')
         }
