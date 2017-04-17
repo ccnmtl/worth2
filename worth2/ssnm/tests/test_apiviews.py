@@ -1,3 +1,5 @@
+import json
+
 from django.core.urlresolvers import reverse
 from rest_framework.test import APITestCase
 
@@ -34,15 +36,15 @@ class SupporterViewSetTest(LoggedInParticipantTestMixin, APITestCase):
     def test_create(self):
         r = self.client.post(
             reverse('supporter-list'),
-            {
+            data=json.dumps({
                 'closeness': 'NC',
                 'influence': 'N',
                 'name': 'Supporter name',
                 'provides_emotional_support': True,
                 'provides_practical_support': False,
-            }
+            }),
+            content_type='application/json',
         )
-
         self.assertEqual(r.status_code, 201)
 
         pk = r.data.get('id')
