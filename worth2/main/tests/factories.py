@@ -50,7 +50,9 @@ class ParticipantFactory(factory.django.DjangoModelFactory):
 
     created_by = factory.SubFactory(UserFactory)
     is_archived = False
-    user = factory.SubFactory(InactiveUserFactory)
+    user = factory.SubFactory(
+        InactiveUserFactory,
+        username=FuzzyText(prefix='participant_'))
     first_location = factory.SubFactory(LocationFactory)
     location = factory.SubFactory(LocationFactory)
     study_id = factory.Sequence(lambda n: '%02d22591304632' % n)

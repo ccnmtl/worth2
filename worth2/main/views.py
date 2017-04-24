@@ -242,8 +242,6 @@ class SignInParticipant(FormView):
         user = authenticate(
             request=self.request,
             username=participant.user.username, password=password)
-        from ipdb import set_trace; set_trace()
-        print(user)
 
         if user is not None:
             login(self.request, user,

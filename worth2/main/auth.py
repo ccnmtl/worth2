@@ -31,7 +31,8 @@ def user_is_participant(user):
 
 
 def user_is_facilitator(user):
-    return user.username.startswith('facilitator')
+    return user.username.startswith('facilitator') or \
+        (not user.is_anonymous and not user_is_participant(user))
 
 
 class IsActivePermission(permissions.BasePermission):

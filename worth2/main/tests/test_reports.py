@@ -18,8 +18,10 @@ class ParticipantReportNoHierarchiesTest(TestCase):
     def setUp(self):
         super(ParticipantReportNoHierarchiesTest, self).setUp()
         self.location = LocationFactory(name='Butler')
-        self.staff = UserFactory(is_staff=True, username='f1',
-                                 first_name='Facilitator', last_name='One')
+        self.staff = UserFactory(
+            is_staff=True,
+            username='facilitator_f1',
+            first_name='Facilitator', last_name='One')
         p = ParticipantFactory(first_location=self.location,
                                location=self.location,
                                created_by=self.staff)
@@ -46,8 +48,9 @@ class ParticipantReportTest(TransactionTestCase):
         cache.clear()
 
         self.location = LocationFactory(name='Butler')
-        self.staff = UserFactory(is_staff=True, username='f1',
-                                 first_name='Facilitator', last_name='One')
+        self.staff = UserFactory(
+            is_staff=True, username='facilitator_f1',
+            first_name='Facilitator', last_name='One')
 
         p = ParticipantFactory(first_location=self.location,
                                location=self.location,
