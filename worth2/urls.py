@@ -51,7 +51,7 @@ urlpatterns = [
                                namespace='rest_framework')),
     url(r'^registration/', include('registration.backends.default.urls')),
     url(r'^$',
-        user_passes_test(lambda u: u.is_authenticated())(
+        user_passes_test(lambda u: u.is_authenticated)(
             views.IndexView.as_view()),
         name='root'),
     url(r'^admin/', include(admin.site.urls)),
