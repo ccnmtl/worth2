@@ -48,8 +48,7 @@ def i_am_signed_in_as_a(context, user_type):
 
 @when(u'I sign in as a facilitator')
 def i_sign_in_as_a_facilitator(context):
-    facilitator = User.objects.filter(
-        username__startswith='facilitator').first()
+    facilitator = User.objects.filter(is_active=True).first()
 
     d = context.driver
     d.get(urlparse.urljoin(context.base_url, '/accounts/login/'))
@@ -90,8 +89,7 @@ def i_sign_in_as_a_participant(context):
 @when(u'I sign in as the facilitator from a session')
 def i_sign_in_as_the_facilitator_from_a_session(context):
     d = context.driver
-    facilitator = User.objects.filter(
-        username__startswith='facilitator').first()
+    facilitator = User.objects.filter(is_active=True).first()
 
     try:
         # If the window is narrow, we need to click the collapse
