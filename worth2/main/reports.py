@@ -44,7 +44,7 @@ class ParticipantReport(PagetreeReport):
         super(ParticipantReport, self).__init__()
 
     def users(self):
-        users = User.objects.filter(is_active=False,
+        users = User.objects.filter(username__startswith='participant',
                                     profile__is_archived=False,
                                     userpagevisit__isnull=False).distinct()
         return users.order_by('id')

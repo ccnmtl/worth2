@@ -212,7 +212,6 @@ class SignInParticipantTest(LoggedInFacilitatorTestMixin, TestCase):
 
         password = generate_password(participant.user.username)
         participant.user.set_password(password)
-        participant.user.is_active = True
         participant.user.save()
         response = self.client.post(
             reverse('sign-in-participant'), {
@@ -255,7 +254,6 @@ class SignInParticipantTest(LoggedInFacilitatorTestMixin, TestCase):
 
         password = generate_password(participant.user.username)
         participant.user.set_password(password)
-        participant.user.is_active = True
         participant.user.save()
         response = self.client.post(
             reverse('sign-in-participant'), {
@@ -300,7 +298,6 @@ class SignInParticipantTest(LoggedInFacilitatorTestMixin, TestCase):
 
         password = generate_password(participant.user.username)
         participant.user.set_password(password)
-        participant.user.is_active = True
         participant.user.save()
         response = self.client.post(
             reverse('sign-in-participant'), {

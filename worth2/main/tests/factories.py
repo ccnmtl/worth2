@@ -20,7 +20,6 @@ class InactiveUserFactory(factory.DjangoModelFactory):
 
     username = FuzzyText(prefix='inactive_')
     password = factory.LazyAttribute(lambda u: generate_password(u.username))
-    is_active = False
 
 
 class UserFactory(factory.DjangoModelFactory):

@@ -32,7 +32,6 @@ class LoggedInParticipantTestMixin(object):
         self.participant = ParticipantFactory(user=u)
         self.u = self.participant.user
 
-        self.u.is_active = True
         self.u.save()
         login = self.client.login(username=self.u.username,
                                   password=generate_password(self.u.username))
