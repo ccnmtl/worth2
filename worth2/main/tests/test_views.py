@@ -48,10 +48,10 @@ class AvatarSelectorBlockTest(LoggedInParticipantTestMixin, TestCase):
     def test_post(self):
         pageblock = self.root.get_first_child().pageblock_set.first()
         param_name = 'pageblock-%d-avatar-id' % pageblock.pk
-
         r = self.client.post(self.url, {
             param_name: self.avatar1.pk,
         })
+
         self.assertEqual(r.status_code, 302)
         participant = Participant.objects.get(pk=self.participant.pk)
         self.assertEqual(participant.avatar, self.avatar1)
@@ -212,7 +212,6 @@ class SignInParticipantTest(LoggedInFacilitatorTestMixin, TestCase):
 
         password = generate_password(participant.user.username)
         participant.user.set_password(password)
-        participant.user.is_active = True
         participant.user.save()
         response = self.client.post(
             reverse('sign-in-participant'), {
@@ -255,7 +254,6 @@ class SignInParticipantTest(LoggedInFacilitatorTestMixin, TestCase):
 
         password = generate_password(participant.user.username)
         participant.user.set_password(password)
-        participant.user.is_active = True
         participant.user.save()
         response = self.client.post(
             reverse('sign-in-participant'), {
@@ -300,7 +298,6 @@ class SignInParticipantTest(LoggedInFacilitatorTestMixin, TestCase):
 
         password = generate_password(participant.user.username)
         participant.user.set_password(password)
-        participant.user.is_active = True
         participant.user.save()
         response = self.client.post(
             reverse('sign-in-participant'), {

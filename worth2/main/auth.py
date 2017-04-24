@@ -26,7 +26,7 @@ def generate_password(username):
 
 
 def user_is_participant(user):
-    return not user.is_anonymous and \
+    return not user.is_anonymous() and \
         (hasattr(user, 'profile') and user.profile.is_participant())
 
 

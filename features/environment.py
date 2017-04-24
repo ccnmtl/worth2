@@ -29,7 +29,6 @@ def before_scenario(context, scenario):
     # the tests.
     password = generate_password(participant.user.username)
     participant.user.set_password(password)
-    participant.user.is_active = True
     participant.user.save()
 
 

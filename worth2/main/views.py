@@ -244,6 +244,7 @@ class SignInParticipant(FormView):
 
         if user is not None:
             login(self.request, user)
+
             module_num = int(form.cleaned_data.get('participant_destination'))
             upv = participant.last_access_in_module(module_num)
             if upv:

@@ -37,3 +37,6 @@ class LoggedInParticipantTestMixin(object):
         login = self.client.login(username=self.u.username,
                                   password=generate_password(self.u.username))
         assert(login is True)
+
+        self.u.is_active = False
+        self.u.save()
