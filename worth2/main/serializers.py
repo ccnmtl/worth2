@@ -14,8 +14,7 @@ class ParticipantSerializer(serializers.HyperlinkedModelSerializer):
         # Create an inactive User for the participant
         username = generate_random_username()
         password = generate_password(username)
-        participant_user = User.objects.create(
-            username=username, is_active=False)
+        participant_user = User.objects.create(username=username)
         participant_user.set_password(password)
         participant_user.save()
         validated_data['user'] = participant_user

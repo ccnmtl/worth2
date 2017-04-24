@@ -1,5 +1,6 @@
 import os.path
 import django.contrib.auth.views
+import django.views.static
 import djangowind.views
 
 from django.conf.urls import include, url
@@ -51,7 +52,7 @@ urlpatterns = [
                                namespace='rest_framework')),
     url(r'^registration/', include('registration.backends.default.urls')),
     url(r'^$',
-        user_passes_test(lambda u: u.is_authenticated())(
+        user_passes_test(lambda u: u.is_authenticated)(
             views.IndexView.as_view()),
         name='root'),
     url(r'^admin/', include(admin.site.urls)),
@@ -60,7 +61,7 @@ urlpatterns = [
     url(r'smoketest/', include('smoketest.urls')),
     url(r'infranil/', include('infranil.urls')),
     url(r'^uploads/(?P<path>.*)$',
-        'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+        django.views.static.serve, {'document_root': settings.MEDIA_ROOT}),
 
     url(r'^pagetree/', include('pagetree.urls')),
     url(r'^quizblock/', include('quizblock.urls')),

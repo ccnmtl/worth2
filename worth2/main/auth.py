@@ -26,19 +26,13 @@ def generate_password(username):
 
 
 def user_is_participant(user):
-    return not user.is_anonymous() and \
+    return not user.is_anonymous and \
         (hasattr(user, 'profile') and user.profile.is_participant())
 
 
 def user_is_facilitator(user):
-    """
-    Any normal user that can log in (has is_active=True) is considered
-    a facilitator in WORTH. Participants are 'authenticated' users, but
-    are not 'active'. So this permission is granted to anyone in the
-    system except for the participants.
-    """
-
-    return (hasattr(user, 'is_active') and user.is_active)
+    return user.username.startswith('facilitator') or \
+        (not user.is_anonymous and not user_is_participant(user))
 
 
 class IsActivePermission(permissions.BasePermission):

@@ -240,11 +240,12 @@ class SignInParticipant(FormView):
         password = generate_password(participant.user.username)
 
         user = authenticate(
+            request=self.request,
             username=participant.user.username, password=password)
 
         if user is not None:
-            login(self.request, user)
-
+            login(self.request, user,
+                  backend='django.contrib.auth.backends.ModelBackend')
             module_num = int(form.cleaned_data.get('participant_destination'))
             upv = participant.last_access_in_module(module_num)
             if upv:
@@ -396,7 +397,8 @@ class ParticipantReportView(LoggedInMixinStaff, TemplateView):
 
     def facilitators(self):
         rows = [['Facilitator ID', 'Facilitator Name']]
-        for user in User.objects.filter(is_active=True, is_superuser=False):
+        for user in User.objects.filter(
+                username__startswith='facilitator', is_superuser=False):
             rows.append([user.id, user.username, user.get_full_name()])
         return rows
 
