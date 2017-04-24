@@ -25,7 +25,7 @@ class InactiveUserProfile(BaseUserProfile):
     is_archived = models.BooleanField(default=False)
 
     def is_participant(self):
-        return (not self.user.is_active)
+        return True
 
 
 class Avatar(OrderedModel):
