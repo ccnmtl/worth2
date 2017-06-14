@@ -37,7 +37,7 @@ scandir==1.5
 pathlib2==2.3.0
 pygments==2.2.0
 
-ipython==6.1.0
+ipython==5.4.1 # pyup: <6.0.0
 
 rdflib==4.2.2
 
