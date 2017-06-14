@@ -34,17 +34,17 @@ backports.shutil_get_terminal_size==1.0.0
 wcwidth==0.1.7
 prompt_toolkit==1.0.14
 scandir==1.5
-pathlib2==2.2.1
+pathlib2==2.3.0
 pygments==2.2.0
 
-ipython==5.3.0
+ipython==5.4.1 # pyup: <6.0.0
 
 rdflib==4.2.2
 
 Genshi==0.7
 requirements/src/epubbuilder-0.1.4.tar.gz
 
-selenium==2.48.0
+selenium==2.48.0 # pyup: <3.0
 coverage==4.4.1
 logilab-common==1.4.0
 logilab-astng==0.24.3
@@ -52,7 +52,7 @@ editdistance==0.3.1
 pylint==1.7.1
 six==1.10.0
 ipaddress==1.0.18
-Faker==0.7.15
+Faker==0.7.17
 factory_boy==2.8.1
 sqlparse==0.2.3
 python-dateutil==2.6.0
