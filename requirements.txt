@@ -19,7 +19,7 @@ configparser==3.5.0
 flake8==3.3.0
 tornado==4.5.1
 BeautifulSoup==3.2.1
-fuzzywuzzy==0.15.0
+fuzzywuzzy==0.15.1
 sure==1.4.6
 ipdb==0.10.3
 traitlets==4.3.2
