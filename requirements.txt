@@ -96,7 +96,7 @@ django-markwhat==1.5.1
 gunicorn==19.7.1
 django-infranil==1.1.0
 django-flatblocks==0.9.4
-django-ordered-model==1.4.1
+django-ordered-model==1.4.2
 django-crispy-forms==1.6.1
 djangorestframework==3.6.3
 djangorestframework-jsonapi==2.2.0
