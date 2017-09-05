@@ -27,7 +27,7 @@ define([
                     text === 'choose a participant' ||
                         'all' === filterVal ||
                         cohortId === filterVal
-                   ) {
+                ) {
                     me.$targetInput.append($v.clone(true));
                 } else {
                     var val = $v.val();

@@ -10,7 +10,7 @@
         tagName: 'input',
         type: 'radio',
         attributeBindings: ['type', 'htmlChecked:checked', 'value', 'name',
-                            'disabled'],
+            'disabled'],
 
         value: null,
         checked: null,

@@ -1,3 +1,5 @@
+/* global lockedVideoId: true, isSectionUnlocked: true */
+
 define([
     'jquery',
     'underscore',
@@ -16,7 +18,7 @@ define([
         initialize: function() {
             if (typeof isSectionUnlocked !== 'undefined' &&
                 isSectionUnlocked === 0
-               ) {
+            ) {
                 this.lock();
             }
 

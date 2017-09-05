@@ -1,3 +1,5 @@
+/* globals STATIC_URL: true */
+
 define([
     'jquery',
     'underscore',
@@ -63,7 +65,6 @@ define([
             scene.add(road);
 
             // Draw avatar
-            var me = this;
             THREE.ImageUtils.crossOrigin = '';
             var map = THREE.ImageUtils.loadTexture(
                 STATIC_URL + 'img/selftalk-avatar3.png', {}, function() {

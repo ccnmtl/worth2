@@ -33,7 +33,7 @@ define([
 
                 if ($requiredCheckboxes.length > 0 &&
                     !hasAnyCheckedCheckboxes
-                   ) {
+                ) {
                     return false;
                 }
             }
@@ -87,7 +87,7 @@ define([
 
             if ($requiredQuestionInputs.length > 0 &&
                 hasAnyBlankTextInputs
-               ) {
+            ) {
                 return false;
             }
 
@@ -116,7 +116,7 @@ define([
                 if (!me.validateCheckboxForm($form) ||
                     !me.validateRadioButtons($form) ||
                     !me.validateRequiredTextInputs($form)
-                   ) {
+                ) {
                     $form.find('.worth-form-validation-error').hide().fadeIn();
                     return false;
                 }
