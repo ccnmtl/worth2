@@ -11,7 +11,6 @@ define([
             submit: 'submit'
         },
         initialize: function() {
-            var me = this;
             this.id = this.$el.closest('.modal').data('id');
             this.model = new Participant({
                 id: this.id,

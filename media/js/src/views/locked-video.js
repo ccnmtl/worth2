@@ -1,3 +1,5 @@
+/* global lockedVideoId: true */
+
 define([
     'jquery',
     'underscore',

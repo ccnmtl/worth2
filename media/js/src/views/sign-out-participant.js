@@ -25,6 +25,7 @@ define([
                 },
                 success: function(data) {
                     $target.find('.worth-errors').hide();
+                    // eslint-disable-next-line scanjs-rules/assign_to_location
                     window.location = '/';
                 },
                 error: function(xhr, status, error) {

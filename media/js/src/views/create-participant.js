@@ -14,7 +14,8 @@ define([
             e.preventDefault();
             var $target = $(e.currentTarget);
             var newStudyId = $target.find('input[name="study_id"]').val();
-            var person = new Participant({
+
+            new Participant({
                 study_id: newStudyId
             });
 

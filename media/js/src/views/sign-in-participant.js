@@ -27,10 +27,8 @@ define([
             }
 
             var $form = $target.closest('form');
-            var $destinations = $form.find(
-                '#id_participant_destination>.radio input');
-            var i;
-            for (i = 0; i < 5; i++) {
+
+            for (var i = 0; i < 5; i++) {
                 var $el = $form.find('#id_participant_destination_' + i);
                 var $label = $el.closest('label');
                 var percentCompleted = $participant.data(

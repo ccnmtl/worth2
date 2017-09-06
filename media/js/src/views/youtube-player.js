@@ -1,3 +1,6 @@
+/* global lockedVideoId: true, YT: true, onPlayerReady: true */
+/* global onPlayerStateChange: true */
+
 define([
     'jquery',
     'models/watched-video',
@@ -7,7 +10,7 @@ define([
         loadYouTubeAPI: function(container, videoId) {
             if (typeof YT === 'undefined' ||
                 typeof YT.Player === 'undefined'
-               ) {
+            ) {
                 window.onYouTubeIframeAPIReady = function() {
                     youtubePlayer.loadPlayer(container, videoId);
                 };
