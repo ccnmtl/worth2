@@ -1,6 +1,0 @@
-{
-    "preset": "google",
-    "requireCamelCaseOrUpperCaseIdentifiers": "ignoreProperties",
-    "validateIndentation": 4,
-    "jsDoc": false
-}
