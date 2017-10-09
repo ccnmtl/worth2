@@ -98,7 +98,7 @@ django-infranil==1.1.0
 django-flatblocks==0.9.4
 django-ordered-model==1.4.3
 django-crispy-forms==1.6.1
-djangorestframework==3.6.4
+djangorestframework==3.7.0
 djangorestframework-jsonapi==2.2.0
 django-cacheds3storage==0.1.2
 django-smtp-ssl==1.0
