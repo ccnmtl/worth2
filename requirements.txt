@@ -101,7 +101,7 @@ django-flatblocks==0.9.4
 django-ordered-model==1.4.3
 django-crispy-forms==1.7.0
 djangorestframework==3.7.3
-djangorestframework-jsonapi==2.2.0
+djangorestframework-jsonapi==2.3.0
 django-cacheds3storage==0.1.2
 django-smtp-ssl==1.0
 
