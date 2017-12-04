@@ -1,4 +1,4 @@
-Django==1.11.7
+Django==1.11.7 # pyup: <2.0
 Markdown==2.6.9
 smartypants==2.0.0
 psycopg2==2.7.3.2
