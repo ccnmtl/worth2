@@ -49,7 +49,7 @@ coverage==4.4.2
 logilab-common==1.4.1
 logilab-astng==0.24.3
 editdistance==0.4
-pylint==1.7.5
+pylint==1.8.1
 six==1.11.0
 ipaddress==1.0.18
 text-unidecode==1.1  # for faker
