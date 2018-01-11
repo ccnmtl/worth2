@@ -174,11 +174,11 @@ class Location(models.Model):
 # MM minute
 # DD day
 # MM month
-# Y last digit of year (5, 6 or 7)
+# Y last digit of year (5-9)
 # B borough (Bronx=1, Brooklyn=2, Manhattan=3, Queens=4, Staten Island=5)
 # S (Fortune site: 1=LIC; 2=Harlem)
 study_id_regex_validator = RegexValidator(
-    regex=r'^\d\d[0-2]\d[0-5]\d[0-3]\d[0-1]\d[5-7][1-5][1-2]$',
+    regex=r'^\d\d[0-2]\d[0-5]\d[0-3]\d[0-1]\d[5-9][1-5][1-2]$',
     message='That study ID isn\'t valid. ' +
     'The format is: RRHHMMDDMMYBS')
 
