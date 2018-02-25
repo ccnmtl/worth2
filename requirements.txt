@@ -112,7 +112,7 @@ python-memcached==1.59
 enum34==1.1.6
 parse-type==0.4.2
 parse==1.8.2
-behave==1.2.5
+behave==1.2.6
 behave-django==1.1.0
 django-ga-context==0.1.0
 
