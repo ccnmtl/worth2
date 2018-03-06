@@ -3,7 +3,7 @@ sudo: false
 addons:
   firefox: "44.0.2"
 python:
-  - "2.7"
+  - "2.7.6"
 install:
   - pip install -U pip wheel
   - pip install -U setuptools
