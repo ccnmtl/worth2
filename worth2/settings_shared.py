@@ -29,7 +29,7 @@ PROJECT_APPS = [
 
 USE_TZ = True
 
-MIDDLEWARE_CLASSES += [  # noqa
+MIDDLEWARE += [  # noqa
     'django.middleware.csrf.CsrfViewMiddleware',
 ]
 
