@@ -59,7 +59,7 @@ sqlparse==0.2.4
 python-dateutil==2.7.2
 contextlib2==0.5.5
 boto==2.48.0
-django-storages==1.6.5
+django-storages==1.6.6
 
 djangowind==1.1.0
 requirements/src/sorl-3.1.tar.gz
