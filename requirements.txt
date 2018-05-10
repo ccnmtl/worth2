@@ -56,7 +56,7 @@ text-unidecode==1.2  # for faker
 Faker==0.8.13
 factory_boy==2.10.0
 sqlparse==0.2.4
-python-dateutil==2.7.2
+python-dateutil==2.7.3
 contextlib2==0.5.5
 boto==2.48.0
 django-storages==1.6.6
