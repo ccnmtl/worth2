@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from django.test import TestCase
 from pagetree.helpers import get_hierarchy
 
@@ -41,13 +43,13 @@ class UtilsTest(TestCase):
 
         block = get_first_block_in_module(
             'goals', 'goalsettingblock', 2,
-            lambda (b): b.block().goal_type == 'services'
+            lambda b: b.block().goal_type == 'services'
         )
         self.assertEqual(block.section.slug, 'goal-setting')
 
         block = get_first_block_in_module(
             'goals', 'goalsettingblock', 2,
-            lambda (b): b.block().goal_type == 'risk reduction'
+            lambda b: b.block().goal_type == 'risk reduction'
         )
         self.assertEqual(block, None)
 

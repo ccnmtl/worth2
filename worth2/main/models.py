@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from django import forms
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -6,6 +8,7 @@ from django.core.validators import RegexValidator
 from django.db import models
 from django.shortcuts import get_object_or_404
 from django.template.defaultfilters import slugify
+from django.utils.encoding import python_2_unicode_compatible, smart_text
 from ordered_model.models import OrderedModel
 from pagetree.models import Section, UserPageVisit
 from pagetree.generic.models import BasePageBlock
@@ -28,6 +31,7 @@ class InactiveUserProfile(BaseUserProfile):
         return True
 
 
+@python_2_unicode_compatible
 class Avatar(OrderedModel):
     """An image that the participant can choose for their profile."""
 
@@ -42,8 +46,8 @@ class Avatar(OrderedModel):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
-        return unicode(self.image.url)
+    def __str__(self):
+        return smart_text(self.image.url)
 
     def clean(self):
         if self.is_default:
@@ -145,6 +149,7 @@ class AvatarSelectorBlockForm(forms.ModelForm):
         fields = '__all__'
 
 
+@python_2_unicode_compatible
 class Location(models.Model):
     """A physical location where an intervention takes place.
 
@@ -154,8 +159,8 @@ class Location(models.Model):
 
     name = models.TextField()
 
-    def __unicode__(self):
-        return unicode(self.name)
+    def __str__(self):
+        return smart_text(self.name)
 
 
 # A user in WORTH 2 can either be:
@@ -206,6 +211,7 @@ class ParticipantManager(models.Manager):
         return sorted(ids)
 
 
+@python_2_unicode_compatible
 class Participant(InactiveUserProfile):
     """ A Participant is a worth-specific inactive user profile.
     """
@@ -239,8 +245,8 @@ class Participant(InactiveUserProfile):
 
     objects = ParticipantManager()
 
-    def __unicode__(self):
-        return unicode(self.study_id)
+    def __str__(self):
+        return smart_text(self.study_id)
 
     def highest_module_accessed(self):
         """Returns the farthest module this participant has been in.
@@ -300,6 +306,7 @@ class Participant(InactiveUserProfile):
         return self.percent_complete_module(5)
 
 
+@python_2_unicode_compatible
 class Encounter(models.Model):
     """An Encounter represents a participant getting signed in to WORTH.
 
@@ -321,8 +328,8 @@ class Encounter(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
-        return unicode('Encounter for ' + self.participant.user.username)
+    def __str__(self):
+        return smart_text('Encounter for ' + self.participant.user.username)
 
 
 class SimpleImageBlock(BasePageBlock):

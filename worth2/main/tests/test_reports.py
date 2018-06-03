@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 import datetime
 
 from django.core.cache import cache
@@ -296,15 +298,15 @@ class ParticipantReportTest(TransactionTestCase):
         report = ParticipantReport(self.hierarchy)
         metadata = report.metadata(Hierarchy.objects.all())
         for row in rows:
-            self.assertEquals(metadata.next(), row)
+            self.assertEquals(next(metadata), row)
 
         for x in range(0, 36):
             # expecting 9 more rows for additional 4 supporters
             # overkill to test every single value.
-            metadata.next()
+            next(metadata)
 
         with self.assertRaises(StopIteration):
-            metadata.next()
+            next(metadata)
 
     def test_values(self):
         rows = [
@@ -336,10 +338,10 @@ class ParticipantReportTest(TransactionTestCase):
         values = report.values(Hierarchy.objects.all())
 
         for row in rows:
-            self.assertEquals(values.next(), row)
+            self.assertEquals(next(values), row)
 
         with self.assertRaises(StopIteration):
-            values.next()
+            next(values)
 
     def test_get(self):
         # not logged in
@@ -380,14 +382,15 @@ class ParticipantReportTest(TransactionTestCase):
         response = self.client.post(self.report_url, data)
         self.assertEquals(response.status_code, 200)
 
-        self.assertEquals(response.streaming_content.next(),
-                          'Facilitator ID,Facilitator Name\r\n')
+        self.assertEquals(
+            next(response.streaming_content),
+            b'Facilitator ID,Facilitator Name\r\n')
 
-        val = 'f1,Facilitator One\r\n'
-        self.assertTrue(val in response.streaming_content.next())
+        val = b'f1,Facilitator One\r\n'
+        self.assertTrue(val in next(response.streaming_content))
 
         with self.assertRaises(StopIteration):
-            response.streaming_content.next()
+            next(response.streaming_content)
 
     def test_post_locations(self):
         self.client.login(username=self.staff.username, password="test")
@@ -395,10 +398,10 @@ class ParticipantReportTest(TransactionTestCase):
         response = self.client.post(self.report_url, data)
         self.assertEquals(response.status_code, 200)
 
-        self.assertEquals(response.streaming_content.next(),
-                          'Location ID,Location Name\r\n')
-        val = 'Butler\r\n'
-        self.assertTrue(val in response.streaming_content.next())
+        self.assertEquals(next(response.streaming_content),
+                          b'Location ID,Location Name\r\n')
+        val = b'Butler\r\n'
+        self.assertTrue(val in next(response.streaming_content))
 
         with self.assertRaises(StopIteration):
-            response.streaming_content.next()
+            next(response.streaming_content)

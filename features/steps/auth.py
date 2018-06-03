@@ -4,6 +4,7 @@ from django.conf import settings
 from django.contrib.auth import BACKEND_SESSION_KEY, SESSION_KEY
 from django.contrib.auth.models import User
 from django.utils.module_loading import import_module
+from django.utils.encoding import smart_text
 from selenium.common.exceptions import ElementNotVisibleException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -75,9 +76,9 @@ def i_sign_in_as_a_participant(context):
     d = context.driver
     d.get(urlparse.urljoin(context.base_url, '/sign-in-participant/'))
     Select(d.find_element_by_name(
-        'participant_id')).select_by_value(unicode(participant.pk))
+        'participant_id')).select_by_value(smart_text(participant.pk))
     Select(d.find_element_by_name(
-        'participant_location')).select_by_value(unicode(location.pk))
+        'participant_location')).select_by_value(smart_text(location.pk))
     d.find_elements_by_css_selector(
         'input[type="radio"][name="participant_destination"]')[0].click()
     d.find_elements_by_css_selector(

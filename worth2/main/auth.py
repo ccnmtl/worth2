@@ -4,6 +4,7 @@ import hmac
 
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.utils.encoding import smart_bytes
 from rest_framework import permissions
 from rest_framework.authentication import SessionAuthentication
 
@@ -20,8 +21,9 @@ def generate_random_username():
 
 
 def generate_password(username):
-    digest = hmac.new(settings.PARTICIPANT_SECRET,
-                      msg=username, digestmod=hashlib.sha256).digest()
+    digest = hmac.new(smart_bytes(settings.PARTICIPANT_SECRET),
+                      smart_bytes(username),
+                      hashlib.sha256).digest()
     return base64.b64encode(digest).decode()
 
 

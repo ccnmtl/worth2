@@ -1,11 +1,16 @@
+from __future__ import unicode_literals
+
 from django import forms
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible, smart_text
+
 from pagetree.generic.models import BasePageBlock
 from pagetree.reports import ReportColumnInterface, StandaloneReportColumn, \
     ReportableInterface
 
 
+@python_2_unicode_compatible
 class Supporter(models.Model):
     CLOSENESS_CHOICES = (
         ('VC', 'Very Close'),
@@ -41,8 +46,8 @@ class Supporter(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
-        return unicode(self.name)
+    def __str__(self):
+        return smart_text(self.name)
 
 
 class SsnmPageBlock(BasePageBlock):
@@ -117,7 +122,7 @@ class SsnmReport(ReportableInterface):
 
     def report_metadata(self):
         cols = self.standalone_columns()
-        for idx in xrange(0, 5):
+        for idx in range(0, 5):
             for choice in Supporter.CLOSENESS_CHOICES:
                 cols.append(SupporterReportColumn(idx, 'closeness',
                                                   'single choice',
@@ -139,7 +144,7 @@ class SsnmReport(ReportableInterface):
     def report_values(self):
         columns = self.standalone_columns()
 
-        for idx in xrange(0, 5):
+        for idx in range(0, 5):
             columns.append(
                 SupporterReportColumn(idx, 'closeness', 'single choice'))
             columns.append(

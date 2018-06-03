@@ -1,11 +1,13 @@
-from __future__ import division
+from __future__ import division, unicode_literals
 
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible, smart_text
 from pagetree.models import Hierarchy, UserPageVisit
 
 
+@python_2_unicode_compatible
 class BaseUserProfile(models.Model):
     """An abstract class for a user profile."""
 
@@ -18,8 +20,8 @@ class BaseUserProfile(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True, editable=False)
 
-    def __unicode__(self):
-        return unicode(self.user.username)
+    def __str__(self):
+        return smart_text(self.user.username)
 
     def default_location(self):
         hierarchy = Hierarchy.get_hierarchy('main')
