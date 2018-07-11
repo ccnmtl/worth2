@@ -58,7 +58,7 @@ factory_boy==2.11.1
 sqlparse==0.2.4
 python-dateutil==2.7.3
 contextlib2==0.5.5
-boto==2.48.0
+boto==2.49.0
 django-storages==1.6.6
 
 djangowind==1.1.0
