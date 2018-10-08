@@ -111,7 +111,7 @@ python-memcached==1.59
 
 enum34==1.1.6
 parse-type==0.4.2
-parse==1.8.4
+parse==1.9.0
 behave==1.2.6
 traceback2==1.4.0
 linecache2==1.0.0
