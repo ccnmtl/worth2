@@ -41,7 +41,7 @@ ipython==5.8.0 # pyup: <6.0.0
 
 rdflib==4.2.2
 
-Genshi==0.7
+Genshi==0.7.1
 requirements/src/epubbuilder-0.1.4.tar.gz
 
 selenium==2.48.0 # pyup: <2.49
