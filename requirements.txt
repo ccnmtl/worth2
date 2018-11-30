@@ -14,7 +14,7 @@ mccabe==0.6.1
 pycodestyle==2.4.0
 
 pytz==2018.7
-enum34==1.1.6
+enum34==1.1.6; python_version < '3.4'
 configparser==3.5.0
 flake8==3.6.0
 tornado==4.5.3 # pyup: <5.0
@@ -109,7 +109,6 @@ inflection==0.3.1
 unicodecsv==0.14.1
 python-memcached==1.59
 
-enum34==1.1.6
 parse-type==0.4.2
 parse==1.9.0
 behave==1.2.6
