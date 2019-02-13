@@ -17,7 +17,7 @@ pytz==2018.9
 enum34==1.1.6; python_version < '3.4'
 configparser==3.7.1
 entrypoints==0.3  # for flake8
-flake8==3.7.3
+flake8==3.7.5
 tornado==4.5.3 # pyup: <5.0
 BeautifulSoup==3.2.1
 fuzzywuzzy==0.17.0
