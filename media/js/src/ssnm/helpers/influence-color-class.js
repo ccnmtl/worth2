@@ -1,4 +1,4 @@
-/* global Ember, Ssnm */
+/* global Ember */
 
 (function() {
     'use strict';
