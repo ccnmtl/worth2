@@ -46,7 +46,7 @@ Genshi==0.7.1
 requirements/src/epubbuilder-0.2.1-py2.py3-none-any.whl
 
 selenium==2.48.0 # pyup: <2.49
-coverage==4.5.2
+coverage==4.5.3
 logilab-common==1.4.2
 logilab-astng==0.24.3
 editdistance==0.5.2
