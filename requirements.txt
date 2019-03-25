@@ -15,7 +15,7 @@ pycodestyle==2.5.0
 
 pytz==2018.9
 enum34==1.1.6; python_version < '3.4'
-configparser==3.7.3
+configparser==3.7.4
 entrypoints==0.3  # for flake8
 flake8==3.7.7
 tornado==4.5.3 # pyup: <5.0
