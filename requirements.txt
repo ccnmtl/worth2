@@ -13,7 +13,7 @@ mccabe==0.6.1
 
 pycodestyle==2.5.0
 
-pytz==2018.9
+pytz==2019.1
 enum34==1.1.6; python_version < '3.4'
 configparser==3.7.4
 entrypoints==0.3  # for flake8
