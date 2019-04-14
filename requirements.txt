@@ -1,7 +1,7 @@
 Django==1.11.20 # pyup: <2.0
 Markdown==2.6.11 # pyup: < 3
 smartypants==2.0.1
-psycopg2==2.8.1
+psycopg2==2.8.2
 olefile==0.46
 Pillow==6.0.0
 versiontools==1.9.1
