@@ -47,7 +47,7 @@ class SignInParticipantForm(forms.Form):
         cohort_choices = [
             ('all', 'All Cohorts'),
             (None, 'Unassigned')
-        ] + map(lambda x: (x, x), Participant.objects.cohort_ids())
+        ] + list(map(lambda x: (x, x), Participant.objects.cohort_ids()))
         self.fields['filter_by_cohort'] = forms.ChoiceField(
             label='Filter by Cohort',
             initial='all',

@@ -1,9 +1,13 @@
+from __future__ import unicode_literals
+
 from django import forms
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible, smart_text
 
 from pagetree.generic.models import BasePageBlock
 
 
+@python_2_unicode_compatible
 class ProtectiveBehaviorsResults(BasePageBlock):
     quiz_class = models.CharField(max_length=255, help_text='Required',
                                   default='protective-behaviors')
@@ -16,8 +20,9 @@ class ProtectiveBehaviorsResults(BasePageBlock):
     def unlocked(self, user):
         return True
 
-    def __unicode__(self):
-        return "%s -- %s" % (unicode(self.pageblock()), self.quiz_category)
+    def __str__(self):
+        return '{} -- {}'.format(
+            smart_text(self.pageblock()), self.quiz_category)
 
     @staticmethod
     def add_form():

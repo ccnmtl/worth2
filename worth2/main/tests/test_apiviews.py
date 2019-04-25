@@ -1,4 +1,7 @@
+from __future__ import unicode_literals
+
 from django.core.urlresolvers import reverse
+from django.utils.encoding import smart_text
 from rest_framework import status
 from rest_framework.test import APITestCase
 
@@ -61,7 +64,7 @@ class ParticipantViewSetTest(
         p = ParticipantFactory(study_id='0122371304632')
         study_id = '0122371304631'
         response = self.client.put(
-            '/api/participants/' + unicode(p.pk) + '/',
+            '/api/participants/' + smart_text(p.pk) + '/',
             {'study_id': study_id}
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -75,7 +78,7 @@ class ParticipantViewSetTest(
         bad_study_id = '0122371304639'
         p = ParticipantFactory(study_id=study_id)
         response = self.client.put(
-            '/api/participants/' + unicode(p.pk) + '/',
+            '/api/participants/' + smart_text(p.pk) + '/',
             {'study_id': bad_study_id}
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -89,7 +92,7 @@ class ParticipantViewSetTest(
         study_id = '0122251304631'
         p = ParticipantFactory(study_id=study_id, cohort_id='111')
         response = self.client.put(
-            '/api/participants/' + unicode(p.pk) + '/', {
+            '/api/participants/' + smart_text(p.pk) + '/', {
                 'study_id': study_id,
                 'cohort_id': '787',
             }
@@ -104,7 +107,7 @@ class ParticipantViewSetTest(
         study_id = '0122251304634'
         p = ParticipantFactory(study_id=study_id, cohort_id='111')
         response = self.client.put(
-            '/api/participants/' + unicode(p.pk) + '/', {
+            '/api/participants/' + smart_text(p.pk) + '/', {
                 'study_id': study_id,
                 'cohort_id': 'j87878',
             }
@@ -121,7 +124,7 @@ class ParticipantViewSetTest(
         study_id = '0122371304632'
         p = ParticipantFactory(study_id=study_id, is_archived=False)
         response = self.client.put(
-            '/api/participants/' + unicode(p.pk) + '/',
+            '/api/participants/' + smart_text(p.pk) + '/',
             {'study_id': study_id, 'is_archived': True}
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -146,7 +149,7 @@ class ParticipantViewSetUnAuthedTest(APITestCase):
         good_study_id = '0122251304632'
         p = ParticipantFactory(study_id=study_id)
         response = self.client.put(
-            '/api/participants/' + unicode(p.pk) + '/',
+            '/api/participants/' + smart_text(p.pk) + '/',
             {'study_id': good_study_id}
         )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)

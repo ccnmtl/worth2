@@ -61,7 +61,7 @@ def get_first_block_of_type(section, app_label, model, blocktest=None):
     pageblocks = section.pageblock_set.filter(content_type=contenttype)
 
     if hasattr(blocktest, '__call__'):
-        pageblocks = filter(blocktest, pageblocks)
+        pageblocks = list(filter(blocktest, pageblocks))
         if len(pageblocks) > 0:
             return pageblocks[0]
         else:
@@ -126,7 +126,7 @@ def get_quiz_responses_by_css_in_module(user, css_class, module):
     blocks = map(lambda x: x.block(), pageblocks)
     mapping = ContentType.objects.get_for_models(*blocks)
     quizblocks = []
-    for k, v in mapping.iteritems():
+    for k, v in mapping.items():
         if v == quiztype:
             quizblocks.append(k)
 

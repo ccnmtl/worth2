@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 from django.test import TestCase, TransactionTestCase
+from django.utils.encoding import smart_text
 from pagetree.helpers import get_hierarchy
 from worth2.goals.models import (
     GoalSettingColumn, GoalSettingResponse, GoalCheckInColumn
@@ -30,11 +32,11 @@ class GoalOptionTest(TestCase):
         self.o.full_clean()
 
     def test_unicode(self):
-        text = u'I will talk to a counselor or health care provider ' + \
-               u'(i.e. a social worker, a counselor, a CASC, a medical ' + \
-               u'doctor, etc…) about my drug or alcohol use this week'
+        text = 'I will talk to a counselor or health care provider ' + \
+               '(i.e. a social worker, a counselor, a CASC, a medical ' + \
+               'doctor, etc…) about my drug or alcohol use this week'
         o = GoalOptionFactory(text=text)
-        self.assertTrue(text in unicode(o))
+        self.assertTrue(text in smart_text(o))
 
 
 class GoalSettingResponseTest(TestCase):
@@ -45,12 +47,12 @@ class GoalSettingResponseTest(TestCase):
         self.o.full_clean()
 
     def test_unicode(self):
-        text = u'I will talk to a counselor or health care provider ' + \
-               u'(i.e. a social worker, a counselor, a CASC, a medical ' + \
-               u'doctor, etc…) about my drug or alcohol use this week'
+        text = 'I will talk to a counselor or health care provider ' + \
+               '(i.e. a social worker, a counselor, a CASC, a medical ' + \
+               'doctor, etc…) about my drug or alcohol use this week'
         o = GoalOptionFactory(text=text)
         resp = GoalSettingResponseFactory(option=o)
-        self.assertTrue(text in unicode(resp))
+        self.assertTrue(text in smart_text(resp))
 
     def test_find_by_module(self):
         h = get_hierarchy('main', '/pages/')
@@ -99,11 +101,11 @@ class GoalCheckInOptionTest(TestCase):
         self.o.full_clean()
 
     def test_unicode(self):
-        text = u'I will talk to a counselor or health care provider ' + \
-               u'(i.e. a social worker, a counselor, a CASC, a medical ' + \
-               u'doctor, etc…) about my drug or alcohol use this week'
+        text = 'I will talk to a counselor or health care provider ' + \
+               '(i.e. a social worker, a counselor, a CASC, a medical ' + \
+               'doctor, etc…) about my drug or alcohol use this week'
         o = GoalCheckInOptionFactory(text=text)
-        self.assertTrue(text in unicode(o))
+        self.assertTrue(text in smart_text(o))
 
 
 class GoalCheckInResponseTest(TestCase):
@@ -115,7 +117,7 @@ class GoalCheckInResponseTest(TestCase):
 
     def test_unicode(self):
         self.assertTrue(
-            self.o.goal_setting_response.user.username in unicode(self.o))
+            self.o.goal_setting_response.user.username in smart_text(self.o))
 
 
 class GoalSettingColumnTest(TestCase):
@@ -232,16 +234,16 @@ class GoalCheckInColumnTest(TransactionTestCase):
         column = GoalCheckInColumn(self.block, 0, 'progress', 'yes', 'Yes')
         self.assertEquals(
             column.metadata(), [
-                u'main',
-                u'%d_services_0_progress' % self.block.goal_setting_block.id,
+                'main',
+                '%d_services_0_progress' % self.block.goal_setting_block.id,
                 'Goal Check In Block', 'single choice',
-                u'Services 0 Checkin Progress', 'yes', 'Yes'
+                'Services 0 Checkin Progress', 'yes', 'Yes'
             ])
         column = GoalCheckInColumn(self.block, 0, 'other')
         self.assertEquals(column.metadata(), [
-            u'main', u'%d_services_0_other' % self.block.goal_setting_block.id,
+            'main', '%d_services_0_other' % self.block.goal_setting_block.id,
             'Goal Check In Block', 'string',
-            u'Services 0 Checkin Other'
+            'Services 0 Checkin Other'
         ])
 
     def test_user_values_no_responses(self):

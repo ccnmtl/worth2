@@ -1,13 +1,17 @@
+from __future__ import unicode_literals
+
 import re
 from django import forms
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible, smart_text
 from ordered_model.models import OrderedModel
 from pagetree.generic.models import BasePageBlock
 
 from worth2.main.utils import get_module_number
 
 
+@python_2_unicode_compatible
 class Statement(OrderedModel):
     """A negative statement.
 
@@ -20,10 +24,11 @@ class Statement(OrderedModel):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.text
 
 
+@python_2_unicode_compatible
 class Refutation(OrderedModel):
     """A Refutation is an option used to refute a negative statement.
 
@@ -36,10 +41,11 @@ class Refutation(OrderedModel):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.text
 
 
+@python_2_unicode_compatible
 class StatementBlock(BasePageBlock):
     """A PageBlock for choosing negative statements to refute.
 
@@ -91,7 +97,7 @@ class StatementBlock(BasePageBlock):
         return qs.count() > 0
 
     def submit(self, user, request_data):
-        for k, v in request_data.iteritems():
+        for k, v in request_data.items():
             statement = Statement.objects.get(pk=int(k))
             if v:
                 StatementResponse.objects.update_or_create(
@@ -114,7 +120,7 @@ class StatementBlock(BasePageBlock):
             user=user, statement_block=self
         ).delete()
 
-    def __unicode__(self):
+    def __str__(self):
         session_num = get_module_number(self.pageblock())
 
         if self.is_internal:
@@ -157,6 +163,7 @@ class StatementBlockForm(forms.ModelForm):
         }
 
 
+@python_2_unicode_compatible
 class RefutationBlock(BasePageBlock):
     """A PageBlock for refuting negative statements.
 
@@ -200,7 +207,7 @@ class RefutationBlock(BasePageBlock):
 
     def submit(self, user, request_data):
         # Loop through the refutations the user chose
-        for k, v in request_data.iteritems():
+        for k, v in request_data.items():
             match = re.match(r'^refutation-(\d+)$', k)
             if not match:
                 continue
@@ -228,7 +235,7 @@ class RefutationBlock(BasePageBlock):
             user=user, refutation_block=self
         ).delete()
 
-    def __unicode__(self):
+    def __str__(self):
         session_num = get_module_number(self.pageblock())
 
         return '%s [%d] id: %d' % (self.display_name, session_num, self.pk)
@@ -261,6 +268,7 @@ class RefutationBlockForm(forms.ModelForm):
         model = RefutationBlock
 
 
+@python_2_unicode_compatible
 class StatementResponse(models.Model):
     """User's statements they chose, for any self-talk scenario."""
 
@@ -275,13 +283,14 @@ class StatementResponse(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
+    def __str__(self):
         if self.other_text:
             return self.other_text
 
-        return unicode(self.statement)
+        return smart_text(self.statement)
 
 
+@python_2_unicode_compatible
 class RefutationResponse(models.Model):
     """User's responses to the self-talk quizzes."""
 
@@ -298,8 +307,8 @@ class RefutationResponse(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
+    def __str__(self):
         if self.other_text:
             return self.other_text
 
-        return unicode(self.refutation)
+        return smart_text(self.refutation)

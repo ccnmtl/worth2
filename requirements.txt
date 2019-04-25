@@ -19,7 +19,7 @@ configparser==3.7.4
 entrypoints==0.3  # for flake8
 flake8==3.7.7
 tornado==4.5.3 # pyup: <5.0
-BeautifulSoup==3.2.1
+beautifulsoup4==4.6.0
 fuzzywuzzy==0.17.0
 sure==1.4.11
 ipdb==0.12
@@ -83,7 +83,8 @@ django-waffle==0.16.0
 django-jenkins==0.110.0
 django-smoketest==1.1.0
 django-extensions==2.1.6
-typing==3.6.6 # needed for django-extensions
+# typing is needed for django-extensions
+typing==3.6.6; python_version < '3.4'
 django-stagingcontext==0.1.0
 django-impersonate==1.4
 django-registration-redux==2.6

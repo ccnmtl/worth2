@@ -1,9 +1,11 @@
+from __future__ import unicode_literals
+
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.template.defaultfilters import slugify
-from django.utils.encoding import smart_str
+from django.utils.encoding import python_2_unicode_compatible, smart_text
 from ordered_model.models import OrderedModel
 from pagetree.generic.models import BasePageBlock
 from pagetree.reports import ReportColumnInterface, ReportableInterface
@@ -18,6 +20,7 @@ GOAL_TYPES = (
 )
 
 
+@python_2_unicode_compatible
 class GoalSettingBlock(BasePageBlock):
     """A PageBlock for allowing participants to set goals.
 
@@ -61,9 +64,9 @@ class GoalSettingBlock(BasePageBlock):
         c = self.goal_setting_responses.filter(user=user).count()
         return c > 0
 
-    def __unicode__(self):
+    def __str__(self):
         session_num = get_module_number(self.pageblock())
-        return unicode('%s goals [Session %d] id: %d' % (
+        return smart_text('%s goals [Session %d] id: %d' % (
             self.get_goal_type_display(),
             session_num,
             self.pk))
@@ -92,7 +95,7 @@ class GoalSettingBlock(BasePageBlock):
     def report_metadata(self):
         rows = []
         options = GoalOption.objects.filter(goal_type=self.goal_type)
-        for idx in xrange(0, self.goal_amount):
+        for idx in range(0, self.goal_amount):
             for option in options:  # 1 row per option
                 col = GoalSettingColumn(self, idx, 'option', option)
                 rows.append(col)
@@ -102,7 +105,7 @@ class GoalSettingBlock(BasePageBlock):
 
     def report_values(self):
         rows = []
-        for idx in xrange(0, self.goal_amount):
+        for idx in range(0, self.goal_amount):
             rows.append(GoalSettingColumn(self, idx, 'option'))
             rows.append(GoalSettingColumn(self, idx, 'other_text'))
             rows.append(GoalSettingColumn(self, idx, 'text'))
@@ -115,6 +118,7 @@ class GoalSettingBlockForm(forms.ModelForm):
         fields = '__all__'
 
 
+@python_2_unicode_compatible
 class GoalOption(OrderedModel):
     """GoalSettingBlock dropdowns are populated by GoalOptions.
 
@@ -135,8 +139,8 @@ class GoalOption(OrderedModel):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
-        return unicode(self.text)
+    def __str__(self):
+        return smart_text(self.text)
 
 
 class GoalSettingResponseManager(models.Manager):
@@ -155,7 +159,7 @@ class GoalSettingResponseManager(models.Manager):
             'goals',
             'goalsettingblock',
             module,
-            lambda (b): b.block().goal_type == goaltype)
+            lambda b: b.block().goal_type == goaltype)
         if goalsettingblock:
             return self.filter(
                 goal_setting_block=goalsettingblock.block(),
@@ -164,6 +168,7 @@ class GoalSettingResponseManager(models.Manager):
             self.none()
 
 
+@python_2_unicode_compatible
 class GoalSettingResponse(models.Model):
     """Participant responses to 'main' and 'extra' goals."""
 
@@ -187,9 +192,9 @@ class GoalSettingResponse(models.Model):
     class Meta:
         unique_together = (('goal_setting_block', 'user', 'form_id'),)
 
-    def __unicode__(self):
-        return unicode('"%s" from %s' % (unicode(self.option),
-                                         unicode(self.user)))
+    def __str__(self):
+        return '"{}" from {}'.format(
+            smart_text(self.option), smart_text(self.user))
 
 
 class GoalSettingColumn(ReportColumnInterface):
@@ -214,7 +219,7 @@ class GoalSettingColumn(ReportColumnInterface):
             metadata.append('single choice')
             metadata.append(self.description)
             metadata.append(self.option.id)
-            metadata.append(smart_str(self.option.text))
+            metadata.append(smart_text(self.option.text))
         else:
             metadata.append('string')
             metadata.append(self.description)
@@ -235,6 +240,7 @@ class GoalSettingColumn(ReportColumnInterface):
             return getattr(response, self.field) or ''  # replace None with ''
 
 
+@python_2_unicode_compatible
 class GoalCheckInOption(OrderedModel):
     """Editable options for the goal check-in form."""
 
@@ -245,10 +251,11 @@ class GoalCheckInOption(OrderedModel):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
-        return unicode(self.text)
+    def __str__(self):
+        return smart_text(self.text)
 
 
+@python_2_unicode_compatible
 class GoalCheckInResponse(models.Model):
     """Participant responses for the Check In page.
 
@@ -276,10 +283,10 @@ class GoalCheckInResponse(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
-        return unicode('"%s" from %s' % (
-            unicode(self.get_i_will_do_this_display()),
-            unicode(self.goal_setting_response.user)))
+    def __str__(self):
+        return smart_text('"%s" from %s' % (
+            smart_text(self.get_i_will_do_this_display()),
+            smart_text(self.goal_setting_response.user)))
 
 
 class GoalCheckInPageBlock(BasePageBlock):
@@ -341,7 +348,7 @@ class GoalCheckInPageBlock(BasePageBlock):
 
     def report_metadata(self):
         rows = []
-        for idx in xrange(0, self.goal_setting_block.goal_amount):
+        for idx in range(0, self.goal_setting_block.goal_amount):
             for chc in self.PROGRESS_CHOICES:
                 col = GoalCheckInColumn(self, idx, "progress", chc[0], chc[1])
                 rows.append(col)
@@ -353,7 +360,7 @@ class GoalCheckInPageBlock(BasePageBlock):
 
     def report_values(self):
         rows = []
-        for idx in xrange(0, self.goal_setting_block.goal_amount):
+        for idx in range(0, self.goal_setting_block.goal_amount):
             rows.append(GoalCheckInColumn(self, idx, "progress"))
             rows.append(GoalCheckInColumn(self, idx, "barrier"))
             rows.append(GoalCheckInColumn(self, idx, "other"))
@@ -399,7 +406,7 @@ class GoalCheckInColumn(ReportColumnInterface):
             metadata.append('single choice')
             metadata.append(self.description)
             metadata.append(self.answer_value)
-            metadata.append(smart_str(self.answer_label))
+            metadata.append(smart_text(self.answer_label))
 
         return metadata
 

@@ -55,6 +55,6 @@ def get_aggregate_level(user, cls):
 
     level = 0
     for r in responses:
-        level = max(r.value, level)
+        level = max(int(r.value), level)
 
     return int(level)
