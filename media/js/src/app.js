@@ -10,7 +10,6 @@ define([
     'views/goal-checkin-form',
     'views/locked-video',
     'views/self-talk-road',
-    'views/locker',
     'views/quiz-validator',
     'js-cookie'
 ], function(
@@ -18,7 +17,7 @@ define([
     CreateParticipantView, EditParticipantView, SignInParticipantView,
     SignOutParticipantView,
     ManageParticipantFilter, SignInParticipantFilter, GoalSettingFormView,
-    GoalCheckinFormView, LockedVideo, SelfTalkRoad, Locker, QuizValidator,
+    GoalCheckinFormView, LockedVideo, SelfTalkRoad, QuizValidator,
     Cookies
 ) {
     $(function() {
@@ -58,8 +57,6 @@ define([
         new LockedVideo();
 
         new SelfTalkRoad();
-
-        new Locker();
 
         new QuizValidator();
     };

@@ -1,6 +1,7 @@
 from django import http
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse_lazy
@@ -24,14 +25,14 @@ from worth2.main.models import Encounter, Participant, Location
 from worth2.main.reports import ParticipantReport
 from worth2.main.utils import (
     get_first_block_of_type, get_quiz_responses_by_css_in_module,
-    last_location_url, percent_complete_by_module
+    last_location_url, percent_complete_by_module,
+    percent_complete_hierarchy
 )
 from worth2.protectivebehaviors.utils import remove_empty_submission
 from worth2.selftalk.mixins import (
     SelfTalkStatementViewMixin, SelfTalkRefutationViewMixin
 )
 from worth2.ssnm.models import Supporter
-from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 def get_quiz_blocks(css_class):
@@ -54,10 +55,11 @@ class DashboardView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx['last_location'] = last_location_url(self.request.user)
+        ctx['percent_complete'] = percent_complete_hierarchy(self.request.user)
 
         ctx['completed'] = 0
         for x in range(1, 6):
-            if percent_complete_by_module(self.request.user, x):
+            if percent_complete_by_module(self.request.user, x) == 100:
                 ctx['completed'] += 1
 
         return ctx

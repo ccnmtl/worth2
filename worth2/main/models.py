@@ -410,7 +410,6 @@ class VideoBlock(BasePageBlock):
     display_name = 'YouTube Video Block'
     template_file = 'main/video_block.html'
     js_template_file = 'main/video_block_js.html'
-    css_template_file = 'main/video_block_css.html'
 
     video_id = models.CharField(
         max_length=255, null=True,

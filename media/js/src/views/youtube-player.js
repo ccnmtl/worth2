@@ -1,5 +1,4 @@
-/* global lockedVideoId: true, YT: true, onPlayerReady: true */
-/* global onPlayerStateChange: true */
+/* global lockedVideoId: true, YT: true, onPlayerStateChange: true */
 
 define([
     'jquery',
@@ -28,13 +27,12 @@ define([
                 height: 390,
                 playerVars: {
                     'autoplay': 1,
-                    'controls': 0,
+                    'controls': 1,
                     'modestbranding': 1,
                     'rel': 0,
                     'showinfo': 0
                 },
                 events: {
-                    'onReady': onPlayerReady,
                     'onStateChange': onPlayerStateChange
                 }
             });
@@ -46,11 +44,7 @@ define([
      */
     function recordWatchedVideo(videoId) {
         var watchedVideo = new WatchedVideo({'video_id': videoId});
-        watchedVideo.save(null, {
-            success: function() {
-                $('li.next').removeClass('disabled');
-            }
-        });
+        watchedVideo.save();
     }
 
     /**
@@ -59,29 +53,7 @@ define([
      */
     window.onPlayerStateChange = function(event) {
         if (event.data === YT.PlayerState.ENDED) {
-            // The video ended, so unlock the 'next' button.
             recordWatchedVideo(lockedVideoId);
-        }
-    };
-
-    window.onPlayerReady = function(event) {
-        var player = event.target;
-        var seconds = player.getDuration();
-        var videoDuration = utils.secondsToHms(seconds);
-
-        if (videoDuration.length > 0) {
-            var $videoDuration = $('#worth-youtube-video-duration');
-            // If there's no video duration element present (like on
-            // a myth/fact video), then create it.
-            if ($videoDuration.length === 0) {
-                // Need to get out of the iframe, find the closest
-                // parent <div>
-                $('#youtube-player').closest('div')
-                    .append('<div id="worth-youtube-video-duration"></div>');
-                $videoDuration = $('#worth-youtube-video-duration');
-            }
-            $videoDuration.html(
-                'Video Duration: <time>' + videoDuration + '</time>');
         }
     };
 

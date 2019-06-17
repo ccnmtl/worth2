@@ -51,6 +51,10 @@ li.disabled>a:before {
 
 .jumbotron-special {color: #fff; background-color: rgb(147, 39, 79);}
 
+.video-block {
+    margin-bottom: 10px;
+}
+
 /* LOGIN PAGE */
 
 .splash-photo {
