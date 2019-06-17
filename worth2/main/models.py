@@ -24,7 +24,8 @@ class InactiveUserProfile(BaseUserProfile):
     # Participants have a created_by attr pointing to the facilitator
     # that created them.
     created_by = models.ForeignKey(User, null=True, blank=True,
-                                   related_name='created_by')
+                                   related_name='created_by',
+                                   on_delete=models.CASCADE)
     is_archived = models.BooleanField(default=False)
 
     def is_participant(self):
@@ -218,10 +219,12 @@ class Participant(InactiveUserProfile):
     # first_location is set the first time that a facilitator signs in a
     # participant. This is used to infer the participant's cohort group.
     first_location = models.ForeignKey(Location, blank=True, null=True,
-                                       related_name='first_location')
+                                       related_name='first_location',
+                                       on_delete=models.CASCADE)
 
     # location is set each time a facilitator signs in a participant.
-    location = models.ForeignKey(Location, blank=True, null=True)
+    location = models.ForeignKey(Location, blank=True, null=True,
+                                 on_delete=models.CASCADE)
 
     # A study ID is pre-generated for each participant, and then entered
     # into our system.
@@ -241,7 +244,8 @@ class Participant(InactiveUserProfile):
                                  validators=[cohort_id_validator])
 
     # Participants can choose an avatar after their user is created.
-    avatar = models.ForeignKey(Avatar, blank=True, null=True)
+    avatar = models.ForeignKey(Avatar, blank=True, null=True,
+                               on_delete=models.CASCADE)
 
     objects = ParticipantManager()
 
@@ -313,16 +317,16 @@ class Encounter(models.Model):
     An Encounter is created each time a facilitator logs in a participant.
     """
 
-    facilitator = models.ForeignKey(User)
-    participant = models.ForeignKey(Participant)
-    location = models.ForeignKey(Location)
+    facilitator = models.ForeignKey(User, on_delete=models.CASCADE)
+    participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
     session_type = models.CharField(
         max_length=255,
         choices=(('regular', 'Regular'), ('makeup', 'Make-Up')),
         default='regular',
     )
 
-    section = models.ForeignKey(Section)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE)
     """The section that this participant logged in to"""
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -446,7 +450,8 @@ class WatchedVideo(models.Model):
     class Meta:
         unique_together = ('user', 'video_id')
 
-    user = models.ForeignKey(User, related_name='watched_videos')
+    user = models.ForeignKey(User, related_name='watched_videos',
+                             on_delete=models.CASCADE)
     video_id = models.CharField(max_length=255, db_index=True,
                                 help_text='The youtube video ID',
                                 null=True)

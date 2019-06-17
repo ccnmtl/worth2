@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='supporter',
             name='user',
-            field=models.ForeignKey(related_name='supporters', to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(related_name='supporters', to=settings.AUTH_USER_MODEL, null=True, on_delete=models.deletion.CASCADE),
             preserve_default=True,
         ),
     ]

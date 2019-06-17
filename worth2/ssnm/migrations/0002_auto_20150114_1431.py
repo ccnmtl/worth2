@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='supporter',
             name='participant',
-            field=models.ForeignKey(related_name='supporters', to='main.Participant'),
+            field=models.ForeignKey(related_name='supporters', to='main.Participant', on_delete=models.deletion.CASCADE),
             preserve_default=True,
         ),
     ]

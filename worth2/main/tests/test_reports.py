@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 import datetime
 
 from django.core.cache import cache
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.test import TestCase
 from django.test.testcases import TransactionTestCase
 from pagetree.helpers import get_hierarchy

@@ -173,10 +173,11 @@ class GoalSettingResponse(models.Model):
     """Participant responses to 'main' and 'extra' goals."""
 
     goal_setting_block = models.ForeignKey(
-        GoalSettingBlock, related_name='goal_setting_responses')
-    user = models.ForeignKey(User)
+        GoalSettingBlock, related_name='goal_setting_responses',
+        on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    option = models.ForeignKey(GoalOption)
+    option = models.ForeignKey(GoalOption, on_delete=models.CASCADE)
     other_text = models.TextField(blank=True, null=True)
     text = models.TextField(blank=True, null=True)
 
@@ -265,7 +266,8 @@ class GoalCheckInResponse(models.Model):
 
     goal_setting_response = models.OneToOneField(
         GoalSettingResponse,
-        related_name='goal_checkin_response'
+        related_name='goal_checkin_response',
+        on_delete=models.CASCADE
     )
 
     # This field is actually "How did it go?"
@@ -277,7 +279,8 @@ class GoalCheckInResponse(models.Model):
             ('no', 'I haven\'t started this goal.'),
         ))
 
-    what_got_in_the_way = models.ForeignKey(GoalCheckInOption, null=True)
+    what_got_in_the_way = models.ForeignKey(
+        GoalCheckInOption, null=True, on_delete=models.CASCADE)
     other = models.TextField(blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -293,7 +296,8 @@ class GoalCheckInPageBlock(BasePageBlock):
     display_name = 'Goal Check In Block'
     template_file = 'goals/goal_check_in_block.html'
 
-    goal_setting_block = models.ForeignKey(GoalSettingBlock, null=True)
+    goal_setting_block = models.ForeignKey(
+        GoalSettingBlock, null=True, on_delete=models.CASCADE)
 
     PROGRESS_CHOICES = (
         ('yes', 'I did it!'),
@@ -416,7 +420,8 @@ class GoalCheckInColumn(ReportColumnInterface):
             goal_setting_block=self.block.goal_setting_block)
 
         response = GoalCheckInResponse.objects.filter(
-            goal_setting_response=responses).order_by('-updated_at').first()
+            goal_setting_response__in=responses).order_by(
+                '-updated_at').first()
 
         if response is None:
             return ''

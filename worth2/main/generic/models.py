@@ -1,7 +1,7 @@
 from __future__ import division, unicode_literals
 
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible, smart_text
 from pagetree.models import Hierarchy, UserPageVisit
@@ -14,7 +14,8 @@ class BaseUserProfile(models.Model):
     class Meta:
         abstract = True
 
-    user = models.OneToOneField(User, related_name='profile')
+    user = models.OneToOneField(
+        User, related_name='profile', on_delete=models.CASCADE)
     notes = models.TextField(null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True, editable=False)

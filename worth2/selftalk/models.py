@@ -35,7 +35,7 @@ class Refutation(OrderedModel):
     Each Refutation is tied to a Statement.
     """
 
-    statement = models.ForeignKey(Statement)
+    statement = models.ForeignKey(Statement, on_delete=models.CASCADE)
     text = models.TextField()
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -178,7 +178,8 @@ class RefutationBlock(BasePageBlock):
     template_file = 'selftalk/refutation_block.html'
     css_template_file = 'selftalk/selftalk_css.html'
 
-    statement_block = models.ForeignKey(StatementBlock)
+    statement_block = models.ForeignKey(StatementBlock,
+                                        on_delete=models.CASCADE)
 
     def allow_redo(self):
         return True
@@ -275,9 +276,10 @@ class StatementResponse(models.Model):
     class Meta:
         unique_together = ('statement', 'statement_block', 'user')
 
-    statement = models.ForeignKey(Statement)
-    statement_block = models.ForeignKey(StatementBlock)
-    user = models.ForeignKey(User)
+    statement = models.ForeignKey(Statement, on_delete=models.CASCADE)
+    statement_block = models.ForeignKey(StatementBlock,
+                                        on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     other_text = models.TextField(blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -298,10 +300,14 @@ class RefutationResponse(models.Model):
         unique_together = ('refutation', 'refutation_block', 'user')
 
     # refutation is null if this is an 'Other' option
-    refutation = models.ForeignKey(Refutation, null=True)
-    statement = models.ForeignKey(Statement, null=True)
-    refutation_block = models.ForeignKey(RefutationBlock)
-    user = models.ForeignKey(User)
+    refutation = models.ForeignKey(Refutation, null=True,
+                                   on_delete=models.CASCADE)
+    statement = models.ForeignKey(Statement, null=True,
+                                  on_delete=models.CASCADE)
+    refutation_block = models.ForeignKey(RefutationBlock,
+                                         on_delete=models.CASCADE)
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE)
     other_text = models.TextField(blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)

@@ -25,7 +25,8 @@ class Supporter(models.Model):
         ('N', 'Negative'),
     )
 
-    user = models.ForeignKey(User, null=True, related_name='supporters')
+    user = models.ForeignKey(User, null=True, related_name='supporters',
+                             on_delete=models.CASCADE)
     name = models.TextField()
 
     closeness = models.CharField(

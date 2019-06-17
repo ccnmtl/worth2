@@ -45,9 +45,9 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('refutation', models.ForeignKey(to='selftalk.Refutation')),
-                ('refutation_block', models.ForeignKey(to='selftalk.RefutationBlock')),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('refutation', models.ForeignKey(to='selftalk.Refutation', on_delete=models.deletion.CASCADE)),
+                ('refutation_block', models.ForeignKey(to='selftalk.RefutationBlock', on_delete=models.deletion.CASCADE)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.deletion.CASCADE)),
             ],
             options={
             },
@@ -88,9 +88,9 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('statement', models.ForeignKey(to='selftalk.Statement')),
-                ('statement_block', models.ForeignKey(to='selftalk.StatementBlock')),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('statement', models.ForeignKey(to='selftalk.Statement', on_delete=models.deletion.CASCADE)),
+                ('statement_block', models.ForeignKey(to='selftalk.StatementBlock', on_delete=models.deletion.CASCADE)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.deletion.CASCADE)),
             ],
             options={
             },
@@ -107,13 +107,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='refutationblock',
             name='statement_block',
-            field=models.ForeignKey(to='selftalk.StatementBlock'),
+            field=models.ForeignKey(to='selftalk.StatementBlock', on_delete=models.deletion.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='refutation',
             name='statement',
-            field=models.ForeignKey(to='selftalk.Statement'),
+            field=models.ForeignKey(to='selftalk.Statement', on_delete=models.deletion.CASCADE),
             preserve_default=True,
         ),
     ]

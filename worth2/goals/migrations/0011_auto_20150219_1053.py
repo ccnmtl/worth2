@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='goalcheckinpageblock',
             name='goal_setting_block',
-            field=models.ForeignKey(to='goals.GoalSettingBlock', null=True),
+            field=models.ForeignKey(to='goals.GoalSettingBlock', null=True, on_delete=models.deletion.CASCADE),
             preserve_default=True,
         ),
     ]

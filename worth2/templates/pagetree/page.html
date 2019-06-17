@@ -121,7 +121,7 @@
 {% endif %}
 
 {% comment %}Do not allow users to next into the next module{% endcomment %}
-{% if next_section and next_section.depth > 2 %}
+{% if next_section and next_section.depth > 1 %}
     <li class="next">
         <a href="{{next_section.get_absolute_url}}">{{next_section.label}} &rarr;</a>
     </li>

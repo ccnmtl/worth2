@@ -55,11 +55,11 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Participant',
             fields=[
-                ('inactiveuserprofile_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='main.InactiveUserProfile')),
+                ('inactiveuserprofile_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='main.InactiveUserProfile', on_delete=models.deletion.CASCADE)),
                 ('study_id', models.CharField(db_index=True, unique=True, max_length=255, validators=[django.core.validators.RegexValidator(regex=b'^7.*$', message=b"That study ID isn't valid")])),
-                ('avatar', models.ForeignKey(blank=True, to='main.Avatar', null=True)),
-                ('first_location', models.ForeignKey(related_name='first_location', blank=True, to='main.Location', null=True)),
-                ('location', models.ForeignKey(blank=True, to='main.Location', null=True)),
+                ('avatar', models.ForeignKey(blank=True, to='main.Avatar', null=True, on_delete=models.deletion.CASCADE)),
+                ('first_location', models.ForeignKey(related_name='first_location', blank=True, to='main.Location', null=True, on_delete=models.deletion.CASCADE)),
+                ('location', models.ForeignKey(blank=True, to='main.Location', null=True, on_delete=models.deletion.CASCADE)),
             ],
             options={
             },
@@ -71,9 +71,9 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('facilitator', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
-                ('location', models.ForeignKey(to='main.Location')),
-                ('participant', models.ForeignKey(to='main.Participant')),
+                ('facilitator', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.deletion.CASCADE)),
+                ('location', models.ForeignKey(to='main.Location', on_delete=models.deletion.CASCADE)),
+                ('participant', models.ForeignKey(to='main.Participant', on_delete=models.deletion.CASCADE)),
             ],
             options={
             },
@@ -82,13 +82,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='inactiveuserprofile',
             name='created_by',
-            field=models.ForeignKey(related_name='created_by', blank=True, to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(related_name='created_by', blank=True, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.deletion.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='inactiveuserprofile',
             name='user',
-            field=models.OneToOneField(related_name='profile', to=settings.AUTH_USER_MODEL),
+            field=models.OneToOneField(related_name='profile', to=settings.AUTH_USER_MODEL, on_delete=models.deletion.CASCADE),
             preserve_default=True,
         ),
     ]

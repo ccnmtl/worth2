@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='goalsettingresponse',
             name='goal_setting_block',
-            field=models.ForeignKey(related_name='goal_setting_responses', to='goals.GoalSettingBlock'),
+            field=models.ForeignKey(related_name='goal_setting_responses', to='goals.GoalSettingBlock', on_delete=models.deletion.CASCADE),
             preserve_default=True,
         ),
     ]

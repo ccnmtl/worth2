@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='RateMyRiskQuiz',
             fields=[
-                ('quiz_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='quizblock.Quiz')),
+                ('quiz_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='quizblock.Quiz', on_delete=models.deletion.CASCADE)),
                 ('quiz_class', models.CharField(help_text=b'Required', max_length=255)),
             ],
             options={
