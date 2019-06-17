@@ -1,7 +1,64 @@
 import re
+
 from django.contrib.contenttypes.models import ContentType
-from pagetree.models import PageBlock, Section
+from pagetree.models import PageBlock, Section, Hierarchy, UserPageVisit
 from quizblock.models import Response
+
+
+def default_location():
+    hierarchy = Hierarchy.get_hierarchy('main')
+    return hierarchy.get_root()
+
+
+def last_access_hierarchy(user):
+    """Returns the most recent location this user accessed.
+
+    :rtype: UserPageVisit
+    """
+    return UserPageVisit.objects.filter(
+        user=user).order_by('-last_visit').first()
+
+
+def percent_complete_by_pages(user, pages):
+    page_count = float(pages.count())
+
+    if page_count > 0:
+        visits = UserPageVisit.objects.filter(
+            user=user, section__in=pages).count()
+        return int(visits / page_count * 100)
+    else:
+        return 0
+
+
+def percent_complete_hierarchy(user):
+    hierarchy = Hierarchy.get_hierarchy('main')
+    pages = hierarchy.get_root().get_descendants()
+    return percent_complete_by_pages(user, pages)
+
+
+def last_location_url(user):
+    if percent_complete_hierarchy(user) == 0:
+        return default_location()
+    else:
+        return last_access_hierarchy(user).section.get_absolute_url()
+
+
+def percent_complete_by_module(user, module_num):
+    """
+    Return the percentage of the given module that has been completed
+    by this participant. Sections are considered "completed" if they
+    have been accessed, (i.e., if there is a UserPageVisit)
+
+    :rtype: int
+    """
+    main = Hierarchy.get_hierarchy('main')
+    module_section = main.find_section_from_path(
+        'session-{:d}'.format(module_num))
+    if not module_section:
+        return 0
+
+    pages = module_section.get_descendants()
+    return percent_complete_by_pages(user, pages)
 
 
 def get_first_block_in_module(app_label, model, session_num, blocktest=None):

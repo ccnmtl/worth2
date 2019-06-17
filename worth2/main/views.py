@@ -18,18 +18,20 @@ import unicodecsv
 
 from worth2.goals.mixins import GoalCheckInViewMixin, GoalSettingViewMixin
 from worth2.goals.models import GoalSettingResponse
-from worth2.main.auth import generate_password, user_is_participant
+from worth2.main.auth import generate_password
 from worth2.main.forms import SignInParticipantForm
 from worth2.main.models import Encounter, Participant, Location
 from worth2.main.reports import ParticipantReport
 from worth2.main.utils import (
-    get_first_block_of_type, get_quiz_responses_by_css_in_module
+    get_first_block_of_type, get_quiz_responses_by_css_in_module,
+    last_location_url, percent_complete_by_module
 )
 from worth2.protectivebehaviors.utils import remove_empty_submission
 from worth2.selftalk.mixins import (
     SelfTalkStatementViewMixin, SelfTalkRefutationViewMixin
 )
 from worth2.ssnm.models import Supporter
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 def get_quiz_blocks(css_class):
@@ -46,22 +48,19 @@ def has_responses(section):
     return quizzes != []
 
 
-class IndexView(TemplateView):
-    template_name = 'main/index.html'
+class DashboardView(LoginRequiredMixin, TemplateView):
+    template_name = 'main/dashboard.html'
 
-    def dispatch(self, *args, **kwargs):
-        user = self.request.user
-        if user_is_participant(user):
-            last_location = user.profile.last_location_url()
-            if last_location == '/':
-                # To prevent a redirect loop, if the participant's last
-                # location is this index page, then default to showing them
-                # the pagetree root.
-                return http.HttpResponseRedirect('/pages/')
-            else:
-                return http.HttpResponseRedirect(last_location)
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['last_location'] = last_location_url(self.request.user)
 
-        return super(IndexView, self).dispatch(*args, **kwargs)
+        ctx['completed'] = 0
+        for x in range(1, 6):
+            if percent_complete_by_module(self.request.user, x):
+                ctx['completed'] += 1
+
+        return ctx
 
 
 class ManageParticipants(ListView):
