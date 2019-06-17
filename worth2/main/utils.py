@@ -38,7 +38,7 @@ def percent_complete_hierarchy(user):
 
 def last_location_url(user):
     if percent_complete_hierarchy(user) == 0:
-        return default_location()
+        return default_location().get_absolute_url()
     else:
         return last_access_hierarchy(user).section.get_absolute_url()
 

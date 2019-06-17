@@ -43,10 +43,6 @@
 
 {% block content %}
 
-<script>
-    var isSectionUnlocked = {% is_section_unlocked section user %};
-</script>
-
 <div id="content">
     {% if needs_submit and not is_submitted %}
     <form action="." method="post">{% csrf_token %}
@@ -126,13 +122,8 @@
 
 {% comment %}Do not allow users to next into the next module{% endcomment %}
 {% if next_section and next_section.depth > 2 %}
-    {% comment %}
-      The "next" link gets rendered as enabled by default. locker.js
-      disables this link if certain conditions are met.
-    {% endcomment %}
     <li class="next">
-        <a href="{{next_section.get_absolute_url}}"
-           >{{next_section.label}} &rarr;</a>
+        <a href="{{next_section.get_absolute_url}}">{{next_section.label}} &rarr;</a>
     </li>
 {% endif %}
 </ul>
