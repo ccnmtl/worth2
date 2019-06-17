@@ -62,7 +62,7 @@ class AvatarSelectorBlockTest(LoggedInParticipantTestMixin, TestCase):
 
 class BasicTest(TestCase):
     def test_root(self):
-        response = self.client.get("/")
+        response = self.client.get('/')
         self.assertRedirects(response, '/accounts/login/?next=/')
 
     def test_smoketest(self):

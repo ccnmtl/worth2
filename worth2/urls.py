@@ -51,10 +51,7 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls',
                                namespace='rest_framework')),
     url(r'^registration/', include('registration.backends.default.urls')),
-    url(r'^$',
-        user_passes_test(lambda u: u.is_authenticated)(
-            views.IndexView.as_view()),
-        name='root'),
+    url(r'^$', views.DashboardView.as_view(), name='root'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^_impersonate/', include('impersonate.urls')),
     url(r'^stats/$', TemplateView.as_view(template_name="stats.html")),
