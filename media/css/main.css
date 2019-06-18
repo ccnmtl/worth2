@@ -29,6 +29,52 @@ label {
     margin: 10px 10px 0 0;
 }
 
+.course-progress {
+    width: 100%;
+    height: 200px;
+    margin-top: 4rem;
+    padding: 2rem;
+    border: 1px solid #ddd;
+}
+
+.worth-facilitator-dashboard .subhead {
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin-bottom: .5rem;
+}
+
+.worth-facilitator-dashboard .btn-lg {
+    margin-top: 1rem;
+}
+
+.worth-facilitator-dashboard .img-circle {
+    max-width: 165px !important;
+}
+
+.flex-container {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  -ms-box-orient: horizontal;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -moz-flex;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.flex-item {
+    padding: 10px;
+    width: 200px;
+    height: 225px;
+    margin: 10px;
+    font-size: 2em;
+    text-align: center;
+}
+
 /* Deactivate any link that's in a disabled list-item. */
 li.disabled>a {
     cursor: default;
