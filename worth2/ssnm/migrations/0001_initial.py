@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('provides_practical_support', models.BooleanField(default=False)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('participant', models.ForeignKey(to='main.Participant')),
+                ('participant', models.ForeignKey(to='main.Participant', on_delete=models.deletion.CASCADE)),
             ],
             options={
             },

@@ -32,7 +32,7 @@ def get_positive_responses_from_blocks(blocks, user):
     return sorted_answers
 
 
-@register.assignment_tag
+@register.simple_tag
 def get_quiz_summary(user, cls):
     """Aggregate a yes/no quiz by collecting all positive responses.
 
@@ -44,7 +44,7 @@ def get_quiz_summary(user, cls):
     return get_positive_responses_from_blocks(get_quiz_blocks(cls), user)
 
 
-@register.assignment_tag
+@register.simple_tag
 def get_aggregate_level(user, cls):
     """
     Returns the max value for responses for 'user' on pageblocks associated

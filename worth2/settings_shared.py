@@ -64,9 +64,7 @@ JSON_API_PLURALIZE_TYPES = True
 PAGEBLOCKS = [
     'pageblocks.TextBlock',
     'pageblocks.HTMLBlock',
-    'pageblocks.PullQuoteBlock',
     'main.SimpleImageBlock',
-    'pageblocks.ImagePullQuoteBlock',
     'quizblock.Quiz',
     'main.AvatarSelectorBlock',
     'main.AvatarBlock',

@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='goalslotsubmission',
             name='user',
-            field=models.ForeignKey(default=None, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(default=None, to=settings.AUTH_USER_MODEL, on_delete=models.deletion.CASCADE),
             preserve_default=False,
         ),
     ]

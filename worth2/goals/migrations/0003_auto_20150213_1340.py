@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('text', models.TextField()),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('goal_setting_block', models.ForeignKey(to='goals.GoalSettingBlock')),
+                ('goal_setting_block', models.ForeignKey(to='goals.GoalSettingBlock', on_delete=models.deletion.CASCADE)),
             ],
             options={
                 'ordering': ('order',),
@@ -49,8 +49,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('goal_setting_block', models.ForeignKey(to='goals.GoalSettingBlock')),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('goal_setting_block', models.ForeignKey(to='goals.GoalSettingBlock', on_delete=models.deletion.CASCADE)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.deletion.CASCADE)),
             ],
             options={
             },
@@ -95,13 +95,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='goalsettingresponse',
             name='goal_setting_submission',
-            field=models.ForeignKey(to='goals.GoalSettingSubmission'),
+            field=models.ForeignKey(to='goals.GoalSettingSubmission', on_delete=models.deletion.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='goalsettingresponse',
             name='option',
-            field=models.ForeignKey(to='goals.GoalOption'),
+            field=models.ForeignKey(to='goals.GoalOption', on_delete=models.deletion.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(

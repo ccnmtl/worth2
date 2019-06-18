@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='goalcheckinresponse',
             name='what_got_in_the_way',
-            field=models.ForeignKey(to='goals.GoalCheckInOption'),
+            field=models.ForeignKey(to='goals.GoalCheckInOption', on_delete=models.deletion.CASCADE),
             preserve_default=True,
         ),
         migrations.AlterField(

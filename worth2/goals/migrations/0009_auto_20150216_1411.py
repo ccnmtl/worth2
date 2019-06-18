@@ -30,13 +30,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='goalcheckinresponse',
             name='what_got_in_the_way',
-            field=models.ForeignKey(default=None, to='goals.GoalOption'),
+            field=models.ForeignKey(default=None, to='goals.GoalOption', on_delete=models.deletion.CASCADE),
             preserve_default=False,
         ),
         migrations.AlterField(
             model_name='goalcheckinresponse',
             name='goal_setting_response',
-            field=models.ForeignKey(to='goals.GoalSettingResponse', unique=True),
+            field=models.ForeignKey(to='goals.GoalSettingResponse', unique=True, on_delete=models.deletion.CASCADE),
             preserve_default=True,
         ),
         migrations.AlterField(

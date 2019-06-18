@@ -20,8 +20,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('user', models.ForeignKey(related_name='watched_videos', to=settings.AUTH_USER_MODEL)),
-                ('video_block', models.ForeignKey(to='main.VideoBlock')),
+                ('user', models.ForeignKey(related_name='watched_videos', to=settings.AUTH_USER_MODEL, on_delete=models.deletion.CASCADE)),
+                ('video_block', models.ForeignKey(to='main.VideoBlock', on_delete=models.deletion.CASCADE)),
             ],
             options={
             },

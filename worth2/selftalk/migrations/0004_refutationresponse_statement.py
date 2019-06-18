@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='refutationresponse',
             name='statement',
-            field=models.ForeignKey(to='selftalk.Statement', null=True),
+            field=models.ForeignKey(to='selftalk.Statement', null=True, on_delete=models.deletion.CASCADE),
             preserve_default=True,
         ),
     ]

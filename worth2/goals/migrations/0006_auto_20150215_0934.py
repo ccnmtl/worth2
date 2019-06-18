@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 ('other', models.TextField(null=True, blank=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('goal_setting_response', models.ForeignKey(to='goals.GoalSettingResponse')),
+                ('goal_setting_response', models.ForeignKey(to='goals.GoalSettingResponse', on_delete=models.deletion.CASCADE)),
             ],
             options={
             },

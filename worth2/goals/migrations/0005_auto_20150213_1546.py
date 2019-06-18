@@ -31,13 +31,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='goalsettingresponse',
             name='goal_setting_block',
-            field=models.ForeignKey(default=None, to='goals.GoalSettingBlock'),
+            field=models.ForeignKey(default=None, to='goals.GoalSettingBlock', on_delete=models.deletion.CASCADE),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='goalsettingresponse',
             name='user',
-            field=models.ForeignKey(default=None, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(default=None, to=settings.AUTH_USER_MODEL, on_delete=models.deletion.CASCADE),
             preserve_default=False,
         ),
     ]

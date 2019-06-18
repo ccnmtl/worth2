@@ -1,7 +1,5 @@
 import os.path
-import django.contrib.auth.views
 import django.views.static
-import djangowind.views
 
 from django.conf.urls import include, url
 from django.contrib import admin
@@ -20,18 +18,10 @@ from worth2.ssnm import apiviews as ssnm_apiviews
 
 site_media_root = os.path.join(os.path.dirname(__file__), "../media")
 
-redirect_after_logout = getattr(settings, 'LOGOUT_REDIRECT_URL', None)
 auth_urls = url(r'^accounts/', include('django.contrib.auth.urls'))
-logout_page = url(
-    r'^accounts/logout/$',
-    django.contrib.auth.views.logout,
-    {'next_page': redirect_after_logout})
 if hasattr(settings, 'CAS_BASE'):
     auth_urls = url(r'^accounts/', include('djangowind.urls'))
-    logout_page = url(
-        r'^accounts/logout/$',
-        djangowind.views.logout,
-        {'next_page': redirect_after_logout})
+
 
 rest_router = routers.DefaultRouter()
 rest_router.register(r'participants', apiviews.ParticipantViewSet)
@@ -44,7 +34,6 @@ ssnm_rest_router.register(r'supporters', ssnm_apiviews.SupporterViewSet,
 
 urlpatterns = [
     auth_urls,
-    logout_page,
     url(r'^api/', include(rest_router.urls)),
     url(r'^api/login_check/', apiviews.LoginCheck.as_view(),
         name='api-login-check'),
@@ -52,7 +41,7 @@ urlpatterns = [
                                namespace='rest_framework')),
     url(r'^registration/', include('registration.backends.default.urls')),
     url(r'^$', views.DashboardView.as_view(), name='root'),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
     url(r'^_impersonate/', include('impersonate.urls')),
     url(r'^stats/$', TemplateView.as_view(template_name="stats.html")),
     url(r'smoketest/', include('smoketest.urls')),
