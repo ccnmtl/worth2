@@ -4,70 +4,63 @@
 
 {% block content %}
 <div class="worth-facilitator-dashboard">
-    <div class="row-fluid">
-        <div class="span12">
-                {% if percent_complete == 0 %}
-                    <a href="{{last_location}}" class="btn btn-large btn-primary">Get Started <i class="icon-arrow-right icon-white"></i></a>
-                {% else %}
-                    <div class="course-progress">
-                    <h4>Course Progress</h4>
-                    <h5>{{completed}} of 6 Sessions Complete</h5>
-                    <a href="{{last_location}}" class="btn btn-large">
+    <div class="row">
+        <div class="col-md-7">
+            <h1>E-WORTH</h1>
+            <div class="subhead">Empowering African-American Women on the Road to Health</div>
+            <p class="lead">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eu urna sit amet sapien dapibus egestas et eget nibh. Nulla feugiat bibendum enim eget pharetra. Sed id porttitor diam. Nam id mi ullamcorper, egestas neque sit amet, consequat metus. Donec sollicitudin metus quis consectetur malesuada. Nullam eget arcu dictum turpis imperdiet malesuada eget in nibh. Sed tellus diam, malesuada eget nisi a, pharetra aliquam metus. Integer finibus, lectus in sagittis maximus, erat orci egestas odio, nec interdum magna tortor eget odio. In sit amet suscipit sem. Aliquam tempor orci ut tincidunt semper. In pharetra diam in quam condimentum vehicula. Praesent aliquet mi vel suscipit placerat. Curabitur eget elementum enim.
+            </p>
+        </div>
+        <div class="col-md-5 text-center">
+            {% if percent_complete == 0 %}
+                <a href="{{last_location}}" class="btn btn-lg btn-default">Get Started <i class="icon-arrow-right icon-white"></i></a>
+            {% else %}
+                <div class="jumbotron-special course-progress">
+                    <h2>Progress</h2>
+                    <div class="subhead">{{completed}} of 6 Sessions Complete</div>
+                    <a href="{{last_location}}" class="btn btn-lg btn-default">
                         Continue <i class="icon-arrow-right"></i>
                     </a>
-                    </div>
-                {% endif %}
+                </div>
+            {% endif %}
         </div>
     </div>
 
-    <h1>
-        {% if request.user.first_name %}
-        {{request.user.first_name}}'s
-        {% else %}
-        {{request.user.username}}'s
-        {% endif %}
-        Dashboard
-    </h1>
+    <hr />
 
-    <div class="row">
-        <div class="col-md-2 text-center col-md-offset-1 ">
+    <ul class="flex-container">
+        <li class="flex-item text-center">
             <img class="img-responsive img-circle" src="{{STATIC_URL}}img/charlene.png" />
-            <!--<img class="img-responsive img-circle" src="{{STATIC_URL}}img/textile-splash-jumbotron-shim.png" />-->
-            <h3>
+            <div>
                 Charlene
-            </h3>
-        </div>      
-        <div class="col-md-2 text-center">
+            </div>
+        </li>
+        <li class="flex-item text-center">
             <img class="img-responsive img-circle" src="{{STATIC_URL}}img/joy.png" />
-           <!--<img class="img-responsive img-circle" src="{{STATIC_URL}}img/textile-splash-jumbotron-shim.png" />-->
-            <h3>
+            <div>
                 Joy
-            </h3>
-        </div>      
-        <div class="col-md-2 text-center">
+            </div>
+        </li>
+        <li class="flex-item text-center">
            <img class="img-responsive img-circle" src="{{STATIC_URL}}img/mia.png" />
-            <!--<img class="img-responsive img-circle" src="{{STATIC_URL}}img/textile-splash-jumbotron-shim.png" />-->
-            <h3>
+            <div>
                 Mia
-            </h3>
-        </div>      
-        <div class="col-md-2 text-center">
+            </div>
+        </li>
+        <li class="flex-item text-center">
             <img class="img-responsive img-circle" src="{{STATIC_URL}}img/rasheeda.png" />
-            <!--<img class="img-responsive img-circle" src="{{STATIC_URL}}img/textile-splash-jumbotron-shim.png" />-->
-            <h3>
+            <div>
                 Rasheeda
-            </h3>
-        </div>
-        <div class="col-md-2 text-center">
+            </div>
+        </li>
+        <li class="flex-item text-center">
             <img class="img-responsive img-circle" src="{{STATIC_URL}}img/amanda.png" />
-            <!--<img class="img-responsive img-circle" src="{{STATIC_URL}}img/textile-splash-jumbotron-shim.png" />-->
-            
-            <h3>
+            <div>
                 Amanda
-            </h3>
-        </div>      
+            </div>
+        </li>
     </div>
-        
 </div>
 
 {% endblock %}
