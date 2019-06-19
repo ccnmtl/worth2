@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
-{% block title %}Journal for Session {{ session_num }} | Participant: {{ participant.study_id }}{% endblock %}
+{% block title %}Journal for Session {{ session_num }}{% endblock %}
 
 <div class="worth-journal">
     {% block content %}
     <h1>My Personal Roadmap</h1>
-    <h2 style="margin-bottom: 60px;">{{ session_title }}</h2>
+    <h2 style="margin-bottom: 60px;">Session {{session_num}}: {{ session_title }}</h2>
     {% endblock %}
 </div>

@@ -80,10 +80,8 @@ urlpatterns = [
             views.ParticipantArchiveView.as_view()),
         name='archive-participant'),
 
-    url(r'^participant-journal/(?P<pk>\d+)/(?P<session_num>\d+)/$',
-        user_passes_test(lambda u: auth.user_is_facilitator(u))(
-            views.ParticipantJournalView.as_view()),
-        name='participant-journal'),
+    url(r'^journal/(?P<session_num>\d+)/$',
+        views.JournalView.as_view(), name='journal'),
     url(r'^participant-report/$',
         user_passes_test(lambda u: auth.user_is_facilitator(u))(
             views.ParticipantReportView.as_view()),

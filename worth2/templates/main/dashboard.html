@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load participanttags %}
 
 {% block title %}Dashboard{% endblock %}
 
@@ -14,7 +15,11 @@
         </div>
         <div class="col-md-5 text-center">
             {% if percent_complete == 0 %}
-                <a href="{{last_location}}" class="btn btn-lg btn-default">Get Started <i class="icon-arrow-right icon-white"></i></a>
+                <div class="jumbotron-special course-progress">
+                    <h2>Welcome!</h2>
+                    <div class="subhead">{{completed}} of 6 Sessions Complete</div>
+                    <a href="{{last_location}}" class="btn btn-lg btn-default">Let's get started <i class="icon-arrow-right icon-white"></i></a>
+                </div>
             {% else %}
                 <div class="jumbotron-special course-progress">
                     <h2>Progress</h2>
@@ -22,6 +27,25 @@
                     <a href="{{last_location}}" class="btn btn-lg btn-default">
                         Continue <i class="icon-arrow-right"></i>
                     </a>
+                    <table class="table table-condensed">
+                        <tbody>
+                            {% for i in '12345' %}
+                            <tr>
+                                <td><a class="btn btn-link text-white" href="/pages/session-{{forloop.counter}}">Session {{forloop.counter}}</a></td>
+                                <td>
+                                    <strong>
+                                        {% module_completed_percentage request.user forloop.counter %}%
+                                    </strong>
+                                </td>
+                                <td>
+                                    <a href="{% url 'journal' forloop.counter %}"
+                                        class="btn btn-link text-white">Print Journal
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             {% endif %}
         </div>

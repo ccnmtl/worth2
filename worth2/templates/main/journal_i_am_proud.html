@@ -1,0 +1,26 @@
+<h3>I am proud!</h3>
+<div class="worth-journal-info-element worth-journal-i-am-worth-it">
+    <p>
+        As you reflect back on the last 5 weeks of E-WORTH,
+        let's also think about things that make you proud.
+        These are things that you have done during your time
+        with E-WORTH or things in your life and community of
+        which you are proud.
+    </p>
+
+    {% if i_am_proud_responses %}
+    <p>I am proud of:</p>
+    <ul>
+        {% for r in i_am_proud_responses %}
+        <li>
+            {{ r }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>
+        Please complete the 
+        <a href="/pages/session-5/i-am-proud/">I am proud! Activity</a>.
+    </p>
+    {% endif %}
+</div>

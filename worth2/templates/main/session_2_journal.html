@@ -49,7 +49,9 @@
 <h3>My Goals for Risk Reduction</h3>
 <div class="worth-journal-info-element">
     {% with responses=goals_risk_responses %}
-    {% include 'main/journal_goal_responses.html' %}
+    {% with link="/pages/session-2/goal-setting-for-risk-reduction/" %}
+        {% include 'main/journal_goal_responses.html' %}
+    {% endwith %}
     {% endwith %}
 </div>
 
@@ -58,7 +60,9 @@
 <h3>My Goals to Access Services</h3>
 <div class="worth-journal-info-element">
     {% with responses=goals_services_responses %}
-    {% include 'main/journal_goal_responses.html' %}
+    {% with link="/pages/session-2/goal-setting-for-services/" %}
+        {% include 'main/journal_goal_responses.html' %}
+    {% endwith %}
     {% endwith %}
 </div>
 
@@ -265,11 +269,9 @@
         </li>
     </ul>
     <p>
-        <sup>
             Reference:
             <a href="http://www.gc.cuny.edu/CUNY_GC/media/CUNY-Graduate-Center/PDF/Health/What-are-Dental-Dams_1.pdf"
                >http://www.gc.cuny.edu/CUNY_GC/media/CUNY-Graduate-Center/PDF/Health/What-are-Dental-Dams_1.pdf</a>
-        </sup>
     </p>
 </div>
 
