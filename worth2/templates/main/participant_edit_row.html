@@ -192,7 +192,7 @@
             </div>
             <div class="modal-body" style="text-align: center;">
                 {% for i in '12345' %}
-                <a href="{% url 'participant-journal' participant.pk forloop.counter %}"
+                <a href="{% url 'journal' forloop.counter %}"
                    class="btn btn-default">Session {{ forloop.counter }}</a>
                 {% endfor %}
             </div>

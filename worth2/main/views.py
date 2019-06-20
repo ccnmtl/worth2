@@ -79,16 +79,13 @@ class ManageParticipants(ListView):
         return ctx
 
 
-class ParticipantJournalView(TemplateView):
-    model = Participant
+class JournalView(LoginRequiredMixin, TemplateView):
+    model = User
 
     def get_context_data(self, **kwargs):
-        context = super(ParticipantJournalView, self).get_context_data(
-            **kwargs)
-        # Participant's pk is in the URL
-        context['participant'] = get_object_or_404(Participant,
-                                                   pk=kwargs.get('pk'))
-        user = context['participant'].user
+        context = super().get_context_data(**kwargs)
+
+        user = self.request.user
         try:
             session_num = int(kwargs.get('session_num'))
         except TypeError:
@@ -106,6 +103,11 @@ class ParticipantJournalView(TemplateView):
                 map(lambda x: x.answer(),
                     get_quiz_responses_by_css_in_module(
                         user, 'i-am-worth-it-quiz', session_num))
+        if session_num == 5:
+            context['i_am_proud_responses'] = \
+                map(lambda x: x.answer(),
+                    get_quiz_responses_by_css_in_module(
+                        user, 'i-am-proud-quiz', session_num))
 
         # Add module-specific context data to the response here.
         dispatch = {

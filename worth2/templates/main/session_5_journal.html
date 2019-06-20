@@ -6,37 +6,27 @@
 <h3>My Goals for Risk Reduction</h3>
 <div class="worth-journal-info-element">
     {% with responses=goals_risk_responses %}
-    {% include 'main/journal_goal_responses.html' %}
+    {% with link="/pages/session-4/goal-setting-for-risk-reduction/" %}
+        {% include 'main/journal_goal_responses.html' %}
+    {% endwith %}
     {% endwith %}
 </div>
 
 {% include 'main/journal_i_am_worth_it.html' %}
 
-<h3>I am proud</h3>
-<div class="worth-journal-info-element">
-    <p>
-        As you reflect back on the last 5 weeks of E-WORTH,
-        let's also think about things that make you proud.
-        These are things that you have done during your time
-        with E-WORTH or things in your life and community of
-        which you are proud.
-    </p>
-    TODO depends on this activity:
-    <a href="/pages/edit/session-5/i-am-proud/"
-       >/pages/edit/session-5/i-am-proud/</a>
-</div>
+{% include 'main/journal_i_am_proud.html' %}
 
 <h3>Congratulations!</h3>
 <div class="worth-journal-info-element">
     <p>
         Congratulations! You have completed the E-WORTH Project.
         We hope that you found this journey on the road to health
-        powerful. Although today is our last session together,
-        we encourage you to continue to reflect on the various
+        powerful.
+        We encourage you to continue to reflect on the various
         techniques you have learned as you continue to take care
         of your health, the health of your loved ones, and the health
         of others in your community. We are so proud of you and
-        would like to again thank you for spending time with us.
+        would like to again thank you for spending time with E-WORTH.
     </p>
 </div>
 {% endblock %}

@@ -1,18 +1,17 @@
-from django.urls import reverse
 from django.test import TestCase
-
+from django.urls import reverse
 from pagetree.helpers import get_hierarchy
 from pagetree.models import Hierarchy, Section, UserPageVisit
 
 from worth2.main.auth import generate_password
+from worth2.main.models import Encounter, Participant
 from worth2.main.tests.factories import (
-    AvatarFactory, LocationFactory, ParticipantFactory, WorthModuleFactory
-)
+    AvatarFactory, LocationFactory, ParticipantFactory, WorthModuleFactory,
+    UserFactory)
 from worth2.main.tests.mixins import (
     LoggedInFacilitatorTestMixin, LoggedInParticipantTestMixin,
     LoggedInSuperuserTestMixin
 )
-from worth2.main.models import Encounter, Participant
 
 
 class AvatarSelectorBlockTest(LoggedInParticipantTestMixin, TestCase):
@@ -372,10 +371,9 @@ class SignInParticipantUnAuthedTest(TestCase):
         self.assertEqual(response.status_code, 302)
 
 
-class ParticipantJournalsTest(LoggedInFacilitatorTestMixin, TestCase):
+class JournalsTest(TestCase):
     def setUp(self):
-        super(ParticipantJournalsTest, self).setUp()
-        self.participant = ParticipantFactory()
+        self.participant = UserFactory()
         h = get_hierarchy('main', '/pages/')
         root = h.get_root()
         for i in range(1, 6):
@@ -387,51 +385,13 @@ class ParticipantJournalsTest(LoggedInFacilitatorTestMixin, TestCase):
                 }],
                 'children': [],
             })
+        self.client.login(username=self.participant.username, password='test')
 
-    def test_get_session_1(self):
-        session_num = 1
-        response = self.client.get(
-            reverse('participant-journal',
-                    args=(self.participant.pk, session_num)))
-
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.participant.study_id)
-
-    def test_get_session_2(self):
-        session_num = 2
-        response = self.client.get(
-            reverse('participant-journal',
-                    args=(self.participant.pk, session_num)))
-
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.participant.study_id)
-
-    def test_get_session_3(self):
-        session_num = 3
-        response = self.client.get(
-            reverse('participant-journal',
-                    args=(self.participant.pk, session_num)))
-
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.participant.study_id)
-
-    def test_get_session_4(self):
-        session_num = 4
-        response = self.client.get(
-            reverse('participant-journal',
-                    args=(self.participant.pk, session_num)))
-
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.participant.study_id)
-
-    def test_get_session_5(self):
-        session_num = 5
-        response = self.client.get(
-            reverse('participant-journal',
-                    args=(self.participant.pk, session_num)))
-
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.participant.study_id)
+    def test_get_sessions(self):
+        for i in range(1, 6):
+            response = self.client.get(reverse('journal', args=[i]))
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(response, 'Session {}'.format(i))
 
 
 class ArchiveParticipantTest(LoggedInFacilitatorTestMixin, TestCase):

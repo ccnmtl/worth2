@@ -24,17 +24,34 @@ label {
     cursor: pointer;
 }
 
+.text-white {
+    color: white;
+}
+
 .dashboard-widget {min-height: 200px; position: relative;}
 .dashboard-widget a {
     margin: 10px 10px 0 0;
 }
 
-.course-progress {
+.worth-facilitator-dashboard .course-progress {
     width: 100%;
-    height: 200px;
     margin-top: 4rem;
     padding: 2rem;
     border: 1px solid #ddd;
+}
+
+.worth-facilitator-dashboard .course-progress table {
+    margin-top: 4rem;
+    border-bottom: 1px solid white;
+}
+
+.worth-facilitator-dashboard .course-progress table .btn-link {
+    padding-top: 0;
+}
+
+.worth-facilitator-dashboard .course-progress table .btn-link:hover {
+    color: white;
+    text-decoration: underline;
 }
 
 .worth-facilitator-dashboard .subhead {
@@ -725,6 +742,10 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     margin-top: 30px;
 }
 
+.i-am-proud-quiz .casequestionresult,
+.i-am-proud-quiz .caseanswerresult,
+.i-am-proud-quiz .casequestionexplanation,
+.i-am-proud-quiz .caseanswerexplanation,
 .i-am-worth-it-quiz .casequestionresult,
 .i-am-worth-it-quiz .caseanswerresult,
 .i-am-worth-it-quiz .casequestionexplanation,
@@ -732,6 +753,7 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     display: none;
 }
 
+.i-am-proud-quiz .caseanswercontainer,
 .i-am-worth-it-quiz .caseanswercontainer {
     list-style: none;
     -webkit-column-count: 3; /* Chrome, Safari, Opera */
@@ -739,6 +761,7 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     column-count: 3;
     padding: 0;
 }
+.i-am-proud-quiz .col-md-8 {padding-left: 0 !important;}
 .i-am-worth-it-quiz .col-md-8 {padding-left: 0 !important;}
 
 .quiz-game .avatar-block,

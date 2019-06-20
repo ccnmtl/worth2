@@ -8,4 +8,7 @@
 
     <div>My action plan: <strong>{{ r.text }}</strong></div>
 </div>
+{% empty %}
+    Please complete the
+    <a href="{{link}}"> Goals Activity.</a>
 {% endfor %}
