@@ -2,13 +2,13 @@ from django.test import TestCase
 from pagetree.helpers import get_hierarchy
 from quizblock.models import Response, Submission
 
-from worth2.main.tests.mixins import LoggedInParticipantTestMixin
+from worth2.main.tests.mixins import LoggedInUserTestMixin
 from worth2.protectivebehaviors.templatetags.quizsummary import (
     get_quiz_summary, get_aggregate_level
 )
 
 
-class QuizSummaryTest(LoggedInParticipantTestMixin, TestCase):
+class QuizSummaryTest(LoggedInUserTestMixin, TestCase):
     def setUp(self):
         super(QuizSummaryTest, self).setUp()
         self.hierarchy = get_hierarchy('main', '/pages/')

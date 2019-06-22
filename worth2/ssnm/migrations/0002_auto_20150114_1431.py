@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
+from django.conf import settings
 
 
 class Migration(migrations.Migration):
@@ -15,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='supporter',
             name='participant',
-            field=models.ForeignKey(related_name='supporters', to='main.Participant', on_delete=models.deletion.CASCADE),
+            field=models.ForeignKey(related_name='supporters', to=settings.AUTH_USER_MODEL, on_delete=models.deletion.CASCADE),
             preserve_default=True,
         ),
     ]

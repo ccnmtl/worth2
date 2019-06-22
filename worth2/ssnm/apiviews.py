@@ -1,13 +1,13 @@
 from rest_framework import viewsets, permissions
+from rest_framework.authentication import SessionAuthentication
 from rest_framework_json_api import parsers, renderers
 
-from worth2.main.auth import AnySessionAuthentication
 from worth2.ssnm.serializers import SupporterSerializer
 
 
 class SupporterViewSet(viewsets.ModelViewSet):
     serializer_class = SupporterSerializer
-    authentication_classes = (AnySessionAuthentication,)
+    authentication_classes = (SessionAuthentication,)
     permission_classes = (permissions.IsAuthenticated,)
     parser_classes = (parsers.JSONParser,)
     renderer_classes = (renderers.JSONRenderer,)

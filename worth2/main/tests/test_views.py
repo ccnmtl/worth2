@@ -5,8 +5,7 @@ from pagetree.helpers import get_hierarchy
 from worth2.main.tests.factories import (
     AvatarFactory, UserFactory)
 from worth2.main.tests.mixins import (
-    LoggedInUserTestMixin, LoggedInFacilitatorTestMixin,
-    LoggedInSuperuserTestMixin)
+    LoggedInUserTestMixin, LoggedInSuperuserTestMixin)
 
 
 class AvatarSelectorBlockTest(LoggedInUserTestMixin, TestCase):
@@ -85,7 +84,7 @@ class PagetreeViewTestsLoggedOut(TestCase):
         self.assertEqual(r.status_code, 302)
 
 
-class PagetreeViewTestsLoggedIn(LoggedInFacilitatorTestMixin, TestCase):
+class PagetreeViewTestsLoggedIn(LoggedInUserTestMixin, TestCase):
     def setUp(self):
         super(PagetreeViewTestsLoggedIn, self).setUp()
         self.h = get_hierarchy("main", "/pages/")

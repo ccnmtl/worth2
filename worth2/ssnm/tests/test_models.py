@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from worth2.main.tests.factories import ParticipantFactory
+from worth2.main.tests.factories import UserFactory
 from worth2.ssnm.models import SupporterReportColumn
 from worth2.ssnm.tests.factories import SupporterFactory
 
@@ -33,7 +33,7 @@ class SupporterReportColumnTest(TestCase):
                                               'VC', 'Very Close'])
 
     def test_user_value_no_supporters(self):
-        participant = ParticipantFactory().user
+        participant = UserFactory()
         column = SupporterReportColumn(0, 'closeness', 'single choice')
         self.assertEquals(column.user_value(participant), '')
         column = SupporterReportColumn(0, 'influence', 'single choice')
@@ -46,7 +46,7 @@ class SupporterReportColumnTest(TestCase):
         self.assertEquals(column.user_value(participant), '')
 
     def test_user_value_supporters(self):
-        participant = ParticipantFactory().user
+        participant = UserFactory()
         SupporterFactory(user=participant)
 
         column = SupporterReportColumn(0, 'closeness', 'single choice')

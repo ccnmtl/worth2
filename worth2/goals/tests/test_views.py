@@ -1,20 +1,20 @@
 from django.test import TestCase
 from pagetree.helpers import get_hierarchy
 
-from worth2.goals.tests.factories import (
-    GoalCheckInOptionFactory, GoalCheckInResponseFactory,
-    GoalOptionFactory, GoalSettingResponseFactory
-)
 from worth2.goals.forms import NOT_APPLICABLE
 from worth2.goals.models import (
     GoalCheckInPageBlock, GoalCheckInResponse,
     GoalSettingBlock, GoalSettingResponse
 )
+from worth2.goals.tests.factories import (
+    GoalCheckInOptionFactory, GoalCheckInResponseFactory,
+    GoalOptionFactory, GoalSettingResponseFactory
+)
 from worth2.main.tests.helpers import unlock_hierarchy
-from worth2.main.tests.mixins import LoggedInParticipantTestMixin
+from worth2.main.tests.mixins import LoggedInUserTestMixin
 
 
-class GoalCheckInPageBlockTest(LoggedInParticipantTestMixin, TestCase):
+class GoalCheckInPageBlockTest(LoggedInUserTestMixin, TestCase):
     def setUp(self):
         super(GoalCheckInPageBlockTest, self).setUp()
 
@@ -403,7 +403,7 @@ class GoalCheckInPageBlockTest(LoggedInParticipantTestMixin, TestCase):
             0)
 
 
-class GoalSettingBlockTest(LoggedInParticipantTestMixin, TestCase):
+class GoalSettingBlockTest(LoggedInUserTestMixin, TestCase):
     def setUp(self):
         super(GoalSettingBlockTest, self).setUp()
 
