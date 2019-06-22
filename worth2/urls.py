@@ -34,8 +34,6 @@ ssnm_rest_router.register(r'supporters', ssnm_apiviews.SupporterViewSet,
 urlpatterns = [
     auth_urls,
     url(r'^api/', include(rest_router.urls)),
-    url(r'^api/login_check/', apiviews.LoginCheck.as_view(),
-        name='api-login-check'),
     url(r'^api-auth/', include('rest_framework.urls',
                                namespace='rest_framework')),
     url(r'^registration/', include('registration.backends.default.urls')),
