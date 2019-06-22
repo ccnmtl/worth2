@@ -1,16 +1,15 @@
 from django import http
-from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.http.response import StreamingHttpResponse
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, render
 from django.template import TemplateDoesNotExist
 from django.urls.base import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateView
-from django.views.generic.edit import DeleteView, FormView
+from django.views.generic.edit import DeleteView
 from django.views.generic.list import ListView
 from pagetree.generic.views import PageView
 from pagetree.models import PageBlock, Hierarchy, Section
@@ -19,9 +18,7 @@ import unicodecsv
 
 from worth2.goals.mixins import GoalCheckInViewMixin, GoalSettingViewMixin
 from worth2.goals.models import GoalSettingResponse
-from worth2.main.auth import generate_password
-from worth2.main.forms import SignInParticipantForm
-from worth2.main.models import Encounter, Participant, Location
+from worth2.main.models import Participant, Location
 from worth2.main.reports import ParticipantReport
 from worth2.main.utils import (
     get_first_block_of_type, get_quiz_responses_by_css_in_module,
@@ -226,48 +223,6 @@ def session_5_context(user, session_num):
             get_quiz_responses_by_css_in_module(
                 user, 'i-am-worth-it-quiz', session_num),
     }
-
-
-class SignInParticipant(FormView):
-    template_name = 'main/facilitator_sign_in_participant.html'
-    form_class = SignInParticipantForm
-
-    def get_context_data(self, **kwargs):
-        ctx = super(SignInParticipant, self).get_context_data(**kwargs)
-        ctx.update({'cohorts': Participant.objects.cohort_ids()})
-        return ctx
-
-    def form_valid(self, form):
-        participant = form.cleaned_data.get('participant_id')
-        facilitator = self.request.user
-        password = generate_password(participant.user.username)
-
-        user = authenticate(
-            request=self.request,
-            username=participant.user.username, password=password)
-
-        if user is not None:
-            login(self.request, user,
-                  backend='django.contrib.auth.backends.ModelBackend')
-            module_num = int(form.cleaned_data.get('participant_destination'))
-            upv = participant.last_access_in_module(module_num)
-            if upv:
-                section = upv.section
-            else:
-                # If there's no UserPageVisit found, then take the
-                # user to the first section in this module.
-                slug = 'session-{:d}'.format(module_num)
-                section = get_object_or_404(Section, slug=slug)
-
-            Encounter.objects.create(
-                participant=participant,
-                facilitator=facilitator,
-                location=form.cleaned_data.get('participant_location'),
-                session_type=form.cleaned_data.get('session_type'),
-                section=section)
-            return redirect(section.get_absolute_url())
-
-        return http.HttpResponse('Unauthorized', status=401)
 
 
 class ParticipantSessionPageView(

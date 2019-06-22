@@ -6,10 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from worth2.main.auth import AnySessionAuthentication
-from worth2.main.models import Participant
-from worth2.main.serializers import (
-    ParticipantSerializer, WatchedVideoSerializer
-)
+from worth2.main.serializers import WatchedVideoSerializer
 
 
 class LoginCheck(APIView):
@@ -46,11 +43,6 @@ class LoginCheck(APIView):
             login(request, user)
 
         return Response({'login_check': login_check}, status=status)
-
-
-class ParticipantViewSet(viewsets.ModelViewSet):
-    queryset = Participant.objects.all()
-    serializer_class = ParticipantSerializer
 
 
 class WatchedVideoViewSet(viewsets.ModelViewSet):
