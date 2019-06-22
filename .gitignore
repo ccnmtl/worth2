@@ -13,3 +13,4 @@ media/js/lib/ember.debug.js
 .settings
 *.log
 wheelhouse
+uploads

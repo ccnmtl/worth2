@@ -2,16 +2,14 @@ from django.test import TestCase
 from django.urls import reverse
 from pagetree.helpers import get_hierarchy
 
-from worth2.main.models import Participant
 from worth2.main.tests.factories import (
     AvatarFactory, ParticipantFactory, UserFactory)
 from worth2.main.tests.mixins import (
-    LoggedInFacilitatorTestMixin, LoggedInParticipantTestMixin,
-    LoggedInSuperuserTestMixin
-)
+    LoggedInUserTestMixin, LoggedInFacilitatorTestMixin,
+    LoggedInSuperuserTestMixin)
 
 
-class AvatarSelectorBlockTest(LoggedInParticipantTestMixin, TestCase):
+class AvatarSelectorBlockTest(LoggedInUserTestMixin, TestCase):
     def setUp(self):
         super(AvatarSelectorBlockTest, self).setUp()
 
@@ -49,11 +47,11 @@ class AvatarSelectorBlockTest(LoggedInParticipantTestMixin, TestCase):
             param_name: self.avatar1.pk,
         })
         self.assertEqual(r.status_code, 302)
-        participant = Participant.objects.get(pk=self.participant.pk)
-        self.assertEqual(participant.avatar, self.avatar1)
+        self.u.profile2.refresh_from_db()
+        self.assertEqual(self.u.profile2.avatar, self.avatar1)
 
         r = self.client.get(self.url)
-        self.assertContains(r, participant.avatar.image.url)
+        self.assertContains(r, self.u.profile2.avatar.image.url)
 
 
 class BasicTest(TestCase):
