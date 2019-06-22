@@ -1,25 +1,18 @@
 from django import http
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
-from django.http.response import StreamingHttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.template import TemplateDoesNotExist
-from django.urls.base import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateView
-from django.views.generic.edit import DeleteView
-from django.views.generic.list import ListView
 from pagetree.generic.views import PageView
-from pagetree.models import PageBlock, Hierarchy, Section
+from pagetree.models import PageBlock, Section
 from quizblock.models import Quiz
-import unicodecsv
 
 from worth2.goals.mixins import GoalCheckInViewMixin, GoalSettingViewMixin
 from worth2.goals.models import GoalSettingResponse
-from worth2.main.models import Participant, Location
-from worth2.main.reports import ParticipantReport
 from worth2.main.utils import (
     get_first_block_of_type, get_quiz_responses_by_css_in_module,
     last_location_url, percent_complete_by_module,
@@ -59,20 +52,6 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             if percent_complete_by_module(self.request.user, x) == 100:
                 ctx['completed'] += 1
 
-        return ctx
-
-
-class ManageParticipants(ListView):
-    model = Participant
-
-    def get_queryset(self):
-        return Participant.objects.filter(
-            is_archived=False).order_by('study_id')
-
-    def get_context_data(self, **kwargs):
-        ctx = super(ManageParticipants, self).get_context_data(**kwargs)
-        ctx['active_participants'] = ctx['object_list']
-        ctx['cohorts'] = Participant.objects.cohort_ids()
         return ctx
 
 
@@ -333,78 +312,3 @@ class ParticipantSessionPageView(
 
         return super(ParticipantSessionPageView, self).post(
             request, *args, **kwargs)
-
-
-class LoggedInMixinStaff(object):
-    @method_decorator(user_passes_test(lambda u: u.is_staff))
-    def dispatch(self, *args, **kwargs):
-        return super(LoggedInMixinStaff, self).dispatch(*args, **kwargs)
-
-
-class Echo(object):
-    """An object that implements just the write method of the file-like
-    interface.
-    """
-    def write(self, value):
-        """Write the value by returning it, instead of storing in a buffer."""
-        return value
-
-
-class ParticipantReportView(LoggedInMixinStaff, TemplateView):
-    template_name = 'main/participant_report.html'
-
-    def facilitators(self):
-        rows = [['Facilitator ID', 'Facilitator Name']]
-        for user in User.objects.filter(
-                username__startswith='facilitator', is_superuser=False):
-            rows.append([user.id, user.username, user.get_full_name()])
-        return rows
-
-    def locations(self):
-        rows = [['Location ID', 'Location Name']]
-        for location in Location.objects.all():
-            rows.append([location.id, location.name])
-        return rows
-
-    def post(self, request):
-        hierarchies = Hierarchy.objects.filter(name="main")
-
-        report_type = request.POST.get('report-type', 'keys')
-        report = ParticipantReport(hierarchies.first())
-
-        if report_type == 'facilitators':
-            rows = self.facilitators()
-        elif report_type == 'locations':
-            rows = self.locations()
-        elif report_type == 'values':
-            rows = report.values(hierarchies)
-        else:
-            rows = report.metadata(hierarchies)
-
-        pseudo_buffer = Echo()
-        writer = unicodecsv.writer(pseudo_buffer)
-
-        fnm = "worth2_%s.csv" % report_type
-        response = StreamingHttpResponse(
-            (writer.writerow(row) for row in rows), content_type="text/csv")
-        response['Content-Disposition'] = 'attachment; filename="' + fnm + '"'
-        return response
-
-
-class ParticipantArchiveView(DeleteView):
-    model = Participant
-    success_url = reverse_lazy('manage-participants')
-
-    def delete(self, request, *args, **kwargs):
-        """
-        This overrides DeletionMixin's delete method.
-
-        To the user, this should feel like we're deleting the
-        participant. Really, we just archive the participant,
-        which is kept in our database.
-        """
-        self.object = self.get_object()
-        success_url = self.get_success_url()
-        self.object.is_archived = True
-        self.object.save()
-        return http.HttpResponseRedirect(success_url)
