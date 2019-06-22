@@ -5,7 +5,7 @@ from rest_framework.test import APITestCase
 
 from worth2.main.models import WatchedVideo
 from worth2.main.tests.factories import WatchedVideoFactory
-from worth2.main.tests.mixins import LoggedInParticipantTestMixin
+from worth2.main.tests.mixins import LoggedInUserTestMixin
 
 
 class WatchedVideoViewSetUnAuthedTest(APITestCase):
@@ -27,8 +27,7 @@ class WatchedVideoViewSetUnAuthedTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
 
-class WatchedVideoViewSetTest(
-        LoggedInParticipantTestMixin, APITestCase):
+class WatchedVideoViewSetTest(LoggedInUserTestMixin, APITestCase):
     """This endpoint should be accessible to any authenticated user."""
 
     def test_create(self):
