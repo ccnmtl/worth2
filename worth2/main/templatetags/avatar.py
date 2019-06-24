@@ -17,10 +17,10 @@ def avatar_url(user):
         # Provide a default url for admins, for testing purposes
         t = template.Template('{% load static %}{% static url %}')
         url = t.render(template.Context({'url': 'admin-avatar.png'}))
-    elif hasattr(user, 'profile') and user.profile.is_participant():
-        if user.profile.participant.avatar:
+    elif hasattr(user, 'profile2'):
+        if user.profile2.avatar:
             # This will be the complete s3 url
-            url = user.profile.participant.avatar.image.url
+            url = user.profile2.avatar.image.url
         else:
             default_avatar = Avatar.objects.filter(is_default=True).first()
             if default_avatar:

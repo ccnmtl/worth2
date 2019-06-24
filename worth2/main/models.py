@@ -6,14 +6,15 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch.dispatcher import receiver
 from django.shortcuts import get_object_or_404
 from django.template.defaultfilters import slugify
 from django.utils.encoding import python_2_unicode_compatible, smart_text
 from ordered_model.models import OrderedModel
-from pagetree.models import Section, UserPageVisit
 from pagetree.generic.models import BasePageBlock
+from pagetree.models import Section, UserPageVisit
 
-from worth2.main.auth import user_is_participant
 from worth2.main.generic.models import BaseUserProfile
 from worth2.main.utils import get_module_number_from_section
 
@@ -101,22 +102,17 @@ class AvatarSelectorBlock(BasePageBlock):
         return True
 
     def unlocked(self, user):
-        if user_is_participant(user):
-            return user.profile.participant.avatar is not None
-        else:
-            return True
+        return user.profile2.avatar is not None
 
     def submit(self, user, request_data):
-        if user_is_participant(user):
-            avatar_id = request_data.get('avatar-id')
-            avatar = get_object_or_404(Avatar, pk=avatar_id)
-            user.profile.participant.avatar = avatar
-            user.profile.participant.save()
+        avatar_id = request_data.get('avatar-id')
+        avatar = get_object_or_404(Avatar, pk=avatar_id)
+        user.profile2.avatar = avatar
+        user.profile2.save()
 
     def clear_user_submissions(self, user):
-        if user_is_participant(user):
-            user.profile.participant.avatar = None
-            user.profile.participant.save()
+        user.profile2.avatar = None
+        user.profile2.save()
 
     def avatars(self):
         """Returns a queryset of all the available avatars in WORTH."""
@@ -458,3 +454,22 @@ class WatchedVideo(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+@python_2_unicode_compatible
+class UserProfile(models.Model):
+    user = models.OneToOneField(
+        User, related_name='profile2', on_delete=models.CASCADE)
+
+    # Users can choose an avatar after their user is created.
+    avatar = models.ForeignKey(Avatar, blank=True, null=True,
+                               on_delete=models.CASCADE)
+
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, raw, **kwargs):
+    if not raw and created:
+        UserProfile.objects.get_or_create(user=instance)
