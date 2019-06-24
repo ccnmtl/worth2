@@ -7,12 +7,12 @@ from django.contrib.auth.decorators import user_passes_test
 from django.conf import settings
 from django.views.generic import TemplateView
 
-from pagetree.generic.views import EditView, InstructorView
+from pagetree.generic.views import EditView
 from pagetreeepub.views import EpubExporterView
 
 from rest_framework import routers
 
-from worth2.main import apiviews, auth, views
+from worth2.main import apiviews, views
 from worth2.ssnm import apiviews as ssnm_apiviews
 
 
@@ -56,31 +56,12 @@ urlpatterns = [
                 hierarchy_name="main",
                 hierarchy_base="/pages/")),
         {}, 'edit-page'),
-    url(r'^pages/instructor/(?P<path>.*)$',
-        user_passes_test(lambda u: auth.user_is_facilitator(u))(
-            InstructorView.as_view(
-                hierarchy_name="main",
-                hierarchy_base="/pages/"))),
     url(r'^pages/(?P<path>.*)$', views.ParticipantSessionPageView.as_view(
         hierarchy_name="main",
         hierarchy_base="/pages/")),
 
-    url(r'^manage-participants/$',
-        user_passes_test(lambda u: auth.user_is_facilitator(u))(
-            views.ManageParticipants.as_view()),
-        name='manage-participants'),
-
-    url(r'^participant/(?P<pk>\d+)/archive/$',
-        user_passes_test(lambda u: auth.user_is_facilitator(u))(
-            views.ParticipantArchiveView.as_view()),
-        name='archive-participant'),
-
     url(r'^journal/(?P<session_num>\d+)/$',
         views.JournalView.as_view(), name='journal'),
-    url(r'^participant-report/$',
-        user_passes_test(lambda u: auth.user_is_facilitator(u))(
-            views.ParticipantReportView.as_view()),
-        name='participant-report'),
 
     # Social Support Network Map activity
     url(r'^ssnm/api/', include(ssnm_rest_router.urls)),

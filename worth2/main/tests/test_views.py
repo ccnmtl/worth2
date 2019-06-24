@@ -3,7 +3,7 @@ from django.urls import reverse
 from pagetree.helpers import get_hierarchy
 
 from worth2.main.tests.factories import (
-    AvatarFactory, ParticipantFactory, UserFactory)
+    AvatarFactory, UserFactory)
 from worth2.main.tests.mixins import (
     LoggedInUserTestMixin, LoggedInFacilitatorTestMixin,
     LoggedInSuperuserTestMixin)
@@ -84,10 +84,6 @@ class PagetreeViewTestsLoggedOut(TestCase):
         r = self.client.get("/pages/edit/section-1/")
         self.assertEqual(r.status_code, 302)
 
-    def test_instructor_page(self):
-        r = self.client.get("/pages/instructor/section-1/")
-        self.assertEqual(r.status_code, 302)
-
 
 class PagetreeViewTestsLoggedIn(LoggedInFacilitatorTestMixin, TestCase):
     def setUp(self):
@@ -106,10 +102,6 @@ class PagetreeViewTestsLoggedIn(LoggedInFacilitatorTestMixin, TestCase):
         self.assertEqual(r.status_code, 200)
         self.assertContains(r, 'Section 1')
 
-    def test_instructor_page(self):
-        r = self.client.get("/pages/instructor/section-1/")
-        self.assertEqual(r.status_code, 200)
-
 
 class PagetreeViewTestsAdmin(LoggedInSuperuserTestMixin, TestCase):
     def setUp(self):
@@ -126,21 +118,6 @@ class PagetreeViewTestsAdmin(LoggedInSuperuserTestMixin, TestCase):
     def test_edit_page(self):
         r = self.client.get("/pages/edit/section-1/")
         self.assertEqual(r.status_code, 200)
-
-
-class ManageParticipantsAuthedTest(LoggedInFacilitatorTestMixin, TestCase):
-    def test_get(self):
-        response = self.client.get(reverse('manage-participants'))
-        self.assertContains(response, 'Manage Participants')
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.context['active_participants']), 0)
-        self.assertEqual(len(response.context['cohorts']), 0)
-
-
-class ManageParticipantsUnAuthedTest(TestCase):
-    def test_get(self):
-        response = self.client.get(reverse('manage-participants'))
-        self.assertEqual(response.status_code, 302)
 
 
 class JournalsTest(TestCase):
@@ -164,22 +141,3 @@ class JournalsTest(TestCase):
             response = self.client.get(reverse('journal', args=[i]))
             self.assertEqual(response.status_code, 200)
             self.assertContains(response, 'Session {}'.format(i))
-
-
-class ArchiveParticipantTest(LoggedInFacilitatorTestMixin, TestCase):
-    def setUp(self):
-        super(ArchiveParticipantTest, self).setUp()
-        self.participant = ParticipantFactory()
-
-    def test_get(self):
-        response = self.client.get(
-            reverse('archive-participant', args=(self.participant.pk,)))
-        self.assertEqual(response.status_code, 200)
-
-    def test_post(self):
-        self.assertFalse(self.participant.is_archived)
-        response = self.client.post(
-            reverse('archive-participant', args=(self.participant.pk,)))
-        self.participant.refresh_from_db()
-        self.assertEqual(response.status_code, 302)
-        self.assertTrue(self.participant.is_archived)
