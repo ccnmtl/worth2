@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 
-from worth2.main.auth import generate_password
 from worth2.main.tests.factories import (
     InactiveUserFactory, ParticipantFactory, UserFactory
 )
@@ -27,12 +26,18 @@ class LoggedInFacilitatorTestMixin(object):
 class LoggedInParticipantTestMixin(object):
     def setUp(self):
         u = InactiveUserFactory()
-        u.set_password(generate_password(u.username))
+        u.set_password('test')
         u.save()
         self.participant = ParticipantFactory(user=u)
         self.u = self.participant.user
 
         self.u.save()
-        login = self.client.login(username=self.u.username,
-                                  password=generate_password(self.u.username))
+        login = self.client.login(username=self.u.username, password='test')
+        assert(login is True)
+
+
+class LoggedInUserTestMixin(object):
+    def setUp(self):
+        self.u = UserFactory()
+        login = self.client.login(username=self.u.username, password='test')
         assert(login is True)

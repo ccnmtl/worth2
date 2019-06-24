@@ -8,7 +8,6 @@ from pagetree.models import UserPageVisit
 from worth2.goals.models import (
     GoalCheckInPageBlock, GoalOption, GoalSettingBlock
 )
-from worth2.main.auth import generate_password
 from worth2.main.models import (
     Avatar, Encounter, Location, Participant, VideoBlock, WatchedVideo
 )
@@ -19,7 +18,7 @@ class InactiveUserFactory(factory.DjangoModelFactory):
         model = User
 
     username = FuzzyText(prefix='inactive_')
-    password = factory.LazyAttribute(lambda u: generate_password(u.username))
+    password = 'test'  # nosec
 
 
 class UserFactory(factory.DjangoModelFactory):

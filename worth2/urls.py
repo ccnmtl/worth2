@@ -24,7 +24,6 @@ if hasattr(settings, 'CAS_BASE'):
 
 
 rest_router = routers.DefaultRouter()
-rest_router.register(r'participants', apiviews.ParticipantViewSet)
 rest_router.register(r'watched_videos', apiviews.WatchedVideoViewSet,
                      base_name='watched_video')
 
@@ -66,10 +65,6 @@ urlpatterns = [
         hierarchy_name="main",
         hierarchy_base="/pages/")),
 
-    url(r'^sign-in-participant/$',
-        user_passes_test(lambda u: auth.user_is_facilitator(u))(
-            views.SignInParticipant.as_view()),
-        name='sign-in-participant'),
     url(r'^manage-participants/$',
         user_passes_test(lambda u: auth.user_is_facilitator(u))(
             views.ManageParticipants.as_view()),

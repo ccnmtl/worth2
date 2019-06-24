@@ -1,30 +1,5 @@
-import base64
-import hashlib
-import hmac
-
-from django.conf import settings
-from django.contrib.auth.models import User
-from django.utils.encoding import smart_bytes
 from rest_framework import permissions
 from rest_framework.authentication import SessionAuthentication
-
-
-def generate_random_username():
-    random_number = User.objects.make_random_password(
-        length=7, allowed_chars='123456789')
-
-    while User.objects.filter(username=random_number):
-        random_number = User.objects.make_random_password(
-            length=7, allowed_chars='123456789')
-
-    return "%s%s" % ('participant_', random_number)
-
-
-def generate_password(username):
-    digest = hmac.new(smart_bytes(settings.PARTICIPANT_SECRET),
-                      smart_bytes(username),
-                      hashlib.sha256).digest()
-    return base64.b64encode(digest).decode()
 
 
 def user_is_participant(user):
