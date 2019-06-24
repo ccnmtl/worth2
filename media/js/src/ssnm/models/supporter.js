@@ -1,4 +1,3 @@
-/*global Ssnm, DS */
 (function() {
     'use strict';
 
