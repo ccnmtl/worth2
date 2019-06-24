@@ -3,11 +3,11 @@ from django.test import TestCase
 from pagetree.helpers import get_hierarchy
 
 from worth2.main.tests.mixins import (
-    LoggedInParticipantTestMixin, LoggedInSuperuserTestMixin
+    LoggedInUserTestMixin, LoggedInSuperuserTestMixin
 )
 
 
-class TestQuizSubmission(LoggedInParticipantTestMixin, TestCase):
+class TestQuizSubmission(LoggedInUserTestMixin, TestCase):
     def setUp(self):
         super(TestQuizSubmission, self).setUp()
         self.h = get_hierarchy('main', '/pages/')

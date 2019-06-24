@@ -5,10 +5,10 @@ from rest_framework.test import APITestCase
 
 from worth2.ssnm.models import Supporter
 from worth2.ssnm.tests.factories import SupporterFactory
-from worth2.main.tests.mixins import LoggedInParticipantTestMixin
+from worth2.main.tests.mixins import LoggedInUserTestMixin
 
 
-class SupporterViewSetTest(LoggedInParticipantTestMixin, APITestCase):
+class SupporterViewSetTest(LoggedInUserTestMixin, APITestCase):
     def test_list(self):
         SupporterFactory(user=self.u)
         SupporterFactory(user=self.u)

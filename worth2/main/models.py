@@ -4,7 +4,6 @@ from django import forms
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch.dispatcher import receiver
@@ -13,29 +12,11 @@ from django.template.defaultfilters import slugify
 from django.utils.encoding import python_2_unicode_compatible, smart_text
 from ordered_model.models import OrderedModel
 from pagetree.generic.models import BasePageBlock
-from pagetree.models import Section, UserPageVisit
-
-from worth2.main.generic.models import BaseUserProfile
-from worth2.main.utils import get_module_number_from_section
-
-
-class InactiveUserProfile(BaseUserProfile):
-    """WORTH's UserProfile, which is only being used on participants."""
-
-    # Participants have a created_by attr pointing to the facilitator
-    # that created them.
-    created_by = models.ForeignKey(User, null=True, blank=True,
-                                   related_name='created_by',
-                                   on_delete=models.CASCADE)
-    is_archived = models.BooleanField(default=False)
-
-    def is_participant(self):
-        return True
 
 
 @python_2_unicode_compatible
 class Avatar(OrderedModel):
-    """An image that the participant can choose for their profile."""
+    """An image that the user can choose for their profile."""
 
     image = models.ImageField()
 
@@ -144,192 +125,6 @@ class AvatarSelectorBlockForm(forms.ModelForm):
     class Meta:
         model = AvatarSelectorBlock
         fields = '__all__'
-
-
-@python_2_unicode_compatible
-class Location(models.Model):
-    """A physical location where an intervention takes place.
-
-    Time and place are used to create the participants' cohort
-    (implemented as a group).
-    """
-
-    name = models.TextField()
-
-    def __str__(self):
-        return smart_text(self.name)
-
-
-# A user in WORTH 2 can either be:
-# - A participant
-# - A facilitator
-# - A research assistant
-# - A researcher
-# - A superuser
-#
-# Some of these types of users have special data associated with them.
-
-# ID spec is the 13-digit string: RRHHMMDDMMYBS
-# where the letters correspond to the following:
-# RR Research Assistant
-# HH hour (24-hour)
-# MM minute
-# DD day
-# MM month
-# Y last digit of year (5-9)
-# B borough (Bronx=1, Brooklyn=2, Manhattan=3, Queens=4, Staten Island=5)
-# S (Fortune site: 1=LIC; 2=Harlem)
-study_id_regex_validator = RegexValidator(
-    regex=r'^\d\d[0-2]\d[0-5]\d[0-3]\d[0-1]\d[5-9][1-5][1-2]$',
-    message='That study ID isn\'t valid. ' +
-    'The format is: RRHHMMDDMMYBS')
-
-
-# For now, accept any 3-digit number as the cohort ID.
-cohort_id_validator = RegexValidator(
-    regex=r'^\d{3}$',
-    message='That cohort ID isn\'t valid. (It needs to be 3 digits)')
-
-
-class ParticipantManager(models.Manager):
-    def cohort_ids(self):
-        """
-        Get a list of all the unique cohort IDs that have been entered
-        on the participants.
-        """
-
-        ids = self.all().values_list(
-            'cohort_id', flat=True
-        ).exclude(
-            cohort_id__isnull=True
-        ).exclude(
-            cohort_id__exact='').distinct()
-
-        return sorted(ids)
-
-
-@python_2_unicode_compatible
-class Participant(InactiveUserProfile):
-    """ A Participant is a worth-specific inactive user profile.
-    """
-    # first_location is set the first time that a facilitator signs in a
-    # participant. This is used to infer the participant's cohort group.
-    first_location = models.ForeignKey(Location, blank=True, null=True,
-                                       related_name='first_location',
-                                       on_delete=models.CASCADE)
-
-    # location is set each time a facilitator signs in a participant.
-    location = models.ForeignKey(Location, blank=True, null=True,
-                                 on_delete=models.CASCADE)
-
-    # A study ID is pre-generated for each participant, and then entered
-    # into our system.
-    study_id = models.CharField(max_length=255,
-                                unique=True,
-                                db_index=True,
-                                validators=[study_id_regex_validator])
-
-    # The cohort ID is assigned when the participant begins the second
-    # session. It represents the group of all the participants present
-    # for that session. It doesn't change for subsequent sessions, even
-    # though there may be different participants present.
-    cohort_id = models.CharField(max_length=255,
-                                 blank=True,
-                                 null=True,
-                                 db_index=True,
-                                 validators=[cohort_id_validator])
-
-    # Participants can choose an avatar after their user is created.
-    avatar = models.ForeignKey(Avatar, blank=True, null=True,
-                               on_delete=models.CASCADE)
-
-    objects = ParticipantManager()
-
-    def __str__(self):
-        return smart_text(self.study_id)
-
-    def highest_module_accessed(self):
-        """Returns the farthest module this participant has been in.
-
-        :rtype: int
-        """
-        # This is the UserPageVisit that is the farthest along in
-        # the intervention for this participant.
-        farthest_session_access = UserPageVisit.objects.filter(
-            user=self.user,
-            section__depth__gte=2).order_by('-section__path').first()
-        if farthest_session_access:
-            return get_module_number_from_section(
-                farthest_session_access.section.get_module())
-        else:
-            return -1
-
-    def next_module(self):
-        """Get the next module that the participant needs to complete.
-
-        :rtype: int
-        """
-        highest_module = self.highest_module_accessed()
-        if highest_module >= 5:
-            return 5
-        elif highest_module >= 1:
-            return highest_module + 1
-        else:
-            # If we can't find a valid "highest module" that this user
-            # has been in, that means there isn't one - this is a new
-            # user, and the "Next Module" that they need to complete is
-            # the first module, so return 1.
-            return 1
-
-    def next_module_section(self):
-        """Get the next module as a section.
-
-        :rtype: pagetree.Section
-        """
-        module_num = self.next_module()
-        slug = 'session-%d' % module_num
-        return Section.objects.get(slug=slug)
-
-    def module_1_completed_percentage(self):
-        return self.percent_complete_module(1)
-
-    def module_2_completed_percentage(self):
-        return self.percent_complete_module(2)
-
-    def module_3_completed_percentage(self):
-        return self.percent_complete_module(3)
-
-    def module_4_completed_percentage(self):
-        return self.percent_complete_module(4)
-
-    def module_5_completed_percentage(self):
-        return self.percent_complete_module(5)
-
-
-@python_2_unicode_compatible
-class Encounter(models.Model):
-    """An Encounter represents a participant getting signed in to WORTH.
-
-    An Encounter is created each time a facilitator logs in a participant.
-    """
-
-    facilitator = models.ForeignKey(User, on_delete=models.CASCADE)
-    participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
-    session_type = models.CharField(
-        max_length=255,
-        choices=(('regular', 'Regular'), ('makeup', 'Make-Up')),
-        default='regular',
-    )
-
-    section = models.ForeignKey(Section, on_delete=models.CASCADE)
-    """The section that this participant logged in to"""
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return smart_text('Encounter for ' + self.participant.user.username)
 
 
 class SimpleImageBlock(BasePageBlock):

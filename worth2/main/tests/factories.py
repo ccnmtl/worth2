@@ -1,24 +1,14 @@
-import factory
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
+import factory
 from factory.fuzzy import FuzzyText
-from pagetree.tests.factories import HierarchyFactory, RootSectionFactory
 from pagetree.models import UserPageVisit
+from pagetree.tests.factories import HierarchyFactory, RootSectionFactory
 
 from worth2.goals.models import (
     GoalCheckInPageBlock, GoalOption, GoalSettingBlock
 )
-from worth2.main.models import (
-    Avatar, Encounter, Location, Participant, VideoBlock, WatchedVideo
-)
-
-
-class InactiveUserFactory(factory.DjangoModelFactory):
-    class Meta:
-        model = User
-
-    username = FuzzyText(prefix='inactive_')
-    password = 'test'  # nosec
+from worth2.main.models import VideoBlock, WatchedVideo, Avatar
 
 
 class UserFactory(factory.DjangoModelFactory):
@@ -36,37 +26,6 @@ class AvatarFactory(factory.django.DjangoModelFactory):
     image = SimpleUploadedFile('test.png', '')
 
 
-class LocationFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = Location
-
-    name = FuzzyText(prefix='location_')
-
-
-class ParticipantFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = Participant
-
-    created_by = factory.SubFactory(UserFactory)
-    is_archived = False
-    user = factory.SubFactory(
-        InactiveUserFactory,
-        username=FuzzyText(prefix='participant_'))
-    first_location = factory.SubFactory(LocationFactory)
-    location = factory.SubFactory(LocationFactory)
-    study_id = factory.Sequence(lambda n: '%02d22591304632' % n)
-
-
-class EncounterFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = Encounter
-
-    facilitator = factory.SubFactory(UserFactory)
-    participant = factory.SubFactory(ParticipantFactory)
-    location = factory.SubFactory(LocationFactory)
-    section = factory.SubFactory(RootSectionFactory)
-
-
 class VideoBlockFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = VideoBlock
@@ -82,7 +41,6 @@ class WatchedVideoFactory(factory.django.DjangoModelFactory):
     video_id = FuzzyText()
 
 
-# TODO: Move this to django-pagetree
 class UserPageVisitFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = UserPageVisit
@@ -399,7 +357,6 @@ class WorthModuleFactory(object):
     def __init__(self, hname='main', base_url='/pages/'):
         AvatarFactory()
         AvatarFactory()
-        LocationFactory()
         GoalOption.objects.create(text='Goal Option 1')
         GoalOption.objects.create(text='Goal Option 2')
         GoalOption.objects.create(text='Goal Option 3')

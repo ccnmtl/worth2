@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.test import TestCase, TransactionTestCase
 from django.utils.encoding import smart_text
 from pagetree.helpers import get_hierarchy
+
 from worth2.goals.models import (
     GoalSettingColumn, GoalSettingResponse, GoalCheckInColumn
 )
@@ -12,7 +13,7 @@ from worth2.goals.tests.factories import (
     GoalCheckInBlockFactory, GoalCheckInOptionFactory,
     GoalCheckInResponseFactory
 )
-from worth2.main.tests.factories import ParticipantFactory
+from worth2.main.tests.factories import UserFactory
 from worth2.main.utils import get_first_block_in_module
 
 
@@ -71,16 +72,16 @@ class GoalSettingResponseTest(TestCase):
             'goals', 'goalsettingblock', 1)
 
         option = GoalOptionFactory(text='test option')
-        participant = ParticipantFactory()
+        user = UserFactory()
         GoalSettingResponseFactory(
             goal_setting_block=goalsettingblock.block(),
-            user=participant.user,
+            user=user,
             option=option,
             other_text='test other',
             text='test text')
 
         responses = GoalSettingResponse.objects.find_by_module(
-            participant.user, 'services', 1)
+            user, 'services', 1)
 
         self.assertEqual(responses.count(), 1)
 
@@ -125,7 +126,7 @@ class GoalSettingColumnTest(TestCase):
         self.opt = GoalOptionFactory(text="Sample Option")
         self.opt_other = GoalOptionFactory(text="Other")
 
-        self.participant = ParticipantFactory().user
+        self.participant = UserFactory()
 
         self.hierarchy = get_hierarchy('main', '/pages/')
         root = self.hierarchy.get_root()
@@ -201,7 +202,7 @@ class GoalCheckInColumnTest(TransactionTestCase):
     reset_sequences = True
 
     def setUp(self):
-        self.participant = ParticipantFactory().user
+        self.participant = UserFactory()
 
         self.hierarchy = get_hierarchy('main', '/pages/')
         root = self.hierarchy.get_root()

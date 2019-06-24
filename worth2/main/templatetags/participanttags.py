@@ -2,16 +2,9 @@ from datetime import timedelta
 from django import template
 from django.utils import timezone
 
-from worth2.main.models import Participant
 from worth2.main.utils import percent_complete_by_module
 
 register = template.Library()
-
-
-@register.simple_tag
-def get_participant(pk):
-    """Returns a participant, given their primary key."""
-    return Participant.objects.get(pk=pk)
 
 
 @register.filter

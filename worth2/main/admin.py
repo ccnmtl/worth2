@@ -2,12 +2,10 @@ from django.contrib import admin
 from ordered_model.admin import OrderedModelAdmin
 from pagetree.models import Hierarchy, Section
 
-from worth2.main.models import Avatar, Location, Participant
+from worth2.main.models import Avatar
 
 admin.site.register(Hierarchy)
 admin.site.register(Section)
-admin.site.register(Location)
-admin.site.register(Participant)
 
 
 class AvatarAdmin(OrderedModelAdmin):

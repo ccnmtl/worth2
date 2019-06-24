@@ -1,13 +1,13 @@
 from django.db import IntegrityError
 from rest_framework import viewsets, permissions
+from rest_framework.authentication import SessionAuthentication
 
-from worth2.main.auth import AnySessionAuthentication
 from worth2.main.serializers import WatchedVideoSerializer
 
 
 class WatchedVideoViewSet(viewsets.ModelViewSet):
     serializer_class = WatchedVideoSerializer
-    authentication_classes = (AnySessionAuthentication,)
+    authentication_classes = (SessionAuthentication,)
     permission_classes = (permissions.IsAuthenticated,)
 
     def get_queryset(self):

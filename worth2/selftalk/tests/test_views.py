@@ -1,7 +1,7 @@
 from django.test import TestCase
 from pagetree.helpers import get_hierarchy
 
-from worth2.main.tests.mixins import LoggedInParticipantTestMixin
+from worth2.main.tests.mixins import LoggedInUserTestMixin
 from worth2.selftalk.tests.factories import (
     StatementFactory, StatementResponseFactory, RefutationFactory
 )
@@ -11,7 +11,7 @@ from worth2.selftalk.models import (
 )
 
 
-class ExternalStatementBlockTest(LoggedInParticipantTestMixin, TestCase):
+class ExternalStatementBlockTest(LoggedInUserTestMixin, TestCase):
     def setUp(self):
         super(ExternalStatementBlockTest, self).setUp()
 
@@ -91,7 +91,7 @@ class ExternalStatementBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.assertEqual(responses.count(), 2)
 
 
-class ExternalRefutationBlockTest(LoggedInParticipantTestMixin, TestCase):
+class ExternalRefutationBlockTest(LoggedInUserTestMixin, TestCase):
     def setUp(self):
         super(ExternalRefutationBlockTest, self).setUp()
 
@@ -247,7 +247,7 @@ class ExternalRefutationBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.assertContains(r, 'Other')
 
 
-class InternalStatementBlockTest(LoggedInParticipantTestMixin, TestCase):
+class InternalStatementBlockTest(LoggedInUserTestMixin, TestCase):
     def setUp(self):
         super(InternalStatementBlockTest, self).setUp()
 
@@ -327,7 +327,7 @@ class InternalStatementBlockTest(LoggedInParticipantTestMixin, TestCase):
         self.assertEqual(responses.count(), 2)
 
 
-class InternalRefutationBlockTest(LoggedInParticipantTestMixin, TestCase):
+class InternalRefutationBlockTest(LoggedInUserTestMixin, TestCase):
     def setUp(self):
         super(InternalRefutationBlockTest, self).setUp()
 

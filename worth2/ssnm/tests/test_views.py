@@ -1,10 +1,10 @@
 from django.test import TestCase
 from pagetree.helpers import get_hierarchy
 
-from worth2.main.tests.mixins import LoggedInParticipantTestMixin
+from worth2.main.tests.mixins import LoggedInUserTestMixin
 
 
-class SsnmBlockTest(LoggedInParticipantTestMixin, TestCase):
+class SsnmBlockTest(LoggedInUserTestMixin, TestCase):
     def setUp(self):
         super(SsnmBlockTest, self).setUp()
 
