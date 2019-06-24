@@ -54,11 +54,6 @@ INSTALLED_APPS += [  # noqa
     'pagetreeepub',
 ]
 
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        'worth2.main.auth.IsActivePermission',
-    ),
-}
 JSON_API_PLURALIZE_TYPES = True
 
 PAGEBLOCKS = [
