@@ -1,11 +1,5 @@
 define([
     'jquery',
-    'views/create-participant',
-    'views/edit-participant',
-    'views/sign-in-participant',
-    'views/sign-out-participant',
-    'views/manage-participant-filter',
-    'views/sign-in-participant-filter',
     'views/goal-setting-form',
     'views/goal-checkin-form',
     'views/locked-video',
@@ -14,11 +8,8 @@ define([
     'js-cookie'
 ], function(
     $,
-    CreateParticipantView, EditParticipantView, SignInParticipantView,
-    SignOutParticipantView,
-    ManageParticipantFilter, SignInParticipantFilter, GoalSettingFormView,
-    GoalCheckinFormView, LockedVideo, SelfTalkRoad, QuizValidator,
-    Cookies
+    GoalSettingFormView, GoalCheckinFormView, LockedVideo, SelfTalkRoad,
+    QuizValidator, Cookies
 ) {
     $(function() {
         var csrftoken = Cookies.get('csrftoken');
@@ -35,21 +26,6 @@ define([
         });
     });
     var initialize = function() {
-        new CreateParticipantView();
-        $('form.worth-edit-participant').each(function() {
-            new EditParticipantView({
-                el: $(this)
-            });
-        });
-
-        new SignInParticipantView();
-
-        new SignOutParticipantView();
-
-        new ManageParticipantFilter();
-
-        new SignInParticipantFilter();
-
         new GoalSettingFormView();
 
         new GoalCheckinFormView();
