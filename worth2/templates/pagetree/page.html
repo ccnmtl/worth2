@@ -22,27 +22,13 @@
 
 {% block pagetitle %}<h1>{{section.label}}</h1>{% endblock %}
 
-{% block moduletabs %}
-
-<ul class="nav navbar-nav">
-  {% for section in modules %}
-  <li{% ifequal section.id module.id %} class="active"{% endifequal %}><a href="{{section.get_absolute_url}}">{{section.label}}</a></li>
-  {% endfor %}
-</ul>
-
-{% endblock %}
-
 {% block navrightextra %}
-{% if request.user.is_superuser %}
-<a href="{{section.get_edit_url}}" class="btn btn-success">edit page</a>
-{% endif %}
-{% endblock %}
-
-{% block sidenav %}
+    {% if request.user.is_superuser %}
+        <a href="{{section.get_edit_url}}" class="btn btn-default" style="font-weight: bold">Edit</a>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
-
 <div id="content">
     {% if needs_submit and not is_submitted %}
     <form action="." method="post">{% csrf_token %}
