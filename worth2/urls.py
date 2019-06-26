@@ -32,11 +32,12 @@ ssnm_rest_router.register(r'supporters', ssnm_apiviews.SupporterViewSet,
                           base_name='supporter')
 
 urlpatterns = [
+    url(r'^accounts/',
+        include('django_registration.backends.activation.urls')),
     auth_urls,
     url(r'^api/', include(rest_router.urls)),
     url(r'^api-auth/', include('rest_framework.urls',
                                namespace='rest_framework')),
-    url(r'^registration/', include('registration.backends.default.urls')),
     url(r'^$', views.DashboardView.as_view(), name='root'),
     url(r'^admin/', admin.site.urls),
     url(r'^_impersonate/', include('impersonate.urls')),

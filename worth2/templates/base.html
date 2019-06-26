@@ -80,39 +80,30 @@
             <img class="worth-avatar" src="{% avatar_url user %}" />
         </li>
 
-        {% if user.profile.is_participant %}
-        {# Participant nav bar #}
-        <li class="last-child">
-            <button type="button" class="btn btn-link navbar-btn"
-                    data-toggle="modal" data-target="#worth-signout-modal"
-                    id="worth-facilitator-button"
-                    >Facilitator</button>
-        </li>
-        {% else %}
-
-        {# Facilitator nav bar #}
-        {% if user.is_anonymous %}
-        <li><a href="/accounts/login/">Get Started</a></li>
-        {% else %}
-        <li>
-        <a href="/">Hi,
-                {% if user.first_name %}
-                {{user.first_name}}!
-                {% else %}
-                {{user.username}}!
-                {% endif %}
-        </a>
-        </li>
-        <li><a href="/accounts/logout/?next=/">Sign Out</a></li>
+        {% if not user.is_anonymous %}
+            <li><a href="/accounts/login/">Get Started</a></li>
+            <li>
+            <a href="/">Hi,
+                    {% if user.first_name %}
+                    {{user.first_name}}!
+                    {% else %}
+                    {{user.username}}!
+                    {% endif %}
+            </a>
+            </li>
+            
+            {% if user.has_usable_password %}
+                <li><a href="/accounts/password_change/">Password</a></li>
+            {% endif %}
+            <li><a href="/about/">About</a></li>
+            <li><a href="/contact/">Contact</a></li>
+            {% if user.is_superuser %}
+            <li><a href="/admin/">Administer</a></li>
+            <li><a href="/pages/edit/">Pagetree</a></li>
+            {% endif %}
+            <li><a href="/accounts/logout/?next=/">Sign Out</a></li>
         {% endif %}
-        <li><a href="/about/">About E-WORTH</a></li>
-        <li><a href="/contact/">Contact</a></li>
-        {% if user.is_superuser %}
-        <li><a href="/admin/">Administer</a></li>
-        <li><a href="/pages/edit/">Pagetree</a></li>
-        {% endif %}
-
-        {% endif %}
+        
 
         {% block topnavbarrightitems %}{% endblock %}
     </ul>

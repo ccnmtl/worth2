@@ -28,6 +28,10 @@ label {
     color: white;
 }
 
+.mb-2 {
+    margin-bottom: .5rem;
+}
+
 .dashboard-widget {min-height: 200px; position: relative;}
 .dashboard-widget a {
     margin: 10px 10px 0 0;

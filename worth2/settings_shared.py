@@ -40,7 +40,7 @@ INSTALLED_APPS += [  # noqa
     'bootstrapform',
     'infranil',
     'django_extensions',
-    'registration',
+    'django_registration',
     'pagetree',
     'pageblocks',
     'quizblock',
