@@ -6,40 +6,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<title>{% block title %}{% endblock %} | E-WORTH</title>
-
-    <meta name="description" content="E-WORTH">
-    <meta name="author" content="CCNMTL, CUSSW">
-
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    -->
+
+    <title>{% block title %}{% endblock %} | E-WORTH</title>
+
+    {# don't format a string of numbers as a phone number #}
     <meta name="format-detection" content="telephone=no">
-    
-    <!--<link href="//fonts.googleapis.com/css?family=Raleway:800,500" rel="stylesheet">-->
-
-    {% bootstrap_css %}
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-
-    {% compress css %}
-    <link href="{{STATIC_URL}}css/main.css" rel="stylesheet">
-    {% endcompress %}
-
-	<link rel="shortcut icon" href="{{STATIC_URL}}img/favicon.ico" type="image/x-icon" />
-    <link rel="icon" href="{{STATIC_URL}}img/favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" href="{{STATIC_URL}}img/apple-touch-icon.png" />
-
-	{% block css %}{% endblock %}
-
-	{% block feeds %}{% endblock %}
 
     <script>
         var STATIC_URL = '{{STATIC_URL}}';
     </script>
+
+    {% bootstrap_css %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+    {% compress css %}
+        <link href="{{STATIC_URL}}css/main.css" rel="stylesheet">
+    {% endcompress %}
+
+    <!-- Standard Meta Data -->
+    <meta name="description" content="E-WORTH" />
+    <meta name="keywords" content="health, education, ctl, socialwork, columbia university" />
+    <meta name="author" content="Columbia University, Center for Teaching & Learning" />
+    <meta name="copyright" content="2019 Columbia University, Center for Teaching & Learning">
+
+    <!-- Dublin Core Metadata -->
+    <meta name="DC.Title" content="E-WORTH" />
+    <meta name="DC.Description"
+        content="Designed for African-American women, by African-American women, E-WORTH is a 5-week learning experience
+            that promotes the health and wellness of African-American women involved in the justice system." />
+
+<!-- Open Graph -->
+    <meta property="og:title" content="E-WORTH" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="{{STATIC_URL}}img/logo-black.jpg" />
+    <meta property="og:description"
+        content="Designed for African-American women, by African-American women, E-WORTH is a 5-week learning experience
+            that promotes the health and wellness of African-American women involved in the justice system." />
+
+    <meta property="og:url" content="https://eworth.ctl.columbia.edu" />
+    <meta property="og:site_name" content="E-WORTH" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@columbia_ctl" />
+    <meta name="twitter:title" content="E-WORTH" />
+    <meta name="twitter:description" content="Designed for African-American women, by African-American women, E-WORTH is a 5-week learning experience
+            that promotes the health and wellness of African-American women involved in the justice system." />
+    <meta name="twitter:image" content="{{STATIC_URL}}img/favicon.jpg" />
+
+    <!-- JSON Structured data -->
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "WebSite",
+        "url": "https://eworth.ctl.columbia.edu",
+        "name": "E-WORTH",
+        "about": "Designed for African-American women, by African-American women, E-WORTH is a 5-week learning experience
+            that promotes the health and wellness of African-American women involved in the justice system.",
+        "keywords": "health, education, ctl, socialwork, columbia university"
+    }
+    </script>
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" href="{{STATIC_URL}}img/apple-touch-icon.png">
+    <link rel="shortcut icon" href="{{STATIC_URL}}img/favicon.ico">
+    <link rel="icon" href="{{STATIC_URL}}img/favicon.ico">
+    <link rel="icon" type="image/png" href="{{STATIC_URL}}img/logo-black.png">
+
+    {% block css %}{% endblock %}
+
+    {% block feeds %}{% endblock %}
 
     {# Include jquery outside require.js for bootstrap and forms js #}
     <script src="{{STATIC_URL}}js/lib/jquery.js"></script>
@@ -48,93 +86,82 @@
     <script src="https://search.sites.columbia.edu/cu-privacy-notice/cu-privacy-notice.js"></script>
 </head>
 
-<body class="{% block bodyclass %}{% endblock %}"
-      id="{% block bodyid %}{% endblock %}">
-<a class="sr-only" href="#content">Skip navigation</a>
-<img id="print-logo" src="{{STATIC_URL}}img/logo-black.png"  />
-{% block topnavbar %}
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-  <div class="container-fluid">
-      <div class="navbar-header">
-          <button type="button"
-                  class="navbar-toggle collapsed"
-                  id="worth-collapse-button"
-                  data-toggle="collapse"
-                  data-target=".navbar-ex1-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-          </button>
-	      <a title="E-WORTH" class="navbar-brand" href="/"><img style="background-color: black;" src="{{STATIC_URL}}img/logo-white.png" /></a>
-      </div>
+<body class="{% block bodyclass %}{% endblock %}" id="{% block bodyid %}{% endblock %}">
 
-  <!-- Collect the nav links, forms, and other content for toggling -->
-  <div class="collapse navbar-collapse navbar-ex1-collapse">
-    <ul class="nav navbar-nav">
-      {% block topnavbarleftitems %}{% endblock %}
-    </ul>
+<a id="skippy" class="sr-only sr-only-focusable" href="#maincontent">
+    <span class="skiplink-text">Skip to main content</span>
+</a>
 
-    <ul class="nav navbar-nav navbar-right">
-        <li id="avatar">
-            <img class="worth-avatar" src="{% avatar_url user %}" />
-        </li>
+<header>
+    <img id="print-logo" src="{{STATIC_URL}}img/logo-black.png"  />
 
-        {% if not user.is_anonymous %}
-            <li><a href="/accounts/login/">Get Started</a></li>
-            <li>
-            <a href="/">Hi,
-                    {% if user.first_name %}
-                    {{user.first_name}}!
-                    {% else %}
-                    {{user.username}}!
+    {% block topnavbar %}
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button"
+                          class="navbar-toggle collapsed"
+                          id="worth-collapse-button"
+                          data-toggle="collapse"
+                          data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a title="E-WORTH" class="navbar-brand" href="/"><img src="{{STATIC_URL}}img/logo-white.png" alt="Small E-WORTH logo"/></a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    {% block topnavbarleftitems %}{% endblock %}
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    {% if not user.is_anonymous %}
+                        <li id="avatar">
+                            <img class="worth-avatar" src="{% avatar_url user %}" alt="Selected Worth Avatar" />
+                        </li>
+                        <li>
+                        <a href="/">Hi,
+                                {% if user.first_name %}
+                                {{user.first_name}}!
+                                {% else %}
+                                {{user.username}}!
+                                {% endif %}
+                        </a>
+                        </li>
+                        
+                        {% if user.has_usable_password %}
+                            <li><a href="/accounts/password_change/">Password</a></li>
+                        {% endif %}
+                        <li><a href="/about/">About</a></li>
+                        <li><a href="/contact/">Contact</a></li>
+                        {% if user.is_superuser %}
+                        <li><a href="/admin/">Administer</a></li>
+                        <li><a href="/pages/edit/">Pagetree</a></li>
+                        {% endif %}
+                        <li><a href="/accounts/logout/?next=/">Sign Out</a></li>
                     {% endif %}
-            </a>
-            </li>
-            
-            {% if user.has_usable_password %}
-                <li><a href="/accounts/password_change/">Password</a></li>
-            {% endif %}
-            <li><a href="/about/">About</a></li>
-            <li><a href="/contact/">Contact</a></li>
-            {% if user.is_superuser %}
-            <li><a href="/admin/">Administer</a></li>
-            <li><a href="/pages/edit/">Pagetree</a></li>
-            {% endif %}
-            <li><a href="/accounts/logout/?next=/">Sign Out</a></li>
-        {% endif %}
-        
+                    {% block topnavbarrightitems %}{% endblock %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% endblock %}
+</header>
 
-        {% block topnavbarrightitems %}{% endblock %}
-    </ul>
-    
-  </div>
-  </div>
-</nav>
-{% endblock %}
+<div class="container"></div>
 
-<div class="container {% block loginphoto %}{% endblock %}" id="outer-container">
-{% block masthead %}
-{% block primarynav %}{% endblock %}
-{% endblock %}
+<main id="maincontent" class="container">
+    {% block navrightextra %}
+    {% endblock %}
 
-{% if user.is_superuser %}
-{% block navrightextra %}
-{% endblock %}
-{% endif %}
-
-{% block loginbox %}
-{% endblock %}
-
-{% block sidenav %}{% endblock %}
-{% block pagetitle %}{% endblock %}
-{% block content %}{% endblock %}
-{% block content-nav %}{% endblock %}
-
-</div> <!-- end .container -->
-{% block footer %}
-<footer class="footer hidden-phone"></footer>
-{% endblock %}
+    {% block pagetitle %}{% endblock %}
+    {% block content %}{% endblock %}
+    {% block content-nav %}{% endblock %}
+</main>
 
 <script src="https://cdn.ravenjs.com/3.20.1/raven.min.js" crossorigin="anonymous"></script>
 <script>

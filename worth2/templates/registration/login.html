@@ -2,7 +2,7 @@
 {% load bootstrap3 %}
 {% load waffle_tags %}
 
-{% block loginphoto %}
+{% block bodyclass %}
     splash-photo
 {% endblock %}
 
@@ -11,96 +11,78 @@
 {% endblock %}
 
 {% block content %}
-
-    <div class="container">
-
-        <div class="row">
-
-            <div class="col-md-6  text-center">
-
-                    <img class="img-responsive" src="{{STATIC_URL}}img/eworth-logo-white-withtag.png" />
-
-                    <hr />
-
-                    <p class="lead" style="color: #fff; font-size: 18px;">
-                    Designed for African-American women, by African-American women, E-WORTH is a 5-week group that promotes the health and wellness of African-American women involved in the justice system. Each week, participants learn brand new tips and techniques that will empower them to make their health, the health of their families, and the health of their communities a priority.
-                    </p>
-
-                    <a class="btn btn-lg btn-default" style="margin-bottom: 40px;" href="/about/">Learn More</a>
-
-              </div>
-
-            <div class="col-md-6">
-
-                    <div class="well">
-
-                    <h3 class="text-center">Get Started</h3>
-
-                     <form class="form-signin" role="form" method="post" action="/accounts/login/">
-                         {% csrf_token %}
-                         {% bootstrap_form form layout='inline' %}
-                         <div class="row">
-                            <div class="col-md-6 text-left">
-                                <button type="submit" id="main-signin-submit"
-                                     class="btn btn-md btn-primary btn-block">Sign In</button>
-                            </div>
-                            <div class="col-md-6 text-right">
-                                <a href="/accounts/password_reset/">Forgot Password?</a>
-                            </div>
-                         </div>
-                     </form>
-                     <hr />
-
-                    {% switch "self-registration" %}
-                    <p>
-                        <a href="/accounts/register/">Register for an account</a>
-                    </p>
-                    {% endswitch %}
-
-                    </div>
-
-            </div>
-
+<div class="container">
+    <div class="row">
+        <div class="col-md-7 text-center">
+            <img class="img-responsive" src="{{STATIC_URL}}img/eworth-logo-white-withtag.png"
+                alt="E-WORTH Empowering African-American Women on the Road to Health" />
+            <hr />
+            <p class="lead" style="color: #fff;">
+            Designed for African-American women, by African-American women, E-WORTH is a 5-week group that promotes the health and wellness of African-American women involved in the justice system. Each week, participants learn brand new tips and techniques that will empower them to make their health, the health of their families, and the health of their communities a priority.
+            <a href="/about/" style="font-weight: bold; color: white;">Learn More</a>
+            </p>
+            {% switch "self-registration" %}
+            <a class="btn btn-lg btn-default" style="margin-bottom: 40px;" href="/accounts/register/">Sign Up</a>
+            {% endswitch %}
         </div>
-
-        <div class="persona row" style="color: #fff;">
-                    <div class="col-md-2 text-center col-md-offset-1 ">
-                    <img class="img-responsive img-circle" src="{{STATIC_URL}}img/charlene.png" />
-                    <!--<img class="img-responsive img-circle" src="{{STATIC_URL}}img/textile-splash-jumbotron-shim.png" />-->
-                    <p>
-                    Charlene
-                    </p>
+        <div class="col-md-5">
+            <div class="well login-box">
+                <h1 class="text-center">Log In</h1>
+                <form class="form-signin" role="form" method="post" action="/accounts/login/">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label class="sr-only" for="id_username">Username</label>
+                        <input autocomplete="username" type="text" name="username" class="form-control" placeholder="Username" title="" required="" id="id_username">
                     </div>
-                    <div class="col-md-2 text-center">
-                    <img class="img-responsive img-circle" src="{{STATIC_URL}}img/joy.png" />
-                    <!--<img class="img-responsive img-circle" src="{{STATIC_URL}}img/textile-splash-jumbotron-shim.png" />-->
-                    <p>
-                    Joy
-                    </p>
+                    <div class="form-group">
+                        <label class="sr-only" for="id_password">Password</label>
+                        <input autocomplete="current-password" type="password" name="password" class="form-control" placeholder="Password" title="" required="" id="id_password">
                     </div>
-                    <div class="col-md-2 text-center">
-                    <img class="img-responsive img-circle" src="{{STATIC_URL}}img/mia.png" />
-                    <!--<img class="img-responsive img-circle" src="{{STATIC_URL}}img/textile-splash-jumbotron-shim.png" />-->
-                    <p>
-                    Mia
-                    </p>
+                    <div class="row">
+                        <div class="col-md-6 text-left">
+                            <button type="submit" id="main-signin-submit"
+                                 class="btn btn-md btn-primary btn-block">Sign In</button>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <a href="/accounts/password_reset/">Forgot Password?</a>
+                        </div>
                     </div>
-                    <div class="col-md-2 text-center">
-                    <img class="persona img-responsive img-circle" src="{{STATIC_URL}}img/rasheeda.png" />
-                    <!--<img class="img-responsive img-circle" src="{{STATIC_URL}}img/textile-splash-jumbotron-shim.png" />-->
-                    <p>
-                    Rasheeda
-                    </p>
-                    </div>
-                    <div class="col-md-2 text-center">
-                    <img class="persona img-responsive img-circle" src="{{STATIC_URL}}img/amanda.png" />
-                    <!--<img class="img-responsive img-circle" src="{{STATIC_URL}}img/textile-splash-jumbotron-shim.png" />-->
-                    <p>
-                    Amanda
-                    </p>
-                    </div>
-                    </div>
-
+                </form>
+            </div>
+        </div>  
     </div>
 
+    <ul class="flex-container text-white">
+        <li class="flex-item text-center">
+            <img class="img-responsive img-circle" src="{{STATIC_URL}}img/charlene.png" alt="Image of EWORTH narrator Charlene" />
+            <div>
+                Charlene
+            </div>
+        </li>
+        <li class="flex-item text-center">
+            <img class="img-responsive img-circle" src="{{STATIC_URL}}img/joy.png" alt="Image of EWORTH narrator Joy" />
+            <div>
+                Joy
+            </div>
+        </li>
+        <li class="flex-item text-center">
+           <img class="img-responsive img-circle" src="{{STATIC_URL}}img/mia.png" alt="Image of EWORTH narrator Mia" />
+            <div>
+                Mia
+            </div>
+        </li>
+        <li class="flex-item text-center">
+            <img class="img-responsive img-circle" src="{{STATIC_URL}}img/rasheeda.png" alt="Image of EWORTH narrator Rasheeda" />
+            <div>
+                Rasheeda
+            </div>
+        </li>
+        <li class="flex-item text-center">
+            <img class="img-responsive img-circle" src="{{STATIC_URL}}img/amanda.png" alt="Image of EWORTH narrator Amanda" />
+            <div>
+                Amanda
+            </div>
+        </li>
+    </ul>
+</div>
 {% endblock %}
