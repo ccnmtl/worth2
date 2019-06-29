@@ -19,6 +19,7 @@ class Avatar(OrderedModel):
     """An image that the user can choose for their profile."""
 
     image = models.ImageField()
+    alt_text = models.TextField()
 
     is_default = models.BooleanField(
         default=False,

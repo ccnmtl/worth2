@@ -24,6 +24,7 @@ class AvatarFactory(factory.django.DjangoModelFactory):
         model = Avatar
 
     image = SimpleUploadedFile('test.png', '')
+    alt_text = 'Alternate Text'
 
 
 class VideoBlockFactory(factory.django.DjangoModelFactory):
