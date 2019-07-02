@@ -1,5 +1,3 @@
-{% extends 'base.html' %}
-
 {% load avatar %}
 
 {% block js %}
@@ -48,7 +46,7 @@ HTML template - there's probably a way of avoiding that step.
 </script>
 
 <script type="text/x-handlebars" id="components/supporter-box">
-    <div class="ssnm-supporter-box">
+    <div class="ssnm-supporter-box" tabindex="0">
         <div class="pull-left">
             {% endverbatim %}
             <img class="img-thumbnail" src="{{STATIC_URL}}img/icon-ssnm.png" width="120" />
@@ -83,7 +81,12 @@ HTML template - there's probably a way of avoiding that step.
             <div class="worth-ssnm-my-avatar-box">
                 <div class="avatar-block">
                     {% endverbatim %}
-                   <img class="img-thumbnail" src="{% avatar_url user %}" width="120" >
+
+                    {% if request.user.is_staff or request.user.is_superuser %}
+                        <img class="img-thumbnail" src="{% avatar_url user %}" alt="Administrator avatar">
+                    {% else %}
+                        <img class="img-thumbnail" src="{% avatar_url user %}" alt="{{user.profile2.avatar.alt_text}}">
+                    {% endif %}
 
                     {% verbatim %}
                 </div>
