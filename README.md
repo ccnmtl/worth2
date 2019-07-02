@@ -6,13 +6,8 @@ E-WORTH
 [![Build Status](https://travis-ci.org/ccnmtl/worth2.svg?branch=master)](https://travis-ci.org/ccnmtl/worth2)
 
 
-Creating Facilitators
+About
 =====================
+E-WORTH (Empowering African-American Women on the Road to Health) is a National Institute on Drug Abuse (NIDA) funded randomized controlled trial designed to evaluate the effectiveness and cost-effectiveness of delivering a self-paced and group-based HIV prevention intervention and HIV testing to 420 Black drug-involved female offenders at probation sites in New York City, compared to delivering HIV testing and information alone. E-WORTH builds positive peer norms and social support for HIV risk reduction and increases individual learning opportunities and feedback through the use of private tablets for each participant. E-WORTH is culturally tailored and features both a web-based narrator and a cast of video characters who help lead participants through the intervention exercises.
 
-To create a facilitator, log in as a superuser, then create a normal user from
-the Django admin section. All users that are created in the eworth system like
-this are considered "facilitators". Optionally, you can give this user "staff
-status", which allows them to see the "Assess" section of the dashboard,
-letting them retrieve the reports.
-
-Participant users are created separately, within the application.
+Developed by researchers at the Social Intervention Group (SIG), the original WORTH intervention was conceived as a group-based, integrated drug use and HIV prevention intervention for low income, urban female offenders and addressed intimate partner violence and other gender specific risk factors for HIV. WORTH has been rigorously tested and found to be efficacious in a variety of environments.
