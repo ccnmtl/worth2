@@ -4,8 +4,13 @@
     <textarea rows="10" name="question{{question.id}}" class="form-control"></textarea>
 {% else %}
     {% if response %}
-        <textarea readonly="readonly" name="pageblock-{{block.pageblock.id}}-question{{question.id}}" class="form-control">{{response.value}}</textarea>
+        <textarea readonly="readonly"
+            id="pageblock-{{block.pageblock.id}}-question{{question.id}}"
+            name="pageblock-{{block.pageblock.id}}-question{{question.id}}"
+            class="form-control">{{response.value}}</textarea>
     {% else %}
-        <textarea name="pageblock-{{block.pageblock.id}}-question{{question.id}}" class="form-control"></textarea>
+        <textarea
+            id="pageblock-{{block.pageblock.id}}-question{{question.id}}"
+            name="pageblock-{{block.pageblock.id}}-question{{question.id}}" class="form-control"></textarea>
     {% endif %}
 {% endif %}

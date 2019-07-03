@@ -13,7 +13,7 @@
         },
         keyDown: function(e) {
             Em.debug('view:modal keyDown');
-            if (e.keyCode === 13) {
+            if (e.keyCode === 13 && !Em.$(e.target).hasClass('btn')) {
                 // The user pressed Enter.
                 return false;
             } else if (e.keyCode === 27) {

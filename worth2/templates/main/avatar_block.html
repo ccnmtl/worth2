@@ -2,5 +2,9 @@
 {% load avatar %}
 
 <div class="avatar-block">
-    <img src="{% avatar_url user %}" alt="{{user.profile2.avatar.alt_text}}">
+    {% if request.user.is_staff or request.user.is_superuser %}
+        <img src="{% avatar_url user %}" alt="Administrator avatar">
+    {% else %}
+        <img src="{% avatar_url user %}" alt="{{user.profile2.avatar.alt_text}}">
+    {% endif %}
 </div>

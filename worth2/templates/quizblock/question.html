@@ -15,31 +15,39 @@
                 <div class="casetitle"> Question {{question.display_number}}:</div>
             </div>
         </div>
-    
+
         <div class="casecontent">
             <div class="casequestion {{question.css_extra}}">
                 <div class="row">
                     <div class="col-md-8">
-                        <div class="casequestiontext">{{question.text|markdown}}</div>
+                        <div class="casequestiontext">
+                            {% if question.is_short_text or question.is_long_text %}
+                                <label for="pageblock-{{block.pageblock.id}}-question{{question.id}}">
+                            {% endif %}
+                                {{question.text|markdown}}
+                            {% if question.is_short_text or question.is_long_text %}
+                                </label>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
                 {% if question.answerable %}
                     {% if block.rhetorical %}
                         <form id="form-{{question.id}}" method="post">{% csrf_token %}
                     {% endif %}
-        
+
                     {% if question.is_single_choice %}
                         {% include 'quizblock/single_choice.html' %}
                     {% endif %}
-        
+
                     {% if question.is_single_choice_dropdown %}
                         {% include 'quizblock/single_choice_dropdown.html' %}
                     {% endif %}
-        
+
                     {% if question.is_multiple_choice %}
                         {% include 'quizblock/multiple_choice.html' %}
                     {% endif %}
-        
+
                     {% if block.rhetorical %}
                         </form>
                     {% endif %}
@@ -47,13 +55,13 @@
                     {% if question.is_short_text %}
                         {% include 'quizblock/short_text.html' %}
                     {% endif %}
-        
+
                     {% if question.is_long_text %}
                         {% include 'quizblock/long_text.html' %}
                     {% endif %}
                 {% endif %}
             </div>
-        
+
             {% if block.rhetorical %}
                 {% include 'quizblock/show_answer.html' %}
             {% else %}

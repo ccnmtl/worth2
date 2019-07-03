@@ -113,6 +113,10 @@ label {
     text-align: center;
 }
 
+div.pageblock.badge.pull-right {
+    background-color: black;
+}
+
 /* Deactivate any link that's in a disabled list-item. */
 li.disabled>a {
     cursor: default;
@@ -225,6 +229,10 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     font-size: 21px;
     font-weight: 300;
     line-height: 1.4;
+}
+
+.casequestiontext label {
+    font-weight: normal;
 }
 
 .casetitle {

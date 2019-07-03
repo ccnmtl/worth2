@@ -45,7 +45,11 @@
     </div>
     <div class="col-md-4">
         <div class="avatar-block text-center">
-            <img src="{% avatar_url user %}">
+            {% if request.user.is_staff or request.user.is_superuser %}
+                <img src="{% avatar_url user %}" alt="Administrator avatar">
+            {% else %}
+                <img src="{% avatar_url user %}" alt="{{user.profile2.avatar.alt_text}}">
+            {% endif %}
         </div>
         <div class="clearfix"></div>
     </div>

@@ -7,7 +7,11 @@
 
 <div class="protective-behaviors-results">
     <div class="avatar-block">
-        <img src="{% avatar_url user %}">
+        {% if request.user.is_staff or request.user.is_superuser %}
+            <img src="{% avatar_url user %}" alt="Administrator avatar">
+        {% else %}
+            <img src="{% avatar_url user %}" alt="{{user.profile2.avatar.alt_text}}">
+        {% endif %}
     </div>
 
         <h4>Stuff I Do</h4>
