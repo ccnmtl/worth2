@@ -17,7 +17,7 @@ pytz==2019.1
 configparser==3.7.4
 entrypoints==0.3  # for flake8
 flake8==3.7.7
-tornado==5.1.1
+tornado==6.0.3
 beautifulsoup4==4.6.0
 fuzzywuzzy==0.17.0
 sure==1.4.11
