@@ -38,7 +38,7 @@ pathlib2==2.3.3
 pygments==2.3.1
 
 ipython==7.2.0
-Genshi==0.7.1
+Genshi==0.7.3
 requirements/src/epubbuilder-0.2.1-py2.py3-none-any.whl
 
 selenium==3.141.0
