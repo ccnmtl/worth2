@@ -20,12 +20,28 @@
 
 {% block title %}{{section.label}}{% endblock %}
 
-{% block pagetitle %}<h1>{{section.label}}</h1>{% endblock %}
+{% block pagetitle %}{% if section.depth > 2 %}<h1>{{section.label}}</h1>{% endif %}{% endblock %}
 
 {% block navrightextra %}
     {% if request.user.is_superuser %}
         <a href="{{section.get_edit_url}}" class="btn btn-default" style="font-weight: bold">Edit</a>
     {% endif %}
+{% endblock %}
+
+{% block topnavbarleftitems %}
+    <li class="dropdown active">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            Session Menu<span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="{{module.get_absolute_url}}">Introduction </a></li>
+            {% for page in module.get_descendants %}
+                {% if page.depth <= 3 %}
+                <li><a href="{{page.get_absolute_url}}">{{page.label}}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </li>
 {% endblock %}
 
 {% block content %}
