@@ -20,6 +20,19 @@ a {
     margin-bottom: 0px;
 }
 
+.navbar .navbar-brand .fa-home {
+    font-size: 4rem;
+    color: white;
+    float: left;
+    margin-right: 10px;
+    margin-top: -8px;
+}
+
+.navbar .navbar-brand img {
+    float: left;
+    margin-top: 4px;
+}
+
 
 li#avatar img {background-color: #000;}
 
@@ -59,6 +72,7 @@ label {
     margin-top: 4rem;
     padding: 2rem;
     border: 1px solid #ddd;
+    border-radius: 6px;
 }
 
 .worth-facilitator-dashboard .course-progress table {
@@ -137,7 +151,13 @@ li.disabled>a:before {
     min-height: 100%;
 }
 
-.jumbotron-special {color: #fff; background-color: rgb(147, 39, 79);}
+.jumbotron-special {
+    color: #fff;
+    background-color: #932951;
+    background-image: url(../img/floral-screen-025.png);
+    background-repeat: no-repeat;
+    background-position: top right;
+}
 
 .video-block {
     margin-bottom: 10px;
@@ -171,10 +191,6 @@ li.disabled>a:before {
 .login-description h2 {
     line-height: 1.3em;
     display: block;
-}
-
-footer.footer {
-    height: 40px;
 }
 
 .worth-facilitator-manage-participants .row {
@@ -798,4 +814,27 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     margin-left: 10px;
 }
 
+footer {
+    margin-top: 5rem;
+    border-top: 3px solid #932951;
+}
 
+footer .footer-logo {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-bottom: 2rem;
+    background-color: rgb(245, 234, 240);
+}
+
+footer .ctl-logo img {
+    margin-top: 12px;
+    width: 100%;
+    min-width: 200px;
+    max-width: 250px;
+}
+
+footer .ssw-logo img {
+    width: 100%;
+    min-width: 200px;
+    max-width: 400px;
+}
