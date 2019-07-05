@@ -109,7 +109,9 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a title="E-WORTH" class="navbar-brand" href="/"><img src="{{STATIC_URL}}img/logo-white.png" alt="Small E-WORTH logo"/></a>
+                <a title="E-WORTH" class="navbar-brand" href="/">
+                    <i class="fa fa-home"></i> <img src="{{STATIC_URL}}img/logo-white.png" alt="Small E-WORTH logo"/>
+                </a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -120,9 +122,11 @@
 
                 <ul class="nav navbar-nav navbar-right">
                     {% if not user.is_anonymous %}
+                        {% if user.profile2.avatar %}
                         <li id="avatar">
                             <img class="worth-avatar" src="{% avatar_url user %}" alt="Selected Worth Avatar" />
                         </li>
+                        {% endif %}
                         <li>
                         <a href="/">Hi,
                                 {% if user.first_name %}
@@ -137,11 +141,7 @@
                         {% endif %}
                         <li><a href="/about/">About</a></li>
                         <li><a href="/contact/">Contact</a></li>
-                        {% if user.is_superuser %}
-                        <li><a href="/admin/">Administer</a></li>
-                        <li><a href="/pages/edit/">Pagetree</a></li>
-                        {% endif %}
-                        <li><a href="/accounts/logout/?next=/">Sign Out</a></li>
+                        <li><a href="/accounts/logout/?next=/">Log Out</a></li>
                     {% endif %}
                     {% block topnavbarrightitems %}{% endblock %}
                 </ul>
@@ -151,8 +151,6 @@
     {% endblock %}
 </header>
 
-<div class="container"></div>
-
 <main id="maincontent" class="container">
     {% block navrightextra %}
     {% endblock %}
@@ -161,6 +159,38 @@
     {% block content %}{% endblock %}
     {% block content-nav %}{% endblock %}
 </main>
+
+
+<footer class="bd-footer">
+    <div class="footer-logo row">
+        <div class="col-lg-4 text-center">
+            <a href="https://sig.columbia.edu" target="_blank">
+                <img src="{{STATIC_URL}}img/logo-sig.png" alt="Social Intervention Group Logo">
+            </a></div>
+        <div class="col-lg-4 text-center">
+            <a class="ssw-logo" href="https://ssw.columbia.edu/" target="_blank">
+                <img src="{{STATIC_URL}}img/logo-ssw.png" alt="School of Social Work Logo">
+            </a>
+        </div>
+        <div class="col-lg-4 text-center">
+            <a class="ctl-logo" href="https://ctl.columbia.edu" target="_blank">
+                <img src="{{STATIC_URL}}img/logo-ctl.png" alt="Center for Teaching & Learning Logo">
+            </a>
+        </div>
+    </div>
+
+    <div class="footer-logo row">
+        <div class="col-md-12 text-center">
+        <p>
+            Code licensed <a href="https://github.com/ccnmtl/worth2/LICENSE"
+                target="_blank" rel="license noopener">GPL 3.0</a>, content
+            <a itemprop="license"
+                href="https://creativecommons.org/licenses/by-sa/4.0/"
+                target="_blank">CC BY-SA 4.0</a>
+        </p>
+        </div>
+    </div>
+</footer>
 
 <script src="https://cdn.ravenjs.com/3.20.1/raven.min.js" crossorigin="anonymous"></script>
 <script>
