@@ -72,7 +72,7 @@ django-compressor==2.3
 
 lazy-object-proxy==1.4.1
 wrapt==1.11.1
-astroid==2.1.0
+astroid==2.2.5
 django-statsd-mozilla==0.4.0
 raven==6.10.0
 django-bootstrap3==11.0.0
