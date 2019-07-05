@@ -1,5 +1,6 @@
 language: python
 sudo: false
+dist: xenial
 addons:
   firefox: "44.0.2"
 python:
