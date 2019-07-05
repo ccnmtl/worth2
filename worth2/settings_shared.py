@@ -77,7 +77,7 @@ LOGIN_REDIRECT_URL = "/"
 ACCOUNT_ACTIVATION_DAYS = 7
 
 # change on production / staging
-PARTICIPANT_SECRET = 'something secret'
+PARTICIPANT_SECRET = 'something secret'  # nosec
 
 MESSAGE_TAGS = {
     messages.ERROR: 'danger'
