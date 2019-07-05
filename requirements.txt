@@ -35,7 +35,7 @@ wcwidth==0.1.7
 prompt_toolkit==2.0.9
 scandir==1.10.0
 pathlib2==2.3.4
-pygments==2.3.1
+pygments==2.4.2
 
 ipython==7.6.1
 Genshi==0.7.1
