@@ -193,13 +193,13 @@ class GoalCheckInPageBlockTest(LoggedInUserTestMixin, TestCase):
             '%s-0-other' % p: 'other text for form 1',
 
             '%s-1-goal_setting_response_id' % p: '',
-            '%s-1-i_will_do_this' % p: None,
-            '%s-1-what_got_in_the_way' % p: None,
+            '%s-1-i_will_do_this' % p: '',
+            '%s-1-what_got_in_the_way' % p: '',
             '%s-1-other' % p: '',
 
             '%s-2-goal_setting_response_id' % p: '',
-            '%s-2-i_will_do_this' % p: None,
-            '%s-2-what_got_in_the_way' % p: None,
+            '%s-2-i_will_do_this' % p: '',
+            '%s-2-what_got_in_the_way' % p: '',
             '%s-2-other' % p: '',
         })
 
@@ -211,10 +211,10 @@ class GoalCheckInPageBlockTest(LoggedInUserTestMixin, TestCase):
         self.assertEqual(r.status_code, 200)
         self.assertFormsetError(
             r, 'checkin_formset', 1, 'i_will_do_this',
-            'Select a valid choice. None is not one of the available choices.')
+            'This field is required.')
         self.assertFormsetError(
             r, 'checkin_formset', 2, 'i_will_do_this',
-            'Select a valid choice. None is not one of the available choices.')
+            'This field is required.')
 
     def test_post_multiple_times(self):
         """
@@ -244,7 +244,7 @@ class GoalCheckInPageBlockTest(LoggedInUserTestMixin, TestCase):
     def test_post_invalid(self):
         p = self.p
         invalid_post_data = self.valid_post_data.copy()
-        invalid_post_data.update({'%s-0-i_will_do_this' % p: None})
+        invalid_post_data.update({'%s-0-i_will_do_this' % p: ''})
         r = self.client.post(self.url, invalid_post_data)
 
         responses = GoalCheckInResponse.objects.filter(
@@ -255,7 +255,7 @@ class GoalCheckInPageBlockTest(LoggedInUserTestMixin, TestCase):
         self.assertEqual(r.status_code, 200)
         self.assertFormsetError(
             r, 'checkin_formset', 0, 'i_will_do_this',
-            'Select a valid choice. None is not one of the available choices.')
+            'This field is required.')
 
     def test_post_i_did_it_makes_other_inputs_not_required(self):
         p = self.p
@@ -559,7 +559,7 @@ class GoalSettingBlockTest(LoggedInUserTestMixin, TestCase):
             '%s-MIN_NUM_FORMS' % p: '1',
             '%s-MAX_NUM_FORMS' % p: '1000',
 
-            '%s-0-option' % p: None,
+            '%s-0-option' % p: '',
             '%s-0-other_text' % p: '',
             '%s-0-text' % p: '',
         })
@@ -568,8 +568,7 @@ class GoalSettingBlockTest(LoggedInUserTestMixin, TestCase):
         self.assertEqual(GoalSettingResponse.objects.count(), 0)
         self.assertFormsetError(
             r, 'setting_formset', 0, 'option',
-            'Select a valid choice. That choice is not one of the ' +
-            'available choices.')
+            'This field is required.')
         self.assertFormsetError(
             r, 'setting_formset', 0, 'text',
             'This field is required.')
