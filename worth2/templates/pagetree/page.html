@@ -119,14 +119,14 @@
 {% comment %}Do not allow users to back into a previous module{% endcomment %}
 {% if previous and section.depth > 1 %}
   <li class="previous">
-        <a href="{{previous.get_absolute_url}}">&larr; {{previous.label}}</a>
+        <a href="{{previous.get_absolute_url}}" aria-label="Previous Page">&larr; {{previous.label}}</a>
   </li>
 {% endif %}
 
 {% comment %}Do not allow users to next into the next module{% endcomment %}
 {% if next_section and next_section.depth > 1 %}
     <li class="next">
-        <a href="{{next_section.get_absolute_url}}">{{next_section.label}} &rarr;</a>
+        <a href="{{next_section.get_absolute_url}}" aria-label="Next Page">{{next_section.label}} &rarr;</a>
     </li>
 {% endif %}
 </ul>
