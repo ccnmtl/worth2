@@ -18,7 +18,7 @@ configparser==3.7.4
 entrypoints==0.3  # for flake8
 flake8==3.7.8
 tornado==6.0.3
-beautifulsoup4==4.7.1
+beautifulsoup4==4.8.0
 fuzzywuzzy==0.17.0
 sure==1.4.11
 ipdb==0.12
