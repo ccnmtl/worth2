@@ -18,7 +18,7 @@ configparser==3.7.4
 entrypoints==0.3  # for flake8
 flake8==3.7.8
 tornado==6.0.3
-beautifulsoup4==4.7.1
+beautifulsoup4==4.8.0
 fuzzywuzzy==0.17.0
 sure==1.4.11
 ipdb==0.12
@@ -55,10 +55,10 @@ factory_boy==2.12.0
 sqlparse==0.3.0
 python-dateutil==2.8.0
 contextlib2==0.5.5
-urllib3==1.24.3
+urllib3==1.25.3
 s3transfer==0.2.1
 jmespath==0.9.4
-botocore==1.12.192
+botocore==1.12.193
 boto3==1.9.193
 boto==2.49.0
 django-storages==1.7.1
@@ -80,7 +80,7 @@ wrapt==1.11.2
 astroid==2.2.5
 django-statsd-mozilla==0.4.0
 raven==6.10.0
-django-bootstrap3==11.0.0
+django-bootstrap3==11.1.0
 django-bootstrap-form==3.4
 django-debug-toolbar==2.0
 django-waffle==0.17.0
