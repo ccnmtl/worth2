@@ -1,6 +1,5 @@
 language: python
-sudo: false
-dist: xenial
+dist: bionic
 addons:
   firefox: "44.0.2"
 python:
