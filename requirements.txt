@@ -43,7 +43,7 @@ requirements/src/epubbuilder-0.2.1-py2.py3-none-any.whl
 
 selenium==3.141.0
 coverage==4.5.3
-logilab-common==1.4.2
+logilab-common==1.4.3
 logilab-astng==0.24.3
 editdistance==0.5.3
 pylint==2.3.1
