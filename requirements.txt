@@ -37,7 +37,7 @@ scandir==1.10.0
 pathlib2==2.3.4
 pygments==2.4.2
 
-ipython==7.6.1
+ipython==7.7.0
 Genshi==0.7.3
 requirements/src/epubbuilder-0.2.1-py2.py3-none-any.whl
 
