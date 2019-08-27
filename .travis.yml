@@ -2,7 +2,7 @@ language: python
 sudo: false
 dist: xenial
 addons:
-  firefox: "44.0.2"
+  firefox: "45.0.2esr"
 python:
   - "3.6"
 install:
