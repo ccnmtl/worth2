@@ -1,5 +1,5 @@
 Django==2.2.6
-Markdown==2.6.11 # pyup: < 3
+Markdown==3.1.1
 smartypants==2.0.1
 psycopg2==2.8.3
 olefile==0.46
