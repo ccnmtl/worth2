@@ -16,7 +16,7 @@ pycodestyle==2.5.0
 pytz==2019.2
 configparser==4.0.2
 entrypoints==0.3  # for flake8
-flake8==3.7.8
+flake8==3.7.9
 tornado==6.0.3
 beautifulsoup4==4.8.0
 fuzzywuzzy==0.17.0
