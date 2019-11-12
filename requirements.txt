@@ -43,7 +43,7 @@ requirements/src/epubbuilder-0.2.1-py2.py3-none-any.whl
 
 selenium==3.141.0
 coverage==4.5.4
-logilab-common==1.4.3
+logilab-common==1.4.4
 logilab-astng==0.24.3
 editdistance==0.5.3
 pylint==2.4.3
@@ -54,8 +54,8 @@ Faker==2.0.3
 factory_boy==2.12.0
 sqlparse==0.3.0
 python-dateutil==2.8.1
-contextlib2==0.6.0.post1
-urllib3==1.25.6  # sentry-sdk
+contextlib2==0.6.0.post1y
+urllib3==1.25.7 # sentry-sdk
 s3transfer==0.2.1
 jmespath==0.9.4
 
