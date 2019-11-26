@@ -82,7 +82,7 @@ astroid==2.3.3
 django-statsd-mozilla==0.4.0
 raven==6.10.0
 certifi==2019.9.11  # sentry-sdk
-sentry-sdk==0.13.2
+sentry-sdk==0.13.3
 django-bootstrap3==11.1.0
 django-bootstrap-form==3.4
 django-debug-toolbar==2.1
