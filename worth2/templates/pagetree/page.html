@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block css %}
+<meta name="csrf-token" content="{{csrf_token}}">
 {% for block in section.pageblock_set.all %}
 {% rendercss block %}
 {% endfor %}
