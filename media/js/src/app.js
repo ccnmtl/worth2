@@ -19,8 +19,8 @@ define([
         $.ajaxSetup({
             beforeSend: function(xhr, settings) {
                 if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                    const token = $('meta[name="csrf-token"]').attr('content');
-                    xhr.setRequestHeader('X-CSRFToken', csrftoken);
+                    var token = $('meta[name="csrf-token"]').attr('content');
+                    xhr.setRequestHeader('X-CSRFToken', token);
                 }
             }
         });
