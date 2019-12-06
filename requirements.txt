@@ -21,23 +21,12 @@ tornado==6.0.3
 beautifulsoup4==4.8.0
 fuzzywuzzy==0.17.0
 sure==1.4.11
-ipdb==0.12.3
-traitlets==4.3.3
-ipython_genutils==0.2.0
-decorator==4.4.1
-ptyprocess==0.6.0
-pexpect==4.7.0
-pickleshare==0.7.5
-simplegeneric==0.8.1
-path.py==12.4.0
-backports.shutil_get_terminal_size==1.0.0
 wcwidth==0.1.7
 prompt_toolkit==3.0.2
 scandir==1.10.0
 pathlib2==2.3.5
 pygments==2.5.2
 
-ipython==7.10.0
 Genshi==0.7.3
 requirements/src/epubbuilder-0.2.1-py2.py3-none-any.whl
 
