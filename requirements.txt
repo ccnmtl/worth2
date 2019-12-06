@@ -21,9 +21,8 @@ tornado==6.0.3
 beautifulsoup4==4.8.0
 fuzzywuzzy==0.17.0
 sure==1.4.11
-ipdb==0.12.2
 wcwidth==0.1.7
-prompt_toolkit==3.0.1
+prompt_toolkit==3.0.2
 scandir==1.10.0
 pathlib2==2.3.5
 pygments==2.5.2
@@ -33,14 +32,14 @@ requirements/src/epubbuilder-0.2.1-py2.py3-none-any.whl
 
 selenium==3.141.0
 coverage==4.5.4
-logilab-common==1.5.1
+logilab-common==1.5.2
 logilab-astng==0.24.3
 editdistance==0.5.3
 pylint==2.4.4
 six==1.13.0
 ipaddress==1.0.23
 text-unidecode==1.3  # for faker
-Faker==2.0.4
+Faker==3.0.0
 factory_boy==2.12.0
 sqlparse==0.3.0
 python-dateutil==2.8.1
@@ -71,7 +70,7 @@ wrapt==1.11.2
 astroid==2.3.3
 django-statsd-mozilla==0.4.0
 raven==6.10.0
-certifi==2019.9.11  # sentry-sdk
+certifi==2019.11.28  # sentry-sdk
 sentry-sdk==0.13.4
 django-bootstrap3==11.1.0
 django-bootstrap-form==3.4
@@ -114,7 +113,7 @@ linecache2==1.0.0
 behave-django==1.3.0
 django-ga-context==0.1.0
 
-ccnmtlsettings==1.5.0
+ccnmtlsettings==1.7.0
 
 pbr==5.4.4
 PyYAML>=3.10.0 # MIT
