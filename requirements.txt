@@ -1,4 +1,4 @@
-Django==2.2.7
+Django==2.2.8 # pyup: < 3
 Markdown==3.1.1
 smartypants==2.0.1
 psycopg2==2.8.4
@@ -21,29 +21,18 @@ tornado==6.0.3
 beautifulsoup4==4.8.0
 fuzzywuzzy==0.17.0
 sure==1.4.11
-ipdb==0.12.3
-traitlets==4.3.3
-ipython_genutils==0.2.0
-decorator==4.4.1
-ptyprocess==0.6.0
-pexpect==4.7.0
-pickleshare==0.7.5
-simplegeneric==0.8.1
-path.py==12.4.0
-backports.shutil_get_terminal_size==1.0.0
 wcwidth==0.1.7
 prompt_toolkit==3.0.2
 scandir==1.10.0
 pathlib2==2.3.5
 pygments==2.5.2
 
-ipython==7.10.0
 Genshi==0.7.3
 requirements/src/epubbuilder-0.2.1-py2.py3-none-any.whl
 
 selenium==3.141.0
 coverage==4.5.4
-logilab-common==1.5.1
+logilab-common==1.5.2
 logilab-astng==0.24.3
 editdistance==0.5.3
 pylint==2.4.4
@@ -83,7 +72,7 @@ django-statsd-mozilla==0.4.0
 raven==6.10.0
 certifi==2019.11.28  # sentry-sdk
 sentry-sdk==0.13.5
-django-bootstrap3==11.1.0
+django-bootstrap3==12.0.0
 django-bootstrap-form==3.4
 django-debug-toolbar==2.1
 django-waffle==0.18.0
