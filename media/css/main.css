@@ -224,7 +224,7 @@ li.disabled>a:before {
     font-weight: bold;
     margin-bottom: 20px;
     font-size: 24px;
-    font-weight: 300;
+    font-weight: normal;
     line-height: 1.4;
     margin-left: 3px;    
 }
@@ -242,8 +242,8 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 .caseintrotext,
 .casequestiontext {
     margin-bottom: 20px;
-    font-size: 21px;
-    font-weight: 300;
+    font-size: 20px;
+    font-weight: normal;
     line-height: 1.4;
 }
 
@@ -337,8 +337,8 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 .protective-behaviors .caseanswerlabel,
 .myth-fact .caseanswerlabel {
     margin-bottom: 20px;
-    font-size: 24px;
-    font-weight: 300;
+    font-size: 20px;
+    font-weight: normal;
     line-height: 1.4;
     margin-left: 3px;
 }
@@ -485,6 +485,7 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 
 .caseanswercontainer label {
     font-weight: normal;
+    font-size: 20px;
 }
 
 .caseanswercontainer input[type='text'] {
@@ -649,7 +650,7 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     font-weight: bold;
     margin-bottom: 20px;
     font-size: 20px;
-    font-weight: 300;
+    font-weight: normal;
     line-height: 1.4;
     margin-left: -15px;
 }
@@ -658,8 +659,8 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     font-weight: bold;
     margin-bottom: 20px;
     margin-left: 3px;   
-    font-size: 24px;
-    font-weight: 300;
+    font-size: 20px;
+    font-weight: normal;
     line-height: 1.4;
 }
 

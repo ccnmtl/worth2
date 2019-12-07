@@ -75,7 +75,7 @@
 <form class="pagetree-form-submit-area"
       action="." method="post">{% csrf_token %}
     <input type="hidden" name="action" value="reset" />
-    <input type="submit" value="I want to change my answers." class="btn btn-primary" />
+    <input type="submit" value="I want to change my answers." class="btn btn-primary btn-lg" />
 {% endif %}{# End allow_redo or user.is_superuser #}
 {% endif %}{# End is_submission_empty #}
     {% if messages %}
@@ -120,14 +120,14 @@
 {% comment %}Do not allow users to back into a previous module{% endcomment %}
 {% if previous and section.depth > 1 %}
   <li class="previous">
-        <a href="{{previous.get_absolute_url}}" aria-label="Previous Page">&larr; {{previous.label}}</a>
+        <a href="{{previous.get_absolute_url}}" aria-label="Previous Page">&larr; Previous</a>
   </li>
 {% endif %}
 
 {% comment %}Do not allow users to next into the next module{% endcomment %}
 {% if next_section and next_section.depth > 1 %}
     <li class="next">
-        <a href="{{next_section.get_absolute_url}}" aria-label="Next Page">{{next_section.label}} &rarr;</a>
+        <a id="next-page" href="{{next_section.get_absolute_url}}" aria-label="Next Page">Next &rarr;</a>
     </li>
 {% endif %}
 </ul>
