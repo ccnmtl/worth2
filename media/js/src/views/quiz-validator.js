@@ -109,9 +109,20 @@ define([
                 // validate it.
                 return;
             }
-            var $submit = $form.find('input[type="submit"]');
 
             var me = this;
+            var $next = $('#next-page');
+            $next.click(function() {
+                if (!me.validateCheckboxForm($form) ||
+                    !me.validateRadioButtons($form) ||
+                    !me.validateRequiredTextInputs($form)
+                ) {
+                    $form.find('.worth-form-validation-error').hide().fadeIn();
+                    return false;
+                }
+            });
+
+            var $submit = $form.find('input[type="submit"]');
             $submit.click(function() {
                 if (!me.validateCheckboxForm($form) ||
                     !me.validateRadioButtons($form) ||
