@@ -96,10 +96,10 @@ define([
 
         initialize: function() {
             // Don't use this JS validator on the protective behaviors
-            // quizzes.
-            var $protectiveBehaviorsQuizzes =
-                $('.protective-behaviors,.rate-my-risk');
-            if ($protectiveBehaviorsQuizzes.length > 0) {
+            // quizzes or the goal setting and checkin forms
+            var query = '.protective-behaviors,.rate-my-risk,' +
+                '.goal-setting,.goal-check-in';
+            if ($(query).length > 0) {
                 return;
             }
 
@@ -112,23 +112,32 @@ define([
 
             var me = this;
             var $next = $('#next-page');
+            var $submit = $form.find('input[type="submit"]');
+
             $next.click(function() {
                 if (!me.validateCheckboxForm($form) ||
                     !me.validateRadioButtons($form) ||
                     !me.validateRequiredTextInputs($form)
                 ) {
-                    $form.find('.worth-form-validation-error').hide().fadeIn();
+                    $form.find('.alert').hide();
+                    $form.find('.worth-form-validation-error').fadeIn();
+                    return false;
+                }
+
+                if ($submit.length > 0) {
+                    $form.find('.alert').hide();
+                    $form.find('.worth-form-submit-prompt').fadeIn();
                     return false;
                 }
             });
 
-            var $submit = $form.find('input[type="submit"]');
             $submit.click(function() {
                 if (!me.validateCheckboxForm($form) ||
                     !me.validateRadioButtons($form) ||
                     !me.validateRequiredTextInputs($form)
                 ) {
-                    $form.find('.worth-form-validation-error').hide().fadeIn();
+                    $form.find('.alert').hide();
+                    $form.find('.worth-form-validation-error').fadeIn();
                     return false;
                 }
             });
