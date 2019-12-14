@@ -1,13 +1,17 @@
-html {
-}
-
 body {
-	/*font-family: 'Raleway', sans-serif !important;*/
+	font-family: 'Raleway', sans-serif !important;
+    font-size: 16px !important;
+    font-weight: normal !important;
 	background-color: rgb(245, 234, 240);
+	line-height: 1.5;
 }
 
 body > .container {
     padding-top: 40px;
+}
+
+label {
+    font-weight: normal !important;
 }
 
 a {
@@ -223,10 +227,7 @@ li.disabled>a:before {
     text-align: center;
     font-weight: bold;
     margin-bottom: 20px;
-    font-size: 24px;
-    font-weight: normal;
-    line-height: 1.4;
-    margin-left: 3px;    
+    margin-left: 3px;
 }
 
 ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-radius: 3px;}
@@ -242,13 +243,6 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 .caseintrotext,
 .casequestiontext {
     margin-bottom: 20px;
-    font-size: 20px;
-    font-weight: normal;
-    line-height: 1.4;
-}
-
-.casequestiontext label {
-    font-weight: normal;
 }
 
 .casetitle {
@@ -271,7 +265,7 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     text-align: center;
     text-transform: uppercase;
     color: black;
-    font-size: 12px;
+    font-size: 16px;
     min-height: 120px;
 }
 
@@ -313,7 +307,9 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 .post-video-quiz .caseanswerexplanation {
     display: none;
 }
-.post-video-quiz .col-md-8 {padding-left: 0 !important;}
+.post-video-quiz .col-md-8 {
+    padding-left: 0 !important;
+}
 
 .negative-self-talk .casesanswerdisplay,
 .negative-self-talk .caseanswercorrect,
@@ -331,15 +327,14 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 .myth-fact .caseanswerexplanation {
     display: none;
 }
-.myth-fact .col-md-8 {padding-left: 0 !important;} 
+.myth-fact .col-md-8 {
+    padding-left: 0 !important;
+} 
 
 .assessing-relationships .caseanswerlabel,
 .protective-behaviors .caseanswerlabel,
 .myth-fact .caseanswerlabel {
     margin-bottom: 20px;
-    font-size: 20px;
-    font-weight: normal;
-    line-height: 1.4;
     margin-left: 3px;
 }
 
@@ -356,8 +351,7 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 }
 
 .myth-fact .casequestionresult {
-    font-size: 1.2em;
-    margin-top: 10px;    
+    margin-top: 10px;
 }
 
 .myth-fact iframe {width: 100%;} /*video*/
@@ -464,7 +458,10 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
    background-color: rgb(236, 221, 221);
 } 
 
-.protective-behaviors .col-md-8, .protective-behaviors-results .col-md-8 {padding-left: 0 !important;}
+.protective-behaviors .col-md-8,
+.protective-behaviors-results .col-md-8 {
+    padding-left: 0 !important;
+}
 
 .rate-my-risk .casequestionresult,
 .protective-behaviors .casequestionresult {
@@ -483,11 +480,6 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     width: 100%;
 }
 
-.caseanswercontainer label {
-    font-weight: normal;
-    font-size: 20px;
-}
-
 .caseanswercontainer input[type='text'] {
     margin-bottom: 20px;
     width: 50%;
@@ -498,7 +490,9 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     width: 50%;
 }
 
-.safer-sex-quiz {font-size: 1.25em; text-align: center; background-color: #fff; margin-top: 10px; padding: 10px; font-family: times, serif; border: 6px double black;}
+.safer-sex-quiz {
+    text-align: center; background-color: #fff; margin-top: 10px; padding: 10px; font-family: times, serif; border: 6px double black;
+}
 .safer-sex-quiz h3, .safer-sex-quiz p {font-weight: bold;}
 .safer-sex-quiz .avatar-block, 
 .safer-sex-quiz .caseanswerresult {
@@ -530,7 +524,9 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 .services-quiz .casequestionresult {
     display: none;
 }
-.services-quiz .col-md-8 {padding-left: 0 !important;} 
+.services-quiz .col-md-8 {
+    padding-left: 0 !important;
+} 
 
 .services-quiz .caseanswercontainer {
     list-style: none;
@@ -557,7 +553,6 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 .services-quiz .caseanswercontainer li .fa,
 .worth-journal-info-element li .fa {
     padding-right: 5px;
-    font-size: 1.6em;
     vertical-align: -17%;
     width: 40px;
     text-align: center;
@@ -566,7 +561,9 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 .services-quiz .avatar-block {
     display: none;
 }
-.safety-plan-quiz .col-md-8 {padding-left: 0 !important;}
+.safety-plan-quiz .col-md-8 {
+    padding-left: 0 !important;
+}
 .safety-plan-quiz textarea {margin-left: -20px;}
 
 .safety-plan-quiz .caseintrotext {
@@ -590,15 +587,18 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     list-style: none;
     margin-left: -40px;
 }
-.assessing-relationships .col-md-8 {padding-left: 0 !important;}
-
+.assessing-relationships .col-md-8 {
+    padding-left: 0 !important;
+}
 
 .feelings-scale .avatar-block,
 .feelings-scale .casequestionresult,
 .feelings-scale .caseanswerexplanation {
     display: none;
 }
-.feelings-scale .col-md-8 {padding-left: 0 !important;}
+.feelings-scale .col-md-8 {
+    padding-left: 0 !important;
+}
 
 .feelings-scale .colored-box {
     min-height: 55px;
@@ -627,8 +627,10 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     column-count: 3;
     padding: 0;
 }
-.i-am-proud-quiz .col-md-8 {padding-left: 0 !important;}
-.i-am-worth-it-quiz .col-md-8 {padding-left: 0 !important;}
+.i-am-proud-quiz .col-md-8,
+.i-am-worth-it-quiz .col-md-8 {
+    padding-left: 0 !important;
+}
 
 .quiz-game .avatar-block,
 .quiz-game .caseanswerexplanation {
@@ -647,21 +649,13 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 }
 
 .quiz-game .casequestiontext {
-    font-weight: bold;
     margin-bottom: 20px;
-    font-size: 20px;
-    font-weight: normal;
-    line-height: 1.4;
     margin-left: -15px;
 }
 
 .quiz-game .caseanswerlabel {
-    font-weight: bold;
     margin-bottom: 20px;
     margin-left: 3px;   
-    font-size: 20px;
-    font-weight: normal;
-    line-height: 1.4;
 }
 
 .negotiation-quiz .avatar-block,
@@ -679,7 +673,9 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     list-style: none;
     padding-left: 0px;
 }
-.negotiation-quiz .col-md-8 {padding-left: 0 !important;}
+.negotiation-quiz .col-md-8 {
+    padding-left: 0 !important;
+}
 
 .evaluation-quiz .casesanswerdisplay,
 .evaluation-quiz .caseanswerresult,
@@ -742,9 +738,10 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
 }
 
 .pagetree-form-submit-area {
-    margin-top: 10px;
+    margin-top: 30px;
 }
 
+.worth-form-submit-prompt,
 .worth-form-validation-error {
     margin: 10px 0 10px 10px;
     margin-bottom: 10px;

@@ -16,3 +16,7 @@ padding-right: 10px;
 }
 
 
+.worth-selftalk-flex-container label {
+    font-weight: normal;
+    font-size: 14px;
+}
