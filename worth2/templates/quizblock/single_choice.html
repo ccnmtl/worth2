@@ -1,42 +1,46 @@
 {% load markup %}
 {% load avatar %}
 
+{% if 'likert' in question.quiz.pageblock.css_extra or 'likert' in question.css_extra %}
+<div class="row">
+    <div class="col-md-12">
+        {% include 'quizblock/likert.html' %}
+    </div>
+</div>
+{% else %}
+
 <div class="row">
     <div class="col-md-8">
-        {% if 'likert' in question.quiz.pageblock.css_extra or 'likert' in question.css_extra %}
-            {% include 'quizblock/likert.html' %}
-        {% else %}
-            {% spaceless %}
-            <ol class="caseanswercontainer" type="A">
-                {% for answer in question.answer_set.all %}
-                    {% if block.rhetorical %}
-                        <li class="{{answer.css_extra}}">
-                            <label>
-                                <input name="question{{question.id}}" value="{{answer.label}}"
-                                       type="radio">
+        {% spaceless %}
+        <ol class="caseanswercontainer" type="A">
+            {% for answer in question.answer_set.all %}
+                {% if block.rhetorical %}
+                    <li class="{{answer.css_extra}}">
+                        <label>
+                            <input name="question{{question.id}}" value="{{answer.label}}"
+                                   type="radio">
+                            {{answer.label|safe}}
+                        </label>
+                    </li>
+                {% else %}
+                    <li class="{{answer.css_extra}} {% if response %}{% ifequal response.value answer.value %}checked{% else %}unchecked{% endifequal %}{% endif %}">
+                        <label>
+                            <input name="pageblock-{{block.pageblock.id}}-question{{question.id}}"
+                                value="{{answer.value}}" type="radio"
+                                {% if response %}disabled="disabled"
+                                    {% ifequal response.value answer.value %}checked="checked"{% endifequal %}
+                                   {% endif %}> 
+                             
+                            <span class="caseanswerlabel {% if response %}{% if answer.correct %}correctanswer{% else %}incorrectanswer{% endif %}{% endif %}">
                                 {{answer.label|safe}}
-                            </label>
-                        </li>
-                    {% else %}
-                        <li class="{{answer.css_extra}} {% if response %}{% ifequal response.value answer.value %}checked{% else %}unchecked{% endifequal %}{% endif %}">
-                            <label>
-                                <input name="pageblock-{{block.pageblock.id}}-question{{question.id}}"
-                                    value="{{answer.value}}" type="radio"
-                                    {% if response %}disabled="disabled"
-                                        {% ifequal response.value answer.value %}checked="checked"{% endifequal %}
-                                       {% endif %}> 
-                                 
-                                <span class="caseanswerlabel {% if response %}{% if answer.correct %}correctanswer{% else %}incorrectanswer{% endif %}{% endif %}">
-                                    {{answer.label|safe}}
-                                </span>      
-                            </label>
-                        </li>
-                    {% endif %}
-                {% endfor %}
-            </ol>
-            {% endspaceless %}
-            <div class="clearfix"></div>
-        {% endif %}
+                            </span>      
+                        </label>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ol>
+        {% endspaceless %}
+        <div class="clearfix"></div>
         
         {% if response %}
             <div class="caseanswerexplanation">
@@ -55,3 +59,4 @@
         <div class="clearfix"></div>
     </div>
 </div>
+{% endif %}
