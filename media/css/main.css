@@ -265,7 +265,7 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     text-align: center;
     text-transform: uppercase;
     color: black;
-    font-size: 16px;
+    font-size: 14px;
     min-height: 120px;
 }
 
@@ -714,15 +714,24 @@ ul.navbar-right img.worth-avatar {background-color: #fff; padding: 2px; border-r
     margin: 0 0 20px 25px;
 }
 
-.negative-self-talk .caseanswerexplanation,
 .rate-my-risk.likert .casequestionexplanation,
 .quiz-game .casequestionexplanation,
-.safer-sex-quiz .casequestionexplanation,  
-.feelings-scale .casequestionexplanation,
+.safer-sex-quiz .casequestionexplanation,
+.negative-self-talk .caseanswerexplanation,
 .services-quiz .casequestionexplanation,
-.services-quiz .caseanswerexplanation,
-.myth-fact .casequestionexplanation, 
+.feelings-scale .casequestionexplanation,
 .negotiation-quiz .casequestionexplanation {
+    min-height: 20px;
+    margin-bottom: 20px;
+    padding: 15px;
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+    border-radius: 4px;
+}
+
+.services-quiz .caseanswerexplanation,
+.myth-fact .casequestionexplanation {
     min-height: 20px;
     padding: 19px;
     margin-bottom: 20px;
