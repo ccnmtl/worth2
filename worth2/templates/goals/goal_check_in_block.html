@@ -67,20 +67,20 @@
                         <div class="clearfix"></div>
                     </div><!-- end .checkin-group -->
                     <div class="clearfix"></div>
+
+                    {% if forloop.last %}
+                        <div class="form-group goal-submit-button">
+                            <button type="submit"
+                                    class="btn btn-primary btn-lg">Submit</button>
+                        </div>
+                    {% endif %}
+
                     {% empty %}
                     <p class="lead">
                         You haven't completed the goal setting activity for this check-in activity, so
                         just continue to the next page.
                     </p>
                     {% endfor %}
-
-                    {% if goal_checkin_context %}
-                    <div class="form-group goal-submit-button">
-                        <button type="submit"
-                                class="btn btn-primary btn-lg">Submit</button>
-                    </div>
-                    {% endif %}
-
                 </form><!-- end .form-horizontal -->
             </div>
 
