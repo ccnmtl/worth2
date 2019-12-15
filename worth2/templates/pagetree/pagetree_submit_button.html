@@ -7,6 +7,12 @@
      {% endif %}>
         <strong>Oops!</strong> Please respond to all questions.
     </div>
+    <div class="alert alert-danger worth-form-submit-prompt" role="alert"
+     {% if not is_submission_empty %}
+     style="display: none;"
+     {% endif %}>
+        <strong>Oops!</strong> Please click submit to save your response.
+    </div>
     {% if messages %}
         {% for message in messages %}
             <div
