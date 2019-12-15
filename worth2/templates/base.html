@@ -197,6 +197,7 @@
 
 <script src="https://cdn.ravenjs.com/3.20.1/raven.min.js" crossorigin="anonymous"></script>
 <script>
+{% if not debug %}
  Raven.config(
      'https://471e31acc6fd40d9b819cf0b0016e87c@sentry.io/103273'
  ).install();
@@ -211,6 +212,7 @@
      email: 'none',
      id: 'anonymous'
  });
+ {% endif %}
  {% endif %}
 </script>
 
