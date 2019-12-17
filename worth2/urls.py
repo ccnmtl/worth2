@@ -25,11 +25,11 @@ if hasattr(settings, 'CAS_BASE'):
 
 rest_router = routers.DefaultRouter()
 rest_router.register(r'watched_videos', apiviews.WatchedVideoViewSet,
-                     base_name='watched_video')
+                     basename='watched_video')
 
 ssnm_rest_router = routers.DefaultRouter(trailing_slash=False)
 ssnm_rest_router.register(r'supporters', ssnm_apiviews.SupporterViewSet,
-                          base_name='supporter')
+                          basename='supporter')
 
 urlpatterns = [
     url(r'^accounts/',
