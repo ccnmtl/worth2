@@ -1,6 +1,4 @@
 language: python
-sudo: false
-dist: xenial
 addons:
   firefox: "45.0.2esr"
 python:
