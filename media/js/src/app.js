@@ -4,12 +4,11 @@ define([
     'views/goal-checkin-form',
     'views/locked-video',
     'views/self-talk-road',
-    'views/quiz-validator',
-    'js-cookie'
+    'views/quiz-validator'
 ], function(
     $,
     GoalSettingFormView, GoalCheckinFormView, LockedVideo, SelfTalkRoad,
-    QuizValidator, Cookies
+    QuizValidator
 ) {
     $(function() {
         function csrfSafeMethod(method) {
