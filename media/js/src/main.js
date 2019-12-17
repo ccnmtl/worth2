@@ -22,7 +22,6 @@ require.config({
     },
     paths: {
         jquery: '../lib/jquery',
-        'js-cookie': '../lib/js.cookie',
         underscore: '../lib/underscore',
         backbone: '../lib/backbone',
         threejs: '../lib/three.min',
