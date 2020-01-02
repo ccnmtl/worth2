@@ -18,7 +18,7 @@ configparser==4.0.2
 entrypoints==0.3  # for flake8
 flake8==3.7.9
 tornado==6.0.3
-beautifulsoup4==4.8.0
+beautifulsoup4==4.8.2
 fuzzywuzzy==0.17.0
 sure==1.4.11
 wcwidth==0.1.7
