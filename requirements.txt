@@ -107,7 +107,7 @@ unicodecsv==0.14.1
 pylibmc==1.6.1
 
 parse-type==0.4.2
-parse==1.14.0
+parse==1.15.0
 behave==1.2.6
 traceback2==1.4.0
 linecache2==1.0.0
