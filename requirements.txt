@@ -31,7 +31,7 @@ Genshi==0.7.3
 requirements/src/epubbuilder-0.2.1-py2.py3-none-any.whl
 
 selenium==3.141.0
-coverage==5.0.3
+coverage==5.0.4
 logilab-common==1.5.2
 logilab-astng==0.24.3
 editdistance==0.5.3
