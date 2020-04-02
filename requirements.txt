@@ -14,7 +14,7 @@ mccabe==0.6.1
 pycodestyle==2.5.0
 
 pytz==2019.2
-configparser==4.0.2
+configparser==5.0.0
 entrypoints==0.3  # for flake8
 flake8==3.7.9
 tornado==6.0.4
