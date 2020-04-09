@@ -70,7 +70,7 @@ wrapt==1.12.1
 astroid==2.3.3
 django-statsd-mozilla==0.4.0
 raven==6.10.0
-certifi==2019.11.28  # sentry-sdk
+certifi==2020.4.5.1  # sentry-sdk
 sentry-sdk==0.14.3
 django-bootstrap3==12.0.3
 django-bootstrap-form==3.4
