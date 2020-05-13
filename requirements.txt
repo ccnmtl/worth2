@@ -104,7 +104,7 @@ django-smtp-ssl==1.0
 inflection==0.4.0
 unicodecsv==0.14.1
 # memcached
-pylibmc==1.6.1
+pylibmc==1.6.1; sys_platform == 'linux'
 
 parse-type==0.4.2
 parse==1.15.0
