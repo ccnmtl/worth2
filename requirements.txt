@@ -1,4 +1,4 @@
-Django>=2.2.12,<3
+Django==Django>=2.2.13,<3
 Markdown==3.2.2
 smartypants==2.0.1
 psycopg2==2.8.5
