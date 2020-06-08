@@ -102,7 +102,7 @@ djangorestframework-jsonapi==3.1.0
 django-cacheds3storage==0.2.1
 django-smtp-ssl==1.0
 
-inflection==0.4.0
+inflection==0.5.0
 unicodecsv==0.14.1
 # memcached
 pylibmc==1.6.1; sys_platform == 'linux'
