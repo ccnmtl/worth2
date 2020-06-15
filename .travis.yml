@@ -1,4 +1,5 @@
 language: python
+dist: bionic
 addons:
   firefox: "45.0.2esr"
 python:
