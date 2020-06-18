@@ -83,7 +83,7 @@ django-extensions==2.2.9
 # typing is needed for django-extensions
 typing==3.7.4.1;
 django-stagingcontext==0.1.0
-django-impersonate==1.5
+django-impersonate==1.5.1
 confusable_homoglyphs==3.2.0
 django-registration==3.1
 django-treebeard==4.3.1
