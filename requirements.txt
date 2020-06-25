@@ -34,7 +34,7 @@ requirements/src/epubbuilder-0.2.1-py2.py3-none-any.whl
 
 selenium==3.141.0
 coverage==5.1
-logilab-common==1.7.1
+logilab-common==1.7.2
 editdistance==0.5.3
 pylint==2.5.3
 six==1.15.0
