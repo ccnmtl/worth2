@@ -81,7 +81,7 @@ django-waffle==1.0.0
 django-smoketest==1.1.2
 django-extensions==3.0.2
 # typing is needed for django-extensions
-typing==3.7.4.1;
+typing==3.7.4.3;
 django-stagingcontext==0.1.0
 django-impersonate==1.5.1
 confusable_homoglyphs==3.2.0
