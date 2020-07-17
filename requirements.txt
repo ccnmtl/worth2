@@ -99,7 +99,7 @@ django-ordered-model==3.4.1
 django-crispy-forms==1.9.2
 djangorestframework==3.11.0
 djangorestframework-jsonapi==3.1.0
-django-cacheds3storage==0.2.1
+django-cacheds3storage==0.2.2
 django-smtp-ssl==1.0
 
 inflection==0.5.0
