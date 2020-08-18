@@ -11,7 +11,7 @@ from worth2.goals.models import (
 from worth2.main.models import VideoBlock, WatchedVideo, Avatar
 
 
-class UserFactory(factory.DjangoModelFactory):
+class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
 

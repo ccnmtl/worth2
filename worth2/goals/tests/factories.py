@@ -8,21 +8,21 @@ from worth2.goals.models import (
 from worth2.main.tests.factories import UserFactory
 
 
-class GoalSettingBlockFactory(factory.DjangoModelFactory):
+class GoalSettingBlockFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = GoalSettingBlock
 
     goal_amount = 3
 
 
-class GoalOptionFactory(factory.DjangoModelFactory):
+class GoalOptionFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = GoalOption
 
     text = FuzzyText()
 
 
-class GoalSettingResponseFactory(factory.DjangoModelFactory):
+class GoalSettingResponseFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = GoalSettingResponse
 
@@ -32,21 +32,21 @@ class GoalSettingResponseFactory(factory.DjangoModelFactory):
     text = FuzzyText()
 
 
-class GoalCheckInBlockFactory(factory.DjangoModelFactory):
+class GoalCheckInBlockFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = GoalCheckInPageBlock
 
     goal_setting_block = factory.SubFactory(GoalSettingBlockFactory)
 
 
-class GoalCheckInOptionFactory(factory.DjangoModelFactory):
+class GoalCheckInOptionFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = GoalCheckInOption
 
     text = FuzzyText()
 
 
-class GoalCheckInResponseFactory(factory.DjangoModelFactory):
+class GoalCheckInResponseFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = GoalCheckInResponse
 

@@ -9,14 +9,14 @@ from worth2.selftalk.models import (
 from worth2.main.tests.factories import UserFactory
 
 
-class StatementFactory(factory.DjangoModelFactory):
+class StatementFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Statement
 
     text = FuzzyText()
 
 
-class RefutationFactory(factory.DjangoModelFactory):
+class RefutationFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Refutation
 
@@ -24,7 +24,7 @@ class RefutationFactory(factory.DjangoModelFactory):
     text = FuzzyText()
 
 
-class ExternalStatementBlockFactory(factory.DjangoModelFactory):
+class ExternalStatementBlockFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = StatementBlock
 
@@ -41,7 +41,7 @@ class ExternalStatementBlockFactory(factory.DjangoModelFactory):
                 self.statements.add(statement)
 
 
-class InternalStatementBlockFactory(factory.DjangoModelFactory):
+class InternalStatementBlockFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = StatementBlock
 
@@ -57,21 +57,21 @@ class InternalStatementBlockFactory(factory.DjangoModelFactory):
                 self.statements.add(statement)
 
 
-class ExternalRefutationBlockFactory(factory.DjangoModelFactory):
+class ExternalRefutationBlockFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = RefutationBlock
 
     statement_block = factory.SubFactory(ExternalStatementBlockFactory)
 
 
-class InternalRefutationBlockFactory(factory.DjangoModelFactory):
+class InternalRefutationBlockFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = RefutationBlock
 
     statement_block = factory.SubFactory(InternalStatementBlockFactory)
 
 
-class StatementResponseFactory(factory.DjangoModelFactory):
+class StatementResponseFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = StatementResponse
 
@@ -80,7 +80,7 @@ class StatementResponseFactory(factory.DjangoModelFactory):
     user = factory.SubFactory(UserFactory)
 
 
-class RefutationResponseFactory(factory.DjangoModelFactory):
+class RefutationResponseFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = RefutationResponse
 
