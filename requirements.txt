@@ -108,7 +108,7 @@ unicodecsv==0.14.1
 pylibmc==1.6.1; sys_platform == 'linux'
 
 parse-type==0.5.2
-parse==1.17.0
+parse==1.18.0
 behave==1.2.6
 traceback2==1.4.0
 linecache2==1.0.0
