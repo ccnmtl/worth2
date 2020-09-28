@@ -20,7 +20,7 @@ importlib-metadata==2.0.0  # for flake8
 zipp==3.2.0  # for flake8
 flake8==3.8.3
 tornado==6.0.4
-beautifulsoup4==4.9.1
+beautifulsoup4==4.9.2
 fuzzywuzzy==0.18.0
 sure==1.4.11
 wcwidth==0.2.5
