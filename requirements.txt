@@ -29,7 +29,7 @@ scandir==1.10.0
 pathlib2==2.3.5
 pygments==2.7.2
 
-Genshi==0.7.3
+Genshi==0.7.4
 requirements/src/epubbuilder-0.2.1-py2.py3-none-any.whl
 
 selenium==3.141.0
