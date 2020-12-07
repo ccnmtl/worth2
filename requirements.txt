@@ -27,7 +27,7 @@ wcwidth==0.2.5
 prompt_toolkit==3.0.8
 scandir==1.10.0
 pathlib2==2.3.5
-pygments==2.7.2
+pygments==2.7.3
 
 Genshi==0.7.5
 requirements/src/epubbuilder-0.2.1-py2.py3-none-any.whl
