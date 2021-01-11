@@ -1,8 +1,7 @@
+[![Actions Status](https://github.com/ccnmtl/worth2/workflows/build-and-test/badge.svg)](https://github.com/ccnmtl/worth2/actions)
+
 E-WORTH
 =======
-
-
-[![Build Status](https://travis-ci.org/ccnmtl/worth2.svg?branch=master)](https://travis-ci.org/ccnmtl/worth2)
 
 
 About
