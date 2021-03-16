@@ -197,6 +197,23 @@ li.disabled>a:before {
     display: block;
 }
 
+.uni-login .login-uni-button {
+    font-weight: 200;
+    color: #999;
+    border: none;
+    background: none;
+    line-height: normal;
+    float: right;
+    font-size: 11px;
+    margin-right: -12px;
+}
+
+.uni-login .login-uni-button:hover {
+    color: #fff;
+    background-color: #005194;
+    border-color: #005194;
+}
+
 .worth-facilitator-manage-participants .row {
     border-radius: 5px;
     background-color: #f6f6f6;
