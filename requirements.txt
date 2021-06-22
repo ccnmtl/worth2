@@ -69,7 +69,7 @@ django-compressor==2.4.1
 
 lazy-object-proxy==1.6.0
 wrapt==1.12.1
-astroid==2.5.8
+astroid==2.6.0
 django-statsd-mozilla==0.4.0
 raven==6.10.0
 certifi==2021.5.30  # sentry-sdk
