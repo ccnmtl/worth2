@@ -21,7 +21,7 @@ typing_extensions==3.10.0.2
 zipp==3.5.0  # for flake8
 flake8==3.9.2
 tornado==6.1
-beautifulsoup4==4.9.3
+beautifulsoup4==4.10.0
 fuzzywuzzy==0.18.0
 sure==2.0.0
 wcwidth==0.2.5
