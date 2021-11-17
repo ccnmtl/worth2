@@ -1,27 +1,21 @@
 import os.path
-import django.views.static
 
+from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth.decorators import user_passes_test
-from django.conf import settings
+from django.urls import path
 from django.views.generic import TemplateView
-
+import django.views.static
+from django_cas_ng import views as cas_views
 from pagetree.generic.views import EditView
 from pagetreeepub.views import EpubExporterView
-
 from rest_framework import routers
-
 from worth2.main import apiviews, views
 from worth2.ssnm import apiviews as ssnm_apiviews
 
 
 site_media_root = os.path.join(os.path.dirname(__file__), "../media")
-
-auth_urls = url(r'^accounts/', include('django.contrib.auth.urls'))
-if hasattr(settings, 'CAS_BASE'):
-    auth_urls = url(r'^accounts/', include('djangowind.urls'))
-
 
 rest_router = routers.DefaultRouter()
 rest_router.register(r'watched_videos', apiviews.WatchedVideoViewSet,
@@ -34,7 +28,11 @@ ssnm_rest_router.register(r'supporters', ssnm_apiviews.SupporterViewSet,
 urlpatterns = [
     url(r'^accounts/',
         include('django_registration.backends.activation.urls')),
-    auth_urls,
+    url(r'^accounts/', include('django.contrib.auth.urls')),
+    path('cas/login', cas_views.LoginView.as_view(),
+         name='cas_ng_login'),
+    path('cas/logout', cas_views.LogoutView.as_view(),
+         name='cas_ng_logout'),
     url(r'^api/', include(rest_router.urls)),
     url(r'^api-auth/', include('rest_framework.urls',
                                namespace='rest_framework')),
