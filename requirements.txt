@@ -33,7 +33,6 @@ pygments==2.10.0
 Genshi==0.7.5
 requirements/src/epubbuilder-0.2.1-py2.py3-none-any.whl
 
-selenium==3.141.0
 coverage==6.1.2
 logilab-common==1.8.1
 editdistance==0.6.0
