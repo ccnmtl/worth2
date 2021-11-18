@@ -34,6 +34,7 @@ MIDDLEWARE += [  # noqa
 ]
 
 INSTALLED_APPS += [  # noqa
+    'django_cas_ng',
     'sorl.thumbnail',
     'ordered_model',
     'bootstrap3',
@@ -53,6 +54,8 @@ INSTALLED_APPS += [  # noqa
     'behave_django',
     'pagetreeepub',
 ]
+
+INSTALLED_APPS.remove('djangowind') # noqa
 
 JSON_API_PLURALIZE_TYPES = True
 
@@ -93,3 +96,37 @@ EPUB_TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), "templates/epub")
 EPUB_TITLE = "WORTH epub"
 EPUB_CREATOR = "CTL"
 EPUB_PUBLICATION = "2017"
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'django_cas_ng.backends.CASBackend'
+]
+
+CAS_SERVER_URL = 'https://cas.columbia.edu/cas/'
+CAS_VERSION = '3'
+CAS_ADMIN_REDIRECT = False
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.join(base, "templates"),
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
+                # list if you haven't customized them:
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.template.context_processors.request',
+                'django.contrib.messages.context_processors.messages',
+                'stagingcontext.staging_processor',
+                'gacontext.ga_processor'
+            ],
+        },
+    },
+]

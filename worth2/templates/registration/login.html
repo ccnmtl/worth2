@@ -52,14 +52,12 @@
                 <div class="row">
                     <div class="col-md-12 text-right"><br />
                         <div><a href="/accounts/password_reset/">Forgot Password?</a></div>
-                        {% if CAS_BASE %}
-                            <form class="uni-login" method="get" action="{{ CAS_BASE }}cas/login" style="float: right">
-                                <input type="hidden" name="destination" value="https://{{ request.get_host }}/accounts/caslogin/?next={{next}}" />
-                                <input class="btn btn-default btn-small login-uni-button" type="submit" value="Columbia University Network ID (UNI)" />
-                                <div style="clear: both;"></div>
-                            </form>
-                            <div style="clear: both"></div>
-                         {% endif %}<!-- CAS -->
+                        <form class="uni-login" method="get" action="/cas/login" style="float: right">
+                            <input type="hidden" name="next" value="{{next|default:'/'}}" />
+                            <input class="btn btn-default btn-small login-uni-button" type="submit" value="Columbia University Network ID (UNI)" />
+                            <div style="clear: both;"></div>
+                        </form>
+                        <div style="clear: both"></div>
                     </div>
                 </div>
             </div>
