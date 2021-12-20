@@ -16,7 +16,7 @@ pycodestyle==2.8.0
 pytz==2021.3
 configparser==5.2.0
 entrypoints==0.3  # for flake8
-importlib-metadata==4.8.2  # for flake8
+importlib-metadata==4.10.0  # for flake8
 typing_extensions==4.0.0
 zipp==3.6.0  # for flake8
 flake8==4.0.1
