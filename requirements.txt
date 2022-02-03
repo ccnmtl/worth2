@@ -15,7 +15,7 @@ pycodestyle==2.8.0
 
 pytz==2021.3
 configparser==5.2.0
-entrypoints==0.3  # for flake8
+entrypoints==0.4  # for flake8
 importlib-metadata<4.11 # for flake8
 typing_extensions==4.0.0
 zipp==3.6.0  # for flake8
@@ -121,7 +121,7 @@ PyYAML>=3.10.0 # MIT
 stevedore>=1.20.0 # Apache-2.0
 bandit==1.7.1
 
-entrypoints==0.3
+entrypoints==0.4
 
 idna==3.3
 certifi==2021.10.8  # sentry-sdk
