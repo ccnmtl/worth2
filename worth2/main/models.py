@@ -9,12 +9,11 @@ from django.db.models.signals import post_save
 from django.dispatch.dispatcher import receiver
 from django.shortcuts import get_object_or_404
 from django.template.defaultfilters import slugify
-from django.utils.encoding import python_2_unicode_compatible, smart_text
+from django.utils.encoding import smart_text
 from ordered_model.models import OrderedModel
 from pagetree.generic.models import BasePageBlock
 
 
-@python_2_unicode_compatible
 class Avatar(OrderedModel):
     """An image that the user can choose for their profile."""
 
@@ -252,7 +251,6 @@ class WatchedVideo(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
-@python_2_unicode_compatible
 class UserProfile(models.Model):
     user = models.OneToOneField(
         User, related_name='profile2', on_delete=models.CASCADE)

@@ -3,14 +3,13 @@ from __future__ import unicode_literals
 from django import forms
 from django.contrib.auth.models import User
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible, smart_text
+from django.utils.encoding import smart_text
 
 from pagetree.generic.models import BasePageBlock
 from pagetree.reports import ReportColumnInterface, StandaloneReportColumn, \
     ReportableInterface
 
 
-@python_2_unicode_compatible
 class Supporter(models.Model):
     CLOSENESS_CHOICES = (
         ('VC', 'Very Close'),
