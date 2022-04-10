@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.template.defaultfilters import slugify
-from django.utils.encoding import python_2_unicode_compatible, smart_text
+from django.utils.encoding import smart_text
 from ordered_model.models import OrderedModel
 from pagetree.generic.models import BasePageBlock
 from pagetree.reports import ReportColumnInterface, ReportableInterface
@@ -20,7 +20,6 @@ GOAL_TYPES = (
 )
 
 
-@python_2_unicode_compatible
 class GoalSettingBlock(BasePageBlock):
     """A PageBlock for allowing participants to set goals.
 
@@ -118,7 +117,6 @@ class GoalSettingBlockForm(forms.ModelForm):
         fields = '__all__'
 
 
-@python_2_unicode_compatible
 class GoalOption(OrderedModel):
     """GoalSettingBlock dropdowns are populated by GoalOptions.
 
@@ -168,7 +166,6 @@ class GoalSettingResponseManager(models.Manager):
             self.none()
 
 
-@python_2_unicode_compatible
 class GoalSettingResponse(models.Model):
     """Participant responses to 'main' and 'extra' goals."""
 
@@ -241,7 +238,6 @@ class GoalSettingColumn(ReportColumnInterface):
             return getattr(response, self.field) or ''  # replace None with ''
 
 
-@python_2_unicode_compatible
 class GoalCheckInOption(OrderedModel):
     """Editable options for the goal check-in form."""
 
@@ -256,7 +252,6 @@ class GoalCheckInOption(OrderedModel):
         return smart_text(self.text)
 
 
-@python_2_unicode_compatible
 class GoalCheckInResponse(models.Model):
     """Participant responses for the Check In page.
 

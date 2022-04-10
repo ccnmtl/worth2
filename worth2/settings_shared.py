@@ -39,7 +39,6 @@ INSTALLED_APPS += [  # noqa
     'ordered_model',
     'bootstrap3',
     'bootstrapform',
-    'infranil',
     'django_extensions',
     'django_registration',
     'pagetree',
@@ -130,3 +129,5 @@ TEMPLATES = [
         },
     },
 ]
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

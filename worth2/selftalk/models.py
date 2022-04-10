@@ -4,14 +4,13 @@ import re
 from django import forms
 from django.contrib.auth.models import User
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible, smart_text
+from django.utils.encoding import smart_text
 from ordered_model.models import OrderedModel
 from pagetree.generic.models import BasePageBlock
 
 from worth2.main.utils import get_module_number
 
 
-@python_2_unicode_compatible
 class Statement(OrderedModel):
     """A negative statement.
 
@@ -28,7 +27,6 @@ class Statement(OrderedModel):
         return self.text
 
 
-@python_2_unicode_compatible
 class Refutation(OrderedModel):
     """A Refutation is an option used to refute a negative statement.
 
@@ -45,7 +43,6 @@ class Refutation(OrderedModel):
         return self.text
 
 
-@python_2_unicode_compatible
 class StatementBlock(BasePageBlock):
     """A PageBlock for choosing negative statements to refute.
 
@@ -163,7 +160,6 @@ class StatementBlockForm(forms.ModelForm):
         }
 
 
-@python_2_unicode_compatible
 class RefutationBlock(BasePageBlock):
     """A PageBlock for refuting negative statements.
 
@@ -269,7 +265,6 @@ class RefutationBlockForm(forms.ModelForm):
         model = RefutationBlock
 
 
-@python_2_unicode_compatible
 class StatementResponse(models.Model):
     """User's statements they chose, for any self-talk scenario."""
 
@@ -292,7 +287,6 @@ class StatementResponse(models.Model):
         return smart_text(self.statement)
 
 
-@python_2_unicode_compatible
 class RefutationResponse(models.Model):
     """User's responses to the self-talk quizzes."""
 
