@@ -33,7 +33,7 @@ pygments==2.11.0
 Genshi==0.7.5
 requirements/src/epubbuilder-0.2.1-py2.py3-none-any.whl
 
-coverage==6.3.3
+coverage==6.4
 logilab-common==1.9.2
 editdistance==0.6.0
 pylint==2.13.0
@@ -49,7 +49,7 @@ urllib3==1.26.7 # sentry-sdk
 s3transfer==0.5.0
 jmespath==1.0.0
 
-botocore>=1.15.0,<1.26.0
+botocore>=1.15.0,<1.27.0
 boto3>=1.12.0,<1.24.0
 
 django-storages==1.12.3
@@ -70,7 +70,7 @@ wrapt==1.14.0
 astroid==2.11.0
 django-statsd-mozilla==0.4.0
 raven==6.10.0
-certifi==2021.10.8  # sentry-sdk
+certifi==2022.5.18  # sentry-sdk
 sentry-sdk==1.5.0
 django-bootstrap3==21.1
 django-bootstrap-form==3.4
@@ -122,7 +122,7 @@ bandit==1.7.1
 entrypoints==0.4
 
 idna==3.3
-certifi==2021.10.8  # sentry-sdk
+certifi==2022.5.18  # sentry-sdk
 chardet==4.0.0
 requests==2.27.0
 
