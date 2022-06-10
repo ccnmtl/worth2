@@ -124,7 +124,7 @@ entrypoints==0.4
 idna==3.3
 certifi==2022.5.18  # sentry-sdk
 chardet==4.0.0
-requests==2.27.0
+requests==2.28.0
 
 python-cas==1.6.0
 requirements/src/django_cas_ng-4.2.2ctl-py2.py3-none-any.whl
