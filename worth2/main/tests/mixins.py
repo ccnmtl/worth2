@@ -8,11 +8,11 @@ class LoggedInSuperuserTestMixin(object):
         self.u = User.objects.create_superuser(
             'superuser', 'admin@example.com', 'test')
         login = self.client.login(username='superuser', password='test')
-        assert(login is True)
+        assert (login is True)
 
 
 class LoggedInUserTestMixin(object):
     def setUp(self):
         self.u = UserFactory()
         login = self.client.login(username=self.u.username, password='test')
-        assert(login is True)
+        assert (login is True)

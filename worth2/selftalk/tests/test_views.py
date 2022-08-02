@@ -30,7 +30,7 @@ class ExternalStatementBlockTest(LoggedInUserTestMixin, TestCase):
         self.url = '/pages/statement/'
 
         self.statementblock = StatementBlock.objects.first()
-        assert(self.statementblock is not None)
+        assert (self.statementblock is not None)
 
         self.statement1 = StatementFactory()
         self.statement2 = StatementFactory()
@@ -108,7 +108,7 @@ class ExternalRefutationBlockTest(LoggedInUserTestMixin, TestCase):
             'children': [],
         })
         self.statementblock = StatementBlock.objects.first()
-        assert(self.statementblock is not None)
+        assert (self.statementblock is not None)
 
         self.statement1 = StatementFactory()
         self.statement2 = StatementFactory()
@@ -143,7 +143,7 @@ class ExternalRefutationBlockTest(LoggedInUserTestMixin, TestCase):
         self.url = '/pages/refutation/'
 
         self.refutationblock = RefutationBlock.objects.first()
-        assert(self.refutationblock is not None)
+        assert (self.refutationblock is not None)
 
         # Create 3 refutations for each negative statement
         self.refutation1 = RefutationFactory(statement=self.statement1)
@@ -266,7 +266,7 @@ class InternalStatementBlockTest(LoggedInUserTestMixin, TestCase):
         self.url = '/pages/statement/'
 
         self.statementblock = StatementBlock.objects.first()
-        assert(self.statementblock is not None)
+        assert (self.statementblock is not None)
 
         self.statement1 = StatementFactory()
         self.statement2 = StatementFactory()
@@ -344,7 +344,7 @@ class InternalRefutationBlockTest(LoggedInUserTestMixin, TestCase):
             'children': [],
         })
         self.statementblock = StatementBlock.objects.first()
-        assert(self.statementblock is not None)
+        assert (self.statementblock is not None)
 
         self.statement1 = StatementFactory()
         self.statement2 = StatementFactory()
@@ -379,7 +379,7 @@ class InternalRefutationBlockTest(LoggedInUserTestMixin, TestCase):
         self.url = '/pages/refutation/'
 
         self.refutationblock = RefutationBlock.objects.first()
-        assert(self.refutationblock is not None)
+        assert (self.refutationblock is not None)
 
         # Create 3 refutations for each negative statement
         self.refutation1 = RefutationFactory(statement=self.statement1)

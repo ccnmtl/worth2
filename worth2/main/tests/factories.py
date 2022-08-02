@@ -454,7 +454,7 @@ class WorthModuleFactory(object):
         b = GoalCheckInPageBlock.objects.first()
         b.goal_setting_block = GoalSettingBlock.objects.first()
         b.save()
-        assert(b.goal_setting_block is not None)
+        assert (b.goal_setting_block is not None)
 
         root.add_child_section_from_dict({
             'label': 'Welcome to Session 3',
@@ -479,7 +479,7 @@ class WorthModuleFactory(object):
         b = GoalCheckInPageBlock.objects.all()[1]
         b.goal_setting_block = GoalSettingBlock.objects.first()
         b.save()
-        assert(b.goal_setting_block is not None)
+        assert (b.goal_setting_block is not None)
 
         root.add_child_section_from_dict({
             'label': 'Welcome to Your Fourth Session!',
