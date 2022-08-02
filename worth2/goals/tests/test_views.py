@@ -30,7 +30,7 @@ class GoalCheckInPageBlockTest(LoggedInUserTestMixin, TestCase):
             'children': [],
         })
         self.goalsettingblock = GoalSettingBlock.objects.first()
-        assert(self.goalsettingblock is not None)
+        assert (self.goalsettingblock is not None)
 
         self.root.add_child_section_from_dict({
             'label': 'Goal Check In Section',
@@ -41,13 +41,13 @@ class GoalCheckInPageBlockTest(LoggedInUserTestMixin, TestCase):
             'children': [],
         })
         self.goalcheckinblock = GoalCheckInPageBlock.objects.first()
-        assert(self.goalcheckinblock is not None)
+        assert (self.goalcheckinblock is not None)
 
         # Set the check-in block's setting block to the one we just
         # created.
         self.goalcheckinblock.goal_setting_block = self.goalsettingblock
         self.goalcheckinblock.save()
-        assert(self.goalcheckinblock.goal_setting_block is not None)
+        assert (self.goalcheckinblock.goal_setting_block is not None)
 
         unlock_hierarchy(self.root.get_first_child(), self.u)
 

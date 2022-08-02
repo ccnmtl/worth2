@@ -140,7 +140,7 @@ class GoalSettingColumnTest(TestCase):
         })
         pageblock = root.get_first_child().pageblock_set.first()
         self.block = pageblock.content_object
-        assert(self.block is not None)
+        assert (self.block is not None)
 
     def test_identifier(self):
         column = GoalSettingColumn(self.block, 0, "option", self.opt)
@@ -223,7 +223,7 @@ class GoalCheckInColumnTest(TransactionTestCase):
         self.block.goal_setting_block = goal_setting_block
         self.block.save()
 
-        assert(self.block is not None)
+        assert (self.block is not None)
 
     def test_identifier(self):
         column = GoalCheckInColumn(self.block, 0, 'progress')
