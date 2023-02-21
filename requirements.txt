@@ -95,7 +95,7 @@ django-ordered-model==3.6
 django-crispy-forms==2.0
 djangorestframework==3.14.0
 djangorestframework-jsonapi==6.0.0
-django-cacheds3storage==0.2.2
+django-cacheds3storage==0.3.0
 django-smtp-ssl==1.0
 
 inflection==0.5.1
