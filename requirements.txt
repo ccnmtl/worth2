@@ -65,7 +65,7 @@ rcssmin==1.1.0  # django-compressor
 rjsmin==1.2.0  # django-compressor
 django-compressor>=3.1,<5.0
 lazy-object-proxy==1.9.0
-wrapt==1.14.0
+wrapt==1.15.0
 astroid==2.14.1
 django-statsd-mozilla==0.4.0
 raven==6.10.0
