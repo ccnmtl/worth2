@@ -1,7 +1,7 @@
 Django>=3.2.14,<4
 Markdown==3.4.1
 smartypants==2.0.1
-psycopg2==2.9.3
+psycopg2==2.9.6
 olefile==0.46
 Pillow==9.5.0
 versiontools==1.9.1
