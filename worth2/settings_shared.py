@@ -3,7 +3,7 @@ import os.path
 import sys
 from django.contrib import messages
 
-from ccnmtlsettings.shared import common
+from ctlsettings.shared import common
 
 project = 'worth2'
 base = os.path.dirname(__file__)
@@ -34,7 +34,6 @@ MIDDLEWARE += [  # noqa
 ]
 
 INSTALLED_APPS += [  # noqa
-    'django_cas_ng',
     'sorl.thumbnail',
     'ordered_model',
     'bootstrap3',
@@ -52,9 +51,8 @@ INSTALLED_APPS += [  # noqa
     'worth2.selftalk',
     'behave_django',
     'pagetreeepub',
+    'waffle'
 ]
-
-INSTALLED_APPS.remove('djangowind')  # noqa
 
 JSON_API_PLURALIZE_TYPES = True
 
@@ -97,22 +95,8 @@ EPUB_CREATOR = "CTL"
 EPUB_PUBLICATION = "2017"
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'django_cas_ng.backends.CASBackend'
+    'django.contrib.auth.backends.ModelBackend'
 ]
-
-CAS_SERVER_URL = 'https://cas.columbia.edu/cas/'
-CAS_VERSION = '3'
-CAS_ADMIN_REDIRECT = False
-
-# Translate CUIT's CAS user attributes to the Django user model.
-# https://cuit.columbia.edu/content/cas-3-ticket-validation-response
-CAS_APPLY_ATTRIBUTES_TO_USER = True
-CAS_RENAME_ATTRIBUTES = {
-    'givenName': 'first_name',
-    'lastName': 'last_name',
-    'mail': 'email',
-}
 
 TEMPLATES = [
     {

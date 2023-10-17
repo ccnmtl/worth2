@@ -1,5 +1,4 @@
 {% load bootstrap3 %}
-{% load compress %}
 
 {% load avatar %}
 
@@ -21,9 +20,7 @@
     {% bootstrap_css %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
-    {% compress css %}
-        <link href="{{STATIC_URL}}css/main.css" rel="stylesheet">
-    {% endcompress %}
+    <link href="{{STATIC_URL}}css/main.css" rel="stylesheet">
 
     <!-- Standard Meta Data -->
     <meta name="description" content="E-WORTH" />
