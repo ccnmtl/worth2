@@ -1,6 +1,6 @@
 from django.conf import settings
 from worth2.settings_shared import *  # noqa: F403
-from ccnmtlsettings.staging import common
+from ctlsettings.staging import common
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
