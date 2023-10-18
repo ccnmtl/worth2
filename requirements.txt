@@ -34,7 +34,7 @@ Genshi==0.7.5
 requirements/src/epubbuilder-0.2.1-py2.py3-none-any.whl
 
 coverage==7.3.0
-logilab-common==1.10.0
+logilab-common==1.11.0
 editdistance==0.6.2
 pylint==3.0.0
 six==1.16.0
