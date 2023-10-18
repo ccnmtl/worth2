@@ -12,6 +12,7 @@ locals().update(
         STATIC_ROOT=STATIC_ROOT,  # noqa: F405
         INSTALLED_APPS=INSTALLED_APPS,  # noqa: F405
         cloudfront="d1tpq2w6jljbie",
+        s3prefix='ccnmtl',
     ))
 
 CACHES = {
