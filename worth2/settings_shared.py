@@ -94,9 +94,6 @@ EPUB_TITLE = "WORTH epub"
 EPUB_CREATOR = "CTL"
 EPUB_PUBLICATION = "2017"
 
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend'
-]
 
 TEMPLATES = [
     {
