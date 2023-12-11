@@ -51,7 +51,8 @@ INSTALLED_APPS += [  # noqa
     'worth2.selftalk',
     'behave_django',
     'pagetreeepub',
-    'waffle'
+    'waffle',
+    'django_markwhat',
 ]
 
 JSON_API_PLURALIZE_TYPES = True
