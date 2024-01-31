@@ -45,7 +45,7 @@ factory_boy==3.3.0
 sqlparse==0.4.4
 python-dateutil==2.8.2
 contextlib2==21.6.0
-urllib3==2.1.0 # sentry-sdk
+urllib3==2.2.0 # sentry-sdk
 s3transfer==0.10.0
 jmespath==1.0.0
 
