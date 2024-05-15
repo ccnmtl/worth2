@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django import forms
 from django.contrib.auth.models import User
 from django.db import models
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 
 from pagetree.generic.models import BasePageBlock
 from pagetree.reports import ReportColumnInterface, StandaloneReportColumn, \
@@ -47,7 +47,7 @@ class Supporter(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return smart_text(self.name)
+        return smart_str(self.name)
 
 
 class SsnmPageBlock(BasePageBlock):

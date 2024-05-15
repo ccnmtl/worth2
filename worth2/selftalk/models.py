@@ -4,7 +4,7 @@ import re
 from django import forms
 from django.contrib.auth.models import User
 from django.db import models
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 from ordered_model.models import OrderedModel
 from pagetree.generic.models import BasePageBlock
 
@@ -284,7 +284,7 @@ class StatementResponse(models.Model):
         if self.other_text:
             return self.other_text
 
-        return smart_text(self.statement)
+        return smart_str(self.statement)
 
 
 class RefutationResponse(models.Model):
@@ -311,4 +311,4 @@ class RefutationResponse(models.Model):
         if self.other_text:
             return self.other_text
 
-        return smart_text(self.refutation)
+        return smart_str(self.refutation)

@@ -52,7 +52,7 @@ INSTALLED_APPS += [  # noqa
     'behave_django',
     'pagetreeepub',
     'waffle',
-    'django_markwhat',
+    'markdownify.apps.MarkdownifyConfig',
 ]
 
 JSON_API_PLURALIZE_TYPES = True

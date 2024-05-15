@@ -1,4 +1,4 @@
-{% load markup %}
+{% load markdownify %}
 
 <div class="row">
     <div class="col-md-8">
@@ -20,11 +20,11 @@
                     </li>
                     {% endfor %}
                 </ol>
-                <p>{{question.explanation|markdown}}</p>
+                <p>{{question.explanation|markdownify}}</p>
             </div>
         </div>
         {% else %}
-            <div class="casequestionexplanation">{{question.explanation|markdown}}</div>
+            <div class="casequestionexplanation">{{question.explanation|markdownify}}</div>
         {% endif %}
     </div>
 </div>

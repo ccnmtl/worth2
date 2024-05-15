@@ -1,4 +1,4 @@
-{% load markup %}
+{% load markdownify %}
 {% load quizresults %}
 
 <div class="row">
@@ -11,7 +11,7 @@
                     {% if question.correct_answer_letter %}
                     <i>The correct answer is {{question.correct_answer_letter}}:</i>
                     {% endif %}
-                    {{question.explanation|markdown}}
+                    {{question.explanation|markdownify}}
                 </p>
             </div>
             {% else %}
@@ -23,7 +23,7 @@
                 <h3><span class="incorrect label label-danger">That's Incorrect.</span></h3>
                 {% endif %}
             </div>
-            <div class="casequestionexplanation">{{question.explanation|markdown}}</div>
+            <div class="casequestionexplanation">{{question.explanation|markdownify}}</div>
             {% endif %}
         </div>
     </div>
