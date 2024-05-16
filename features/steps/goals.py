@@ -1,6 +1,6 @@
 from behave import when
 from selenium.webdriver.support.select import Select
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 
 from worth2.goals.models import GoalOption, GoalSettingBlock
 
@@ -14,7 +14,7 @@ def i_fill_in_a_goal_option(context):
 
     Select(d.find_element_by_name(
         'pageblock-%d-0-option' % pageblock_pk)).select_by_value(
-            smart_text(option.pk))
+            smart_str(option.pk))
     el = d.find_element_by_name('pageblock-%d-0-text' % pageblock_pk)
     el.send_keys('I will make it happen somehow')
 

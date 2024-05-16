@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 
 from django.test import TestCase
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 
 from worth2.main.tests.factories import UserFactory
 from worth2.selftalk.tests.factories import (
@@ -20,7 +20,7 @@ class StatementTest(TestCase):
         self.o.full_clean()
 
     def test_unicode(self):
-        self.assertEqual(smart_text(self.o), self.o.text)
+        self.assertEqual(smart_str(self.o), self.o.text)
 
 
 class RefutationTest(TestCase):
@@ -31,7 +31,7 @@ class RefutationTest(TestCase):
         self.o.full_clean()
 
     def test_unicode(self):
-        self.assertEqual(smart_text(self.o), self.o.text)
+        self.assertEqual(smart_str(self.o), self.o.text)
 
 
 class ExternalStatementBlockTest(TestCase):
@@ -102,7 +102,7 @@ class StatementResponseTest(TestCase):
         self.o.full_clean()
 
     def test_unicode(self):
-        self.assertEqual(smart_text(self.o), smart_text(self.o.statement))
+        self.assertEqual(smart_str(self.o), smart_str(self.o.statement))
         self.o.other_text = "something else"
         self.assertEqual(str(self.o), "something else")
 
@@ -115,6 +115,6 @@ class RefutationResponseTest(TestCase):
         self.o.full_clean()
 
     def test_unicode(self):
-        self.assertEqual(smart_text(self.o), smart_text(self.o.refutation))
+        self.assertEqual(smart_str(self.o), smart_str(self.o.refutation))
         self.o.other_text = "something else"
         self.assertEqual(str(self.o), "something else")

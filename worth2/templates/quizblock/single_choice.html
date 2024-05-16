@@ -1,4 +1,3 @@
-{% load markup %}
 {% load avatar %}
 
 {% if 'likert' in question.quiz.pageblock.css_extra or 'likert' in question.css_extra %}
@@ -23,12 +22,12 @@
                         </label>
                     </li>
                 {% else %}
-                    <li class="{{answer.css_extra}} {% if response %}{% ifequal response.value answer.value %}checked{% else %}unchecked{% endifequal %}{% endif %}">
+                    <li class="{{answer.css_extra}} {% if response %}{% if response.value == answer.value %}checked{% else %}unchecked{% endif %}{% endif %}">
                         <label>
                             <input name="pageblock-{{block.pageblock.id}}-question{{question.id}}"
                                 value="{{answer.value}}" type="radio"
                                 {% if response %}disabled="disabled"
-                                    {% ifequal response.value answer.value %}checked="checked"{% endifequal %}
+                                    {% if response.value == answer.value %}checked="checked"{% endif %}
                                    {% endif %}> 
                              
                             <span class="caseanswerlabel {% if response %}{% if answer.correct %}correctanswer{% else %}incorrectanswer{% endif %}{% endif %}">
@@ -45,9 +44,9 @@
         {% if response %}
             <div class="caseanswerexplanation">
                 {% for answer in question.answer_set.all %}
-                    {% ifequal response.value answer.value %}
+                    {% if response.value == answer.value %}
                     {{answer.explanation|safe}}
-                    {% endifequal %}
+                    {% endif %}
                 {% endfor %}
             </div>
         {% endif %}

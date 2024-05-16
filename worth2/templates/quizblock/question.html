@@ -1,4 +1,4 @@
-{% load markup %}
+{% load markdownify %}
 {% load getresponse %}
 
 {% getquestionresponse question as response %}
@@ -11,7 +11,7 @@
     <div class="cases">
         <div class="row">
             <div class="col-md-8">
-                <div class="caseintrotext">{{question.intro_text|markdown}}</div>
+                <div class="caseintrotext">{{question.intro_text|markdownify}}</div>
                 <div class="casetitle"> Question {{question.display_number}}:</div>
             </div>
         </div>
@@ -24,7 +24,7 @@
                             {% if question.is_short_text or question.is_long_text %}
                                 <label for="pageblock-{{block.pageblock.id}}-question{{question.id}}">
                             {% endif %}
-                                {{question.text|markdown}}
+                                {{question.text|markdownify}}
                             {% if question.is_short_text or question.is_long_text %}
                                 </label>
                             {% endif %}

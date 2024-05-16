@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.template.defaultfilters import slugify
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 from ordered_model.models import OrderedModel
 from pagetree.generic.models import BasePageBlock
 from pagetree.reports import ReportColumnInterface, ReportableInterface
@@ -65,7 +65,7 @@ class GoalSettingBlock(BasePageBlock):
 
     def __str__(self):
         session_num = get_module_number(self.pageblock())
-        return smart_text('%s goals [Session %d] id: %d' % (
+        return smart_str('%s goals [Session %d] id: %d' % (
             self.get_goal_type_display(),
             session_num,
             self.pk))
@@ -138,7 +138,7 @@ class GoalOption(OrderedModel):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return smart_text(self.text)
+        return smart_str(self.text)
 
 
 class GoalSettingResponseManager(models.Manager):
@@ -192,7 +192,7 @@ class GoalSettingResponse(models.Model):
 
     def __str__(self):
         return '"{}" from {}'.format(
-            smart_text(self.option), smart_text(self.user))
+            smart_str(self.option), smart_str(self.user))
 
 
 class GoalSettingColumn(ReportColumnInterface):
@@ -217,7 +217,7 @@ class GoalSettingColumn(ReportColumnInterface):
             metadata.append('single choice')
             metadata.append(self.description)
             metadata.append(self.option.id)
-            metadata.append(smart_text(self.option.text))
+            metadata.append(smart_str(self.option.text))
         else:
             metadata.append('string')
             metadata.append(self.description)
@@ -249,7 +249,7 @@ class GoalCheckInOption(OrderedModel):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return smart_text(self.text)
+        return smart_str(self.text)
 
 
 class GoalCheckInResponse(models.Model):
@@ -282,9 +282,9 @@ class GoalCheckInResponse(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return smart_text('"%s" from %s' % (
-            smart_text(self.get_i_will_do_this_display()),
-            smart_text(self.goal_setting_response.user)))
+        return smart_str('"%s" from %s' % (
+            smart_str(self.get_i_will_do_this_display()),
+            smart_str(self.goal_setting_response.user)))
 
 
 class GoalCheckInPageBlock(BasePageBlock):
@@ -405,7 +405,7 @@ class GoalCheckInColumn(ReportColumnInterface):
             metadata.append('single choice')
             metadata.append(self.description)
             metadata.append(self.answer_value)
-            metadata.append(smart_text(self.answer_label))
+            metadata.append(smart_str(self.answer_label))
 
         return metadata
 

@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 from django import forms
 from django.db import models
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 
 from pagetree.generic.models import BasePageBlock
 
@@ -21,7 +21,7 @@ class ProtectiveBehaviorsResults(BasePageBlock):
 
     def __str__(self):
         return '{} -- {}'.format(
-            smart_text(self.pageblock()), self.quiz_category)
+            smart_str(self.pageblock()), self.quiz_category)
 
     @staticmethod
     def add_form():

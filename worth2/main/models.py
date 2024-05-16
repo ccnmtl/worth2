@@ -9,7 +9,7 @@ from django.db.models.signals import post_save
 from django.dispatch.dispatcher import receiver
 from django.shortcuts import get_object_or_404
 from django.template.defaultfilters import slugify
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 from ordered_model.models import OrderedModel
 from pagetree.generic.models import BasePageBlock
 
@@ -30,7 +30,7 @@ class Avatar(OrderedModel):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return smart_text(self.image.url)
+        return smart_str(self.image.url)
 
     def clean(self):
         if self.is_default:
