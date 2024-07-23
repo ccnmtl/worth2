@@ -28,6 +28,7 @@
                         outlet: 'modal',
                         controller: controllerName
                     });
+                // eslint-disable-next-line no-unused-vars
                 } catch (e) {
                     // If the custom modal controller doesn't exist, the
                     // previous render statement throws an exception, and
