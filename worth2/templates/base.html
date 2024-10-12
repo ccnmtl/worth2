@@ -13,6 +13,8 @@
     {# don't format a string of numbers as a phone number #}
     <meta name="format-detection" content="telephone=no">
 
+    {% include "ctlsettings/sentry_js.html" %}
+
     <script>
         var STATIC_URL = '{{STATIC_URL}}';
     </script>
@@ -191,28 +193,6 @@
         </div>
     </div>
 </footer>
-
-<script src="https://cdn.ravenjs.com/3.20.1/raven.min.js" crossorigin="anonymous"></script>
-<script>
-{% if not debug %}
- Raven.config(
-     'https://471e31acc6fd40d9b819cf0b0016e87c@sentry.io/103273'
- ).install();
-
- {% if not user.is_anonymous %}
- Raven.setUserContext({
-     email: '{{user.email}}',
-     id: '{{user.username}}'
- });
- {% else %}
- Raven.setUserContext({
-     email: 'none',
-     id: 'anonymous'
- });
- {% endif %}
- {% endif %}
-</script>
-
 
 {% if debug %}
 <script data-main="{{STATIC_URL}}js/src/main.js"

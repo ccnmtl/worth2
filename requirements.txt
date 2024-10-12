@@ -66,7 +66,6 @@ lazy-object-proxy==1.10.0
 wrapt==1.16.0
 astroid==3.2.0
 django-statsd-mozilla==0.4.0
-raven==6.10.0
 certifi==2024.8.30  # sentry-sdk
 sentry-sdk==2.16.0
 django-bootstrap3==24.3
@@ -115,7 +114,7 @@ linecache2==1.0.0
 behave-django==1.5.0
 django-ga-context==0.1.0
 
-ctlsettings==0.3.4
+ctlsettings==0.4.1
 
 pbr==6.1.0
 PyYAML>=3.10.0 # MIT
