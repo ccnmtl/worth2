@@ -114,7 +114,7 @@ linecache2==1.0.0
 behave-django==1.5.0
 django-ga-context==0.1.0
 
-ctlsettings==0.4.1
+ctlsettings==0.4.2
 
 pbr==6.1.0
 PyYAML>=3.10.0 # MIT
