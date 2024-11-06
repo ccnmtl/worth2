@@ -67,7 +67,7 @@ wrapt==1.16.0
 astroid==3.3.5
 django-statsd-mozilla==0.4.0
 certifi==2024.8.30  # sentry-sdk
-sentry-sdk==2.17.0
+sentry-sdk==2.18.0
 django-bootstrap3==24.3
 django-bootstrap-form==3.4
 django-debug-toolbar==4.4.1
