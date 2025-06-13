@@ -18,7 +18,7 @@ pytz==2025.2
 configparser==7.2.0
 entrypoints==0.4  # for flake8
 importlib-metadata<8.8 # for flake8
-typing_extensions==4.13.1
+typing_extensions==4.14.0
 zipp==3.23.0  # for flake8
 flake8==7.2.0
 tornado==6.5.1
