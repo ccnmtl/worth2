@@ -111,7 +111,7 @@ parse==1.20.0
 behave==1.2.6
 traceback2==1.4.0
 linecache2==1.0.0
-behave-django==1.6.0
+behave-django==1.7.0
 django-ga-context==0.1.0
 
 ctlsettings==0.4.2
