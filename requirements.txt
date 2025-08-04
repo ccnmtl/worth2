@@ -66,7 +66,7 @@ lazy-object-proxy==1.11.0
 wrapt==1.17.0
 astroid==3.3.5
 django-statsd-mozilla==0.4.0
-certifi==2025.7.9  # sentry-sdk
+certifi==2025.8.3  # sentry-sdk
 sentry-sdk==2.34.0
 django-bootstrap3==25.1
 django-bootstrap-form==3.4
@@ -125,7 +125,7 @@ bandit==1.8.3
 entrypoints==0.4
 
 idna==3.10
-certifi==2025.7.9  # sentry-sdk
+certifi==2025.8.3  # sentry-sdk
 chardet==5.2.0
 requests==2.32.4
 
