@@ -31,6 +31,7 @@ USE_TZ = True
 
 MIDDLEWARE += [  # noqa
     'django.middleware.csrf.CsrfViewMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 INSTALLED_APPS += [  # noqa
@@ -53,6 +54,7 @@ INSTALLED_APPS += [  # noqa
     'pagetreeepub',
     'waffle',
     'markdownify.apps.MarkdownifyConfig',
+    'debug_toolbar',
 ]
 
 JSON_API_PLURALIZE_TYPES = True
