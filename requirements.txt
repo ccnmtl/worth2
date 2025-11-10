@@ -59,7 +59,7 @@ requirements/src/sorl-3.4-py3-none-any.whl
 django-indexer==0.3.0
 django-templatetag-sugar==1.0
 django-paging==0.2.5
-django-appconf==1.1.0
+django-appconf==1.2.0
 
 lxml==6.0.0
 lazy-object-proxy==1.12.0
