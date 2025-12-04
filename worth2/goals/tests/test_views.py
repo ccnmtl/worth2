@@ -209,11 +209,11 @@ class GoalCheckInPageBlockTest(LoggedInUserTestMixin, TestCase):
 
         self.assertEqual(responses.count(), 0)
         self.assertEqual(r.status_code, 200)
-        self.assertFormsetError(
-            r, 'checkin_formset', 1, 'i_will_do_this',
+        self.assertFormSetError(
+            r.context['checkin_formset'], 1, 'i_will_do_this',
             'This field is required.')
-        self.assertFormsetError(
-            r, 'checkin_formset', 2, 'i_will_do_this',
+        self.assertFormSetError(
+            r.context['checkin_formset'], 2, 'i_will_do_this',
             'This field is required.')
 
     def test_post_multiple_times(self):
@@ -253,8 +253,8 @@ class GoalCheckInPageBlockTest(LoggedInUserTestMixin, TestCase):
         self.assertEqual(responses.count(), 0)
 
         self.assertEqual(r.status_code, 200)
-        self.assertFormsetError(
-            r, 'checkin_formset', 0, 'i_will_do_this',
+        self.assertFormSetError(
+            r.context['checkin_formset'], 0, 'i_will_do_this',
             'This field is required.')
 
     def test_post_i_did_it_makes_other_inputs_not_required(self):
@@ -291,8 +291,8 @@ class GoalCheckInPageBlockTest(LoggedInUserTestMixin, TestCase):
         self.assertEqual(responses.count(), 0)
 
         self.assertEqual(r.status_code, 200)
-        self.assertFormsetError(
-            r, 'checkin_formset', 0, 'what_got_in_the_way',
+        self.assertFormSetError(
+            r.context['checkin_formset'], 0, 'what_got_in_the_way',
             'This field is required.')
 
     def test_post_in_progress_makes_dropdown_required2(self):
@@ -329,8 +329,10 @@ class GoalCheckInPageBlockTest(LoggedInUserTestMixin, TestCase):
         self.assertEqual(responses.count(), 0)
 
         self.assertEqual(r.status_code, 200)
-        self.assertFormsetError(
-            r, 'checkin_formset', 0, 'other', 'This field is required.')
+        self.assertFormSetError(
+            r.context['checkin_formset'], 0, 'other',
+            'This field is required.'
+        )
 
     def test_post_other_text_is_saved(self):
         p = self.p
@@ -566,11 +568,11 @@ class GoalSettingBlockTest(LoggedInUserTestMixin, TestCase):
 
         self.assertEqual(r.status_code, 200)
         self.assertEqual(GoalSettingResponse.objects.count(), 0)
-        self.assertFormsetError(
-            r, 'setting_formset', 0, 'option',
+        self.assertFormSetError(
+            r.context['setting_formset'], 0, 'option',
             'This field is required.')
-        self.assertFormsetError(
-            r, 'setting_formset', 0, 'text',
+        self.assertFormSetError(
+            r.context['setting_formset'], 0, 'text',
             'This field is required.')
 
     def test_post_na_option_makes_text_not_required(self):
@@ -614,8 +616,10 @@ class GoalSettingBlockTest(LoggedInUserTestMixin, TestCase):
         self.assertEqual(r.status_code, 200)
         self.assertContains(r, 'This field is required.')
         self.assertEqual(GoalSettingResponse.objects.count(), 0)
-        self.assertFormsetError(
-            r, 'setting_formset', 0, 'other_text', 'This field is required.')
+        self.assertFormSetError(
+            r.context['setting_formset'], 0, 'other_text',
+            'This field is required.'
+        )
 
     def test_post_valid_with_other_option(self):
         pageblock = self.root.get_first_child().pageblock_set.first()

@@ -1,4 +1,4 @@
-Django>=4.2.14,<5
+Django>=5.2,<6
 backports.zoneinfo;python_version<"3.9"
 Markdown==3.10
 smartypants==2.0.1
@@ -103,7 +103,8 @@ unicodecsv==0.14.1
 
 # memcached
 pylibmc==1.6.3;sys_platform == "linux" and python_version<"3.9"
-requirements/src/pylibmc-1.7.0.dev0-cp312-cp312-linux_x86_64.whl;sys_platform == "linux" and python_version>="3.12"
+requirements/src/pylibmc-1.7.0.dev0-cp312-cp312-linux_x86_64.whl;sys_platform == "linux" and python_version=="3.12"
+requirements/src/pylibmc-1.7.0.dev0-cp313-cp313-linux_x86_64.whl;sys_platform == "linux" and python_version=="3.13"
 
 parse-type==0.6.0
 parse==1.21.0
