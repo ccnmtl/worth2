@@ -25,7 +25,7 @@ tornado==6.5.1
 beautifulsoup4==4.14.2
 fuzzywuzzy==0.18.0
 sure==3.0a2
-wcwidth==0.5.0
+wcwidth==0.6.0
 prompt_toolkit==3.0.22
 scandir==1.10.0
 pathlib2==2.3.6
