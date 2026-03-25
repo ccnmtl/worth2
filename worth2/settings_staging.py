@@ -1,5 +1,5 @@
 from worth2.settings_shared import *  # noqa: F403
-from ctlsettings.staging import common
+from ctlsettings.staging import common, init_sentry
 
 
 locals().update(
@@ -23,3 +23,7 @@ try:
     from worth2.local_settings import *  # noqa: F403 F401
 except ImportError:
     pass
+
+
+if hasattr(settings, 'SENTRY_DSN'):  # noqa F405
+    init_sentry(SENTRY_DSN)  # noqa F405
