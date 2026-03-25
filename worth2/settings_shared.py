@@ -37,7 +37,7 @@ MIDDLEWARE += [  # noqa
 INSTALLED_APPS += [  # noqa
     'sorl.thumbnail',
     'ordered_model',
-    'bootstrap3',
+    'django_bootstrap5',
     'bootstrapform',
     'django_extensions',
     'django_registration',
