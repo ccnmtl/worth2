@@ -127,7 +127,7 @@ entrypoints==0.4
 idna==3.11
 certifi==2026.2.25  # sentry-sdk
 chardet==7.3.0
-requests==2.32.4
+requests==2.33.0
 
 python-cas==1.7.1
 django-cas-ng==5.1.0
