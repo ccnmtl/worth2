@@ -1,5 +1,6 @@
 from worth2.settings_shared import *  # noqa: F403
 from ctlsettings.staging import common, init_sentry
+from django.conf import settings
 
 
 locals().update(
@@ -25,5 +26,5 @@ except ImportError:
     pass
 
 
-if hasattr(settings, 'SENTRY_DSN'):  # noqa F405
+if hasattr(settings, 'SENTRY_DSN'):
     init_sentry(SENTRY_DSN)  # noqa F405
