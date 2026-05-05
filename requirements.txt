@@ -1,5 +1,4 @@
 Django>=5.2,<6
-backports.zoneinfo;python_version<"3.9"
 Markdown==3.10
 smartypants==2.0.1
 psycopg[binary]==3.3.0
