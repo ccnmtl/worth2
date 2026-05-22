@@ -123,7 +123,7 @@ bandit==1.9.1
 
 entrypoints==0.4
 
-idna==3.15
+idna==3.16
 certifi==2026.5.20  # sentry-sdk
 chardet==7.4.0.post1
 requests==2.34.0
