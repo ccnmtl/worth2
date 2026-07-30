@@ -92,7 +92,7 @@ django-markdownify==0.9.5
 
 gunicorn==26.0.0
 django-ordered-model==3.7.4
-django-crispy-forms==2.6
+django-crispy-forms==2.7
 djangorestframework==3.17.0
 djangorestframework-jsonapi==8.1.0
 django-smtp-ssl==1.0
