@@ -90,7 +90,7 @@ tinycss2==1.5.0 # django-markdownify
 bleach==6.4.0 # django-markdownify
 django-markdownify==0.9.5
 
-gunicorn==26.0.0
+gunicorn==26.1.0
 django-ordered-model==3.7.4
 django-crispy-forms==2.7
 djangorestframework==3.18.0
