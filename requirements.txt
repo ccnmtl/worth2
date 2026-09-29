@@ -1,5 +1,5 @@
 Django>=5.2,<6
-Markdown==3.10
+Markdown==3.11
 smartypants==2.0.1
 psycopg[binary]==3.3.0
 olefile==0.47
