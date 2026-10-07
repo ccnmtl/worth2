@@ -13,7 +13,7 @@ mccabe==0.7.0
 
 pycodestyle==2.15.0
 
-pytz==2026.4
+pytz==2026.5
 configparser==7.2.0
 entrypoints==0.4  # for flake8
 importlib-metadata<9.1 # for flake8
