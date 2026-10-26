@@ -63,7 +63,7 @@ lazy-object-proxy==1.13.0
 wrapt==2.5.0
 django-statsd-mozilla==0.4.0
 certifi==2026.10.19  # sentry-sdk
-sentry-sdk[django]==2.72.0
+sentry-sdk[django]==2.73.0
 django-bootstrap3==26.3
 django-bootstrap-form==3.4
 django-debug-toolbar==8.0.0
